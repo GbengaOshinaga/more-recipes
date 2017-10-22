@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Catalog | More-Recipes</title>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
+	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat">
+	<link rel="stylesheet" href="css/catalog.css">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+	<meta name="google-signin-client_id" content="827684783940-iisct8ub0eifot2ebb4fod5f3nrnk7ij.apps.googleusercontent.com">
+</head>
+<body>
+	<div class="parallax-container">
+		<header>
+			<div class="navbar-fixed">
+				<nav id="nav" class="transparent z-depth-0">
+			    	<div class="container">
+			    		<div class="nav-wrapper">
+					      <a href="#!" class="brand-logo">More-Recipes</a>
+					      <a href="#" data-activates="mobile" class="button-collapse">
+					      	<i class="material-icons">menu</i></a>
+					      <ul class="right hide-on-med-and-down">
+					      	<li id="search-nav" class="hide">    
+			                   <div class="center row">
+			                      <div class="col s12 " >
+			                        <div class="row" id="topbarsearch">
+			                          <div class="input-field col s6 s12 white-text">
+			                            <i class="white-text material-icons prefix">search</i>
+			                            <input type="text" placeholder="search" id="autocomplete-input" class="autocomplete white-text" >
+			                            </div>
+			                          </div>
+			                        </div>
+			                      </div>          
+			                  </li>
+					        <li><a href="#">Catalog</a></li>
+					        <li><a href="#">API</a></li>
+					        <li><a href="index.html">Sign Up</a></li>
+							<li><a href="signin.html">Sign In</a></li>
+					      </ul>
+					      
+					    </div>
+			    	</div>
+			  </nav>
+			</div>
+
+			<ul class="side-nav" id="mobile">
+					      	<li>    
+			                   <div class="center row">
+			                      <div class="col s12 " >
+			                        <div class="row" id="topbarsearch">
+			                          <div class="input-field col s6 s12 black-text">
+			                            <i class="black-text material-icons prefix">search</i>
+			                            <input type="text" placeholder="search" id="autocomplete-input" class="autocomplete black-text" >
+			                            </div>
+			                          </div>
+			                        </div>
+			                      </div>          
+			                  </li>
+					        <li><a href="#">Catalog</a></li>
+					        <li><a href="#">API</a></li>
+					        <li><a href="index.html">Sign Up</a></li>
+							<li><a href="signin.html">Sign In</a></li>
+					      </ul>
+		</header>
+	
+    <div class="parallax"><img src="img/bg-search.jpg"></div>
+    	<div class="search-form">
+    		<div class="container">
+    			<form>
+    		        	<div class="input-field">
+    		        		<i class="white-text material-icons prefix">search</i>
+		          		<input placeholder="Search Catalog" id="autocomplete-input" class="autocomplete white-text">
+		        	</div>
+		    	</form>
+    		</div>
+    	</div>
+  </div>
+
+  <div class="section">
+  	<div class="row pin-tab" data-target="pin-tab">
+  		<div class="col s12 pin">
+  			<ul class="tabs">
+  				<div class="container">
+  				<li class="tab col s6"><a href="#all">All</a></li>
+  				<li class="tab col s6"><a href="#most-fav">Most Favorited</a></li>
+  				</div>
+  			</ul>
+  		</div>
+  	</div>
+
+  	<div id="all">
+  		<div class="container">
+  			<div class="row">
+  				<div class="card horizontal">
+			      <div class="card-image">
+			        <img src="https://lorempixel.com/200/190/food/6">
+			      </div>
+			      <div class="card-stacked">
+			        <div class="card-content">
+			        	<span class="card-title">Recipe</span>
+			          <p>This is a recipe that i have been working on for a while.</p>
+			        </div>
+			        <div class="card-action teal lighten-1">
+			          <a href="recipe_details.html" class="white-text">VIEW DETAILS</a>
+			        </div>
+			      </div>
+			    </div>
+  			</div>
+  			<div class="row">
+  				<div class="card horizontal">
+			      <div class="card-image">
+			        <img src="https://lorempixel.com/200/190/food/7">
+			      </div>
+			      <div class="card-stacked">
+			        <div class="card-content">
+			        	<span class="card-title">Another Recipe</span>
+			          <p>This is a recipe that i have been working on for a while.</p>
+			        </div>
+			        <div class="card-action teal lighten-1">
+			          <a href="recipe_details.html" class="white-text">VIEW DETAILS</a>
+			        </div>
+			      </div>
+			    </div>
+  			</div>
+  			<div class="row">
+  				<div class="card horizontal">
+			      <div class="card-image">
+			        <img src="https://lorempixel.com/200/190/food/8">
+			      </div>
+			      <div class="card-stacked">
+			        <div class="card-content">
+			        	<span class="card-title">Last Recipe</span>
+			          <p>This is a recipe that i have been working on for a while.</p>
+			        </div>
+			        <div class="card-action teal lighten-1">
+			          <a href="recipe_details.html" class="white-text">VIEW DETAILS</a>
+			        </div>
+			      </div>
+			    </div>
+  			</div>
+
+  		</div>
+  	</div>
+
+  	<div id="most-fav">
+  		<div class="container">
+  			<div class="row">
+  				<div class="card horizontal">
+			      <div class="card-image">
+			        <img src="https://lorempixel.com/200/190/food/6">
+			      </div>
+			      <div class="card-stacked">
+			        <div class="card-content">
+			        	<span class="card-title">Recipe</span>
+			          <p>This is a recipe that i have been working on for a while.</p>
+			        </div>
+			        <div class="card-action teal lighten-1">
+			          <a href="recipe_details.html" class="white-text">VIEW DETAILS</a>
+			        </div>
+			      </div>
+			    </div>
+  			</div>
+  			
+  			<div class="row">
+  				<div class="card horizontal">
+			      <div class="card-image">
+			        <img src="https://lorempixel.com/200/190/food/8">
+			      </div>
+			      <div class="card-stacked">
+			        <div class="card-content">
+			        	<span class="card-title">Last Recipe</span>
+			          <p>This is a recipe that i have been working on for a while.</p>
+			        </div>
+			        <div class="card-action teal lighten-1">
+			          <a href="recipe_details.html" class="white-text">VIEW DETAILS</a>
+			        </div>
+			      </div>
+			    </div>
+  			</div>
+  		</div>
+  	</div>
+
+  </div>
+  <footer class="page-footer red darken-2">
+  	<div class="footer-copyright">
+  		<div class="container">&copy; More-Recipes</div>
+  	</div>
+  </footer>
+  <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
+  <script type="text/javascript" src="js/main.js"></script>
+</body>
+</html>

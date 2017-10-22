@@ -1,0 +1,26 @@
+body, html {
+  height: 100%;
+  margin: 0;
+  font-family: Open Sans; }
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: Montserrat; }
+
+.details {
+  background-color: #FAFAFA;
+  font-family: Open Sans; }
+
+.details-box {
+  height: 100%;
+  margin-top: 10px;
+  background-color: #FFFFFF; }
+
+.review {
+  margin-top: 50px; }
+
+.review-container {
+  height: 100px;
+  padding: 10px;
+  background-color: #FAFAFA; }
+
+/*# sourceMappingURL=recipe_detail.css.map */

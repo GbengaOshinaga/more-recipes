@@ -1,0 +1,7 @@
+{
+"version": 3,
+"mappings": "AAEA,UAAU;EACT,MAAM,EAAE,IAAI;EACZ,MAAM,EAAE,CAAC;EACT,WAAW,ECJA,SAAS;;ADOrB,kBAAkB;EACjB,WAAW,ECTE,UAAU;;ACGxB,6BAA6B;EAC5B,OAAO,EAAE,IAAI;;AAGd,kBAAkB;EACjB,UAAU,EAAE,IAAI;EAChB,aAAa,EAAE,IAAI;;AAGpB,WAAW;EACV,gBAAgB,EAAE,OAAO",
+"sources": ["../scss/partials/_global.scss","../scss/partials/_variables.scss","../scss/my_recipes.scss"],
+"names": [],
+"file": "my_recipes.css"
+}

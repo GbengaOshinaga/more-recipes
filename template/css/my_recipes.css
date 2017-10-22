@@ -1,0 +1,19 @@
+body, html {
+  height: 100%;
+  margin: 0;
+  font-family: Open Sans; }
+
+h1, h2, h3, h4, h5 {
+  font-family: Montserrat; }
+
+textarea.materialize-textarea {
+  padding: 10px; }
+
+.add-recipe-button {
+  margin-top: 30px;
+  margin-bottom: 50px; }
+
+.my-recipes {
+  background-color: #FAFAFA; }
+
+/*# sourceMappingURL=my_recipes.css.map */

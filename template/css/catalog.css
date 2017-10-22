@@ -1,0 +1,35 @@
+body, html {
+  height: 100%;
+  margin: 0;
+  font-family: Open Sans; }
+
+h1, h2, h3, h4, h5 {
+  font-family: Montserrat; }
+
+.parallax-container {
+  height: 250px; }
+
+.search-form {
+  margin-top: 65px; }
+
+input::placeholder {
+  font-family: Montserrat;
+  font-size: 20px; }
+
+.pin-top {
+  position: relative; }
+
+.pin-bottom {
+  position: relative; }
+
+.pinned {
+  position: fixed !important; }
+
+.section {
+  background-color: #FAFAFA;
+  padding-top: 0; }
+
+.pin-tab .col {
+  padding: 0; }
+
+/*# sourceMappingURL=catalog.css.map */

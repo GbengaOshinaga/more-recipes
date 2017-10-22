@@ -1,0 +1,15 @@
+@import 'partials/variables';
+@import 'partials/global';
+
+
+.favorited-reviews{
+	margin-top: 50px;
+}
+
+textarea.materialize-textarea{
+	padding: 0;
+}
+
+input[value], textarea{
+	font-family: $header-font;
+}
