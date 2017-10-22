@@ -3,8 +3,12 @@ body, html {
   margin: 0;
   font-family: Open Sans; }
 
-h1, h2, h3, h4, h5 {
+h1, h2, h3, h4, h5, h6 {
   font-family: Montserrat; }
+
+@media (max-width: 480px) {
+  nav .brand-logo {
+    font-size: 1.5rem; } }
 
 .parallax-container {
   height: 250px; }
