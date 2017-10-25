@@ -11,6 +11,10 @@ export default class RecipesController {
   constructor() {
     this.route = Router();
     this.recipes = new Recipes();
+
+    this.route.get('/', (req, res) => {this.getRecipes(req, res)});
+    this.route.post('/', (req, res) => {this.addRecipe(req, res)});
+    this.route.put('/', (req, res) => {this.modifyRecipe(req, res)});
   }
 
   /**
@@ -19,9 +23,12 @@ export default class RecipesController {
    * @param {*} res 
    */
   addRecipe(req, res) {
-    this.route.post('/api/recipes', (req, res) => {
-        
-    });
+    const recipe = {
+      name: req.body.recipeName,
+      details: req.body.recipeDetail,
+      ingredients: req.body.ingredients
+    };  
+    return res.json(this.recipes.addRecipe(recipe));
   }
 
   /**
@@ -30,8 +37,16 @@ export default class RecipesController {
    * @param {*} res 
    */
   getRecipes(req, res) {
-      this.route.get('/api/recipes', (req, res) => {
-        return res.json(this.recipes.getRecipes());
-      });
+    return res.json(this.recipes.getRecipes());
+  }
+
+  modifyRecipe(req, res) {
+    const recipe = {
+      name: req.body.recipeName,
+      details: req.body.recipeDetail,
+      ingredients: req.body.ingredients
+    };
+    console.log(req.params.id);
+    return res.json(this.recipes.modifyRecipe(req.params.id, recipe));
   }
 }
