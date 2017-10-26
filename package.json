@@ -4,7 +4,7 @@
   "description": "server-side code for more-recipes app",
   "main": "index.js",
   "scripts": {
-    "test": "mocha --timeout 10000",
+    "test": "mocha server/test/**.js --exit --compilers js:babel-core/register",
     "start:dev": "nodemon ./bin/www",
     "start": "./node_modules/.bin/babel-watch server/app.js"
   },
