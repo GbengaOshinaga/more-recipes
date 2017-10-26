@@ -14,7 +14,9 @@ export default class RecipesController {
 
     this.route.get('/', (req, res) => {this.getRecipes(req, res)});
     this.route.post('/', (req, res) => {this.addRecipe(req, res)});
-    this.route.put('/', (req, res) => {this.modifyRecipe(req, res)});
+    this.route.put('/:id', (req, res) => {this.modifyRecipe(req, res)});
+    this.route.delete('/:id', (req, res) => {this.deleteRecipe(req, res)});
+    this.route.post('/:id/reviews', (req, res) => {this.addReview(req, res)});
   }
 
   /**
@@ -42,7 +44,7 @@ export default class RecipesController {
       console.log("Entered");
       return res.json(this.recipes.getSortedRecipes());
     }
-    return res.json(this.recipes.getRecipes());
+    return res.json(this.recipes.recipes);
   }
 
   /**
@@ -58,5 +60,23 @@ export default class RecipesController {
     };
     console.log(req.params.id);
     return res.json(this.recipes.modifyRecipe(req.params.id, recipe));
+  }
+
+  /**
+   * Deletes specified recipe
+   * @param {*} req 
+   * @param {*} res 
+   */
+  deleteRecipe(req, res){
+    return res.json(this.recipes.deleteRecipe(req.params.id));
+  }
+
+  /**
+   * Add review to recipe
+   * @param {*} req 
+   * @param {*} res 
+   */
+  addReview(req, res){
+
   }
 }

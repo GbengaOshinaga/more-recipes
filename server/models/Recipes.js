@@ -50,7 +50,7 @@ export default class Recipes {
    * Method returns all recipes
    * @returns {Recipes} recipes
    */
-  getRecipes() {
+  get recipes() {
     return this._recipes;
   }
 
@@ -70,7 +70,7 @@ export default class Recipes {
   modifyRecipe(id, recipe) {
     let modifiedRecipe;
     for (const i in this._recipes) {
-      if (this._recipes[i].id === Number(recipe.id)) {
+      if (this._recipes[i].id === Number(id)) {
         this._recipes[i].name = recipe.name;
         this._recipes[i].details = recipe.details;
         this._recipes[i].ingredients = recipe.ingredients;
@@ -78,6 +78,23 @@ export default class Recipes {
       }
     }
     return modifiedRecipe;
+  }
+
+  /**
+   * Deletes the specified recipe
+   * @param {*} id 
+   */
+  deleteRecipe(id) {
+    for(let i = 0; i<this._recipes.length; i++){
+      if(this._recipes[i].id === Number(id)){
+        this._recipes.splice(i, 1);
+      }
+    }
+    return this.getRecipes();
+  }
+
+  addReview(id, review){
+
   }
 
   /**
