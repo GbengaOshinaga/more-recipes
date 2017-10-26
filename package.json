@@ -6,7 +6,9 @@
   "scripts": {
     "test": "mocha server/test/**.js --exit --compilers js:babel-core/register",
     "start:dev": "nodemon ./bin/www",
-    "start": "./node_modules/.bin/babel-watch server/app.js"
+    "start": "./node_modules/.bin/babel-watch server/app.js",
+    "coverage": "nyc report --reporter=text-lcov | coveralls",
+    "coveralls": "nyc npm test&& nyc report --reporter=text-lcov | coveralls"
   },
   "author": "Gbenga Oshinaga",
   "license": "ISC",
@@ -29,6 +31,7 @@
     "babili": "^0.1.4",
     "chai": "^4.1.2",
     "chai-http": "^3.0.0",
+    "coveralls": "^3.0.0",
     "eslint": "^4.9.0",
     "eslint-config-airbnb": "^16.1.0",
     "eslint-config-airbnb-base": "^12.1.0",
@@ -36,7 +39,8 @@
     "eslint-plugin-jsx-a11y": "^6.0.2",
     "http-server": "^0.10.0",
     "mocha": "^4.0.1",
-    "nodemon": "^1.12.1"
+    "nodemon": "^1.12.1",
+    "nyc": "^11.2.1"
   },
   "babel": {
     "presets": [
