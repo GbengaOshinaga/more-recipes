@@ -23,6 +23,14 @@ export default class Recipes {
         ingredients: 'New Ingredients',
         upvotes: 40,
         reviews: ['I Love it', 'I Hate it']
+      },
+      {
+        id: 3,
+        name: 'Third Recipe',
+        details: 'More Details',
+        ingredients: 'New Ingredients',
+        upvotes: 10,
+        reviews: ['I Love it', 'I Hate it']
       }
     ];
   }
@@ -47,6 +55,13 @@ export default class Recipes {
   }
 
   /**
+   * Returns sorted recipes
+   */
+  getSortedRecipes() {
+    return this.sort(this._recipes);
+  }
+
+  /**
    * Modifies a recipe
    * @param {*} id
    * @param {*} recipe
@@ -63,6 +78,42 @@ export default class Recipes {
       }
     }
     return modifiedRecipe;
+  }
+
+  /**
+   * Reverse sorts and merges the left and right array
+   * @param {*} leftArray
+   * @param {*} rightArray
+   * @returns {Array} merged sorted recipes
+   */
+  merge(leftArray, rightArray) {
+    const array = [];
+
+    while (leftArray.length && rightArray.length) {
+      if (leftArray[0].upvotes > rightArray[0].upvotes) {
+        array.push(leftArray.shift());
+      } else {
+        array.push(rightArray.shift());
+      }
+    }
+    return array.concat(leftArray).concat(rightArray);
+  }
+
+  /**
+   * Recursively splits the recipes array and
+   * passes it to the merge method to be sorted
+   * @param {*} array recipes to be sorted
+   * @returns {Array} sorted array
+   */
+  sort(array) {
+    if (array.length < 2) {
+      return array;
+    }
+    const middle = Math.floor(array.length / 2);
+    const left = array.slice(0, middle);
+    const right = array.slice(middle);
+
+    return this.merge(this.sort(left), this.sort(right));
   }
 }
 

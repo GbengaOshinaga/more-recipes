@@ -37,9 +37,19 @@ export default class RecipesController {
    * @param {*} res 
    */
   getRecipes(req, res) {
+    console.log(req.query);
+    if(req.query.sort && req.query.order){
+      console.log("Entered");
+      return res.json(this.recipes.getSortedRecipes());
+    }
     return res.json(this.recipes.getRecipes());
   }
 
+  /**
+   * Modifies a recipe
+   * @param {*} req 
+   * @param {*} res 
+   */
   modifyRecipe(req, res) {
     const recipe = {
       name: req.body.recipeName,
