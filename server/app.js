@@ -15,8 +15,8 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 // Setup a default catch-all route that sends back a welcome message in JSON format.
 const recipes = new RecipesController();
-app.use('/api/recipes', recipes.route);
-app.use('/api/recipes/:id', recipes.route);
+app.use('/api/v1/recipes', recipes.route);
+app.use('/api/v1/recipes/:id', recipes.route);
 
 app.get('*', (req, res) => res.status(200).send({
   message: 'Welcome to the More-Recipes API Home.',
