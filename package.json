@@ -4,10 +4,11 @@
   "description": "server-side code for more-recipes app",
   "main": "index.js",
   "scripts": {
+    "test": "mocha --timeout 10000",
     "start:dev": "nodemon ./bin/www",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "./node_modules/.bin/babel-watch server/app.js"
   },
-  "author": "",
+  "author": "Gbenga Oshinaga",
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.18.2",
@@ -18,11 +19,36 @@
   "devDependencies": {
     "babel-cli": "^6.26.0",
     "babel-core": "^6.26.0",
+    "babel-eslint": "^8.0.1",
+    "babel-plugin-transform-es2015-destructuring": "^6.23.0",
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-es2015-node": "^6.1.1",
+    "babel-preset-latest": "^6.24.1",
+    "babel-watch": "^2.0.7",
+    "babili": "^0.1.4",
+    "chai": "^4.1.2",
+    "chai-http": "^3.0.0",
     "eslint": "^4.9.0",
     "eslint-config-airbnb": "^16.1.0",
+    "eslint-config-airbnb-base": "^12.1.0",
     "eslint-plugin-import": "^2.7.0",
     "eslint-plugin-jsx-a11y": "^6.0.2",
-    "eslint-plugin-react": "^7.4.0",
+    "http-server": "^0.10.0",
+    "mocha": "^4.0.1",
     "nodemon": "^1.12.1"
-  }
+  },
+  "babel": {
+    "presets": [
+      "latest"
+    ]
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/GbengaOshinaga/more-recipes.git"
+  },
+  "bugs": {
+    "url": "https://github.com/GbengaOshinaga/more-recipes/issues"
+  },
+  "homepage": "https://github.com/GbengaOshinaga/more-recipes#readme"
 }
