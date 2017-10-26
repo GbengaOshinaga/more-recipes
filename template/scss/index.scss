@@ -1,0 +1,26 @@
+@import 'partials/variables';
+@import 'partials/global';
+
+body{
+	/* The image used */
+    background-image: url('../img/index-bg-image.jpg');
+
+    /* Full height */
+    height: 100vh; 
+
+    /* Center and scale the image nicely */
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.info{
+    margin-top: 100px;
+    h1{
+        font-family: $header-font;
+    }
+    .cta-buttons{
+        margin-top: 50px;
+        font-family: $header-font;
+    }
+}

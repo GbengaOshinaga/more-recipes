@@ -41,9 +41,9 @@ export default class Recipes {
    * @returns {Recipes} added recipe
    */
   addRecipe(recipe) {
-    recipe.id = this.getRecipes().length + 1;
+    recipe.id = this.recipes.length + 1;
     this._recipes.push(recipe);
-    return this.getRecipes()[this.getRecipes().length - 1];
+    return this.recipes[this.recipes.length - 1];
   }
 
   /**
@@ -57,8 +57,8 @@ export default class Recipes {
   /**
    * Returns sorted recipes
    */
-  getSortedRecipes() {
-    return this.sort(this._recipes);
+  getSortedRecipes(format) {
+    return this.sort(this._recipes, format);
   }
 
   /**
@@ -82,28 +82,50 @@ export default class Recipes {
 
   /**
    * Deletes the specified recipe
-   * @param {*} id 
+   * @param {*} id
    */
   deleteRecipe(id) {
-    for(let i = 0; i<this._recipes.length; i++){
-      if(this._recipes[i].id === Number(id)){
-        this._recipes.splice(i, 1);
+    let recipe;
+    for (let i = 0; i < this._recipes.length; i++) {
+      if (this._recipes[i].id === Number(id)) {
+        recipe = this._recipes.splice(i, 1);
       }
     }
-    return this.getRecipes();
-  }
-
-  addReview(id, review){
-
+    if(recipe === undefined){
+      return ['Id does not exist'];
+    }else{
+      return recipe;
+    }
   }
 
   /**
-   * Reverse sorts and merges the left and right array
+   * Adds a review to a recipe
+   * @param {*} id 
+   * @param {*} review 
+   */
+  addReview(id, review) {
+    let addedReview;
+    for(let i = 0; i<this._recipes.length; i++){
+      if(this._recipes[i].id === Number(id)){
+        if(this._recipes.reviews){
+          this._recipes[i].reviews.push(review);
+        }else{
+          this._recipes[i].reviews = [];
+          this._recipes[i].reviews.push(review);
+        }
+        addedReview = this._recipes[i];
+      }
+    }
+    return addedReview;
+  }
+
+  /**
+   * Sorts in descending order and merges the left and right array
    * @param {*} leftArray
    * @param {*} rightArray
    * @returns {Array} merged sorted recipes
    */
-  merge(leftArray, rightArray) {
+  mergeDes(leftArray, rightArray) {
     const array = [];
 
     while (leftArray.length && rightArray.length) {
@@ -113,7 +135,26 @@ export default class Recipes {
         array.push(rightArray.shift());
       }
     }
-    return array.concat(leftArray).concat(rightArray);
+    return array.concat(leftArray.slice()).concat(rightArray.slice());
+  }
+
+  /**
+   * Sorts in ascending order and merges the left and right array
+   * @param {*} leftArray
+   * @param {*} rightArray
+   * @returns {Array} merged sorted recipes
+   */
+  mergeAsc(leftArray, rightArray) {
+    const array = [];
+
+    while (leftArray.length && rightArray.length) {
+      if (leftArray[0].upvotes < rightArray[0].upvotes) {
+        array.push(leftArray.shift());
+      } else {
+        array.push(rightArray.shift());
+      }
+    }
+    return array.concat(leftArray.slice()).concat(rightArray.slice());
   }
 
   /**
@@ -122,15 +163,26 @@ export default class Recipes {
    * @param {*} array recipes to be sorted
    * @returns {Array} sorted array
    */
-  sort(array) {
+  sort(array, format) {
     if (array.length < 2) {
       return array;
     }
     const middle = Math.floor(array.length / 2);
     const left = array.slice(0, middle);
     const right = array.slice(middle);
+    if(format === 'des'){
+      return this.mergeDes(this.sort(left, 'des'), this.sort(right, 'des'));
+    }else{
+      return this.mergeAsc(this.sort(left), this.sort(right));
+    }
+  }
 
-    return this.merge(this.sort(left), this.sort(right));
+  getRecipesIDs(){
+    let ids = [];
+    for(let i = 0; i<this._recipes.length; i++){
+      ids.push(this._recipes[i].id);
+    }
+    return ids;
   }
 }
 

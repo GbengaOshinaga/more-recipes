@@ -1,7 +1,7 @@
 import Express from 'express';
 import logger from 'morgan';
 import bodyParser from 'body-parser';
-import RecipesController from './server/controllers/RecipesController';
+import RecipesController from './controllers/RecipesController';
 
 // Set up the express app
 const app = new Express();
