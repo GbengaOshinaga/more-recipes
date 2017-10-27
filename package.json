@@ -16,9 +16,7 @@
     "body-parser": "^1.18.2",
     "express": "^4.16.2",
     "express-fileupload": "^0.3.0",
-    "morgan": "^1.9.0"
-  },
-  "devDependencies": {
+    "morgan": "^1.9.0",
     "babel-cli": "^6.26.0",
     "babel-core": "^6.26.0",
     "babel-eslint": "^8.0.1",
@@ -41,6 +39,9 @@
     "mocha": "^4.0.1",
     "nodemon": "^1.12.1",
     "nyc": "^11.2.1"
+  },
+  "devDependencies": {
+    
   },
   "babel": {
     "presets": [
