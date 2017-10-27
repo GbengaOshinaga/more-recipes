@@ -1,7 +1,4 @@
-[![Build Status](https://travis-ci.org/GbengaOshinaga/more-recipes.svg?branch=development)](https://travis-ci.org/GbengaOshinaga/more-recipes)
-
-[![Maintainability](https://api.codeclimate.com/v1/badges/65b81f8376a6f0d3eaf8/maintainability)](https://codeclimate.com/github/GbengaOshinaga/more-recipes/maintainability)
-
+[![Build Status](https://travis-ci.org/GbengaOshinaga/more-recipes.svg?branch=development)](https://travis-ci.org/GbengaOshinaga/more-recipes)[![Maintainability](https://api.codeclimate.com/v1/badges/65b81f8376a6f0d3eaf8/maintainability)](https://codeclimate.com/github/GbengaOshinaga/more-recipes/maintainability)
 [![Coverage Status](https://coveralls.io/repos/github/GbengaOshinaga/more-recipes/badge.svg?branch=development)](https://coveralls.io/github/GbengaOshinaga/more-recipes?branch=development)
 
 # More-Recipes
