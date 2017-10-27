@@ -1,9 +1,13 @@
 @import 'partials/variables';
 @import 'partials/global';
 
-
-.favorited-reviews{
+.box{
 	margin-top: 50px;
+}
+footer{
+	position: absolute;
+	bottom: 0;
+	width: 100%;
 }
 
 textarea.materialize-textarea{
