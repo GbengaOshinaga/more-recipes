@@ -42,6 +42,8 @@ export default class Recipes {
    */
   addRecipe(recipe) {
     recipe.id = this.recipes.length + 1;
+    recipe.reviews = [];
+    recipe.upvotes = 0;
     this._recipes.push(recipe);
     return this.recipes[this.recipes.length - 1];
   }
@@ -110,12 +112,7 @@ export default class Recipes {
     let addedReview;
     for (let i = 0; i < this._recipes.length; i++) {
       if (this._recipes[i].id === Number(id)) {
-        if (this._recipes.reviews) {
-          this._recipes[i].reviews.push(review);
-        } else {
-          this._recipes[i].reviews = [];
-          this._recipes[i].reviews.push(review);
-        }
+        this._recipes[i].reviews.push(review);        
         addedReview = this._recipes[i];
       }
     }
