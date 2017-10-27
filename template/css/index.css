@@ -1,0 +1,31 @@
+body, html {
+  height: 100%;
+  margin: 0;
+  font-family: Open Sans; }
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: Montserrat; }
+
+@media (max-width: 480px) {
+  nav .brand-logo {
+    font-size: 1.5rem; } }
+
+body {
+  /* The image used */
+  background-image: url("../img/index-bg-image.jpg");
+  /* Full height */
+  height: 100vh;
+  /* Center and scale the image nicely */
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover; }
+
+.info {
+  margin-top: 100px; }
+  .info h1 {
+    font-family: Montserrat; }
+  .info .cta-buttons {
+    margin-top: 50px;
+    font-family: Montserrat; }
+
+/*# sourceMappingURL=index.css.map */

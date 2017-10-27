@@ -1,117 +1,43 @@
-<!DOCTYPE html>
+<!Doctype html>
 <html>
-<head>
-	<title>Sign Up | More-Recipes</title>
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
-	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat">
-	<link rel="stylesheet" href="css/sign.css">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-	<meta name="google-signin-client_id" content="827684783940-iisct8ub0eifot2ebb4fod5f3nrnk7ij.apps.googleusercontent.com">
-</head>
-<body>
-	<div id="fb-root"></div>
-	<script>
-	  window.fbAsyncInit = function() {
-	    FB.init({
-	      appId            : '1749132872055191',
-	      autoLogAppEvents : true,
-	      xfbml            : true,
-	      version          : 'v2.10'
-	    });
-	    FB.AppEvents.logPageView();
-	  };
+	<head>
+		<title>More-Recipes</title>
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
+		<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat">
+		<link rel="stylesheet" href="css/index.css">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+		<meta name="google-signin-client_id" content="827684783940-iisct8ub0eifot2ebb4fod5f3nrnk7ij.apps.googleusercontent.com">
+	</head>
+	<body>
+		<div class="container">
+			<header>
+					<nav class="transparent z-depth-0">
+							<div class="container">
+								<div class="nav-wrapper">
+									<a href="#!" class="brand-logo">More-Recipes</a>
+									<a href="#" data-activates="mobile" class="button-collapse">
+										<i class="material-icons">menu</i></a>
+									<ul class="right hide-on-med-and-down">
+										<li><a href="catalog.html">Catalog</a></li>
+									</ul>
+									<ul class="side-nav" id="mobile">
+										<li><a href="catalog.html">Catalog</a></li>
+									</ul>
+								</div>
+							</div>
+					</nav>				
+			</header>
 
-	  (function(d, s, id){
-	     var js, fjs = d.getElementsByTagName(s)[0];
-	     if (d.getElementById(id)) {return;}
-	     js = d.createElement(s); js.id = id;
-	     js.src = "https://connect.facebook.net/en_US/sdk.js";
-	     fjs.parentNode.insertBefore(js, fjs);
-	   }(document, 'script', 'facebook-jssdk'));
-	</script>
-    <script>
-    function onSuccess(googleUser) {
-      console.log('Logged in as: ' + googleUser.getBasicProfile().getName());
-    }
-    function onFailure(error) {
-      console.log(error);
-    }
-    function renderButton() {
-      gapi.signin2.render('my-signin2', {
-        'scope': 'profile email',
-        'width': 254,
-        'height': 40,
-        'longtitle': true,
-        'theme': 'dark',
-        'onsuccess': onSuccess,
-        'onfailure': onFailure
-      });
-    }
-  </script>
-    <nav class="transparent z-depth-0">
-    	<div class="container">
-    		<div class="nav-wrapper">
-		      <a href="#!" class="brand-logo">More-Recipes</a>
-		      <a href="#" data-activates="mobile" class="button-collapse">
-		      	<i class="material-icons">menu</i></a>
-		      <ul class="right hide-on-med-and-down">
-		        <li><a href="catalog.html">Catalog</a></li>
-		        <li><a href="#">API</a></li>
-		      </ul>
-		      <ul class="side-nav" id="mobile">
-		        <li><a href="catalog.html">Catalog</a></li>
-		        <li><a href="#">API</a></li>
-		      </ul>
-		    </div>
-    	</div>
-  </nav>
-
-  <div class="container">
-  	  	<div class="sign-box">
-  	  		<h4>SIGN UP</h4>
-  	  		<hr/>
-  	  		<div class="container">
-  	  			<div class="row">
-  	  				<div class="input-field col s6">
-  	  					<input id="first_name" type="text" class="validate">
-  	  					<label for="first_name">First Name</label>
-  	  				</div>
-  	  				<div class="input-field col s6">
-  	  					<input id="last_name" type="text" class="validate">
-  	  					<label for="last_name">Last Name</label>
-  	  				</div>
-  	  			</div>
-  	  			<div class="row">
-  	  				<div class="input-field col s12">
-  	  					<input id="email" type="email" class="validate">
-  	  					<label for="email">Email Address</label>
-  	  				</div>
-  	  			</div>
-  	  			<div class="row">
-  	  				<div class="input-field col s12">
-  	  					<input id="password" type="password" class="validate">
-  	  					<label for="password">Password</label>
-  	  				</div>
-  	  			</div>
-  	  			<button class="btn waves-effect waves-light red darken-2" type="submit" name="action">Submit
-			    <i class="material-icons right">send</i>
-			  </button>
-			  <div class="row">
-			  	<p>OR</p>
-			  </div>
-			  <div>
-			  	<div class="fb-login-button social-login" data-max-rows="1" data-size="large" data-button-type="continue_with" data-show-faces="false" 	data-auto-logout-link="false" data-use-continue-as="false"></div>
-			  	<!-- <div class="g-signin2" data-onsuccess="onSignIn"></div> -->
-			  	<div id="my-signin2" class="social-login" align="center"></div>
-			  </div>
-			  <p>Already a member? <a href="signin.html">Sign In</a></p>
-  	  		</div>
-  	  	</div>
-  </div>
-  <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
-  <script src="https://apis.google.com/js/platform.js?onload=renderButton" async defer></script>
-  <script type="text/javascript" src="js/main.js"></script>
-</body>
+			<div class="info center-align">
+				<h1 class="white-text">Welcome to More-Recipes</h1>
+				<h3 class="white-text">A platform for sharing recipe ideas you invented or learnt.
+					 Find innovative recipes or share one of your own.</h3>
+					 <div class="cta-buttons">
+							<a href="signup.html" class="waves-effect waves-light btn-large red darken-2">Sign Up, It's free!</a>
+							<a href="signin.html" class="waves-effect waves-light btn-large green darken-2">Members, Sign In</a>
+					 </div>
+			</div>
+		</div>
+	</body>
 </html>
