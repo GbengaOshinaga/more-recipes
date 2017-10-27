@@ -18,6 +18,28 @@ describe('/api/v1/recipes', () => {
         });
     });
 
+    it('it should get all recipes by ascending order', (done) => {
+        chai.request(app)
+        .get('/api/v1/recipes?sort=upvotes&order=asc')
+        .end((err, res) => {
+            res.should.have.status(200);
+            res.body.should.be.a('array');
+            expect(res.body[0].upvotes).to.equal(10);
+            done();
+        });
+    });
+
+    it('it should get all recipes by descending order', (done) => {
+        chai.request(app)
+        .get('/api/v1/recipes?sort=upvotes&order=des')
+        .end((err, res) => {
+            res.should.have.status(200);
+            res.body.should.be.a('array');
+            expect(res.body[0].upvotes).to.equal(40);
+            done();
+        });
+    });
+
     it('it should post recipe', (done) => {
         chai.request(app)
         .post('/api/v1/recipes')
@@ -92,32 +114,7 @@ describe('/api/v1/recipes', () => {
         )
         .end((err, res) => {
             expect(res).to.have.status(201);
-            console.log(res.body);
             expect(res.body.name).to.equal('Second Recipe');
-            done();
-        });
-    });
-
-    it('it should get all recipes by ascending order', (done) => {
-        chai.request(app)
-        .get('/api/v1/recipes?sort=upvotes&order=asc')
-        .end((err, res) => {
-            res.should.have.status(200);
-            res.body.should.be.a('array');
-            console.log(res.body[1].upvotes);
-            expect(res.body[1].upvotes).to.equal(10);
-            done();
-        });
-    });
-
-    it('it should get all recipes by descending order', (done) => {
-        chai.request(app)
-        .get('/api/v1/recipes?sort=upvotes&order=des')
-        .end((err, res) => {
-            res.should.have.status(200);
-            res.body.should.be.a('array');
-            console.log(res.body[1].upvotes);
-            expect(res.body[1].upvotes).to.equal(40);
             done();
         });
     });
