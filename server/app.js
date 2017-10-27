@@ -1,9 +1,10 @@
-const express = require('express');
-const logger = require('morgan');
-const bodyParser = require('body-parser');
+import Express from 'express';
+import logger from 'morgan';
+import bodyParser from 'body-parser';
+import RecipesController from './controllers/RecipesController';
 
 // Set up the express app
-const app = express();
+const app = new Express();
 
 // Log requests to the console.
 app.use(logger('dev'));
@@ -13,8 +14,14 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
 // Setup a default catch-all route that sends back a welcome message in JSON format.
+const recipes = new RecipesController();
+app.use('/api/v1/recipes', recipes.route);
+
+
 app.get('*', (req, res) => res.status(200).send({
-  message: 'Welcome to the beginning of nothingness.',
+  message: 'Welcome to the More-Recipes API Home.',
 }));
 
-module.exports = app;
+app.listen(8000);
+
+export default app;
