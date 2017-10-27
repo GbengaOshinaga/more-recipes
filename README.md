@@ -14,6 +14,10 @@ Platform for users to share the awesome and exciting recipe ideas they have inve
  - Node JS
  - Express
 
+### Test Framework
+ - Mocha
+ - Chai
+ 
 ### Site URL
 
 https://gbengaoshinaga.github.io/more-recipes/template/
