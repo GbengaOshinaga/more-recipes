@@ -10,14 +10,7 @@ export default class RecipesController {
      * Constructor
      */
   constructor() {
-    this.route = Router();
     this.recipes = new Recipes();
-
-    this.route.get('/', (req, res) => { this.getRecipes(req, res); });
-    this.route.post('/', (req, res) => { this.addRecipe(req, res); });
-    this.route.put('/:id', (req, res) => { this.modifyRecipe(req, res); });
-    this.route.delete('/:id', (req, res) => { this.deleteRecipe(req, res); });
-    this.route.post('/:id/reviews', (req, res) => { this.addReview(req, res); });
   }
 
   /**
