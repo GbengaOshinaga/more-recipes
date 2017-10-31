@@ -11,11 +11,11 @@ $(document).ready(function(){
 	$(window).scroll(function(){
 		if($(window).scrollTop() > 0){
 			$('#search-nav').removeClass('hide');
-			$('#nav').addClass('red darken-2');
+			$('#nav').addClass('grey darken-2');
 			$('#nav').removeClass('transparent z-depth-0');
 		}else{
 			$('#search-nav').addClass('hide');
-			$('#nav').removeClass('red darken-2');
+			$('#nav').removeClass('grey darken-2');
 			$('#nav').addClass('transparent z-depth-0');
 		}
 

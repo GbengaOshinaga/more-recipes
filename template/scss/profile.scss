@@ -17,3 +17,9 @@ textarea.materialize-textarea{
 input[value], textarea{
 	font-family: $header-font;
 }
+
+.card{
+	.card-action{
+		border-top: none;
+	}
+}

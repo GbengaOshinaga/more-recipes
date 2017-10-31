@@ -10,6 +10,9 @@ h1, h2, h3, h4, h5, h6 {
   nav .brand-logo {
     font-size: 1.5rem; } }
 
+.dropdown-content {
+  min-width: 200px; }
+
 .box {
   margin-top: 50px; }
 
@@ -23,5 +26,8 @@ textarea.materialize-textarea {
 
 input[value], textarea {
   font-family: Montserrat; }
+
+.card .card-action {
+  border-top: none; }
 
 /*# sourceMappingURL=profile.css.map */
