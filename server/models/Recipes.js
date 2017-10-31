@@ -10,6 +10,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     image: {
       type: DataTypes.BLOB,
+      allowNull: true,
     }
   });
 
@@ -29,6 +30,9 @@ module.exports = (sequelize, DataTypes) => {
       foreignKey: 'votesId',
       as: 'votes',
       onDelete: 'CASCADE',
+    });
+    Recipes.belongsTo(models.favouriteRecipes, {
+      foreignKey: 'recipeId',
     });
   };
   return Recipes;
