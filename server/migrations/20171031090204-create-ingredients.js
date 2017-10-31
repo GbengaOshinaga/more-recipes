@@ -11,6 +11,13 @@ module.exports = {
       ingredient: {
         type: Sequelize.STRING
       },
+      recipe: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'Recipes',
+          key: 'id'
+        }
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE

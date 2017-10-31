@@ -26,13 +26,13 @@ module.exports = (sequelize, DataTypes) => {
     Recipes.belongsTo(models.User, {
       foreignKey: 'userId',
     });
-    Recipes.hasOne(models.Votes, {
+    Recipes.hasOne(models.votes, {
       foreignKey: 'votesId',
       as: 'votes',
       onDelete: 'CASCADE',
     });
     Recipes.belongsTo(models.favouriteRecipes, {
-      foreignKey: 'recipeId',
+      foreignKey: 'favouriteRecipeId',
     });
   };
   return Recipes;

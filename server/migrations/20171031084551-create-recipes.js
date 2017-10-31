@@ -17,6 +17,20 @@ module.exports = {
       image: {
         type: Sequelize.BLOB
       },
+      user: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'Users',
+          key: 'id'
+        }
+      },
+      favouriteRecipe: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'favouriteRecipes',
+          key: 'id'
+        }
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE

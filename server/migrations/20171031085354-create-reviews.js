@@ -11,6 +11,20 @@ module.exports = {
       review: {
         type: Sequelize.TEXT
       },
+      recipe : {
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'Recipes',
+          key: 'id'
+        }
+      },
+      user : {
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'Users',
+          key: 'id'
+        }
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE

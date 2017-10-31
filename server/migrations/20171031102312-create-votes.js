@@ -14,6 +14,13 @@ module.exports = {
       downvotes: {
         type: Sequelize.INTEGER
       },
+      recipe : {
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'Recipes',
+          key: 'id'
+        }
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE
