@@ -8,6 +8,10 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false,
     },
+    ingredients: {
+      type: DataTypes.ARRAY(DataTypes.STRING),
+      allowNull: false
+    },
     image: {
       type: DataTypes.BLOB,
       allowNull: true,
@@ -15,25 +19,23 @@ module.exports = (sequelize, DataTypes) => {
   });
 
   Recipes.associate = (models) => {
-    Recipes.hasMany(models.Ingredients, {
-      foreignKey: 'ingredientsId',
-      as: 'ingredients',
-    });
     Recipes.hasMany(models.Reviews, {
       foreignKey: 'reviewId',
       as: 'reviews',
     });
     Recipes.belongsTo(models.User, {
       foreignKey: 'userId',
+      onDelete: 'CASCADE'
     });
     Recipes.hasOne(models.votes, {
       foreignKey: 'votesId',
       as: 'votes',
       onDelete: 'CASCADE',
     });
-    Recipes.belongsTo(models.favouriteRecipes, {
-      foreignKey: 'favouriteRecipeId',
-    });
+    // Recipes.belongsTo(models.favouriteRecipes, {
+    //   foreignKey: 'favouriteRecipe',
+    //   as: 'favouriteRecipeId'
+    // });
   };
   return Recipes;
 };

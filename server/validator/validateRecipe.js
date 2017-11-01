@@ -2,7 +2,8 @@ import Joi from 'joi';
 
 export default {
   body: {
-    recipeName: Joi.string().required(),
-    recipeDetail: Joi.string().required(),
+    name: Joi.string().required(),
+    description: Joi.string().required(),
+    ingredients: Joi.string().required()
   }
 };

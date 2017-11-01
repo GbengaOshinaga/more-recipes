@@ -14,22 +14,11 @@ module.exports = {
       description: {
         type: Sequelize.STRING
       },
+      ingredients: {
+        type: Sequelize.ARRAY(Sequelize.STRING)
+      },
       image: {
         type: Sequelize.BLOB
-      },
-      user: {
-        type: Sequelize.INTEGER,
-        references: {
-          model: 'Users',
-          key: 'id'
-        }
-      },
-      favouriteRecipe: {
-        type: Sequelize.INTEGER,
-        references: {
-          model: 'favouriteRecipes',
-          key: 'id'
-        }
       },
       createdAt: {
         allowNull: false,
@@ -38,6 +27,14 @@ module.exports = {
       updatedAt: {
         allowNull: false,
         type: Sequelize.DATE
+      },
+      userId: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'Users',
+          key: 'id',
+          as: 'userId'
+        }
       }
     });
   },

@@ -1,4 +1,5 @@
 import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
 import db from '../models/index';
 
 /**
@@ -12,15 +13,25 @@ export default class UserController {
      * @returns {User} created user
      */
   static signup(req, res) {
-      bcrypt.hash(req.body.password, 10, (err, hash) => {
-        db.User.create({
-            firstName: req.body.firstName,
-            lastName: req.body.lastName,
-            email: req.body.email,
-            password: hash
-        })
-        .then(user => res.status(201).send(user))
-        .catch(error => res.status(400).send(error));
-      });
+    bcrypt.hash(req.body.password, 10, (err, hash) => {
+      db.User.create({
+        firstName: req.body.firstName,
+        lastName: req.body.lastName,
+        email: req.body.email,
+        password: hash
+      })
+        .then(user => res.jsend.success(user))
+        .catch(error => res.jsend.fail(error));
+    });
+  }
+
+  /**
+   * Signs in a user
+   * @param {*} req
+   * @param {*} res
+   * @returns {res} response
+   */
+  static signin(req, res){
+
   }
 }

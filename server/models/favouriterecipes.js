@@ -1,7 +1,7 @@
 module.exports = (sequelize, DataTypes) => {
   const favouriteRecipes = sequelize.define('favouriteRecipes', {
     dateCreated: {
-      type: DataTypes.DATE, 
+      type: DataTypes.DATE,
     },
   });
 

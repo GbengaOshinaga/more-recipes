@@ -10,11 +10,11 @@ module.exports = (sequelize, DataTypes) => {
     },
   });
 
-  Votes.associate = (models) => {
-    Votes.hasOne(models.Recipes, {
-      foreignKey: 'recipeId',
-      onDelete: 'CASCADE',
-    });
-  };
+  // Votes.associate = (models) => {
+  //   Votes.hasOne(models.Recipes, {
+  //     foreignKey: 'recipeId',
+  //     onDelete: 'CASCADE',
+  //   });
+  // };
   return Votes;
 };

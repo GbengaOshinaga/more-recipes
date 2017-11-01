@@ -1,4 +1,5 @@
 import validate from 'express-validation';
+import jsend from 'jsend';
 import validateRecipe from '../validator/validateRecipe';
 import RecipesController from '../controllers/RecipesController';
 import UserController from '../controllers/UserController';
@@ -6,6 +7,7 @@ import UserController from '../controllers/UserController';
 const recipes = new RecipesController();
 
 export default (app) => {
+  app.use(jsend.middleware);
   app.get('/api/v1/recipes/', (req, res) => { recipes.getRecipes(req, res); });
   app.post('/api/v1/recipes/', validate(validateRecipe), (req, res) => { recipes.addRecipe(req, res); });
   app.put('/api/v1/recipes/:id', (req, res) => { recipes.modifyRecipe(req, res); });
