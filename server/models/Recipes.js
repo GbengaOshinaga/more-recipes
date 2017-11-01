@@ -22,6 +22,7 @@ module.exports = (sequelize, DataTypes) => {
     Recipes.hasMany(models.Reviews, {
       foreignKey: 'reviewId',
       as: 'reviews',
+      onDelete: 'CASCADE'
     });
     Recipes.belongsTo(models.User, {
       foreignKey: 'userId',
@@ -32,10 +33,6 @@ module.exports = (sequelize, DataTypes) => {
       as: 'votes',
       onDelete: 'CASCADE',
     });
-    // Recipes.belongsTo(models.favouriteRecipes, {
-    //   foreignKey: 'favouriteRecipe',
-    //   as: 'favouriteRecipeId'
-    // });
   };
   return Recipes;
 };

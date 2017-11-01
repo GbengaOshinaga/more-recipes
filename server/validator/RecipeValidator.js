@@ -1,20 +1,32 @@
-import Recipes from '../models/Recipes';
+
 
 /**
  * Class for validating inputs
  */
 export default class RecipeValidator {
+  
   /**
-     * Checks if recipe is valid
-     * @param {*} recipe
-     * @returns {Array} errors
-     */
-  static isRecipeValid(recipe) {
-    const errors = [];
-    if (!(recipe.recipeName && recipe.recipeDetail && recipe.ingredients)) {
-      errors.push('Recipe Name, Description and Ingredients are required');
+   * Validates recipe passed
+   * @param {*} req
+   * @param {*} res
+   * @param {*} next
+   * @returns {*} response
+   */
+  static validateRecipe(req, res, next) {
+    const messages = [];
+    if (!req.body.name) {
+      messages.push('Recipe Name is required');
     }
-    return errors;
+    if (!req.body.description) {
+      messages.push('Recipe description is required');
+    }
+    if (!req.body.ingredients) {
+      messages.push('Ingredients are required');
+    }
+    if (messages.length > 0) {
+      return res.status(400).jsend.fail({ errors: messages });
+    }
+    next();
   }
 
   /**
@@ -23,7 +35,7 @@ export default class RecipeValidator {
      * @param {*} order
      * @returns {Array} errors
      */
-  static areParamsValid(sort, order) {
+  static validateParams(sort, order) {
     const errors = [];
     if (sort !== 'upvotes') {
       errors.push(`sort parameter must be upvotes, instead found ${sort}`);
@@ -36,26 +48,24 @@ export default class RecipeValidator {
   }
 
   /**
-     * Checks if id is valid
-     * @param {*} id
-     * @returns {Array} errors
-     */
-  static isIDValid(id) {
-    const errors = [];
-    if (Number(id) <= 0) {
-      errors.push('Id cannot be 0 or a negative value');
+   * Validates id
+   * @param {*} req
+   * @param {*} res
+   * @param {*} next
+   * @returns {*} res
+   */
+  static validateID(req, res, next) {
+    const messages = [];
+
+    if (isNaN(req.params.id)) {
+      messages.push('Id must be an integer');
     }
-    const recipes = new Recipes();
-    const ids = recipes.getRecipesIDs();
-    let isFound;
-    for (let i = 0; i < ids.length; i++) {
-      if (ids[i] === Number(id)) {
-        isFound = true;
-      }
+    if (req.params.id < 0) {
+      messages.push('Id cannot be a negative value');
     }
-    if (!isFound) {
-      errors.push('Id does not exist');
+    if (messages.length > 0) {
+      return res.status(400).jsend.fail({ errors: messages });
     }
-    return errors;
+    next();
   }
 }

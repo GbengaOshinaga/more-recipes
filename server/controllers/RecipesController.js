@@ -48,7 +48,7 @@ export default class RecipesController {
     db.Recipes.findById(req.params.id)
       .then(recipe => {
         if(recipe === null) {
-          return res.status(404).jsend.fail({ message: 'The Id does not exist' });
+          return res.status(404).jsend.fail({ message: 'The Recipe does not exist' });
         }
 
         recipe.update({
@@ -76,7 +76,7 @@ export default class RecipesController {
         }
         recipe.destroy({ force: true })
           .then(res.status(200).jsend.success({ message: 'Recipe has been successfully deleted'}))
-          .catch(error => res.status(500).jsend.error(error));
+          .catch(error => res.status(400).jsend.error(error));
       })
   }
 
