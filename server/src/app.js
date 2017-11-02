@@ -21,6 +21,6 @@ app.get('*', (req, res) => res.status(200).send({
   message: 'Welcome to the More-Recipes API Home.',
 }));
 
-app.listen(8000);
+app.listen(process.env.PORT || 8000);
 
 export default app;
