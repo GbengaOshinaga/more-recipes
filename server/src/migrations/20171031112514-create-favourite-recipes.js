@@ -8,17 +8,7 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      dateCreated: {
-        type: Sequelize.DATE
-      },
-      createdAt: {
-        allowNull: false,
-        type: Sequelize.DATE
-      },
-      updatedAt: {
-        allowNull: false,
-        type: Sequelize.DATE
-      },
+
       userId: {
         type: Sequelize.INTEGER,
         references: {
@@ -27,13 +17,21 @@ module.exports = {
           as: 'userId'
         }
       },
-      recipesId: {
+      recipeId: {
         type: Sequelize.INTEGER,
         references: {
           model: 'Recipes',
           key: 'id',
-          as: 'recipesId'
+          as: 'recipeId'
         }
+      },
+      createdAt: {
+        allowNull: false,
+        type: Sequelize.DATE
+      },
+      updatedAt: {
+        allowNull: false,
+        type: Sequelize.DATE
       }
     });
   },

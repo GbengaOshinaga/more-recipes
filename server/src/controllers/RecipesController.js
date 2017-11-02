@@ -105,7 +105,6 @@ export default class RecipesController {
    * @returns {Recipes} recipe object
    */
   addReview(req, res) {
-    console.log(req.body.user);
     db.Reviews.create({
       review: req.body.review,
       userId: req.body.user,

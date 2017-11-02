@@ -24,6 +24,11 @@ module.exports = (sequelize, DataTypes) => {
       as: 'reviews',
       onDelete: 'CASCADE'
     });
+    Recipes.hasMany(models.favouriteRecipes, {
+      foreignKey: 'favId',
+      as: 'favId',
+      onDelete: 'CASCADE'
+    });
     Recipes.belongsTo(models.User, {
       foreignKey: 'userId',
       onDelete: 'CASCADE'
@@ -33,6 +38,7 @@ module.exports = (sequelize, DataTypes) => {
       as: 'votes',
       onDelete: 'CASCADE',
     });
+
   };
   return Recipes;
 };

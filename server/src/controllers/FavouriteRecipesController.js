@@ -13,12 +13,11 @@ export default class FavouriteRecipesController {
      */
   addFavourite(req, res) {
     db.favouriteRecipes.create({
-      dateCreated: new Date(),
       userId: req.user.userId,
-      recipesId: req.params.id
+      recipeId: req.params.id
     })
       .then(fav => res.status(200).jsend.success(fav))
-      .catch(error => res.status(400).jsend.fail(error));
+      .catch(error => res.status(400).jsend.error(error));
   }
 
   /**

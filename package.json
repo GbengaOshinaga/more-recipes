@@ -1,12 +1,19 @@
 {
   "name": "server",
   "version": "1.0.0",
+  "engines": {
+    "npm": "3.10.10",
+    "node": "6.11.0"
+  },
   "description": "server-side code for more-recipes app",
   "main": "index.js",
   "scripts": {
-    "test": "mocha server/test/**.js --exit --compilers js:babel-core/register",
-    "start:dev": "nodemon ./bin/www",
-    "start": "./node_modules/.bin/babel-watch server/app.js",
+    "test": "mocha server/test/**.js --exit --compilers js:babel-core/register",    
+    "babel-node": "babel-node ./server/src/index.js --presets=env",
+    "startDev": "./node_modules/.bin/babel-watch server/src/app.js",
+    "build": "babel server/src -d server/dist",
+    "heroku-postbuild": "npm run build",
+    "start": "node server/dist/app.js",
     "coverage": "nyc report --reporter=text-lcov | coveralls",
     "coveralls": "nyc npm test&& nyc report --reporter=text-lcov | coveralls"
   },
