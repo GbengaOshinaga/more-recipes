@@ -32,7 +32,6 @@ if (db[modelName].associate) {
 }
 });
 
-sequelize.sync();
 
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;

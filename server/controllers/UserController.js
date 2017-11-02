@@ -45,11 +45,11 @@ export default class UserController {
         bcrypt.compare(password, user.password)
           .then(re => {
             if(!re){
-              return res.status(400).jsend.fail('Wrong passwords');
-            }else{
-              const accessToken = jwt.sign({userId: user.id, email: user.email}, 'mysecret');
-              return res.status(200).jsend.success({token: accessToken});
+              return res.status(400).jsend.fail('Wrong password');
             }
+            const accessToken = jwt.sign({userId: user.id, email: user.email}, 'mysecret');
+            return res.status(200).jsend.success({token: accessToken});
+            
           })
           .catch(error => res.status(400).jsend.error(error));
       })

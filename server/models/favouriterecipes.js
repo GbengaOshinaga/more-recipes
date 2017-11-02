@@ -8,6 +8,7 @@ module.exports = (sequelize, DataTypes) => {
   favouriteRecipes.association = (models) => {
     favouriteRecipes.hasMany(models.Recipes, {
       foreignKey: 'recipesId',
+      onDelete: 'SET NULL'
     });
     favouriteRecipes.belongsTo(models.User, {
       foreignKey: 'userId',

@@ -19,7 +19,7 @@ module.exports = {
         allowNull: false,
         type: Sequelize.DATE
       },
-      user: {
+      userId: {
         type: Sequelize.INTEGER,
         references: {
           model: 'Users',
@@ -27,12 +27,12 @@ module.exports = {
           as: 'userId'
         }
       },
-      recipes: {
+      recipesId: {
         type: Sequelize.INTEGER,
         references: {
           model: 'Recipes',
           key: 'id',
-          as: 'RecipesId'
+          as: 'recipesId'
         }
       }
     });

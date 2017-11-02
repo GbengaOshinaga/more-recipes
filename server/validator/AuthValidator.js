@@ -3,13 +3,13 @@ import jwt from 'jsonwebtoken';
 /**
  * Class for authenticating through access tokens
  */
-export default class AuthValidator{
-    
-    /**
+export default class AuthValidator {
+  /**
      * Authenticates user through access token
-     * @param {*} req 
-     * @param {*} res 
-     * @param {*} next 
+     * @param {*} req
+     * @param {*} res
+     * @param {*} next
+     * @returns {*} res
      */
     static authenticate(req, res, next){
         const accessToken = req.body.accessToken;
@@ -17,7 +17,6 @@ export default class AuthValidator{
         try {
             const user = jwt.verify(accessToken, 'mysecret');
             if(user.email){
-                console.log(user.email);
                 req.user = user;
                 return next();
             }

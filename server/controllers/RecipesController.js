@@ -13,11 +13,11 @@ export default class RecipesController {
    */
   addRecipe(req, res) {
     const ingredientsArray = req.body.ingredients.split(',');
-  
+
     db.Recipes.create({
       name: req.body.name,
       description: req.body.description,
-      userId: req.body.user,
+      userId: req.user.userId,
       image: req.body.image,
       ingredients: ingredientsArray
     })
@@ -38,6 +38,22 @@ export default class RecipesController {
   }
 
   /**
+   * Gets recipe with specified id
+   * @param {*} req
+   * @param {*} res
+   * @returns {*} res
+   */
+  getRecipeById(req, res) {
+    db.Recipes.findById(req.params.id)
+      .then(recipe => {
+        if (!recipe) {
+          return res.status(400).jsend.fail(`Recipe with Id of ${req.params.id} does not exist`);
+        }
+        res.status(200).jsend.success(recipe);
+      })
+  }
+
+  /**
    * Modifies a recipe
    * @param {*} req
    * @param {*} res
@@ -47,10 +63,12 @@ export default class RecipesController {
     const ingredientsArray = req.body.ingredients.split(',');
     db.Recipes.findById(req.params.id)
       .then(recipe => {
-        if(recipe === null) {
+        if (!recipe) {
           return res.status(404).jsend.fail({ message: 'The Recipe does not exist' });
         }
-
+        if (recipe.userId !== req.user.userId){
+          return res.status(401).jsend.fail('You are not authorized to edit this recipe');
+        }
         recipe.update({
           name: req.body.name,
           description: req.body.description,
