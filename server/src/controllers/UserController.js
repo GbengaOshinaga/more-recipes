@@ -40,12 +40,12 @@ export default class UserController {
     db.User.findOne({ where: { email: email } })
       .then(user => {
         if (!user) {
-          return res.status(404).jsend.fail('A user with this email does not exist');
+          return res.status(404).jsend.fail('Invalid Credentials');
         }
         bcrypt.compare(password, user.password)
           .then(re => {
             if(!re){
-              return res.status(400).jsend.fail('Wrong password');
+              return res.status(400).jsend.fail('Invalid Credentials');
             }
             const accessToken = jwt.sign({userId: user.id, email: user.email}, 'mysecret');
             return res.status(200).jsend.success({token: accessToken});

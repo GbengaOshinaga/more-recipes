@@ -30,24 +30,6 @@ export default class RecipeValidator {
   }
 
   /**
-     * Checks if params are valid
-     * @param {*} sort
-     * @param {*} order
-     * @returns {Array} errors
-     */
-  static validateParams(sort, order) {
-    const errors = [];
-    if (sort !== 'upvotes') {
-      errors.push(`sort parameter must be upvotes, instead found ${sort}`);
-    }
-
-    if (order !== 'asc' && order !== 'des') {
-      errors.push(`Invalid order parameter, must be "asc" or "des", instead found ${order}`);
-    }
-    return errors;
-  }
-
-  /**
    * Validates id
    * @param {*} req
    * @param {*} res

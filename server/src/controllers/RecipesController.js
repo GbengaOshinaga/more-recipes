@@ -60,7 +60,11 @@ export default class RecipesController {
    * @returns {Recipes} Modified recipe
    */
   modifyRecipe(req, res) {
-    const ingredientsArray = req.body.ingredients.split(',');
+    let ingredientsArray;
+    if (req.body.ingredients) {
+      ingredientsArray = req.body.ingredients.split(',');
+    }
+    
     db.Recipes.findById(req.params.id)
       .then(recipe => {
         if (!recipe) {
@@ -90,12 +94,13 @@ export default class RecipesController {
     db.Recipes.findById(req.params.id)
       .then(recipe => {
         if(recipe === null) {
-          return res.status(404).jsend.fail({ message: 'The Id does not exist' });
+          return res.status(404).jsend.fail({ message: 'The Recipe does not exist' });
         }
         recipe.destroy({ force: true })
-          .then(res.status(200).jsend.success({ message: 'Recipe has been successfully deleted'}))
+          .then(recipe => res.jsend.success({ message: 'Recipe has been successfully deleted'}))
           .catch(error => res.status(400).jsend.error(error));
       })
+      .catch(error => res.status(400).jsend.error(error));
   }
 
   /**
@@ -107,10 +112,10 @@ export default class RecipesController {
   addReview(req, res) {
     db.Reviews.create({
       review: req.body.review,
-      userId: req.body.user,
+      userId: req.user.userId,
       recipeId: req.body.recipe
     })
-      .then(review => res.status(201).jsend.success({message: 'Review added successfully'}, review))
+      .then(review => res.status(201).jsend.success(review))
       .catch(error => res.status(400).jsend.error(error));
   }
 }
