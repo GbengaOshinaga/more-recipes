@@ -24,7 +24,7 @@ https://gbengaoshinaga.github.io/more-recipes/template/
 
 ### Server Side
  - Clone repository
-   ```
+  ```
   git clone https://github.com/GbengaOshinaga/more-recipes
   ```
  - Install dependecies
