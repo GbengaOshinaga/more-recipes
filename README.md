@@ -24,7 +24,13 @@ https://gbengaoshinaga.github.io/more-recipes/template/
 
 ### Server Side
  - Clone repository
+   ```
+  git clone https://github.com/GbengaOshinaga/more-recipes
+  ```
  - Install dependecies
+  ```
+  npm install
+  ```
  - Run the server
   ```
   npm run start
