@@ -70,11 +70,11 @@ export default class RecipesController {
           return res.status(401).jsend.fail('You are not authorized to edit this recipe');
         }
         recipe.update({
-          name: req.body.name,
-          description: req.body.description,
-          userId: req.body.user,
+          name: req.body.name || recipe.name,
+          description: req.body.description || recipe.description,
+          userId: req.user.userId,
           image: req.body.image,
-          ingredients: ingredientsArray
+          ingredients: ingredientsArray || recipe.ingredients
         }).then(recipe => res.status(200).jsend.success(recipe));
       })
       .catch(error => res.jsend.error(error));
@@ -110,7 +110,7 @@ export default class RecipesController {
       userId: req.body.user,
       recipeId: req.body.recipe
     })
-      .then(review => res.status(201).jsend.success({message: 'Review added successfully'}))
+      .then(review => res.status(201).jsend.success({message: 'Review added successfully'}, review))
       .catch(error => res.status(400).jsend.error(error));
   }
 }

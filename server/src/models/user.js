@@ -36,7 +36,7 @@ module.exports = (sequelize, DataTypes) => {
       foreignKey: 'userId',
       as: 'myRecipes',
     });
-    User.hasMany(models.favouriteRecipes);
+    //User.hasMany(models.favouriteRecipes);
   };
   return User;
 };

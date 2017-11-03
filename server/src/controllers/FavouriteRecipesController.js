@@ -27,5 +27,12 @@ export default class FavouriteRecipesController {
      * @returns {*} res
      */
   getFavourites(req, res) {
+    db.favouriteRecipes.findAll({
+      where: {
+        userId: req.params.id
+      }
+    })
+      .then(fav => res.status(200).jsend.success(fav))
+      .catch(error => res.status(400).jsend.error(error));
   }
 }

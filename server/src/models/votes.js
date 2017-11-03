@@ -8,6 +8,9 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.INTEGER,
       defaultValue: 0, 
     },
+    recipeId: {
+      type: DataTypes.INTEGER
+    }
   });
 
   // Votes.associate = (models) => {
