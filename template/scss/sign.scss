@@ -27,17 +27,17 @@ body{
     border-radius: 5px;
     box-shadow: 0px 2px 0px 0px rgba(0, 0, 0, 0.1);
     padding: 10px;
-    margin-top: 20px;
+    margin-top: 9%;
 }
 
 .signin-box{
     @extend .sign-box;
-    height: 560px;
+    height: 540px;
 }
 
 .signup-box{
     @extend .sign-box;
-    height: 750px;
+    height: 730px;
 }
 
 .social-login{
