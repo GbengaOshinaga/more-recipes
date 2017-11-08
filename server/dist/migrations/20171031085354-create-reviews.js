@@ -1,18 +1,16 @@
 'use strict';
+
 module.exports = {
-  up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable('votes', {
+  up: function up(queryInterface, Sequelize) {
+    return queryInterface.createTable('Reviews', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      upvotes: {
-        type: Sequelize.INTEGER
-      },
-      downvotes: {
-        type: Sequelize.INTEGER
+      review: {
+        type: Sequelize.TEXT
       },
       createdAt: {
         allowNull: false,
@@ -24,7 +22,7 @@ module.exports = {
       }
     });
   },
-  down: (queryInterface, Sequelize) => {
-    return queryInterface.dropTable('votes');
+  down: function down(queryInterface, Sequelize) {
+    return queryInterface.dropTable('Reviews');
   }
 };

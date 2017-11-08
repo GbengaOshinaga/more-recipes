@@ -2,7 +2,7 @@ module.exports = (sequelize, DataTypes) => {
   const User = sequelize.define('User', {
     firstName: {
       type: DataTypes.STRING,
-      allowNull: false, 
+      allowNull: false,
     },
     lastName: {
       type: DataTypes.STRING,
@@ -28,15 +28,15 @@ module.exports = (sequelize, DataTypes) => {
   });
 
   User.associate = (models) => {
-    User.hasMany(models.Reviews, {
-      foreignKey: 'reviewId',
-      as: 'reviews',
-    });
-    User.hasMany(models.Recipes, {
-      foreignKey: 'userId',
-      as: 'myRecipes',
-    });
-    //User.hasMany(models.favouriteRecipes);
+  //   User.hasMany(models.Reviews, {
+  //     foreignKey: 'reviewId',
+  //     as: 'reviews',
+  //   });
+  //   User.hasMany(models.Recipes, {
+  //     foreignKey: 'userId',
+  //     as: 'myRecipes',
+  //   });
+    User.belongsToMany(models.Recipes, { through: 'Favourites' });
   };
   return User;
 };

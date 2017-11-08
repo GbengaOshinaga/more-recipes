@@ -1,3 +1,5 @@
+'use strict';
+
 module.exports = {
   development: {
     username: 'postgres',
@@ -18,4 +20,3 @@ module.exports = {
     environment: 'production'
   }
 };
-

@@ -1,12 +1,14 @@
-module.exports = (sequelize, DataTypes) => {
-  const Recipes = sequelize.define('Recipes', {
+'use strict';
+
+module.exports = function (sequelize, DataTypes) {
+  var Recipes = sequelize.define('Recipes', {
     name: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: false
     },
     description: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: false
     },
     ingredients: {
       type: DataTypes.ARRAY(DataTypes.STRING),
@@ -14,11 +16,11 @@ module.exports = (sequelize, DataTypes) => {
     },
     image: {
       type: DataTypes.BLOB,
-      allowNull: true,
+      allowNull: true
     }
   });
 
-  Recipes.associate = (models) => {
+  Recipes.associate = function (models) {
     Recipes.hasMany(models.Reviews);
     Recipes.belongsTo(models.User);
     Recipes.hasOne(models.votes, { onDelete: 'CASCADE' });
