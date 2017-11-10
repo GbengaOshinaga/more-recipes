@@ -4,7 +4,6 @@ import db from '../models/index';
  * RecipesController
  */
 export default class RecipesController {
-
   /**
    * Adds a recipe
    * @param {*} req
@@ -17,7 +16,7 @@ export default class RecipesController {
     db.Recipes.create({
       name: req.body.name,
       description: req.body.description,
-      userId: req.user.userId,
+      UserId: req.user.userId,
       image: req.body.image,
       ingredients: ingredientsArray
     })
@@ -45,12 +44,12 @@ export default class RecipesController {
    */
   getRecipeById(req, res) {
     db.Recipes.findById(req.params.id)
-      .then(recipe => {
+      .then((recipe) => {
         if (!recipe) {
-          return res.status(400).jsend.fail(`Recipe with Id of ${req.params.id} does not exist`);
+          return res.status(400).jsend.fail({ message: `Recipe with Id of ${req.params.id} does not exist` });
         }
         res.status(200).jsend.success(recipe);
-      })
+      });
   }
 
   /**
@@ -64,13 +63,13 @@ export default class RecipesController {
     if (req.body.ingredients) {
       ingredientsArray = req.body.ingredients.split(',');
     }
-    
+
     db.Recipes.findById(req.params.id)
-      .then(recipe => {
+      .then((recipe) => {
         if (!recipe) {
           return res.status(404).jsend.fail({ message: 'The Recipe does not exist' });
         }
-        if (recipe.userId !== req.user.userId){
+        if (recipe.userId !== req.user.userId) {
           return res.status(401).jsend.fail('You are not authorized to edit this recipe');
         }
         recipe.update({
@@ -92,12 +91,12 @@ export default class RecipesController {
    */
   deleteRecipe(req, res) {
     db.Recipes.findById(req.params.id)
-      .then(recipe => {
-        if(recipe === null) {
+      .then((recipe) => {
+        if (recipe === null) {
           return res.status(404).jsend.fail({ message: 'The Recipe does not exist' });
         }
         recipe.destroy({ force: true })
-          .then(recipe => res.jsend.success({ message: 'Recipe has been successfully deleted'}))
+          .then(recipe => res.jsend.success({ message: 'Recipe has been successfully deleted' }))
           .catch(error => res.status(400).jsend.error(error));
       })
       .catch(error => res.status(400).jsend.error(error));

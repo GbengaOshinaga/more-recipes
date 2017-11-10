@@ -8,8 +8,8 @@ import db from '../models/index';
 export default class UserController {
   /**
      * Signs up a user
-     * @param {*} req 
-     * @param {*} res 
+     * @param {*} req
+     * @param {*} res
      * @returns {User} created user
      */
   static signup(req, res) {
@@ -20,11 +20,11 @@ export default class UserController {
         email: req.body.email,
         password: hash
       })
-        .then(user => {
-          const accessToken = jwt.sign({userId: user.id, email: user.email}, 'mysecret');
-          return res.status(201).jsend.success({user, token: accessToken});
+        .then((user) => {
+          const accessToken = jwt.sign({ userId: user.id, email: user.email }, 'mysecret');
+          return res.status(201).jsend.success({ user, token: accessToken });
         })
-        .catch(error => res.jsend.fail(error));
+        .catch(error => res.status(400).jsend.fail({ message: error.errors[0].message }));
     });
   }
 
@@ -37,19 +37,18 @@ export default class UserController {
   static signin(req, res) {
     const { email, password } = req.body;
 
-    db.User.findOne({ where: { email: email } })
-      .then(user => {
+    db.User.findOne({ where: { email } })
+      .then((user) => {
         if (!user) {
           return res.status(404).jsend.fail('Invalid Credentials');
         }
         bcrypt.compare(password, user.password)
-          .then(re => {
-            if(!re){
+          .then((re) => {
+            if (!re) {
               return res.status(400).jsend.fail('Invalid Credentials');
             }
-            const accessToken = jwt.sign({userId: user.id, email: user.email}, 'mysecret');
-            return res.status(200).jsend.success({token: accessToken});
-            
+            const accessToken = jwt.sign({ userId: user.id, email: user.email }, 'mysecret');
+            return res.status(200).jsend.success({ token: accessToken });
           })
           .catch(error => res.status(400).jsend.error(error));
       })

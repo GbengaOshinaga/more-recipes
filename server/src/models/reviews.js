@@ -9,11 +9,10 @@ module.exports = (sequelize, DataTypes) => {
     Reviews.belongsTo(models.User, {
       onDelete: 'CASCADE',
     });
-    // Reviews.belongsTo(models.Recipes, {
-    //   foreignKey: 'recipeId',
-    //   as: 'recipe',
-    //   onDelete: 'CASCADE',
-    // });
+    Reviews.belongsTo(models.Recipes, {
+      foreignKey: 'recipeId',
+      onDelete: 'CASCADE',
+    });
   };
   return Reviews;
 };

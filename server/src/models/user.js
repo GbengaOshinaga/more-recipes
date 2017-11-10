@@ -32,10 +32,7 @@ module.exports = (sequelize, DataTypes) => {
   //     foreignKey: 'reviewId',
   //     as: 'reviews',
   //   });
-  //   User.hasMany(models.Recipes, {
-  //     foreignKey: 'userId',
-  //     as: 'myRecipes',
-  //   });
+    User.hasMany(models.Recipes);
     User.belongsToMany(models.Recipes, { through: 'Favourites' });
   };
   return User;

@@ -33,7 +33,8 @@ var AuthValidator = function () {
            * @returns {*} res
            */
         value: function authenticate(req, res, next) {
-            var accessToken = req.body.accessToken;
+            console.log(req.headers['accessToken']);
+            var accessToken = req.body.accessToken || req.headers['accessToken'];
 
             try {
                 var user = _jsonwebtoken2.default.verify(accessToken, 'mysecret');
