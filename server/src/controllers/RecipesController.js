@@ -31,9 +31,13 @@ export default class RecipesController {
    * @returns {Recipes} all recipes
    */
   getRecipes(req, res) {
-    db.Recipes.findAll()
+    db.Recipes.findAll({
+      include: [{
+        model: db.Reviews,
+      }]
+    })
       .then(recipes => res.jsend.success(recipes))
-      .catch(error => res.jsend.error(error));
+      .catch(error => res.status(400).jsend.error(error));
   }
 
   /**
@@ -111,8 +115,9 @@ export default class RecipesController {
   addReview(req, res) {
     db.Reviews.create({
       review: req.body.review,
-      userId: req.user.userId,
-      recipeId: req.body.recipe
+      UserId: req.user.userId,
+      recipeId: req.params.id,
+      RecipeId: req.params.id
     })
       .then(review => res.status(201).jsend.success(review))
       .catch(error => res.status(400).jsend.error(error));

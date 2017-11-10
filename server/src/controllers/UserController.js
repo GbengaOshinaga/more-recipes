@@ -22,7 +22,19 @@ export default class UserController {
       })
         .then((user) => {
           const accessToken = jwt.sign({ userId: user.id, email: user.email }, 'mysecret');
-          return res.status(201).jsend.success({ user, token: accessToken });
+          return res.status(201).jsend.success({
+            user: {
+              id: user.id,
+              firstName: user.firstName,
+              lastName: user.lastName,
+              email: user.email,
+              updatedAt: user.updatedAt,
+              createdAt: user.createdAt,
+              profilePic: user.profilePic,
+              about: user.about
+            },
+            token: accessToken
+          });
         })
         .catch(error => res.status(400).jsend.fail({ message: error.errors[0].message }));
     });

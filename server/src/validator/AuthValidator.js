@@ -11,19 +11,19 @@ export default class AuthValidator {
      * @param {*} next
      * @returns {*} res
      */
-    static authenticate(req, res, next) {
-        const accessToken = req.body.accessToken || req.get('accessToken');
+  static authenticate(req, res, next) {
+    const accessToken = req.body.accessToken || req.get('accessToken');
 
-        try {
-            const user = jwt.verify(accessToken, 'mysecret');
-            console.log(user);
-            if (user.email) {
-                req.user = user;
-                return next();
-            }
-            res.status(400).jsend.fail('Invalid token');
-        } catch (error) {
-            res.status(401).jsend.error('Authentication is required to perform this request');
-        }
+    try {
+      const user = jwt.verify(accessToken, 'mysecret');
+
+      if (user.email) {
+        req.user = user;
+        return next();
+      }
+      res.status(400).jsend.fail('Invalid token');
+    } catch (error) {
+      res.status(401).jsend.error('Authentication is required to perform this request');
     }
+  }
 }

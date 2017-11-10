@@ -24,11 +24,11 @@ export default class UsersValidator {
     if (!req.body.password) {
       messages.push('Password is required');
     }
-    const re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    if (!re.test(req.body.email)) {
+    const emailRegex = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    if (!emailRegex.test(req.body.email)) {
       messages.push('Email Address is not valid');
     }
-    if (req.body.password.length < 6) {
+    if (req.body.password && req.body.password.length < 6) {
       messages.push('Password is too short, minimum is 6 characters');
     }
     if (messages.length > 0) {
@@ -39,12 +39,13 @@ export default class UsersValidator {
 
   /**
    * Validates sign in
-   * @param {*} req 
-   * @param {*} res 
-   * @param {*} next 
+   * @param {*} req
+   * @param {*} res
+   * @param {*} next
+   * @returns {Array} errors if any
    */
-  static validateSignIn(req, res, next){
-    let messages = [];
+  static validateSignIn(req, res, next) {
+    const messages = [];
 
     if (!req.body.email) {
       messages.push('Email is required');
@@ -52,8 +53,8 @@ export default class UsersValidator {
     if (!req.body.password) {
       messages.push('Password is required');
     }
-    const re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    if (!re.test(req.body.email)) {
+    const emailRegex = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    if (!emailRegex.test(req.body.email)) {
       messages.push('Email Address is not valid');
     }
     if (messages.length > 0) {
