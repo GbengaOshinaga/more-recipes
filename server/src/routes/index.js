@@ -44,4 +44,7 @@ export default (app) => {
 
   // Get all favourite recipes for a user
   app.get('/api/v1/users/recipes/favourites', AuthValidator.authenticate, (req, res) => { favourites.getFavourites(req, res); });
+
+  // Get all recipes created by user
+  app.get('/api/v1/users/recipes', AuthValidator.authenticate, (req, res) => { UserController.getUsersRecipes(req, res); });
 };

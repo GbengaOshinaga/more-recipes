@@ -96,6 +96,12 @@ export default class UserController {
    * @returns {*} res
    */
   static getUsersRecipes(req, res) {
-
+    db.User.findById(req.user.userId)
+      .then((user) => {
+        user.getRecipes()
+          .then(recipes => res.status(200).jsend.success(recipes))
+          .catch(error => res.status(400).jsend.fail(error));
+      })
+      .catch(error => res.status(400).jsend.fail(error));
   }
 }
