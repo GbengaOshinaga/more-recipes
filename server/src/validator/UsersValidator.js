@@ -62,4 +62,21 @@ export default class UsersValidator {
     }
     next();
   }
+
+  /**
+   * Checks if any value is provided for edit
+   * @param {*} req
+   * @param {*} res
+   * @param {*} next
+   * @returns {*} res
+   */
+  static validateInput(req, res, next) {
+    if (Object.keys(req.body).length === 0) {
+      return res.status(400).jsend.fail({ error: 'You did not provide any value for updating' });
+    }
+    if (!req.body.firstName && !req.body.lastName && !req.body.email && !req.body.password) {
+      return res.status(400).jsend.fail({ error: 'You can not provide an empty value' });
+    }
+    next();
+  }
 }

@@ -55,8 +55,8 @@ export default class UserController {
           return res.status(404).jsend.fail('Invalid Credentials');
         }
         bcrypt.compare(password, user.password)
-          .then((re) => {
-            if (!re) {
+          .then((result) => {
+            if (!result) {
               return res.status(400).jsend.fail('Invalid Credentials');
             }
             const accessToken = jwt.sign({ userId: user.id, email: user.email }, 'mysecret');
@@ -65,5 +65,37 @@ export default class UserController {
           .catch(error => res.status(400).jsend.error(error));
       })
       .catch(error => res.status(400).jsend.error(error));
+  }
+
+  /**
+   * Edits user information
+   * @param {*} req
+   * @param {*} res
+   * @returns {*} res
+   */
+  static modifyUser(req, res) {
+    db.User.findById(req.user.userId)
+      .then((user) => {
+        user.update({
+          firstName: req.body.firstName || user.firstName,
+          lastName: req.body.lastName || user.lastName,
+          email: req.body.email || user.email,
+          profilePic: req.body.profilePic || user.profilePic,
+          about: req.body.about || user.about
+        })
+          .then(updatedUser => res.status(200).jsend.success(updatedUser))
+          .catch(error => res.status(400).jsend.fail(error));
+      })
+      .catch(error => res.status(400).jsend.fail(error));
+  }
+
+  /**
+   * Gets all recipes created by user
+   * @param {*} req
+   * @param {*} res
+   * @returns {*} res
+   */
+  static getUsersRecipes(req, res) {
+
   }
 }

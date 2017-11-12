@@ -4,7 +4,6 @@ import db from '../models/index';
  * Favourite recipes controller
  */
 export default class FavouriteRecipesController {
-
   /**
      * Adds a favourite for a user
      * @param {*} req
@@ -12,11 +11,16 @@ export default class FavouriteRecipesController {
      * @returns {*} res
      */
   addFavourite(req, res) {
-    db.favouriteRecipes.create({
-      userId: req.user.userId,
-      recipeId: req.params.id
-    })
-      .then(fav => res.status(200).jsend.success(fav))
+    let foundRecipe;
+    db.Recipes.findById(req.params.id)
+      .then((recipe) => {
+        foundRecipe = recipe;
+      });
+    db.User.findById(req.user.userId)
+      .then((user) => {
+        user.addFavouriteRecipe(foundRecipe);
+        return res.status(200).jsend.success({ message: 'Favourites added' });
+      })
       .catch(error => res.status(400).jsend.error(error));
   }
 
@@ -27,12 +31,12 @@ export default class FavouriteRecipesController {
      * @returns {*} res
      */
   getFavourites(req, res) {
-    db.favouriteRecipes.findAll({
-      where: {
-        userId: req.params.id
-      }
-    })
-      .then(fav => res.status(200).jsend.success(fav))
-      .catch(error => res.status(400).jsend.error(error));
+    db.User.findById(req.user.userId)
+      .then((user) => {
+        user.getFavouriteRecipes()
+          .then(fav => res.status(200).jsend.success(fav))
+          .catch(error => res.status(400).jsend.fail(error));
+      })
+      .catch(error => res.status(400).jsend.fail(error));
   }
 }

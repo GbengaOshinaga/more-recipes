@@ -12,7 +12,7 @@ export default class AuthValidator {
      * @returns {*} res
      */
   static authenticate(req, res, next) {
-    const accessToken = req.body.accessToken || req.get('accessToken');
+    const accessToken = req.body.accessToken || req.get('Access-Token');
 
     try {
       const user = jwt.verify(accessToken, 'mysecret');

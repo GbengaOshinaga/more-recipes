@@ -22,7 +22,7 @@ module.exports = (sequelize, DataTypes) => {
     Recipes.hasMany(models.Reviews);
     Recipes.belongsTo(models.User);
     Recipes.hasOne(models.votes, { onDelete: 'CASCADE' });
-    Recipes.belongsToMany(models.User, { through: 'Favourites' });
+    Recipes.belongsToMany(models.User, { as: 'favouriteUsers', through: 'Favourites' });
   };
   return Recipes;
 };

@@ -47,7 +47,7 @@ export default class RecipesController {
    * @returns {*} res
    */
   getRecipeById(req, res) {
-    db.Recipes.findById(req.params.id)
+    db.Recipes.findById(req.params.id, { include: [{ model: db.Reviews }] })
       .then((recipe) => {
         if (!recipe) {
           return res.status(400).jsend.fail({ message: `Recipe with Id of ${req.params.id} does not exist` });
@@ -80,9 +80,9 @@ export default class RecipesController {
           name: req.body.name || recipe.name,
           description: req.body.description || recipe.description,
           userId: req.user.userId,
-          image: req.body.image,
+          image: req.body.image || recipe.image,
           ingredients: ingredientsArray || recipe.ingredients
-        }).then(recipe => res.status(200).jsend.success(recipe));
+        }).then(updatedRecipe => res.status(200).jsend.success(updatedRecipe));
       })
       .catch(error => res.jsend.error(error));
   }
@@ -96,8 +96,11 @@ export default class RecipesController {
   deleteRecipe(req, res) {
     db.Recipes.findById(req.params.id)
       .then((recipe) => {
-        if (recipe === null) {
+        if (!recipe) {
           return res.status(404).jsend.fail({ message: 'The Recipe does not exist' });
+        }
+        if (recipe.UserId !== req.user.userId) {
+          return res.status(401).jsend.fail({ message: 'You are not authorized to delete this recipe' });
         }
         recipe.destroy({ force: true })
           .then(recipe => res.jsend.success({ message: 'Recipe has been successfully deleted' }))

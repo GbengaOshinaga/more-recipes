@@ -7,9 +7,6 @@ module.exports = (sequelize, DataTypes) => {
     downvotes: {
       type: DataTypes.INTEGER,
       defaultValue: 0, 
-    },
-    recipeId: {
-      type: DataTypes.INTEGER
     }
   });
 

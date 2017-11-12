@@ -33,7 +33,7 @@ module.exports = (sequelize, DataTypes) => {
   //     as: 'reviews',
   //   });
     User.hasMany(models.Recipes);
-    User.belongsToMany(models.Recipes, { through: 'Favourites' });
+    User.belongsToMany(models.Recipes, { as: 'favouriteRecipes', through: 'Favourites' });
   };
   return User;
 };

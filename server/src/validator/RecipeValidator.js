@@ -4,7 +4,6 @@
  * Class for validating inputs
  */
 export default class RecipeValidator {
-  
   /**
    * Validates recipe passed
    * @param {*} req
@@ -47,6 +46,20 @@ export default class RecipeValidator {
     }
     if (messages.length > 0) {
       return res.status(400).jsend.fail({ errors: messages });
+    }
+    next();
+  }
+
+  /**
+   * Checks if any value is provided for edit
+   * @param {*} req
+   * @param {*} res
+   * @param {*} next
+   * @returns {*} res
+   */
+  static validateInput(req, res, next) {
+    if (Object.keys(req.body).length === 0) {
+      return res.status(400).jsend.fail({ error: 'You did not provide any value for updating' });
     }
     next();
   }

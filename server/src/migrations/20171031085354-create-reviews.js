@@ -26,14 +26,6 @@ module.exports = {
           key: 'id',
           as: 'userId'
         }
-      },
-      recipeId: {
-        type: Sequelize.INTEGER,
-        references: {
-          model: 'Recipes',
-          key: 'id',
-          as: 'recipeId'
-        }
       }
     });
   },
