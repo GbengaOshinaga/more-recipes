@@ -21,7 +21,7 @@ export default class AuthValidator {
         req.user = user;
         return next();
       }
-      res.status(400).jsend.fail('Invalid token');
+      
     } catch (error) {
       res.status(401).jsend.error('Authentication is required to perform this request');
     }

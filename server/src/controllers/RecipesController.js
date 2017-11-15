@@ -20,8 +20,8 @@ export default class RecipesController {
       image: req.body.image,
       ingredients: ingredientsArray
     })
-      .then(recipe => res.jsend.success(recipe))
-      .catch(error => res.jsend.error(error));
+      .then(recipe => res.status(201).jsend.success(recipe))
+      .catch(error => res.status(400).jsend.error(error));
   }
 
   /**
@@ -73,8 +73,8 @@ export default class RecipesController {
         if (!recipe) {
           return res.status(404).jsend.fail({ message: 'The Recipe does not exist' });
         }
-        if (recipe.userId !== req.user.userId) {
-          return res.status(401).jsend.fail('You are not authorized to edit this recipe');
+        if (recipe.UserId !== req.user.userId) {
+          return res.status(401).jsend.fail({ message: 'You are not authorized to edit this recipe' });
         }
         recipe.update({
           name: req.body.name || recipe.name,

@@ -1,12 +1,8 @@
 module.exports = (sequelize, DataTypes) => {
-  const Votes = sequelize.define('votes', {
-    upvotes: {
+  const Votes = sequelize.define('Votes', {
+    vote: {
       type: DataTypes.INTEGER,
-      defaultValue: 0,
-    },
-    downvotes: {
-      type: DataTypes.INTEGER,
-      defaultValue: 0, 
+      allowNull: false
     }
   });
 

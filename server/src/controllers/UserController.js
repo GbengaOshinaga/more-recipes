@@ -83,7 +83,18 @@ export default class UserController {
           profilePic: req.body.profilePic || user.profilePic,
           about: req.body.about || user.about
         })
-          .then(updatedUser => res.status(200).jsend.success(updatedUser))
+          .then(updatedUser => res.status(200).jsend.success({
+            user: {
+              id: updatedUser.id,
+              firstName: updatedUser.firstName,
+              lastName: updatedUser.lastName,
+              email: updatedUser.email,
+              updatedAt: updatedUser.updatedAt,
+              createdAt: updatedUser.createdAt,
+              profilePic: updatedUser.profilePic,
+              about: updatedUser.about
+            }
+          }))
           .catch(error => res.status(400).jsend.fail(error));
       })
       .catch(error => res.status(400).jsend.fail(error));

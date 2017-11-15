@@ -18,7 +18,18 @@ module.exports = {
         type: Sequelize.ARRAY(Sequelize.STRING)
       },
       image: {
-        type: Sequelize.BLOB
+        type: Sequelize.STRING
+      },
+      views: {
+        type: Sequelize.INTEGER
+      },
+      upvotes: {
+        type: Sequelize.INTEGER,
+        defaultValue: 0
+      },
+      downvotes: {
+        type: Sequelize.INTEGER,
+        defaultValue: 0
       },
       createdAt: {
         allowNull: false,

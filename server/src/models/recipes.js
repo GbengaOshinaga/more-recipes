@@ -13,15 +13,26 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false
     },
     image: {
-      type: DataTypes.BLOB,
+      type: DataTypes.STRING,
       allowNull: true,
+    },
+    views: {
+      type: DataTypes.INTEGER
+    },
+    upvotes: {
+      type: DataTypes.INTEGER,
+      defaultValue: 0
+    },
+    downvotes: {
+      type: DataTypes.INTEGER,
+      defaultValue: 0
     }
   });
 
   Recipes.associate = (models) => {
     Recipes.hasMany(models.Reviews);
+    Recipes.hasMany(models.Votes);
     Recipes.belongsTo(models.User);
-    Recipes.hasOne(models.votes, { onDelete: 'CASCADE' });
     Recipes.belongsToMany(models.User, { as: 'favouriteUsers', through: 'Favourites' });
   };
   return Recipes;

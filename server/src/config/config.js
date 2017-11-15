@@ -8,11 +8,12 @@ module.exports = {
     dialect: 'postgres'
   },
   test: {
-    username: 'root',
+    username: 'postgres',
     password: null,
-    database: 'database_test',
+    database: 'more-recipes-test',
     host: '127.0.0.1',
-    dialect: 'mysql'
+    port: 5432,
+    dialect: 'postgres'
   },
   production: {
     environment: 'production'
