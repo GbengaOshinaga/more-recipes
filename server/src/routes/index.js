@@ -5,6 +5,7 @@ import AuthValidator from '../validator/AuthValidator';
 import RecipesController from '../controllers/RecipesController';
 import UserController from '../controllers/UserController';
 import FavouriteRecipesController from '../controllers/FavouriteRecipesController';
+import VotesController from '../controllers/VotesController';
 
 const recipes = new RecipesController();
 const favourites = new FavouriteRecipesController();
@@ -50,4 +51,7 @@ export default (app) => {
 
   // Get all recipes created by user
   app.get('/api/v1/users/recipes', AuthValidator.authenticate, (req, res) => { UserController.getUsersRecipes(req, res); });
+
+  // Add upvote for recipe
+  app.post('/api/v1/recipes/upvote/:id', AuthValidator.authenticate, (req, res) => { VotesController.addUpvote(req, res); });
 };

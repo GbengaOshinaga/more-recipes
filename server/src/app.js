@@ -2,7 +2,7 @@ import Express from 'express';
 import logger from 'morgan';
 import bodyParser from 'body-parser';
 import routes from './routes/index';
-import db from './models/index.js';
+import db from './models/index';
 
 // Set up the express app
 const app = new Express();

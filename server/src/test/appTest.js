@@ -2,7 +2,8 @@ import chai from 'chai';
 import chaiHttp from 'chai-http';
 import app from '../app';
 
-const should = chai.should();
+process.env.NODE_ENV = 'test';
+
 const expect = chai.expect;
 let token;
 chai.use(chaiHttp);
@@ -12,7 +13,7 @@ describe('/api/v1/recipes', () => {
     chai.request(app)
       .get('/')
       .end((err, res) => {
-        res.should.have.status(200);
+        expect(res).to.have.status(200);
         expect(res.body.message).to.eql('Welcome to the More-Recipes API Home.');
         done();
       });
@@ -24,11 +25,12 @@ describe('/api/v1/recipes', () => {
       .send({
         firstName: 'Joseph',
         lastName: 'Gates',
-        email: 'gates@test3.com',
+        email: 'gates@test.com',
         password: 'iamjohngates',
         confirmPassword: 'iamjohngates'
       })
       .end((err, res) => {
+        console.log(res.body);
         expect(res).to.have.status(201);
         expect(res.body.status).to.equal('success');
         expect(res.body.data.user.firstName).to.equal('Joseph');
@@ -54,7 +56,7 @@ describe('/api/v1/recipes', () => {
     chai.request(app)
       .post('/api/v1/users/signin')
       .send({
-        email: 'gates@test3.com',
+        email: 'gates@test.com',
         password: 'iamjohngates',
       })
       .end((err, res) => {
@@ -97,7 +99,7 @@ describe('/api/v1/recipes', () => {
 
   it('it should edit recipe', (done) => {
     chai.request(app)
-      .put('/api/v1/recipes/17')
+      .put('/api/v1/recipes/1')
       .set('Access-Token', token)
       .send({
         name: 'Editing recipe name',
@@ -128,7 +130,7 @@ describe('/api/v1/recipes', () => {
       });
   });
 
-  it('it should send error if user is not authorized to edit recipe', (done) => {
+  it.skip('it should send error if user is not authorized to edit recipe', (done) => {
     chai.request(app)
       .put('/api/v1/recipes/1')
       .set('Access-Token', token)
@@ -210,6 +212,18 @@ describe('/api/v1/recipes', () => {
       .end((err, res) => {
         expect(res).to.have.status(200);
         expect(res.body.data).to.be.an('array');
+        expect(res.body.data.length).to.equal(1);
+        done();
+      });
+  });
+
+  it('it should delete user favourite recipe', (done) => {
+    chai.request(app)
+      .del('/api/v1/users/recipes/1/favourites')
+      .set('Access-Token', token)
+      .end((err, res) => {
+        expect(res).to.have.status(200);
+        expect(res.body.data.message).to.equal('Favourite deleted');
         done();
       });
   });

@@ -9,7 +9,7 @@ module.exports = {
   },
   test: {
     username: 'postgres',
-    password: null,
+    password: 'Gee&o4me',
     database: 'more-recipes-test',
     host: '127.0.0.1',
     port: 5432,
