@@ -30,7 +30,6 @@ describe('/api/v1/recipes', () => {
         confirmPassword: 'iamjohngates'
       })
       .end((err, res) => {
-        console.log(res.body);
         expect(res).to.have.status(201);
         expect(res.body.status).to.equal('success');
         expect(res.body.data.user.firstName).to.equal('Joseph');

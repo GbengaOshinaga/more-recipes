@@ -31,13 +31,22 @@ export default class RecipesController {
    * @returns {Recipes} all recipes
    */
   getRecipes(req, res) {
-    db.Recipes.findAll({
-      include: [{
-        model: db.Reviews,
-      }]
-    })
-      .then(recipes => res.jsend.success(recipes))
-      .catch(error => res.status(400).jsend.error(error));
+    if (req.query.sort && req.query.order) {
+      db.Recipes.findAll({
+        group: 'id',
+        order: db.sequelize.literal(`max(${req.query.sort}) ${req.query.order.toUpperCase()}`)
+      })
+        .then(recipes => res.status(200).jsend.success(recipes))
+        .catch(error => res.status(400).jsend.error(error));
+    } else {
+      db.Recipes.findAll({
+        include: [{
+          model: db.Reviews,
+        }]
+      })
+        .then(recipes => res.status(200).jsend.success(recipes))
+        .catch(error => res.status(400).jsend.error(error));
+    }
   }
 
   /**
@@ -103,7 +112,7 @@ export default class RecipesController {
           return res.status(401).jsend.fail({ message: 'You are not authorized to delete this recipe' });
         }
         recipe.destroy({ force: true })
-          .then(recipe => res.jsend.success({ message: 'Recipe has been successfully deleted' }))
+          .then(() => res.jsend.success({ message: 'Recipe has been successfully deleted' }))
           .catch(error => res.status(400).jsend.error(error));
       })
       .catch(error => res.status(400).jsend.error(error));
@@ -123,6 +132,18 @@ export default class RecipesController {
       RecipeId: req.params.id
     })
       .then(review => res.status(201).jsend.success(review))
+      .catch(error => res.status(400).jsend.error(error));
+  }
+
+  /**
+   * Gets recipes with the most upvotes
+   * @param {*} req
+   * @param {*} res
+   * @returns {*} res
+   */
+  static getRecipesByVotes(req, res) {
+    db.Recipes.findAll({ order: 'upvotes ASC' })
+      .then(recipes => res.status(200).jsend.success(recipes))
       .catch(error => res.status(400).jsend.error(error));
   }
 }

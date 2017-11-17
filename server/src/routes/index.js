@@ -14,7 +14,7 @@ export default (app) => {
   app.use(jsend.middleware);
 
   // Get all recipes
-  app.get('/api/v1/recipes/', (req, res) => { recipes.getRecipes(req, res); });
+  app.get('/api/v1/recipes/', RecipeValidator.validateQueryParams, (req, res) => { recipes.getRecipes(req, res); });
 
   // Get recipe by ID
   app.get('/api/v1/recipes/:id', RecipeValidator.validateID, (req, res) => { recipes.getRecipeById(req, res); });
@@ -54,4 +54,7 @@ export default (app) => {
 
   // Add upvote for recipe
   app.post('/api/v1/recipes/upvote/:id', AuthValidator.authenticate, (req, res) => { VotesController.addUpvote(req, res); });
+
+  // Add downvote for recipe
+  app.post('/api/v1/recipes/downvote/:id', AuthValidator.authenticate, (req, res) => { VotesController.addDownvote(req, res); });
 };

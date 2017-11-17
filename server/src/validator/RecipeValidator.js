@@ -63,4 +63,34 @@ export default class RecipeValidator {
     }
     next();
   }
+
+  /**
+   * Validates query params
+   * @param {*} req
+   * @param {*} res
+   * @param {*} next
+   * @returns {*} res
+   */
+  static validateQueryParams(req, res, next) {
+    const messages = [];
+
+    if (req.query.sort && !req.query.order) {
+      messages.push('order query is required if sort query is passed');
+    }
+    if (!req.query.sort && req.query.order) {
+      messages.push('sort query is required if order query is passed');
+    }
+    if (req.query.sort && req.query.order) {
+      if (req.query.sort.toLowerCase() !== 'upvotes' && req.query.sort.toLowerCase() !== 'downvotes') {
+        messages.push('sort query must be either upvotes or downvotes');
+      }
+      if (req.query.order.toUpperCase() !== 'ASC' && req.query.order.toUpperCase() !== 'DESC') {
+        messages.push('order query must be asc or desc');
+      }
+    }
+    if (messages.length > 0) {
+      return res.status(400).jsend.fail({ errors: messages });
+    }
+    next();
+  }
 }
