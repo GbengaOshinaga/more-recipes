@@ -35,6 +35,22 @@ describe('/api/v1/recipes', () => {
         expect(res.body.status).to.equal('success');
         expect(res.body.data.user.firstName).to.equal('Joseph');
         expect(res.body.data.token).to.be.a('string');
+        firstToken = res.body.data.token;
+        done();
+      });
+  });
+
+  it('it should edit a user\'s information', (done) => {
+    chai.request(app)
+      .post('/api/v1/users/edit')
+      .set('Access-Token', firstToken)
+      .send({
+        firstName: 'Not Joseph'
+      })
+      .end((err, res) => {
+        expect(res).to.have.status(200);
+        expect(res.body.status).to.equal('success');
+        expect(res.body.data.user.firstName).to.equal('Not Joseph');
         done();
       });
   });
@@ -83,7 +99,6 @@ describe('/api/v1/recipes', () => {
         expect(res).to.have.status(200);
         expect(res.body.status).to.equal('success');
         expect(res.body.data.token).to.be.a('string');
-        firstToken = res.body.data.token;
         done();
       });
   });
@@ -128,7 +143,7 @@ describe('/api/v1/recipes', () => {
       })
       .end((err, res) => {
         expect(res).to.have.status(201);
-        expect(res.body.data.name).to.equal('Fried Chicken with sauce');
+        expect(res.body.data.name).to.equal('Toast bread with sauce');
         done();
       });
   });
@@ -142,6 +157,17 @@ describe('/api/v1/recipes', () => {
         description: 'It\'s fried chicken, what more do you want?',
         ingredients: 'chicken,sauce'
       })
+      .end((err, res) => {
+        expect(res).to.have.status(200);
+        expect(res.body.data.name).to.equal('Editing recipe name');
+        done();
+      });
+  });
+
+  it('it should get recipe by id', (done) => {
+    chai.request(app)
+      .get('/api/v1/recipes/1')
+      .set('Access-Token', firstToken)
       .end((err, res) => {
         expect(res).to.have.status(200);
         expect(res.body.data.name).to.equal('Editing recipe name');
@@ -165,7 +191,7 @@ describe('/api/v1/recipes', () => {
       });
   });
 
-  it.skip('it should send error if user is not authorized to edit recipe', (done) => {
+  it('it should send error if user is not authorized to edit recipe', (done) => {
     chai.request(app)
       .put('/api/v1/recipes/1')
       .set('Access-Token', secondToken)
@@ -214,6 +240,28 @@ describe('/api/v1/recipes', () => {
       .end((err, res) => {
         expect(res).to.have.status(200);
         expect(res.body.data).to.be.an('array');
+        done();
+      });
+  });
+
+  it('it should upvote a recipe', (done) => {
+    chai.request(app)
+      .post('/api/v1/recipes/upvote/1')
+      .set('Access-Token', firstToken)
+      .end((err, res) => {
+        expect(res).to.have.status(200);
+        expect(res.body.status).to.equal('success');
+        done();
+      });
+  });
+
+  it('it should downvote a recipe', (done) => {
+    chai.request(app)
+      .post('/api/v1/recipes/downvote/2')
+      .set('Access-Token', firstToken)
+      .end((err, res) => {
+        expect(res).to.have.status(200);
+        expect(res.body.status).to.equal('success');
         done();
       });
   });
@@ -269,6 +317,28 @@ describe('/api/v1/recipes', () => {
       .end((err, res) => {
         expect(res).to.have.status(200);
         expect(res.body.data.message).to.equal('Favourite deleted');
+        done();
+      });
+  });
+
+  it('it should return error when deleting a recipe user did not create', (done) => {
+    chai.request(app)
+      .del('/api/v1/recipes/2')
+      .set('Access-Token', secondToken)
+      .end((err, res) => {
+        expect(res).to.have.status(401);
+        expect(res.body.data.message).to.equal('You are not authorized to delete this recipe');
+        done();
+      });
+  });
+
+  it('it should delete recipe', (done) => {
+    chai.request(app)
+      .del('/api/v1/recipes/2')
+      .set('Access-Token', firstToken)
+      .end((err, res) => {
+        expect(res).to.have.status(200);
+        expect(res.body.data.message).to.equal('Recipe has been successfully deleted');
         done();
       });
   });
