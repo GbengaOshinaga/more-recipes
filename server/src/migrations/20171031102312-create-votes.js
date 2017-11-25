@@ -19,6 +19,23 @@ module.exports = {
       updatedAt: {
         allowNull: false,
         type: Sequelize.DATE
+      },
+      RecipeId: {
+        type: Sequelize.INTEGER,
+        onDelete: 'CASCADE',
+        onUpdate: 'CASCADE',
+        references: {
+          model: 'Recipes'
+        }
+      },
+      UserId: {
+        type: Sequelize.INTEGER,
+        onDelete: 'CASCADE',
+        onUpdate: 'CASCADE',
+        references: {
+          model: 'Users',
+          onDelete: 'CASCADE'
+        }
       }
     });
   },

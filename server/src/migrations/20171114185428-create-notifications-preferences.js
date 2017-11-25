@@ -19,6 +19,12 @@ module.exports = {
     updatedAt: {
       allowNull: false,
       type: Sequelize.DATE
+    },
+    UserId: {
+      type: Sequelize.INTEGER,
+      references: {
+        model: 'Users'
+      }
     }
   }),
   down: (queryInterface, Sequelize) => queryInterface.dropTable('NotificationsPreferences')

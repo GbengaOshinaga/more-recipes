@@ -132,6 +132,19 @@ describe('/api/v1/recipes', () => {
       });
   });
 
+  it('it should post a review for a recipe', (done) => {
+    chai.request(app)
+    .post('/api/v1/recipes/1/reviews')
+    .set('Access-Token', firstToken)
+    .send({
+      review: 'I love this recipe'
+    })
+    .end((err,res) => {
+      expect(res).to.have.status(201);
+      done();
+    })
+  })
+
   it('it should post recipe', (done) => {
     chai.request(app)
       .post('/api/v1/recipes')

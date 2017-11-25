@@ -112,7 +112,7 @@ export default class RecipesController {
           return res.status(401).jsend.fail({ message: 'You are not authorized to delete this recipe' });
         }
         recipe.destroy({ force: true })
-          .then(() => res.jsend.success({ message: 'Recipe has been successfully deleted' }))
+          .then(() => res.status(200).jsend.success({ message: 'Recipe has been successfully deleted' }))
           .catch(error => res.status(400).jsend.error(error));
       })
       .catch(error => res.status(400).jsend.error(error));
@@ -128,7 +128,6 @@ export default class RecipesController {
     db.Reviews.create({
       review: req.body.review,
       UserId: req.user.userId,
-      recipeId: req.params.id,
       RecipeId: req.params.id
     })
       .then(review => res.status(201).jsend.success(review))

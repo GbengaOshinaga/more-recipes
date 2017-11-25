@@ -24,6 +24,12 @@ module.exports = {
         references: {
           model: 'Recipes'
         }
+      },
+      UserId: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'Users'
+        }
       }
     });
   },
