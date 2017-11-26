@@ -19,6 +19,7 @@
       "no-underscore-dangle": ["off"],
       "class-methods-use-this": "off",
       "no-restricted-syntax":"off",
+      "react/prefer-stateless-function": 0,
       "import/no-unresolved": [2, { "commonjs": true }],
       "no-shadow": ["error", { "allow": ["req", "res", "err"] }],
       "valid-jsdoc": ["error", {
