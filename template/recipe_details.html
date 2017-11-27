@@ -14,15 +14,17 @@
 		<ul id="dropdown1" class="dropdown-content">
 		  <li><a href="profile.html">Profile</a></li>
 		  <li><a href="my_recipes.html">My Recipes</a></li>
+		  <li><a href="favourite_recipes.html">Favourite Recipes</a></li>
 		  <li><a href="#!">Logout</a></li>
 		</ul>
 		<ul id="dropdown2" class="dropdown-content">
 		  <li><a href="profile.html">Profile</a></li>
 		  <li><a href="my_recipes.html">My Recipes</a></li>
+		  <li><a href="favourite_recipes.html">Favourite Recipes</a></li>
 		  <li><a href="#!">Logout</a></li>
 		</ul>
 		<div class="navbar-fixed">
-			<nav class="red darken-2">
+			<nav class="grey darken-2">
 		    	<div class="container">
 		    		<div class="nav-wrapper">
 				      <a href="#!" class="brand-logo">More-Recipes</a>
@@ -30,7 +32,6 @@
 				      	<i class="material-icons">menu</i></a>
 				      <ul class="right hide-on-med-and-down">
 				        <li><a href="catalog.html">Catalog</a></li>
-				        <li><a href="#">API</a></li>
 				        <li><a class="dropdown-button" href="#!" data-activates="dropdown1">John<i class="material-icons right">arrow_drop_down</i></a></li>
 				      </ul>
 				    </div>
@@ -40,7 +41,6 @@
 		</div>
 		<ul class="side-nav" id="mobile">
 			<li><a href="catalog.html">Catalog</a></li>
-			<li><a href="#">API</a></li>
 			<li><a class="dropdown-button" href="#!" data-activates="dropdown2">John<i class="material-icons right">arrow_drop_down</i></a></li>
 		</ul>
 	</header>
@@ -48,7 +48,7 @@
   <div class="container">
   	<div class="details-box">
   		<div class="row">
-	  		<div class="col s12">
+	  		<div class="col s12 center-align">
 	  			<img class="responsive-img" src="img/details-img.jpg" />
 	  		</div>
 	  	</div>
@@ -60,11 +60,12 @@
 		  				<p>Mega soft and chewy Gingerbread Whoopie Pies stuffed with luscious cream cheese frosting will be your new favorite way to devour gingerbread!</p>
 		  				<p class="grey-text">1 view</p>
 		  				<div id="vote">
-		  					<a class="waves-effect waves-light btn like">Upvote
-		  						<span class="upvotes">0</span>
-		  					</a>
-		  					<a class="waves-effect waves-light btn dislike">Downvote
-		  						<span class="downvotes">0</span>
+								<a href="#!" id="details-thumb-up" class="thumb-up"><i class="small material-icons">thumb_up</i></a>
+								<span id="upvotes">0</span>
+								<a href="#!" id="details-thumb-down" class="thumb-down"><i class="small material-icons">thumb_down</i></a>
+								<span id="downvotes">0</span>
+								<a href="#!" id="details-favourite" class="details-favourite"><i class="small material-icons">favorite</i></a>
+								<span id="favorites">0</span>
 		  					</a>
 		  				</div>
 		  			</div>
@@ -98,9 +99,14 @@
 	  	</div>
   	</div>
   </div>
-  <footer class="page-footer red darken-2">
+  <footer class="page-footer grey darken-2">
   	<div class="footer-copyright">
-  		<div class="container">&copy; More-Recipes</div>
+  		<div class="container">
+				<div class="center-align">
+						&copy; More-Recipes<br/>
+						By <a href="https://github.com/GbengaOshinaga/more-recipes/">Gbenga Oshinaga</a>
+					</div>
+		  </div>
   	</div>
   </footer>
   <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>

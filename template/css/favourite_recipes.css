@@ -10,17 +10,10 @@ h1, h2, h3, h4, h5, h6 {
   nav .brand-logo {
     font-size: 1.5rem; } }
 
-textarea.materialize-textarea {
-  padding: 10px; }
+.dropdown-content {
+  min-width: 200px; }
 
-.add-recipe-button {
-  margin-top: 30px;
-  margin-bottom: 50px; }
-
-.my-recipes {
+.favourite-recipes {
   background-color: #FAFAFA; }
 
-.modal {
-  max-height: 90%; }
-
-/*# sourceMappingURL=my_recipes.css.map */
+/*# sourceMappingURL=favourite_recipes.css.map */

@@ -13,16 +13,18 @@
 	<header>
 		<ul id="dropdown1" class="dropdown-content">
 		  <li><a href="#">Profile</a></li>
-		  <li><a href="my_recipes.html">My Recipes</a></li>
+			<li><a href="my_recipes.html">My Recipes</a></li>
+			<li><a href="favourite_recipes.html">Favourite Recipes</a></li>			
 		  <li><a href="#!">Logout</a></li>
 		</ul>
 		<ul id="dropdown2" class="dropdown-content">
 		  <li><a href="profile.html">Profile</a></li>
-		  <li><a href="my_recipes.html">My Recipes</a></li>
+			<li><a href="my_recipes.html">My Recipes</a></li>
+			
 		  <li><a href="#!">Logout</a></li>
 		</ul>
 		<div class="navbar-fixed">
-		<nav class="red darken-2">
+		<nav class="grey darken-2">
 	    	<div class="container">
 	    		<div class="nav-wrapper">
 			      <a href="catalog.html" class="brand-logo">More-Recipes</a>
@@ -30,7 +32,6 @@
 			      	<i class="material-icons">menu</i></a>
 			      <ul class="right hide-on-med-and-down">
 			        <li><a href="catalog.html">Catalog</a></li>
-			        <li><a href="#">API</a></li>
 			        <li><a class="dropdown-button" href="#!" data-activates="dropdown1">John<i class="material-icons right">arrow_drop_down</i></a></li>
 			      </ul>
 			      
@@ -40,7 +41,6 @@
 	</div>
 	<ul class="side-nav" id="mobile">
 			<li><a href="catalog.html">Catalog</a></li>
-			<li><a href="#">API</a></li>
 			<li><a class="dropdown-button" href="#!" data-activates="dropdown2">John<i class="material-icons right">arrow_drop_down</i></a></li>
 		</ul>
 	</header>
@@ -62,8 +62,9 @@
 			        			<div class="col s10">
 			        				
 							        	<span class="card-title">
-							        		<div class="input-field"><input id="name" type="text" name="username" disabled value="John Rockefeller"></div>
-							        	</span>
+							        		<div class="input-field"><input id="profile-name" type="text" name="username" disabled value="John Rockefeller"></div>
+												</span>
+												<div class="input-field"><input id="profile-email" type="text" name="username" disabled value="JohnRockefeller@email.com"></div>
 							          <p><div class="input-field"><textarea id="desc-textarea" class="materialize-textarea" rows="2" name="description" disabled>I am a software engineer who has a flair and passion for cooking</textarea></div></p>
 							        
 							        <div id="save" class="card-action hide">
@@ -81,48 +82,16 @@
   		</div>
   	</div>
 
-  	<div class="favorited-reviews">
-  		<h4>Favorited Reviews</h4>
-  		<hr/>
-  		<div class="row">
-  				<div class="card horizontal">
-			      <div class="card-image">
-			        <img src="https://lorempixel.com/200/190/food/7">
-			      </div>
-			      <div class="card-stacked">
-			        <div class="card-content">
-			        	<span class="card-title">Another Recipe</span>
-			          <p>This is a recipe that i have been working on for a while.</p>
-			        </div>
-			        <div class="card-action teal lighten-1">
-			          <a href="recipe_details.html" class="white-text">VIEW DETAILS</a>
-			        </div>
-			      </div>
-			    </div>
-  			</div>
-  			<div class="row">
-  				<div class="card horizontal">
-			      <div class="card-image">
-			        <img src="https://lorempixel.com/200/190/food/8">
-			      </div>
-			      <div class="card-stacked">
-			        <div class="card-content">
-			        	<span class="card-title">Last Recipe</span>
-			          <p>This is a recipe that i have been working on for a while.</p>
-			        </div>
-			        <div class="card-action teal lighten-1">
-			          <a href="recipe_details.html" class="white-text">VIEW DETAILS</a>
-			        </div>
-			      </div>
-			    </div>
-  			</div>
-  	</div>
-
 	</div>
 
-  <footer class="page-footer red darken-2">
+  <footer class="page-footer grey darken-2">
   	<div class="footer-copyright">
-  		<div class="container">&copy; More-Recipes</div>
+  		<div class="container">
+					<div class="center-align">
+							&copy; More-Recipes<br/>
+							By <a href="https://github.com/GbengaOshinaga/more-recipes/">Gbenga Oshinaga</a>
+						</div>
+			</div>
   	</div>
   </footer>
   <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
