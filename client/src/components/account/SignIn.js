@@ -1,9 +1,11 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import default from '../../reducers/index';
 
 /**
  * Class component for signing in
  */
-export default class SignIn extends React.Component {
+class SignIn extends React.Component {
 /**
  * constructor method
  * @param {*} props
@@ -12,8 +14,10 @@ export default class SignIn extends React.Component {
   constructor(props, context) {
     super(props, context);
     this.state = {
-      email: '',
-      password: ''
+      credentials: {
+        email: '',
+        password: ''
+      }
     };
     this.onClickSave = this.onClickSave.bind(this);
     this.handleChange = this.handleChange.bind(this);
@@ -24,7 +28,7 @@ export default class SignIn extends React.Component {
    * @returns {*} nothing
    */
   onClickSave() {
-    alert(`${this.state.email} and ${this.state.password}`);
+    alert(`${this.state.credentials.email} and ${this.state.credentials.password}`);
   }
 
   /**
@@ -33,7 +37,9 @@ export default class SignIn extends React.Component {
    * @returns {*} new state
    */
   handleChange(event) {
-    this.setState({ [event.target.type]: event.target.value });
+    const data = this.state.credentials;
+    data[event.target.type] = event.target.value;
+    this.setState({ credentials: data });
   }
 
   /**
@@ -45,13 +51,13 @@ export default class SignIn extends React.Component {
       <div>
         <div className="row">
           <div className="input-field col s12">
-            <input id="email" type="email" className="validate" onChange={this.handleChange} value={this.state.email} />
+            <input id="email" type="email" className="validate" onChange={this.handleChange} value={this.state.credentials.email} />
             {/* <label htmlFor="email">Email Address</label> */}
           </div>
         </div>
         <div className="row">
           <div className="input-field col s12">
-            <input id="password" type="password" className="validate" onChange={this.handleChange} value={this.state.password} />
+            <input id="password" type="password" className="validate" onChange={this.handleChange} value={this.state.credentials.password} />
             {/* <label htmlFor="password">Password</label> */}
           </div>
         </div>
@@ -70,3 +76,9 @@ export default class SignIn extends React.Component {
     );
   }
 }
+
+function mapStateToProps(state, ownProps) {
+  
+}
+
+export default connect(mapStateToProps)(SignIn);
