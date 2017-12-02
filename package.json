@@ -10,7 +10,7 @@
   "scripts": {
     "test": "mocha server/src/test/**.js --exit --compilers js:babel-core/register",
     "babel-node": "babel-node ./server/src/index.js --presets=env",
-    "startDev": "./node_modules/.bin/babel-watch server/src/app.js",
+    "startServer": "./node_modules/.bin/babel-watch server/src/app.js",
     "startReact": "babel-node ./client/app.js",
     "build": "babel server/src -d server/dist",
     "heroku-postbuild": "npm run build",
@@ -45,6 +45,7 @@
     "eslint-plugin-jsx-a11y": "^6.0.2",
     "eslint-plugin-react": "^7.5.1",
     "express": "^4.16.2",
+    "form-data": "^2.3.1",
     "http-server": "^0.10.0",
     "joi": "^13.0.1",
     "jquery": "^3.2.1",

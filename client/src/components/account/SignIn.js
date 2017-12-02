@@ -1,6 +1,10 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import default from '../../reducers/index';
+import InputField from '../common/InputField';
+import Button from '../common/Button';
+import SocialLoginButtons from './SocialLoginButtons';
+import { signIn } from '../../actions/accountActions';
 
 /**
  * Class component for signing in
@@ -28,7 +32,7 @@ class SignIn extends React.Component {
    * @returns {*} nothing
    */
   onClickSave() {
-    alert(`${this.state.credentials.email} and ${this.state.credentials.password}`);
+    this.props.signIn(this.state.credentials);
   }
 
   /**
@@ -49,36 +53,64 @@ class SignIn extends React.Component {
   render() {
     return (
       <div>
-        <div className="row">
-          <div className="input-field col s12">
-            <input id="email" type="email" className="validate" onChange={this.handleChange} value={this.state.credentials.email} />
-            {/* <label htmlFor="email">Email Address</label> */}
-          </div>
-        </div>
-        <div className="row">
-          <div className="input-field col s12">
-            <input id="password" type="password" className="validate" onChange={this.handleChange} value={this.state.credentials.password} />
-            {/* <label htmlFor="password">Password</label> */}
-          </div>
-        </div>
-        <button onClick={this.onClickSave} className="btn waves-effect waves-light red darken-2" type="submit" name="action">Sign in
-          <i className="material-icons right">arrow_forward</i>
-        </button>
-        <div className="row">
-          <p>OR</p>
-        </div>
-        <div>
-          <div className="fb-login-button social-login" data-max-rows="1" data-size="large" data-button-type="continue_with" data-show-faces="false" 	data-auto-logout-link="false" data-use-continue-as="false" />
-          <div id="my-signin2" className="social-login" align="center" />
-        </div>
-        <p>Not a member? <a href="index.html">Sign Up</a></p>
+        <InputField
+          id="email"
+          type="email"
+          onChange={this.handleChange}
+          value={this.state.credentials.email}
+          label="Email Address"
+        />
+        <InputField
+          id="password"
+          type="password"
+          onChange={this.handleChange}
+          value={this.state.credentials.password}
+          label="Password"
+        />
+        <Button
+          onClick={this.onClickSave}
+          className="btn waves-effect waves-light red darken-2"
+          type="submit"
+          name="action"
+          materialIcon="arrow_forward"
+          buttonText="Sign In"
+        />
+        <SocialLoginButtons
+          isAMemberText="Not a member?"
+          href="signup.html"
+          hrefText="Sign Up"
+        />
       </div>
     );
   }
 }
 
+
+SignIn.propTypes = {
+  signIn: PropTypes.func.isRequired
+};
+
+/**
+ * mapStateToProps
+ * @param {*} state
+ * @param {*} ownProps
+ * @returns {object} object
+ */
 function mapStateToProps(state, ownProps) {
-  
+  return {
+    credentials: state.credentials
+  };
 }
 
-export default connect(mapStateToProps)(SignIn);
+/**
+ * mapDispatchToProps
+ * @param {*} dispatch
+ * @returns {object} object
+ */
+function mapDispatchToProps(dispatch) {
+  return {
+    signIn: credentials => dispatch(signIn(credentials))
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(SignIn);
