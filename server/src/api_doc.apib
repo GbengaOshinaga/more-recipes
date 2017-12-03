@@ -19,7 +19,10 @@ Creates an account for a user
 + confirmPassword (string) - Confirm password for validation
 
 + Request (application/x-www-form-urlencoded)
-firstName=charles&lastName=carnegie&email=carnegie%40gmail.com&password=carnegie&confirmPassword=carnegie
+
+    + Body
+
+            firstName=charles&lastName=carnegie&email=carnegie%40gmail.com&password=carnegie&confirmPassword=carnegie
 
 + Response 201 (application/json)
 ```
@@ -69,8 +72,10 @@ Modifies a user. Requires authentication through token passed in header. Returns
 + about (string) - User's about
 
 + Request (application/x-www-form-urlencoded)
+
     + Headers
-        Access-Token: token
+
+            Access-Token: token
 
 + Response 200 (application/json)
 ```
@@ -95,8 +100,10 @@ Modifies a user. Requires authentication through token passed in header. Returns
 Get all the recipes created by requesting user. Authorization is required
 
 + Request (application/x-www-form-urlencoded)
+
     + Headers
-        Access-Token: token
+
+            Access-Token: token
 
 + Response 200 (application/json)
 ```
@@ -129,8 +136,10 @@ Adds a favourite recipe for a user. Authorization is required
     + recipe_id: `1` (string) - id of the recipe
 
 + Request (application/x-www-form-urlencoded)
+
     + Headers
-        Access-Token: token
+
+            Access-Token: token
 
 + Response 200 (application/json)
 ```
@@ -147,8 +156,10 @@ Adds a favourite recipe for a user. Authorization is required
     + recipe_id: `1` (string) - id of the recipe
 
 + Request (application/x-www-form-urlencoded)
+
     + Headers
-        Access-Token: token
+
+            Access-Token: token
 
 + Response 200 (application/json)
 ```
@@ -164,8 +175,10 @@ Adds a favourite recipe for a user. Authorization is required
 Gets all favourite recipes for a user. Authorization is required
 
 + Request (application/x-www-form-urlencoded)
+
     + Headers
-        Access-Token: token
+
+            Access-Token: token
 
 + Response 200 (application/json)
 ```
@@ -302,10 +315,14 @@ Edit recipe with specified id. Authorization is required
 + ingredients (string) - Ingredients for the recipe, it should be a comma-separated string of ingredients, e.g 'pepper,salt,sauce'
 
 + Request (application/x-www-form-urlencoded)
+
     + Headers
-        Access-Token: token
+
+            Access-Token: token
+
     + Body
-        name=tasty+fried+cow
+
+            name=tasty+fried+cow
 
 + Response 200 (application/json)
 ```
@@ -333,8 +350,10 @@ Edit recipe with specified id. Authorization is required
 Delete recipe with the specified id. Authorization is required
 
 + Request (application/x-www-form-urlencoded)
+
     + Headers
-        Access-Token: token
+
+            Access-Token: token
 
 + Response 200 (application/json)
 ```
@@ -354,8 +373,10 @@ Upvote a recipe. Authorization is required
     + recipe_id: `1` (string) - id of the recipe
 
 + Request (application/x-www-form-urlencoded)
+
     + Headers
-        Access-Token: token
+
+            Access-Token: token
 
 + Response 200 (application/json)
 ```
@@ -373,8 +394,10 @@ Downvote a recipe. Authorization is required
     + recipe_id: `1` (string) - id of the recipe
 
 + Request (application/x-www-form-urlencoded)
+
     + Headers
-        Access-Token: token
+
+            Access-Token: token
 
 + Response 200 (application/json)
 ```
@@ -394,10 +417,14 @@ Add a review for a recipe. Authorization is required
     + recipe_id: `1` (string) - id of the recipe
 
 + Request (application/x-www-form-urlencoded)
+
     + Headers
-        Access-Token: token
+
+            Access-Token: token
+
     + Body
-        review=i+love+this+recipe
+
+            review=i+love+this+recipe
 
 + Response 201 (application/json)
 ```
