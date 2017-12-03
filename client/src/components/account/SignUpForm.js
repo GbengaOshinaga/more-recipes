@@ -1,5 +1,5 @@
 import React from 'react';
-import PropTypes, { instanceOf } from 'prop-types';
+import PropTypes from 'prop-types';
 import InputField from '../common/InputField';
 import Button from '../common/Button';
 import SocialLoginButtons from './SocialLoginButtons';
