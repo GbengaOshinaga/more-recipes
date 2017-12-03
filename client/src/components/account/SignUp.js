@@ -1,10 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import InputField from '../common/InputField';
-import Button from '../common/Button';
-import SocialLoginButtons from './SocialLoginButtons';
 import { signUp } from '../../actions/accountActions';
+import SignUpForm from './SignUpForm';
 
 /**
  * Class component for signing in
@@ -55,56 +53,15 @@ class SignUp extends React.Component {
    */
   render() {
     return (
-      <div>
-        <InputField
-          id="firstName"
-          type="text"
-          onChange={this.handleChange}
-          value={this.state.data.firstName}
-          label="First Name"
-        />
-        <InputField
-          id="lastName"
-          type="text"
-          onChange={this.handleChange}
-          value={this.state.data.lastName}
-          label="Last Name"
-        />
-        <InputField
-          id="email"
-          type="email"
-          onChange={this.handleChange}
-          value={this.state.data.email}
-          label="Email Address"
-        />
-        <InputField
-          id="password"
-          type="password"
-          onChange={this.handleChange}
-          value={this.state.data.password}
-          label="Password"
-        />
-        <InputField
-          id="confirmPassword"
-          type="password"
-          onChange={this.handleChange}
-          value={this.state.data.confirmPassword}
-          label="Confirm Password"
-        />
-        <Button
-          onClick={this.onClickSave}
-          className="btn waves-effect waves-light red darken-2"
-          type="submit"
-          name="action"
-          materialIcon="send"
-          buttonText="Submit"
-        />
-        <SocialLoginButtons
-          isAMemberText="Already a member?"
-          href="signin.html"
-          hrefText="Sign In"
-        />
-      </div>
+      <SignUpForm
+        onChange={this.handleChange}
+        onClickSave={this.onClickSave}
+        firstName={this.state.data.firstName}
+        lastName={this.state.data.lastName}
+        email={this.state.data.email}
+        password={this.state.data.password}
+        confirmPassword={this.state.data.confirmPassword}
+      />
     );
   }
 }

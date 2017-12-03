@@ -1,6 +1,7 @@
 import { createStore, applyMiddleware } from 'redux';
 // import reduxImmutableStateInvariant from 'redux-immutable-state-invariant';
 import thunk from 'redux-thunk';
+import { createLogger } from 'redux-logger';
 import rootReducer from '../reducers/index';
 
 /**
@@ -9,5 +10,7 @@ import rootReducer from '../reducers/index';
  * @returns {*} store
  */
 export default function configureStore(initialState) {
-  return createStore(rootReducer, initialState, applyMiddleware(thunk));
+  const logger = createLogger();
+
+  return createStore(rootReducer, initialState, applyMiddleware(thunk, logger));
 }

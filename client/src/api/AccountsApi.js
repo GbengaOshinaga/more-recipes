@@ -24,7 +24,6 @@ export default class AccountsApi {
      * @returns {object} response
      */
   static signUp(data) {
-    console.log(data.email);
     return fetch('http://localhost:8000/api/v1/users/signup', {
       method: 'post',
       headers: {

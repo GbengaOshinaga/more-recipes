@@ -22,6 +22,7 @@
       "react/prefer-stateless-function": 0,
       "react/jsx-filename-extension": 0,
       "import/no-unresolved": [2, { "commonjs": true }],
+      "import/no-extraneous-dependencies": "off",
       "no-shadow": ["error", { "allow": ["req", "res", "err"] }],
       "valid-jsdoc": ["error", {
         "requireReturn": true,

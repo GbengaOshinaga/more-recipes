@@ -1,10 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import InputField from '../common/InputField';
-import Button from '../common/Button';
-import SocialLoginButtons from './SocialLoginButtons';
 import { signIn } from '../../actions/accountActions';
+import SignInForm from './SignInForm';
 
 /**
  * Class component for signing in
@@ -21,7 +19,8 @@ class SignIn extends React.Component {
       credentials: {
         email: '',
         password: ''
-      }
+      },
+      errors: []
     };
     this.onClickSave = this.onClickSave.bind(this);
     this.handleChange = this.handleChange.bind(this);
@@ -52,35 +51,12 @@ class SignIn extends React.Component {
    */
   render() {
     return (
-      <div>
-        <InputField
-          id="email"
-          type="email"
-          onChange={this.handleChange}
-          value={this.state.credentials.email}
-          label="Email Address"
-        />
-        <InputField
-          id="password"
-          type="password"
-          onChange={this.handleChange}
-          value={this.state.credentials.password}
-          label="Password"
-        />
-        <Button
-          onClick={this.onClickSave}
-          className="btn waves-effect waves-light red darken-2"
-          type="submit"
-          name="action"
-          materialIcon="arrow_forward"
-          buttonText="Sign In"
-        />
-        <SocialLoginButtons
-          isAMemberText="Not a member?"
-          href="signup.html"
-          hrefText="Sign Up"
-        />
-      </div>
+      <SignInForm
+        onChange={this.handleChange}
+        email={this.state.credentials.email}
+        password={this.state.credentials.password}
+        onClickSave={this.onClickSave}
+      />
     );
   }
 }
@@ -97,8 +73,9 @@ SignIn.propTypes = {
  * @returns {object} object
  */
 function mapStateToProps(state, ownProps) {
+  debugger;
   return {
-    credentials: state.credentials
+    errors: state.errors
   };
 }
 
