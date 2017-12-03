@@ -57,4 +57,7 @@ export default (app) => {
 
   // Add downvote for recipe
   app.post('/api/v1/recipes/downvote/:id', AuthValidator.authenticate, (req, res) => { VotesController.addDownvote(req, res); });
+
+  // API Documentation
+  app.get('/api/v1/doc', (req, res) => { res.sendFile(`${__dirname}/doc.html`); });
 };
