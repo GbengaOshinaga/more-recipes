@@ -1,0 +1,415 @@
+FORMAT: 1A
+HOST: https://more-recipe-gbenga.herokuapp.com
+
+# More-Recipes API
+The More-Recipes API allows viewing and manipulation of the More-Recipes data. Users can create accounts
+and view all recipes, and authorized users can edit, delete, modify, vote for a recipe.
+
+# Group Users
+Resources related to users in the API
+
+## Sign Up [/api/v1/users/signup]
+Creates an account for a user
+
+### Sign Up a user [POST]
++ firstName (string) - User's first name
++ lastName (string) - User's last name
++ email (string) - User's email
++ password (string) - Password for user, length must be greater than 6
++ confirmPassword (string) - Confirm password for validation
+
++ Request (application/x-www-form-urlencoded)
+firstName=charles&lastName=carnegie&email=carnegie%40gmail.com&password=carnegie&confirmPassword=carnegie
+
++ Response 201 (application/json)
+```
+{
+    "status": "success",
+    "data": {
+        "user": {
+            "id": 2,
+            "firstName": "charles",
+            "lastName": "carnegie",
+            "email": "carnegie@gmail.com",
+            "updatedAt": "2017-12-02T23:12:07.689Z",
+            "createdAt": "2017-12-02T23:12:07.689Z",
+            "profilePic": null,
+            "about": null
+        },
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjIsImVtYWlsIjoiY2FybmVnaWVAZ21haWwuY29tIiwiaWF0IjoxNTEyMjU2MzI4fQ.IoJtdk-_E5zqvns23oJR0-dpeVV8JmIWW58Y18wgwfA"
+    }
+}
+```
+
+## Sign In [/api/v1/users/signin]
+Signs in a user and returns a token
+
+### Sign in a user [POST]
++ email (string) - User's email
++ password (string) - User's password
+
++ Response 200 (application/json)
+```
+{
+    "status": "success",
+    "data": {
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjIsImVtYWlsIjoiY2FybmVnaWVAZ21haWwuY29tIiwiaWF0IjoxNTEyMjU2NzYzfQ.rkakjo4ZNklt5kz_agqrlJYIQ5ar4yveNvFjz6SYcCg"
+    }
+}
+```
+
+## Edit a user [/api/v1/users/edit]
+Modifies a user. Requires authentication through token passed in header. Returns updated user data
+
+### Edit a user [POST]
++ firstName (string) - User's first name
++ lastName (string) - User's last name
++ email (string) - User's email
++ profilePic (base64 string) - User's profile picture
++ about (string) - User's about
+
++ Request (application/x-www-form-urlencoded)
+    + Headers
+        Access-Token: token
+
++ Response 200 (application/json)
+```
+{
+    "status": "success",
+    "data": {
+        "user": {
+            "id": 1,
+            "firstName": "charlie",
+            "lastName": "Puth",
+            "email": "charlie@puth.com",
+            "updatedAt": "2017-12-02T23:29:01.029Z",
+            "createdAt": "2017-12-02T13:49:15.932Z",
+            "profilePic": null,
+            "about": null
+        }
+    }
+}
+```
+
+## Get recipes created by user [/api/v1/users/recipes]
+Get all the recipes created by requesting user. Authorization is required
+
++ Request (application/x-www-form-urlencoded)
+    + Headers
+        Access-Token: token
+
++ Response 200 (application/json)
+```
+{
+    "status": "success",
+    "data": {
+        "id": 1,
+        "name": "tasty fried chicken",
+        "description": "it is tasty and fried and it is chicken",
+        "ingredients": [
+            "fried chicken"
+        ],
+        "image": null,
+        "views": null,
+        "upvotes": 0,
+        "downvotes": 0,
+        "createdAt": "2017-12-02T23:41:24.804Z",
+        "updatedAt": "2017-12-02T23:41:24.804Z",
+        "UserId": 1,
+        "Reviews": []
+    }
+}
+```
+
+## Add or delete favourite recipe for a user [/api/v1/users/recipes/{recipe_id}/favourites]
+Adds a favourite recipe for a user. Authorization is required
+
+### Add favourite recipe [POST]
++ Parameters
+    + recipe_id: `1` (string) - id of the recipe
+
++ Request (application/x-www-form-urlencoded)
+    + Headers
+        Access-Token: token
+
++ Response 200 (application/json)
+```
+{
+    "status": "success",
+    "data": {
+        "message": "Favourite added"
+    }
+}
+```
+
+### Delete favourite recipe [DELETE]
++ Parameters
+    + recipe_id: `1` (string) - id of the recipe
+
++ Request (application/x-www-form-urlencoded)
+    + Headers
+        Access-Token: token
+
++ Response 200 (application/json)
+```
+{
+    "status": "success",
+    "data": {
+        "message": "Favourite deleted"
+    }
+}
+```
+
+## Get all favourite recipes for a user [/api/v1/users/recipes/favourites]
+Gets all favourite recipes for a user. Authorization is required
+
++ Request (application/x-www-form-urlencoded)
+    + Headers
+        Access-Token: token
+
++ Response 200 (application/json)
+```
+{
+    "status": "success",
+    "data": [
+        {
+            "id": 2,
+            "name": "tasty fried cow",
+            "description": "it is tasty and fried and it is chicken",
+            "ingredients": [
+                "fried chicken"
+            ],
+            "image": null,
+            "views": null,
+            "upvotes": 0,
+            "downvotes": 0,
+            "createdAt": "2017-12-03T00:10:11.509Z",
+            "updatedAt": "2017-12-03T00:10:11.509Z",
+            "UserId": 1,
+            "Favourites": {
+                "createdAt": "2017-12-03T00:10:49.260Z",
+                "updatedAt": "2017-12-03T00:10:49.260Z",
+                "RecipeId": 2,
+                "UserId": 1
+            }
+        }
+    ]
+}
+```
+
+
+# Group Recipes
+Resources related to recipes in the API
+
+## Add or get all recipes [/api/v1/recipes/]
+Adds or gets all recipes
+
+### Add Recipe [POST]
++ name (string) - Name of the recipe
++ description (string) - Description of the recipe
++ ingredients (string) - Ingredients for the recipe, it should be a comma-separated string of ingredients, e.g 'pepper,salt,sauce'
+
++ Response 201 (application/json)
+```
+{
+    "status": "success",
+    "data": {
+        "upvotes": 0,
+        "downvotes": 0,
+        "id": 1,
+        "name": "tasty fried chicken",
+        "description": "it is tasty and fried and it is chicken",
+        "UserId": 1,
+        "image": null,
+        "ingredients": [
+            "fried chicken"
+        ],
+        "updatedAt": "2017-12-02T23:41:24.804Z",
+        "createdAt": "2017-12-02T23:41:24.804Z",
+        "views": null
+    }
+}
+```
+
+### Get all recipes [GET]
+Gets all recipes
+
++ Response 200 (application/json)
+```
+{
+    "status": "success",
+    "data": [
+        {
+            "id": 1,
+            "name": "tasty fried chicken",
+            "description": "it is tasty and fried and it is chicken",
+            "ingredients": [
+                "fried chicken"
+            ],
+            "image": null,
+            "views": null,
+            "upvotes": 0,
+            "downvotes": 0,
+            "createdAt": "2017-12-02T23:41:24.804Z",
+            "updatedAt": "2017-12-02T23:41:24.804Z",
+            "UserId": 1,
+            "Reviews": []
+        },
+        {
+            "id": 2,
+            "name": "fried egg"
+            ...
+        }
+    ]
+}
+```
+
+## Get recipe by id, edit recipe, or delete recipe [/api/v1/recipes/{recipe_id}]
+Get, edit or delete recipe with the specified id
+
+### Get recipe by id [GET]
++ Parameters
+    + recipe_id: `1` (string) - id of the recipe
+
++ Response 200 (application/json)
+```
+{
+    "status": "success",
+    "data": {
+        "id": 1,
+        "name": "tasty fried chicken",
+        "description": "it is tasty and fried and it is chicken",
+        "ingredients": [
+            "fried chicken"
+        ],
+        "image": null,
+        "views": null,
+        "upvotes": 0,
+        "downvotes": 0,
+        "createdAt": "2017-12-02T23:41:24.804Z",
+        "updatedAt": "2017-12-02T23:41:24.804Z",
+        "UserId": 1,
+        "Reviews": []
+    }
+}
+```
+
+### Edit recipe [PUT]
+Edit recipe with specified id. Authorization is required
+
++ name (string) - Name of the recipe
++ description (string) - Description of the recipe
++ ingredients (string) - Ingredients for the recipe, it should be a comma-separated string of ingredients, e.g 'pepper,salt,sauce'
+
++ Request (application/x-www-form-urlencoded)
+    + Headers
+        Access-Token: token
+    + Body
+        name=tasty+fried+cow
+
++ Response 200 (application/json)
+```
+{
+    "status": "success",
+    "data": {
+        "id": 1,
+        "name": "tasty fried cow",
+        "description": "it is tasty and fried and it is chicken",
+        "ingredients": [
+            "fried chicken"
+        ],
+        "image": null,
+        "views": null,
+        "upvotes": 0,
+        "downvotes": 0,
+        "createdAt": "2017-12-02T23:41:24.804Z",
+        "updatedAt": "2017-12-02T23:53:33.401Z",
+        "UserId": 1
+    }
+}
+```
+
+### Delete recipe [DELETE]
+Delete recipe with the specified id. Authorization is required
+
++ Request (application/x-www-form-urlencoded)
+    + Headers
+        Access-Token: token
+
++ Response 200 (application/json)
+```
+{
+    "status": "success",
+    "data": {
+        "message": "Recipe has been successfully deleted"
+    }
+}
+```
+
+## Upvote a recipe [/api/v1/recipes/upvote/{recipe_id}]
+Upvote a recipe. Authorization is required
+
+### Upvote recipe [POST]
++ Parameters
+    + recipe_id: `1` (string) - id of the recipe
+
++ Request (application/x-www-form-urlencoded)
+    + Headers
+        Access-Token: token
+
++ Response 200 (application/json)
+```
+{
+    "status": "success",
+    "data": "Recipe upvoted"
+}
+```
+
+## Downvote a recipe [/api/v1/recipes/downvote/{recipe_id}]
+Downvote a recipe. Authorization is required
+
+### Upvote recipe [POST]
++ Parameters
+    + recipe_id: `1` (string) - id of the recipe
+
++ Request (application/x-www-form-urlencoded)
+    + Headers
+        Access-Token: token
+
++ Response 200 (application/json)
+```
+{
+    "status": "success",
+    "data": "Recipe downvoted"
+}
+```
+
+## Add review for a recipe [/api/v1/recipes/{recipe_id}/reviews]
+Add a review for a recipe. Authorization is required
+
+### Add review for a recipe [POST]
++ review (string) - Review for the recipe
+
++ Parameters
+    + recipe_id: `1` (string) - id of the recipe
+
++ Request (application/x-www-form-urlencoded)
+    + Headers
+        Access-Token: token
+    + Body
+        review=i+love+this+recipe
+
++ Response 201 (application/json)
+```
+{
+    "status": "success",
+    "data": {
+        "id": 1,
+        "review": "i love this recipe",
+        "UserId": 1,
+        "RecipeId": 2,
+        "updatedAt": "2017-12-03T00:26:44.866Z",
+        "createdAt": "2017-12-03T00:26:44.866Z"
+    }
+}
+```
