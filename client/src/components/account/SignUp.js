@@ -22,7 +22,8 @@ class SignUp extends React.Component {
         email: '',
         password: '',
         confirmPassword: ''
-      }
+      },
+      errors: []
     };
     this.onClickSave = this.onClickSave.bind(this);
     this.handleChange = this.handleChange.bind(this);
@@ -61,6 +62,7 @@ class SignUp extends React.Component {
         email={this.state.data.email}
         password={this.state.data.password}
         confirmPassword={this.state.data.confirmPassword}
+        errors={this.props.errors}
       />
     );
   }
@@ -68,7 +70,8 @@ class SignUp extends React.Component {
 
 
 SignUp.propTypes = {
-  signUp: PropTypes.func.isRequired
+  signUp: PropTypes.func.isRequired,
+  errors: PropTypes.any
 };
 
 /**
@@ -79,7 +82,8 @@ SignUp.propTypes = {
  */
 function mapStateToProps(state, ownProps) {
   return {
-    data: state.data
+    data: state.account.data,
+    errors: state.account.errors
   };
 }
 

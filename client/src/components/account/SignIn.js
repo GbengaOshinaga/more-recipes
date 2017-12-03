@@ -73,7 +73,7 @@ SignIn.propTypes = {
  * @returns {object} object
  */
 function mapStateToProps(state, ownProps) {
-  debugger;
+  console.log(state.errors);
   return {
     errors: state.errors
   };

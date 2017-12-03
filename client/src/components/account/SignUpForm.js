@@ -1,11 +1,23 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+import PropTypes, { instanceOf } from 'prop-types';
 import InputField from '../common/InputField';
 import Button from '../common/Button';
 import SocialLoginButtons from './SocialLoginButtons';
 
+/**
+ * Display errors
+ * @param {*} errors
+ * @returns {jsx} errors
+ */
+function listErrors(errors) {
+  if (errors.constructor === Array) {
+    return errors.map((error, index) => <li key={index}>{error}</li>);
+  }
+  return errors;
+}
+
 const SignUpForm = ({
-  onChange, onClickSave, firstName, lastName, email, password, confirmPassword
+  onChange, onClickSave, firstName, lastName, email, password, confirmPassword, errors
 }) => (
   <div>
     <InputField
@@ -51,6 +63,7 @@ const SignUpForm = ({
       materialIcon="send"
       buttonText="Submit"
     />
+    {errors && <ul className="red-text">{listErrors(errors)}</ul>}
     <SocialLoginButtons
       isAMemberText="Already a member?"
       href="signin.html"
@@ -66,7 +79,8 @@ SignUpForm.propTypes = {
   lastName: PropTypes.string.isRequired,
   email: PropTypes.string.isRequired,
   password: PropTypes.string.isRequired,
-  confirmPassword: PropTypes.string.isRequired
+  confirmPassword: PropTypes.string.isRequired,
+  errors: PropTypes.any.isRequired
 };
 
 export default SignUpForm;
