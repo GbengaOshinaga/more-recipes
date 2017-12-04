@@ -10,7 +10,7 @@ export function updateSignInSuccess(response) {
 }
 
 /**
- * Sign up action
+ * Sign up actions
  * @param {*} response
  * @returns {Object} action
  */

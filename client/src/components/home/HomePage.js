@@ -4,7 +4,7 @@ const HomePage = () => (
   <div>
     <div className="navigation">
       <header>
-        <nav className="transparent z-depth-0">                         
+        <nav className="transparent z-depth-0">
           <div className="nav-wrapper">
             <a href="#!" className="brand-logo">More-Recipes</a>
             <a href="#" data-activates="mobile" className="button-collapse">
@@ -18,11 +18,11 @@ const HomePage = () => (
               <li><a href="signin.html">Sign In</a></li>
               <li><a href="signup.html">Sign In</a></li>
             </ul>
-          </div>             
-        </nav>			
-      </header>	
+          </div>
+        </nav>
+      </header>
     </div>
-        
+
     <div className="container">
       <div className="info center-align">
         <h2 className="white-text">Welcome to More-Recipes</h2>
