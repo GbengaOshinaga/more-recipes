@@ -31,7 +31,19 @@ class SignIn extends React.Component {
    * @returns {*} nothing
    */
   onClickSave() {
-    this.props.signIn(this.state.credentials);
+    this.props.signIn(this.state.credentials)
+      .then(() => this.redirect());
+  }
+
+  /**
+   * Redirects to catalog page after successfully signing in
+   * @returns {null} if there are errors
+   */
+  redirect() {
+    if (this.props.errors) {
+      return null;
+    }
+    this.context.router.history.push('/catalog');
   }
 
   /**
@@ -56,6 +68,7 @@ class SignIn extends React.Component {
         email={this.state.credentials.email}
         password={this.state.credentials.password}
         onClickSave={this.onClickSave}
+        errors={this.props.errors}
       />
     );
   }
@@ -63,7 +76,12 @@ class SignIn extends React.Component {
 
 
 SignIn.propTypes = {
-  signIn: PropTypes.func.isRequired
+  signIn: PropTypes.func.isRequired,
+  errors: PropTypes.any
+};
+
+SignIn.contextTypes = {
+  router: PropTypes.object
 };
 
 /**
@@ -73,9 +91,9 @@ SignIn.propTypes = {
  * @returns {object} object
  */
 function mapStateToProps(state, ownProps) {
-  console.log(state.errors);
+  console.log(state.account.errors);
   return {
-    errors: state.errors
+    errors: state.account.errors
   };
 }
 

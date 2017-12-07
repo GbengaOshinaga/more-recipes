@@ -45,8 +45,8 @@ export function signIn(credentials) {
   return function (dispatch) {
     return AccountsApi.signIn(credentials).then(response => response.json())
       .then((response) => {
-        if (response.data.status === 'success') {
-          dispatch(updateSignInSuccess(response.data.token));
+        if (response.status === 'success') {
+          dispatch(updateSignInSuccess({ user: response.data.user, token: response.data.token }));
         } else {
           dispatch(updateSignInFailure(response.data.message || response.data.errors));
         }
@@ -65,8 +65,8 @@ export function signUp(data) {
     return AccountsApi.signUp(data)
       .then(response => response.json())
       .then((response) => {
-        if (response.data.status === 'success') {
-          dispatch(updateSignUpSuccess(response.data.token));
+        if (response.status === 'success') {
+          dispatch(updateSignUpSuccess({ user: response.data.user, token: response.data.token }));
         } else {
           dispatch(updateSignUpFailure(response.data.message || response.data.errors));
         }

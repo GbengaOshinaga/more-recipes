@@ -1,10 +1,9 @@
 import React from 'react';
 import Routes from '../Routes';
+import '../assets/scss/styles.scss';
 
 const App = () => (
-  <div className="container">
-    <Routes />
-  </div>
+  <Routes />
 );
 
 export default App;
