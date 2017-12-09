@@ -20,7 +20,7 @@ function listErrors(errors) {
 const SignUpForm = ({
   onChange, onClickSave, firstName, lastName, email, password, confirmPassword, errors
 }) => (
-  <div>
+  <div className="sign-body">
     <SignInAndSignUpHeader />
     <div className="signup-box">
       <InputField

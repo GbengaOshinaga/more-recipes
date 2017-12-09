@@ -7,14 +7,14 @@ import initialState from './initialState';
  * @param {*} action
  * @returns {Object} new state
  */
-export default function accountReducer(state = initialState, action) {
-  const token = action.response;
+export default function accountReducer(state = initialState.account, action) {
+  const { response } = action;
   const { errors } = action;
   switch (action.type) {
     case SIGN_IN_SUCCESS:
-      return { ...state.token, token };
+      return { ...state, ...response };
     case SIGN_UP_SUCCESS:
-      return { ...state.token, token };
+      return { ...state, ...response };
     case SIGN_IN_FAILURE:
       return { ...state.errors, errors };
     case SIGN_UP_FAILURE:

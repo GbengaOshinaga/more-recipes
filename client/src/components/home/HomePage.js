@@ -1,9 +1,9 @@
 import React from 'react';
-import { CatalogHeader } from '../common/Header';
+import { IndexHeader } from '../common/Header';
 
 const HomePage = () => (
   <div className="index-body">
-    <CatalogHeader />
+    <IndexHeader />
     <div className="container">
       <div className="info center-align">
         <h2 className="white-text">Welcome to More-Recipes</h2>

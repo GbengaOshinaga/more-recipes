@@ -40,10 +40,10 @@ class SignIn extends React.Component {
    * @returns {null} if there are errors
    */
   redirect() {
-    if (this.props.errors) {
+    if (this.props.errors.length > 0) {
       return null;
     }
-    this.context.router.history.push('/catalog');
+    this.context.router.history.push('/my_recipes');
   }
 
   /**
@@ -91,7 +91,6 @@ SignIn.contextTypes = {
  * @returns {object} object
  */
 function mapStateToProps(state, ownProps) {
-  console.log(state.account.errors);
   return {
     errors: state.account.errors
   };

@@ -1,6 +1,9 @@
 
 export default {
-  user: {},
-  token: '',
-  errors: []
+  account: {
+    isLoggedIn: false,
+    user: {},
+    token: '',
+    errors: []
+  }
 };

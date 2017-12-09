@@ -1,3 +1,4 @@
+import { sessionService } from 'redux-react-session';
 import { SIGN_IN_SUCCESS, SIGN_UP_SUCCESS, SIGN_IN_FAILURE, SIGN_UP_FAILURE } from './actions';
 import AccountsApi from '../api/AccountsApi';
 /**
@@ -46,7 +47,9 @@ export function signIn(credentials) {
     return AccountsApi.signIn(credentials).then(response => response.json())
       .then((response) => {
         if (response.status === 'success') {
-          dispatch(updateSignInSuccess({ user: response.data.user, token: response.data.token }));
+          sessionService.saveSession(response.data.token);
+          sessionService.saveUser(response.data.user);
+          dispatch(updateSignInSuccess({isLoggedIn: true, user: response.data.user, token: response.data.token }));
         } else {
           dispatch(updateSignInFailure(response.data.message || response.data.errors));
         }
@@ -66,7 +69,7 @@ export function signUp(data) {
       .then(response => response.json())
       .then((response) => {
         if (response.status === 'success') {
-          dispatch(updateSignUpSuccess({ user: response.data.user, token: response.data.token }));
+          dispatch(updateSignUpSuccess({isLoggedIn: true, user: response.data.user, token: response.data.token }));
         } else {
           dispatch(updateSignUpFailure(response.data.message || response.data.errors));
         }
