@@ -18,10 +18,11 @@ module.exports = {
         type: Sequelize.ARRAY(Sequelize.STRING)
       },
       image: {
-        type: Sequelize.STRING
+        type: Sequelize.TEXT
       },
       views: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        defaultValue: 0
       },
       upvotes: {
         type: Sequelize.INTEGER,

@@ -5,6 +5,18 @@ import Button from '../common/Button';
 import SocialLoginButtons from './SocialLoginButtons';
 import { SignInAndSignUpHeader } from '../common/Header';
 
+const propTypes = {
+  onChange: PropTypes.func.isRequired,
+  email: PropTypes.string.isRequired,
+  password: PropTypes.string.isRequired,
+  onClickSave: PropTypes.func.isRequired,
+  errors: PropTypes.any
+};
+
+const defaultProps = {
+  errors: []
+};
+
 /**
  * Display errors
  * @param {*} errors
@@ -17,50 +29,52 @@ function listErrors(errors) {
   return errors;
 }
 
-const SignInForm = ({
+/**
+ * Functional component for signin form
+ * @param {*} props
+ * @returns {*} jsx
+ */
+function SignInForm({
   onChange, email, password, onClickSave, errors
-}) => (
-  <div className="sign-body">
-    <SignInAndSignUpHeader />
-    <div className="signin-box">
-      <InputField
-        id="email"
-        type="email"
-        onChange={onChange}
-        value={email}
-        label="Email Address"
-      />
-      <InputField
-        id="password"
-        type="password"
-        onChange={onChange}
-        value={password}
-        label="Password"
-      />
-      <Button
-        onClick={onClickSave}
-        className="btn waves-effect waves-light red darken-2"
-        type="submit"
-        name="action"
-        materialIcon="arrow_forward"
-        buttonText="Sign In"
-      />
-      {errors && <ul className="red-text">{listErrors(errors)}</ul>}
-      <SocialLoginButtons
-        isAMemberText="Not a member?"
-        href="/signup"
-        hrefText="Sign Up"
-      />
+}) {
+  return (
+    <div className="sign-body">
+      <SignInAndSignUpHeader />
+      <div className="signin-box">
+        <InputField
+          id="email"
+          type="email"
+          onChange={onChange}
+          value={email}
+          label="Email Address"
+        />
+        <InputField
+          id="password"
+          type="password"
+          onChange={onChange}
+          value={password}
+          label="Password"
+        />
+        <Button
+          onClick={onClickSave}
+          className="btn waves-effect waves-light red darken-2"
+          type="submit"
+          name="action"
+          materialIcon="arrow_forward"
+          buttonText="Sign In"
+        />
+        {errors && <ul className="red-text">{listErrors(errors)}</ul>}
+        <SocialLoginButtons
+          isAMemberText="Not a member?"
+          href="/signup"
+          hrefText="Sign Up"
+        />
+      </div>
     </div>
-  </div>
-);
+  );
+}
 
-SignInForm.propTypes = {
-  onChange: PropTypes.func.isRequired,
-  email: PropTypes.string.isRequired,
-  password: PropTypes.string.isRequired,
-  onClickSave: PropTypes.func.isRequired,
-  errors: PropTypes.any
-};
+SignInForm.propTypes = propTypes;
+SignInForm.defaultProps = defaultProps;
 
 export default SignInForm;

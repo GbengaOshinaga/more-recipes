@@ -3,8 +3,37 @@ import PropTypes from 'prop-types';
 import { Header } from '../common/Header';
 import { AddModal } from './Modal';
 
+const cardPropTypes = {
+  image: PropTypes.string,
+  recipeName: PropTypes.string.isRequired,
+  recipeDescription: PropTypes.string.isRequired
+};
 
-const Page = ({ isLoggedIn, firstName }) => (
+const cardDefaultProps = {
+  image: ''
+};
+
+const pagePropTypes = {
+  isLoggedIn: PropTypes.bool.isRequired,
+  firstName: PropTypes.string,
+  onChipChange: PropTypes.func.isRequired,
+  onInputChange: PropTypes.func.isRequired,
+  inputValue: PropTypes.string.isRequired,
+  canvasId: PropTypes.string.isRequired,
+  descValue: PropTypes.string.isRequired,
+  onClickSave: PropTypes.func.isRequired,
+  onFileChange: PropTypes.func.isRequired,
+  inputRef: PropTypes.func.isRequired
+};
+
+const pageDefaultProps = {
+  firstName: ''
+};
+
+const Page = ({
+  isLoggedIn, firstName, onChipChange, onInputChange, inputValue, 
+  canvasId, descValue, onClickSave, onFileChange, inputRef
+}) => (
   <div>
     <Header
       isLoggedIn={isLoggedIn}
@@ -12,7 +41,16 @@ const Page = ({ isLoggedIn, firstName }) => (
     />
     <div className="container">
       <a className="btn-floating btn-large waves-effect waves-light teal lighten-1 right modal-trigger pulse" href="#add-modal"><i className="material-icons">add</i></a>
-      <AddModal />
+      <AddModal
+        onChipChange={onChipChange}
+        onInputChange={onInputChange}
+        inputValue={inputValue}
+        canvasId={canvasId}
+        descValue={descValue}
+        onClickSave={onClickSave}
+        onFileChange={onFileChange}
+        inputRef={inputRef}
+      />
       <div className="favorited-recipes">
         <h4 className="center-align">My Recipes</h4>
         <hr />
@@ -48,15 +86,10 @@ const Card = ({ image, recipeName, recipeDescription }) => (
   </div>
 );
 
-Card.propTypes = {
-  image: PropTypes.string,
-  recipeName: PropTypes.string.isRequired,
-  recipeDescription: PropTypes.string.isRequired
-};
+Card.propTypes = cardPropTypes;
+Card.defaultProps = cardDefaultProps;
 
-Page.propTypes = {
-  isLoggedIn: PropTypes.bool.isRequired,
-  firstName: PropTypes.string
-};
+Page.propTypes = pagePropTypes;
+Page.defaultProps = pageDefaultProps;
 
 export default Page;

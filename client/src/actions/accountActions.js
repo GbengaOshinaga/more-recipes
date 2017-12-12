@@ -2,7 +2,7 @@ import { sessionService } from 'redux-react-session';
 import { SIGN_IN_SUCCESS, SIGN_UP_SUCCESS, SIGN_IN_FAILURE, SIGN_UP_FAILURE } from './actions';
 import AccountsApi from '../api/AccountsApi';
 /**
- * Sign in action
+ * Updates reducer if sign in is successful
  * @param {*} response
  * @returns {Object} action
  */
@@ -11,7 +11,7 @@ export function updateSignInSuccess(response) {
 }
 
 /**
- * Sign up actions
+ * Updates reducer if sign up is successful
  * @param {*} response
  * @returns {Object} action
  */
@@ -44,7 +44,8 @@ export function updateSignInFailure(errors) {
  */
 export function signIn(credentials) {
   return function (dispatch) {
-    return AccountsApi.signIn(credentials).then(response => response.json())
+    return AccountsApi.signIn(credentials)
+      .then(response => response.json())
       .then((response) => {
         if (response.status === 'success') {
           sessionService.saveSession(response.data.token);

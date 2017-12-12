@@ -4,6 +4,11 @@ import { connect } from 'react-redux';
 import { signIn } from '../../actions/accountActions';
 import SignInForm from './SignInForm';
 
+const propTypes = {
+  signIn: PropTypes.func.isRequired,
+  errors: PropTypes.any
+};
+
 /**
  * Class component for signing in
  */
@@ -75,10 +80,7 @@ class SignIn extends React.Component {
 }
 
 
-SignIn.propTypes = {
-  signIn: PropTypes.func.isRequired,
-  errors: PropTypes.any
-};
+SignIn.propTypes = propTypes;
 
 SignIn.contextTypes = {
   router: PropTypes.object

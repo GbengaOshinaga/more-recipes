@@ -13,7 +13,8 @@
       <div id="fb-root"></div>
     <div id='app'></div>
     <!-- <fb:login-button scope="public_profile,email" onlogin="checkLoginState();">
-    </fb:login-button> -->
+	</fb:login-button> -->
+	<img id="test" />
     <script src="/bundle.js"></script>
     <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
@@ -130,6 +131,28 @@
 	});
 
 });
+
+// function loadImage() {
+//   const canvas = document.getElementById('imageURL');
+//   const context = canvas.getContext('2d');
+
+//   const file = this.files[0];
+//   const fileReader = new FileReader();
+//   fileReader.onload = function (e) {
+//     const img = new Image(300, 200);
+//     img.addEventListener('load', () => {
+//       context.drawImage(img, 0, 0, 300, 200);
+//     });
+// 	img.src = e.target.result;
+//   };
+//   fileReader.readAsDataURL(file);
+//   console.log(canvas.toDataURL());
+//   const c =document.getElementById("test");
+//   c.src = canvas.toDataURL();
+// }
+
+//   document.getElementById('fileUpload').addEventListener('change', loadImage, false);
+
     </script>
   </body>
 </html>

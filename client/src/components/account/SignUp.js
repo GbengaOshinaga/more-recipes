@@ -4,6 +4,15 @@ import { connect } from 'react-redux';
 import { signUp } from '../../actions/accountActions';
 import SignUpForm from './SignUpForm';
 
+const propTypes = {
+  signUp: PropTypes.func.isRequired,
+  errors: PropTypes.any
+};
+
+const defaultProps = {
+  errors: []
+};
+
 /**
  * Class component for signing in
  */
@@ -69,10 +78,8 @@ class SignUp extends React.Component {
 }
 
 
-SignUp.propTypes = {
-  signUp: PropTypes.func.isRequired,
-  errors: PropTypes.any
-};
+SignUp.propTypes = propTypes;
+SignUp.defaultProps = defaultProps;
 
 /**
  * mapStateToProps

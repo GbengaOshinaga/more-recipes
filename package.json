@@ -52,6 +52,8 @@
     "jquery": "^3.2.1",
     "jsend": "^1.0.2",
     "jsonwebtoken": "^8.1.0",
+    "material-ui": "^0.20.0",
+    "material-ui-chip-input": "^0.18.3",
     "mocha": "^4.0.1",
     "morgan": "^1.9.0",
     "nyc": "^11.2.1",
