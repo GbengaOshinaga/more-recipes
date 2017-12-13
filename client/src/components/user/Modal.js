@@ -42,6 +42,7 @@ export function AddModal({
             onChange={onInputChange}
             value={inputValue}
             label="Recipe Name"
+            dataError="Recipe Name is required"
           />
           <div className="row">
             <TextArea

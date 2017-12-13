@@ -47,6 +47,7 @@ function SignInForm({
           onChange={onChange}
           value={email}
           label="Email Address"
+          dataError="Invalid Email Address"
         />
         <InputField
           id="password"

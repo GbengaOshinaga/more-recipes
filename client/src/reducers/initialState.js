@@ -6,7 +6,7 @@ export default {
     token: '',
     errors: []
   },
-  userRecipes: {
+  userRecipes: [{
     id: 0,
     name: '',
     description: '',
@@ -17,5 +17,5 @@ export default {
     createdAt: '',
     updatedAt: '',
     UserId: 0
-  }
+  }]
 };

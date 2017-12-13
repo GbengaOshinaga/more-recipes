@@ -50,6 +50,7 @@ function SignUpForm({
           onChange={onChange}
           value={firstName}
           label="First Name"
+          dataError="First Name is required"
         />
         <InputField
           id="lastName"
@@ -57,6 +58,7 @@ function SignUpForm({
           onChange={onChange}
           value={lastName}
           label="Last Name"
+          dataError="Last Name is required"
         />
         <InputField
           id="email"
@@ -64,6 +66,7 @@ function SignUpForm({
           onChange={onChange}
           value={email}
           label="Email Address"
+          dataError="Invalid Email Address"
         />
         <InputField
           id="password"
@@ -71,6 +74,7 @@ function SignUpForm({
           onChange={onChange}
           value={password}
           label="Password"
+          dataError="Password is required"
         />
         <InputField
           id="confirmPassword"
@@ -78,6 +82,7 @@ function SignUpForm({
           onChange={onChange}
           value={confirmPassword}
           label="Confirm Password"
+          dataError="Confirm Password is required"
         />
         <Button
           onClick={onClickSave}

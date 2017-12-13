@@ -6,7 +6,12 @@ const propTypes = {
   type: PropTypes.string.isRequired,
   onChange: PropTypes.func.isRequired,
   value: PropTypes.string.isRequired,
-  label: PropTypes.string.isRequired
+  label: PropTypes.string.isRequired,
+  dataError: PropTypes.string
+};
+
+const defaultProps = {
+  dataError: ''
 };
 
 /**
@@ -15,18 +20,19 @@ const propTypes = {
  * @returns {*} jsx
  */
 function InputField({
-  id, type, onChange, value, label
+  id, type, onChange, value, label, dataError
 }) {
   return (
     <div className="row">
       <div className="input-field col s12">
         <input id={id} type={type} className="validate" onChange={onChange} value={value} />
-        <label htmlFor={id}>{label}</label>
+        <label htmlFor={id} data-error={dataError}>{label}</label>
       </div>
     </div>
   );
 }
 
 InputField.propTypes = propTypes;
+InputField.defaultProps = defaultProps;
 
 export default InputField;
