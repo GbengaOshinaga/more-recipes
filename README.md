@@ -5,32 +5,41 @@
 
 Platform for users to share the awesome and exciting recipe ideas they have invented or learnt.
 
-### Template Built With
+### Built With
 
- - Materialize CSS
-
-### Server Built With
-
+#### Back-End
  - Node JS
  - Express
+ - Postgresql Database
+ - Sequelize ORM
+
+ #### Front-End
+ - Materialize CSS
+ - SASS
 
 ### Test Framework
  - Mocha
  - Chai
  
-### Site URL
+### Template URL
 
 https://gbengaoshinaga.github.io/more-recipes/template/
 
-### Server Side
- - Clone repository
+### Getting Started With the API
+ - Clone the repository
   ```
   git clone https://github.com/GbengaOshinaga/more-recipes
+  ```
+ - Change directory into more-recipes
+  ```
+  cd more-recipes
   ```
  - Install dependecies
   ```
   npm install
   ```
+ - Setup a postgresql database and name it 'more_recipes'
+
  - Run the server
   ```
   npm run start

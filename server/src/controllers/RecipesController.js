@@ -100,7 +100,7 @@ export default class RecipesController {
    * Deletes specified recipe
    * @param {*} req
    * @param {*} res
-   * @returns {Recipes} deleted recipe
+   * @returns {*} message 
    */
   deleteRecipe(req, res) {
     db.Recipes.findById(req.params.id)
