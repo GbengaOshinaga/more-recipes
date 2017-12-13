@@ -18,8 +18,7 @@
     "build": "babel server/src -d server/dist",
     "heroku-postbuild": "npm run build",
     "start": "node server/dist/app.js",
-    "coverage": "nyc report --reporter=text-lcov | coveralls",
-    "coveralls": "nyc npm test&& nyc report --reporter=text-lcov | coveralls"
+    "coveralls": "nyc npm run test:dev&& nyc report --reporter=text-lcov | coveralls"
   },
   "author": "Gbenga Oshinaga",
   "license": "ISC",
