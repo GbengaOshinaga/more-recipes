@@ -31,7 +31,7 @@ const pageDefaultProps = {
 };
 
 const Page = ({
-  isLoggedIn, firstName, onChipChange, onInputChange, inputValue, 
+  isLoggedIn, firstName, onChipChange, onInputChange, inputValue,
   canvasId, descValue, onClickSave, onFileChange, inputRef
 }) => (
   <div>
@@ -40,7 +40,12 @@ const Page = ({
       firstName={firstName}
     />
     <div className="container">
-      <a className="btn-floating btn-large waves-effect waves-light teal lighten-1 right modal-trigger pulse" href="#add-modal"><i className="material-icons">add</i></a>
+      <a
+        className="btn-floating btn-large waves-effect waves-light teal lighten-1 right modal-trigger pulse"
+        href="#add-modal"
+      >
+        <i className="material-icons">add</i>
+      </a>
       <AddModal
         onChipChange={onChipChange}
         onInputChange={onInputChange}
