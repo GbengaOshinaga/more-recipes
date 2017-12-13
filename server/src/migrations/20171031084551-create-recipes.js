@@ -49,7 +49,5 @@ module.exports = {
       }
     });
   },
-  down: (queryInterface, Sequelize) => {
-    return queryInterface.dropTable('Recipes');
-  }
+  down: queryInterface => queryInterface.dropTable('Recipes')
 };
