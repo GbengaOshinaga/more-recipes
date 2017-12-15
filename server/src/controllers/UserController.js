@@ -52,15 +52,27 @@ export default class UserController {
     db.User.findOne({ where: { email } })
       .then((user) => {
         if (!user) {
-          return res.status(404).jsend.fail('Invalid Credentials');
+          return res.status(404).jsend.fail({ message: 'Invalid Credentials' });
         }
         bcrypt.compare(password, user.password)
           .then((result) => {
             if (!result) {
-              return res.status(400).jsend.fail('Invalid Credentials');
+              return res.status(400).jsend.fail({ message: 'Invalid Credentials' });
             }
             const accessToken = jwt.sign({ userId: user.id, email: user.email }, 'mysecret');
-            return res.status(200).jsend.success({ token: accessToken });
+            return res.status(200).jsend.success({
+              user: {
+                id: user.id,
+                firstName: user.firstName,
+                lastName: user.lastName,
+                email: user.email,
+                updatedAt: user.updatedAt,
+                createdAt: user.createdAt,
+                profilePic: user.profilePic,
+                about: user.about
+              },
+              token: accessToken
+            });
           })
           .catch(error => res.status(400).jsend.error(error));
       })

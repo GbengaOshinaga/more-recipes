@@ -20,8 +20,8 @@ export default class RecipesController {
       image: req.body.image,
       ingredients: ingredientsArray
     })
-      .then(recipe => res.status(201).jsend.success(recipe))
-      .catch(error => res.status(400).jsend.error(error));
+      .then(recipe => res.status(201).jsend.success({ recipe }))
+      .catch(() => res.status(400).jsend.error('An error occured'));
   }
 
   /**
@@ -36,15 +36,15 @@ export default class RecipesController {
         group: 'id',
         order: db.sequelize.literal(`max(${req.query.sort}) ${req.query.order.toUpperCase()}`)
       })
-        .then(recipes => res.status(200).jsend.success(recipes))
-        .catch(error => res.status(400).jsend.error(error));
+        .then(recipes => res.status(200).jsend.success({ recipes }))
+        .catch(error => res.status(400).jsend.error({ error }));
     } else {
       db.Recipes.findAll({
         include: [{
           model: db.Reviews,
         }]
       })
-        .then(recipes => res.status(200).jsend.success(recipes))
+        .then(recipes => res.status(200).jsend.success({ recipes }))
         .catch(error => res.status(400).jsend.error(error));
     }
   }
@@ -100,7 +100,7 @@ export default class RecipesController {
    * Deletes specified recipe
    * @param {*} req
    * @param {*} res
-   * @returns {*} message 
+   * @returns {*} message
    */
   deleteRecipe(req, res) {
     db.Recipes.findById(req.params.id)
