@@ -13,11 +13,23 @@ export default class RecipeValidator {
    */
   static validateRecipe(req, res, next) {
     const messages = [];
+
+    const isEmpty = (str) => {
+      const regexp = /^[a-zA-Z0-9-',? ]*$/;
+      return (regexp.test(str) || !str.length);
+    };
+
     if (!req.body.name) {
       messages.push('Recipe Name is required');
     }
+    if (!req.body.name || !isEmpty(req.body.name)) {
+      messages.push('Recipe Name cannot be empty or contain illegal characters');
+    }
     if (!req.body.description) {
       messages.push('Recipe description is required');
+    }
+    if (!req.body.description || !isEmpty(req.body.description)) {
+      messages.push('Recipe description cannot be empty or contain illegal characters');
     }
     if (!req.body.ingredients) {
       messages.push('Ingredients are required');

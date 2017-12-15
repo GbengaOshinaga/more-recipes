@@ -134,16 +134,16 @@ describe('/api/v1/recipes', () => {
 
   it('it should post a review for a recipe', (done) => {
     chai.request(app)
-    .post('/api/v1/recipes/1/reviews')
-    .set('Access-Token', firstToken)
-    .send({
-      review: 'I love this recipe'
-    })
-    .end((err,res) => {
-      expect(res).to.have.status(201);
-      done();
-    })
-  })
+      .post('/api/v1/recipes/1/reviews')
+      .set('Access-Token', firstToken)
+      .send({
+        review: 'I love this recipe'
+      })
+      .end((err, res) => {
+        expect(res).to.have.status(201);
+        done();
+      });
+  });
 
   it('it should post recipe', (done) => {
     chai.request(app)
@@ -311,6 +311,17 @@ describe('/api/v1/recipes', () => {
       });
   });
 
+  it('it should return error when deleting a recipe user did not create', (done) => {
+    chai.request(app)
+      .del('/api/v1/recipes/2')
+      .set('Access-Token', secondToken)
+      .end((err, res) => {
+        expect(res).to.have.status(401);
+        expect(res.body.data.message).to.equal('You are not authorized to delete this recipe');
+        done();
+      });
+  });
+
   it('it should get user favourites recipes', (done) => {
     chai.request(app)
       .get('/api/v1/users/recipes/favourites')
@@ -323,24 +334,13 @@ describe('/api/v1/recipes', () => {
       });
   });
 
-  it('it should delete user favourite recipe', (done) => {
+  it.skip('it should delete user favourite recipe', (done) => {
     chai.request(app)
       .del('/api/v1/users/recipes/1/favourites')
       .set('Access-Token', firstToken)
       .end((err, res) => {
         expect(res).to.have.status(200);
         expect(res.body.data.message).to.equal('Favourite deleted');
-        done();
-      });
-  });
-
-  it('it should return error when deleting a recipe user did not create', (done) => {
-    chai.request(app)
-      .del('/api/v1/recipes/2')
-      .set('Access-Token', secondToken)
-      .end((err, res) => {
-        expect(res).to.have.status(401);
-        expect(res.body.data.message).to.equal('You are not authorized to delete this recipe');
         done();
       });
   });
