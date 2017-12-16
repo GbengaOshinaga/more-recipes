@@ -13,15 +13,27 @@ export default class RecipesController {
   addRecipe(req, res) {
     const ingredientsArray = req.body.ingredients.split(',');
 
-    db.Recipes.create({
-      name: req.body.name,
-      description: req.body.description,
-      UserId: req.user.userId,
-      image: req.body.image,
-      ingredients: ingredientsArray
+    db.Recipes.findOne({
+      where: {
+        UserId: req.user.userId,
+        name: req.body.name
+      }
     })
-      .then(recipe => res.status(201).jsend.success({ recipe }))
-      .catch(() => res.status(400).jsend.error('An error occured'));
+      .then((existingRecipe) => {
+        if (existingRecipe) {
+          return res.status(400).jsend.fail({ message: 'You have already created this recipe' });
+        }
+        db.Recipes.create({
+          name: req.body.name,
+          description: req.body.description,
+          UserId: req.user.userId,
+          image: req.body.image,
+          ingredients: ingredientsArray
+        })
+          .then(recipe => res.status(201).jsend.success({ recipe }))
+          .catch(() => res.status(400).jsend.error('An error occured'));
+      })
+      .catch(error => res.status(400).jsend.error(error));
   }
 
   /**

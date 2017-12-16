@@ -45,7 +45,8 @@ export default class VotesController {
       }
     })
       .then((vote) => {
-        // If user has voted already and the value of the vote is the same as the requested one
+        // If user has voted already and the value of the vote
+        // is the same as the requested one, remove the vote
         if (vote && vote.vote === valueOfVote) {
           vote.destroy()
             .then(() => {
