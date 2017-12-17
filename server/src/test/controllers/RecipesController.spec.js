@@ -96,6 +96,21 @@ describe('Users can perform actions on recipe', () => {
       });
   });
 
+  it('it should return unknown recipe', (done) => {
+    const name = faker.name.findName();
+    chai.request(app)
+      .put('/api/v1/recipes/99')
+      .set('Access-Token', token)
+      .send({
+        name
+      })
+      .end((err, res) => {
+        expect(res).to.have.status(404);
+        expect(res.body.data.message).to.equal('The Recipe does not exist');
+        done();
+      });
+  });
+
   it('should fail when editing recipe user did not create', (done) => {
     const name = faker.name.findName();
     chai.request(app)

@@ -44,6 +44,8 @@ export default (app) => {
   // Get user by id
   app.get('/api/v1/user/:id', RecipeValidator.validateID, (req, res) => { UserController.getUserById(req, res); });
 
+  app.delete('/api/v1/user/:id', AuthValidator.authenticate, RecipeValidator.validateID, (req, res) => { UserController.deleteUser(req, res); });
+  
   // Add a favourite recipe for a user
   app.post('/api/v1/users/recipes/:id/favourites', AuthValidator.authenticate, (req, res) => { favourites.addFavourite(req, res); });
 
