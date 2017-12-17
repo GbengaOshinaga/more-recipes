@@ -3,7 +3,6 @@ import chaiHttp from 'chai-http';
 import faker from 'faker';
 
 import app from '../../app';
-import db from '../../models';
 
 const { expect } = chai;
 chai.use(chaiHttp);
@@ -24,8 +23,6 @@ describe('Users can signup, signin, and modify data', () => {
         confirmPassword: 'iamjohngates'
       })
       .end((err, res) => {
-        console.log(firstName);
-        console.log(res.body);
         expect(res).to.have.status(201);
         expect(res.body.status).to.equal('success');
         expect(res.body.data.user.firstName).to.equal(firstName);

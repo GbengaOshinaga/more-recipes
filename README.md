@@ -104,7 +104,7 @@ https://gbengaoshinaga.github.io/more-recipes/template/
 #### Deletes recipe - ```DELETE /api/v1/recipes/{recipe_id}```
  Requires authentication. User can only delete a recipe they created
 
-#### Add review for a recipe - ```POST /api/v1/recipes/{recipe_id}/reviews
+#### Add review for a recipe - ```POST /api/v1/recipes/{recipe_id}/reviews```
  Requires authentication
 + review (string) - Review
 
