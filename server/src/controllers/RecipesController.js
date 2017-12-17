@@ -50,6 +50,8 @@ export default class RecipesController {
       })
         .then(recipes => res.status(200).jsend.success({ recipes }))
         .catch(error => res.status(400).jsend.error({ error }));
+    } else if (req.query.from && req.query.to) {
+      this.paginateRecipes(req.query.from, req.query.to, res);
     } else {
       db.Recipes.findAll({
         include: [{
@@ -144,6 +146,29 @@ export default class RecipesController {
       RecipeId: req.params.id
     })
       .then(review => res.status(201).jsend.success({ review }))
+      .catch(error => res.status(400).jsend.error(error));
+  }
+
+  /**
+   * Search for recipes
+   * @param {*} req
+   * @param {*} res
+   * @returns {*} res
+   */
+  searchRecipes(req, res) {
+
+  }
+
+  /**
+   * Paginalte recipes
+   * @param {*} offset
+   * @param {*} limit
+   * @param {*} res
+   * @returns {*} res
+   */
+  paginateRecipes(offset, limit, res) {
+    db.Recipes.findAll({ offset, limit })
+      .then(recipes => res.status(200).jsend.success({ recipes }))
       .catch(error => res.status(400).jsend.error(error));
   }
 }

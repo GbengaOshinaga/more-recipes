@@ -63,20 +63,6 @@ export default class RecipeValidator {
   }
 
   /**
-   * Checks if any value is provided for edit
-   * @param {*} req
-   * @param {*} res
-   * @param {*} next
-   * @returns {*} res
-   */
-  static validateInput(req, res, next) {
-    if (Object.keys(req.body).length === 0) {
-      return res.status(400).jsend.fail({ error: 'You did not provide any value for updating' });
-    }
-    next();
-  }
-
-  /**
    * Validates query params
    * @param {*} req
    * @param {*} res
@@ -98,6 +84,18 @@ export default class RecipeValidator {
       }
       if (req.query.order.toUpperCase() !== 'ASC' && req.query.order.toUpperCase() !== 'DESC') {
         messages.push('order query must be asc or desc');
+      }
+    }
+
+    if (req.query.from && !req.query.to) {
+      messages.push('to query is required if from query is passed');
+    }
+    if (!req.query.from && req.query.to) {
+      messages.push('from query is required if to query is passed');
+    }
+    if (req.query.from && req.query.to) {
+      if (isNaN(req.query.from) && isNaN(req.query.to)) {
+        messages.push('from and to query must be numbers');
       }
     }
     if (messages.length > 0) {

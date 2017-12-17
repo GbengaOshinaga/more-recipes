@@ -51,6 +51,24 @@ describe('UserValidator validates user inputs', () => {
       });
   });
 
+  it('should return errors when illegal characters are inputed', (done) => {
+    chai.request(app)
+      .post('/api/v1/users/signup')
+      .send({
+        firstName: '%$#@first',
+        email: faker.internet.email(),
+        lastName: '%name&',
+        password: 'iamjohngates',
+        confirmPassword: 'iamjohngates'
+      })
+      .end((err, res) => {
+        expect(res).to.have.status(400);
+        expect(res.body.data.errors).to.be.an('array');
+        expect(res.body.data.errors.length).to.equal(2);
+        done();
+      });
+  });
+
   it('should return errors', (done) => {
     chai.request(app)
       .post('/api/v1/users/signin')

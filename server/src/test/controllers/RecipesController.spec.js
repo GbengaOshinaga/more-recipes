@@ -10,6 +10,8 @@ import db from '../../models';
 const { expect } = chai;
 chai.use(chaiHttp);
 
+let userId;
+
 describe('Users can perform actions on recipe', () => {
   let token;
   let token2;
@@ -21,6 +23,7 @@ describe('Users can perform actions on recipe', () => {
       email: faker.internet.email(),
       password: await bcrypt.hash('password', 10)
     });
+    userId = user.id;
     token = jwt.sign({ userId: user.id, email: user.email }, 'mysecret');
 
     const user2 = await db.User.create({
@@ -181,6 +184,77 @@ describe('Users can perform actions on recipe', () => {
       .end((err, res) => {
         expect(res).to.have.status(404);
         expect(res.body.data.message).to.equal('The Recipe does not exist');
+        done();
+      });
+  });
+});
+
+describe('Pagination', () => {
+  before(async () => {
+    db.Recipes.bulkCreate([
+      {
+        name: faker.name.findName(),
+        description: faker.lorem.sentence(),
+        UserId: userId,
+        ingredients: ['ingredient1', 'ingredient2']
+      },
+      {
+        name: faker.name.findName(),
+        description: faker.lorem.sentence(),
+        UserId: userId,
+        ingredients: ['ingredient1', 'ingredient2']
+      },
+      {
+        name: faker.name.findName(),
+        description: faker.lorem.sentence(),
+        UserId: userId,
+        ingredients: ['ingredient1', 'ingredient2']
+      }, {
+        name: faker.name.findName(),
+        description: faker.lorem.sentence(),
+        UserId: userId,
+        ingredients: ['ingredient1', 'ingredient2']
+      }, {
+        name: faker.name.findName(),
+        description: faker.lorem.sentence(),
+        UserId: userId,
+        ingredients: ['ingredient1', 'ingredient2']
+      }, {
+        name: faker.name.findName(),
+        description: faker.lorem.sentence(),
+        UserId: userId,
+        ingredients: ['ingredient1', 'ingredient2']
+      }, {
+        name: faker.name.findName(),
+        description: faker.lorem.sentence(),
+        UserId: userId,
+        ingredients: ['ingredient1', 'ingredient2']
+      }, {
+        name: faker.name.findName(),
+        description: faker.lorem.sentence(),
+        UserId: userId,
+        ingredients: ['ingredient1', 'ingredient2']
+      }, {
+        name: faker.name.findName(),
+        description: faker.lorem.sentence(),
+        UserId: userId,
+        ingredients: ['ingredient1', 'ingredient2']
+      }, {
+        name: faker.name.findName(),
+        description: faker.lorem.sentence(),
+        UserId: userId,
+        ingredients: ['ingredient1', 'ingredient2']
+      }
+    ]);
+  });
+
+  it('should return only five recipes', (done) => {
+    chai.request(app)
+      .get('/api/v1/recipes?from=0&to=5')
+      .end((err, res) => {
+        expect(res).to.have.status(200);
+        expect(res.body.data.recipes).to.be.an('array');
+        expect(res.body.data.recipes.length).to.equal(5);
         done();
       });
   });

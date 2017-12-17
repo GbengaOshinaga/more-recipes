@@ -99,7 +99,6 @@ export default class UsersValidator {
       if (Object.keys(req.body).length !== 0) {
         return res.status(400).jsend.fail({ error: `${Object.keys(req.body)} are not valid attributes` });
       }
-      return res.status(400).jsend.fail({ error: 'You can not provide an empty value' });
     }
     next();
   }

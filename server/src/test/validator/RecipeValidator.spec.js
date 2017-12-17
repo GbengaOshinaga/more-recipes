@@ -80,6 +80,39 @@ describe('RecipeValidator validates recipe inputs', () => {
       });
   });
 
+  it('should require to parameter', (done) => {
+    chai.request(app)
+      .get('/api/v1/recipes?from=0')
+      .end((err, res) => {
+        expect(res).to.have.status(400);
+        expect(res.body.data.errors).to.be.an('array');
+        expect(res.body.data.errors[0]).to.equal('to query is required if from query is passed');
+        done();
+      });
+  });
+
+  it('should require from parameter', (done) => {
+    chai.request(app)
+      .get('/api/v1/recipes?to=asc')
+      .end((err, res) => {
+        expect(res).to.have.status(400);
+        expect(res.body.data.errors).to.be.an('array');
+        expect(res.body.data.errors[0]).to.equal('from query is required if to query is passed');
+        done();
+      });
+  });
+
+  it('should return error if params are not numbers', (done) => {
+    chai.request(app)
+      .get('/api/v1/recipes?from=nan&to=nan')
+      .end((err, res) => {
+        expect(res).to.have.status(400);
+        expect(res.body.data.errors).to.be.an('array');
+        expect(res.body.data.errors[0]).to.equal('from and to query must be numbers');
+        done();
+      });
+  });
+
   it('should require correct sort parameter', (done) => {
     chai.request(app)
       .get('/api/v1/recipes?sort=vote&order=asc')

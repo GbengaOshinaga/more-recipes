@@ -24,7 +24,7 @@ export default (app) => {
   app.post('/api/v1/recipes/', AuthValidator.authenticate, RecipeValidator.validateRecipe, (req, res) => { recipes.addRecipe(req, res); });
 
   // Edit a recipe
-  app.put('/api/v1/recipes/:id', AuthValidator.authenticate, RecipeValidator.validateID, RecipeValidator.validateInput, (req, res) => { recipes.modifyRecipe(req, res); });
+  app.put('/api/v1/recipes/:id', AuthValidator.authenticate, RecipeValidator.validateID, (req, res) => { recipes.modifyRecipe(req, res); });
 
   // Delete a recipe
   app.delete('/api/v1/recipes/:id', AuthValidator.authenticate, RecipeValidator.validateID, (req, res) => { recipes.deleteRecipe(req, res); });
@@ -44,8 +44,9 @@ export default (app) => {
   // Get user by id
   app.get('/api/v1/user/:id', RecipeValidator.validateID, (req, res) => { UserController.getUserById(req, res); });
 
+  // Delete user
   app.delete('/api/v1/user/:id', AuthValidator.authenticate, RecipeValidator.validateID, (req, res) => { UserController.deleteUser(req, res); });
-  
+
   // Add a favourite recipe for a user
   app.post('/api/v1/users/recipes/:id/favourites', AuthValidator.authenticate, (req, res) => { favourites.addFavourite(req, res); });
 
