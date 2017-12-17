@@ -6,6 +6,7 @@ import RecipesController from '../controllers/RecipesController';
 import UserController from '../controllers/UserController';
 import FavouriteRecipesController from '../controllers/FavouriteRecipesController';
 import VotesController from '../controllers/VotesController';
+import { R_OK } from 'constants';
 
 const recipes = new RecipesController();
 const favourites = new FavouriteRecipesController();
@@ -40,6 +41,9 @@ export default (app) => {
   // Edit user information
   app.post('/api/v1/users/edit', AuthValidator.authenticate, UserValidator.validateInput, (req, res) => { UserController.modifyUser(req, res); });
 
+  // Get user by id
+  app.get('/api/v1/user/:id', RecipeValidator.validateID, (req, res) => { UserController.getUserById(req, res); });
+
   // Add a favourite recipe for a user
   app.post('/api/v1/users/recipes/:id/favourites', AuthValidator.authenticate, (req, res) => { favourites.addFavourite(req, res); });
 
@@ -47,7 +51,7 @@ export default (app) => {
   app.get('/api/v1/users/recipes/favourites', AuthValidator.authenticate, (req, res) => { favourites.getFavourites(req, res); });
 
   // Delete favourite recipe for a user
-  app.delete('/api/v1/users/recipes/:id/favourites', AuthValidator.authenticate, (req, res) => { favourites.deleteFavourites(req, res); })
+  app.delete('/api/v1/users/recipes/:id/favourites', AuthValidator.authenticate, (req, res) => { favourites.deleteFavourites(req, res); });
 
   // Get all recipes created by user
   app.get('/api/v1/users/recipes', AuthValidator.authenticate, (req, res) => { UserController.getUsersRecipes(req, res); });

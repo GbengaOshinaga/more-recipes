@@ -113,6 +113,23 @@ export default class UserController {
   }
 
   /**
+   * Get specific user by id
+   * @param {*} req
+   * @param {*} res
+   * @returns {*} res
+   */
+  static getUserById(req, res) {
+    db.User.findById(req.params.id)
+      .then((user) => {
+        if (!user) {
+          return res.status(404).jsend.fail({ message: `User with Id of ${req.params.id} does not exist` });
+        }
+        res.status(200).jsend.success({ user });
+      })
+      .catch(error => res.status(400).jsend.error(error));
+  }
+
+  /**
    * Gets all recipes created by user
    * @param {*} req
    * @param {*} res
