@@ -73,8 +73,9 @@ export default class RecipesController {
         if (!recipe) {
           return res.status(400).jsend.fail({ message: `Recipe with Id of ${req.params.id} does not exist` });
         }
-        res.status(200).jsend.success(recipe);
-      });
+        res.status(200).jsend.success({ recipe });
+      })
+      .catch(() => res.status(400).jsend.error('An error occured'));
   }
 
   /**
@@ -103,7 +104,7 @@ export default class RecipesController {
           userId: req.user.userId,
           image: req.body.image || recipe.image,
           ingredients: ingredientsArray || recipe.ingredients
-        }).then(updatedRecipe => res.status(200).jsend.success(updatedRecipe));
+        }).then(updatedRecipe => res.status(200).jsend.success({ updatedRecipe }));
       })
       .catch(error => res.jsend.error(error));
   }
@@ -142,19 +143,7 @@ export default class RecipesController {
       UserId: req.user.userId,
       RecipeId: req.params.id
     })
-      .then(review => res.status(201).jsend.success(review))
-      .catch(error => res.status(400).jsend.error(error));
-  }
-
-  /**
-   * Gets recipes with the most upvotes
-   * @param {*} req
-   * @param {*} res
-   * @returns {*} res
-   */
-  static getRecipesByVotes(req, res) {
-    db.Recipes.findAll({ order: 'upvotes ASC' })
-      .then(recipes => res.status(200).jsend.success(recipes))
+      .then(review => res.status(201).jsend.success({ review }))
       .catch(error => res.status(400).jsend.error(error));
   }
 }

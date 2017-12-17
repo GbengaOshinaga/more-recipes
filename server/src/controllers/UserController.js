@@ -122,7 +122,7 @@ export default class UserController {
     db.User.findById(req.user.userId)
       .then((user) => {
         user.getRecipes()
-          .then(recipes => res.status(200).jsend.success(recipes))
+          .then(recipes => res.status(200).jsend.success({ recipes }))
           .catch(error => res.status(400).jsend.fail(error));
       })
       .catch(error => res.status(400).jsend.fail(error));

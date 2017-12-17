@@ -54,7 +54,7 @@ export default class VotesController {
                 .then((recipe) => {
                   recipe.decrement(`${typeOfVote}`);
                 });
-              res.status(200).jsend.success(`Your ${typeOfVote.slice(0, typeOfVote.length - 1)} has been cancelled`);
+              res.status(200).jsend.success({ message: `Your ${typeOfVote.slice(0, typeOfVote.length - 1)} has been cancelled` });
             })
             .catch(error => res.status(400).jsend.fail(error));
         } else if (vote && vote.vote !== valueOfVote) {
@@ -71,7 +71,7 @@ export default class VotesController {
             .then((recipe) => {
               recipe.decrement(`${otherTypeOfVote}`);
               recipe.increment(`${typeOfVote}`)
-                .then(res.status(200).jsend.success(`Recipe ${message}`))
+                .then(res.status(200).jsend.success({ message: `Recipe ${message}` }))
                 .catch(error => res.status(400).jsend.error(error));
             })
             .catch(error => res.status(400).jsend.error(error));
@@ -86,7 +86,7 @@ export default class VotesController {
               db.Recipes.findById(req.params.id)
                 .then((recipe) => {
                   recipe.increment(`${typeOfVote}`)
-                    .then(res.status(200).jsend.success(`Recipe ${message}`))
+                    .then(res.status(200).jsend.success({ message: `Recipe ${message}` }))
                     .catch(error => res.status(400).jsend.error(error));
                 });
             })
