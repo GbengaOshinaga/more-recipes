@@ -166,6 +166,7 @@ describe('Users can perform actions on recipe', () => {
       });
   });
 
+
   it('it should delete recipe', (done) => {
     chai.request(app)
       .del(`/api/v1/recipes/${recipeId}`)
@@ -258,4 +259,46 @@ describe('Pagination', () => {
         done();
       });
   });
+});
+
+describe('Search for recipe', () => {
+  let recipeName;
+
+  before(async () => {
+    const user = await db.User.create({
+      firstName: faker.name.findName(),
+      lastName: faker.name.findName(),
+      email: faker.internet.email(),
+      password: await bcrypt.hash('password', 10)
+    });
+    const recipe = await db.Recipes.create({
+      name: faker.name.findName(),
+      description: faker.lorem.sentence(),
+      UserId: user.id,
+      ingredients: ['ingredient1', 'ingredient2']
+    });
+    recipeName = recipe.name;
+  });
+
+  it('should search and return recipe', (done) => {
+    chai.request(app)
+    .get(`/api/v1/recipes?query=${recipeName}`)
+    .end((err, res) => {
+      console.log(res.body);
+      expect(res).to.have.status(200);
+      expect(res.body.data.recipes[0].name).to.equal(recipeName);
+      done();
+    });
+  });
+
+  it('should search and return not found', (done) => {
+    chai.request(app)
+    .get(`/api/v1/recipes?query=notfound`)
+    .end((err, res) => {
+      expect(res).to.have.status(404);
+      expect(res.body.data.message).to.equal('No Results Found');
+      done();
+    });
+  });
+
 });

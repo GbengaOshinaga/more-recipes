@@ -98,6 +98,7 @@ export default class RecipeValidator {
         messages.push('from and to query must be numbers');
       }
     }
+
     if (messages.length > 0) {
       return res.status(400).jsend.fail({ errors: messages });
     }

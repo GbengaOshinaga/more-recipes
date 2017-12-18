@@ -52,6 +52,8 @@ export default class RecipesController {
         .catch(error => res.status(400).jsend.error({ error }));
     } else if (req.query.from && req.query.to) {
       this.paginateRecipes(req.query.from, req.query.to, res);
+    } else if (req.query.query) {
+      this.searchRecipes(req.query.query, res);
     } else {
       db.Recipes.findAll({
         include: [{
@@ -155,8 +157,31 @@ export default class RecipesController {
    * @param {*} res
    * @returns {*} res
    */
-  searchRecipes(req, res) {
+  searchRecipes(query, res) {
+    const op = db.Sequelize.Op;
 
+    db.Recipes.findAll({ 
+      where: {
+        [op.or]: {
+          name: {
+           [op.iLike]: `%${query}%`
+          },
+          description: {
+            [op.iLike]: `%${query}%`
+          },
+          ingredients: {
+            [op.contains]: [`${query}`]
+          }
+        }
+      }
+    })
+    .then((recipes) => {
+      if (recipes.length === 0) {
+        return res.status(404).jsend.fail({ message: 'No Results Found'});
+      }
+      res.status(200).jsend.success({ recipes })
+    })
+    .catch(error => res.status(400).jsend.error(error));
   }
 
   /**
