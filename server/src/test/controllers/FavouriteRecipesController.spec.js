@@ -31,6 +31,28 @@ describe('Users should be able to add, get and delete favourites', () => {
     recipeId = recipe.id;
   });
 
+  it('should return not found when there are no favourites', (done) => {
+    chai.request(app)
+      .get('/api/v1/users/recipes/favourites')
+      .set('Access-Token', token)
+      .end((err, res) => {
+        expect(res).to.have.status(404);
+        expect(res.body.data.message).to.equal('No Favourites');
+        done();
+      });
+  });
+
+  it('should add favourite', (done) => {
+    chai.request(app)
+      .post(`/api/v1/users/recipes/${recipeId}/favourites`)
+      .set('Access-Token', token)
+      .end((err, res) => {
+        expect(res).to.have.status(200);
+        expect(res.body.data.message).to.equal('Favourite added');
+        done();
+      });
+  });
+
   it('should add favourite', (done) => {
     chai.request(app)
       .post(`/api/v1/users/recipes/${recipeId}/favourites`)
@@ -47,8 +69,9 @@ describe('Users should be able to add, get and delete favourites', () => {
       .get('/api/v1/users/recipes/favourites')
       .set('Access-Token', token)
       .end((err, res) => {
+        console.log(res.body);
         expect(res).to.have.status(200);
-        expect(res.body.data).to.be.an('array');
+        expect(res.body.data.favourites).to.be.an('array');
         done();
       });
   });
