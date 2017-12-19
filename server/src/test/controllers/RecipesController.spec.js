@@ -203,48 +203,48 @@ describe('Pagination', () => {
         name: faker.name.findName(),
         description: faker.lorem.sentence(),
         UserId: userId,
-        ingredients: ['ingredient1', 'ingredient2']
+        ingredients: ['ingredient3', 'ingredient4']
       },
       {
         name: faker.name.findName(),
         description: faker.lorem.sentence(),
         UserId: userId,
-        ingredients: ['ingredient1', 'ingredient2']
+        ingredients: ['ingredient5', 'ingredient6']
       }, {
         name: faker.name.findName(),
         description: faker.lorem.sentence(),
         UserId: userId,
-        ingredients: ['ingredient1', 'ingredient2']
+        ingredients: ['ingredient7', 'ingredient8']
       }, {
         name: faker.name.findName(),
         description: faker.lorem.sentence(),
         UserId: userId,
-        ingredients: ['ingredient1', 'ingredient2']
+        ingredients: ['ingredient9', 'ingredient10']
       }, {
         name: faker.name.findName(),
         description: faker.lorem.sentence(),
         UserId: userId,
-        ingredients: ['ingredient1', 'ingredient2']
+        ingredients: ['ingredient11', 'ingredient12']
       }, {
         name: faker.name.findName(),
         description: faker.lorem.sentence(),
         UserId: userId,
-        ingredients: ['ingredient1', 'ingredient2']
+        ingredients: ['ingredient13', 'ingredient14']
       }, {
         name: faker.name.findName(),
         description: faker.lorem.sentence(),
         UserId: userId,
-        ingredients: ['ingredient1', 'ingredient2']
+        ingredients: ['ingredient15', 'ingredient16']
       }, {
         name: faker.name.findName(),
         description: faker.lorem.sentence(),
         UserId: userId,
-        ingredients: ['ingredient1', 'ingredient2']
+        ingredients: ['ingredient17', 'ingredient18']
       }, {
         name: faker.name.findName(),
         description: faker.lorem.sentence(),
         UserId: userId,
-        ingredients: ['ingredient1', 'ingredient2']
+        ingredients: ['ingredient19', 'ingredient20']
       }
     ]);
   });
@@ -256,7 +256,12 @@ describe('Pagination', () => {
         expect(res).to.have.status(200);
         expect(res.body.data.recipes).to.be.an('array');
         expect(res.body.data.recipes.length).to.equal(5);
-        done();
+        if (err) {
+          console.log(res.body);
+          done(err);
+        } else {
+          done();
+        }
       });
   });
 });
@@ -282,23 +287,22 @@ describe('Search for recipe', () => {
 
   it('should search and return recipe', (done) => {
     chai.request(app)
-    .get(`/api/v1/recipes?query=${recipeName}`)
-    .end((err, res) => {
-      console.log(res.body);
-      expect(res).to.have.status(200);
-      expect(res.body.data.recipes[0].name).to.equal(recipeName);
-      done();
-    });
+      .get(`/api/v1/recipes?query=${recipeName}`)
+      .end((err, res) => {
+        console.log(res.body);
+        expect(res).to.have.status(200);
+        expect(res.body.data.recipes[0].name).to.equal(recipeName);
+        done();
+      });
   });
 
   it('should search and return not found', (done) => {
     chai.request(app)
-    .get(`/api/v1/recipes?query=notfound`)
-    .end((err, res) => {
-      expect(res).to.have.status(404);
-      expect(res.body.data.message).to.equal('No Results Found');
-      done();
-    });
+      .get('/api/v1/recipes?query=notfound')
+      .end((err, res) => {
+        expect(res).to.have.status(404);
+        expect(res.body.data.message).to.equal('No Results Found');
+        done();
+      });
   });
-
 });

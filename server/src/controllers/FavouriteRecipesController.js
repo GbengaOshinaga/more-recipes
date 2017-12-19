@@ -38,10 +38,10 @@ export default class FavouriteRecipesController {
             if (favourites.length === 0) {
               return res.status(404).jsend.fail({ message: 'No Favourites' });
             }
-            res.status(200).jsend.success({ favourites })
+            res.status(200).jsend.success({ favourites });
           })
           .catch(error => res.status(400).jsend.fail(error));
-      })
+      });
   }
 
   /**

@@ -6,7 +6,6 @@ import RecipesController from '../controllers/RecipesController';
 import UserController from '../controllers/UserController';
 import FavouriteRecipesController from '../controllers/FavouriteRecipesController';
 import VotesController from '../controllers/VotesController';
-import { R_OK } from 'constants';
 
 const recipes = new RecipesController();
 const favourites = new FavouriteRecipesController();

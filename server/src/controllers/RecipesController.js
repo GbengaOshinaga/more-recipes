@@ -153,18 +153,18 @@ export default class RecipesController {
 
   /**
    * Search for recipes
-   * @param {*} req
+   * @param {*} query
    * @param {*} res
    * @returns {*} res
    */
   searchRecipes(query, res) {
     const op = db.Sequelize.Op;
 
-    db.Recipes.findAll({ 
+    db.Recipes.findAll({
       where: {
         [op.or]: {
           name: {
-           [op.iLike]: `%${query}%`
+            [op.iLike]: `%${query}%`
           },
           description: {
             [op.iLike]: `%${query}%`
@@ -175,13 +175,13 @@ export default class RecipesController {
         }
       }
     })
-    .then((recipes) => {
-      if (recipes.length === 0) {
-        return res.status(404).jsend.fail({ message: 'No Results Found'});
-      }
-      res.status(200).jsend.success({ recipes })
-    })
-    .catch(error => res.status(400).jsend.error(error));
+      .then((recipes) => {
+        if (recipes.length === 0) {
+          return res.status(404).jsend.fail({ message: 'No Results Found' });
+        }
+        res.status(200).jsend.success({ recipes });
+      })
+      .catch(error => res.status(400).jsend.error(error));
   }
 
   /**

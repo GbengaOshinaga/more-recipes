@@ -64,6 +64,7 @@ describe('Users should be able to add, get and delete favourites', () => {
       });
   });
 
+
   it('should get user favourites recipes', (done) => {
     chai.request(app)
       .get('/api/v1/users/recipes/favourites')
