@@ -52,7 +52,7 @@ export default class FavouriteRecipesController {
    */
   deleteFavourites(req, res) {
     db.sequelize.query(`DELETE FROM "Favourites" WHERE "UserId" = ${req.user.userId} AND "RecipeId" IN (${req.params.id})`)
-      .spread((results, metadata) => res.status(200).jsend.success({ message: 'Favourite deleted' }))
+      .spread(() => res.status(200).jsend.success({ message: 'Favourite deleted' }))
       .catch(error => res.status(400).jsend.fail(error));
   }
 }

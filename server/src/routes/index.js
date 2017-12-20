@@ -31,6 +31,12 @@ export default (app) => {
   // Add a review for a recipe
   app.post('/api/v1/recipes/:id/reviews', AuthValidator.authenticate, RecipeValidator.validateID, (req, res) => { recipes.addReview(req, res); });
 
+  // Edit a review
+  app.put('/api/v1/recipes/reviews/:id', AuthValidator.authenticate, RecipeValidator.validateID, (req, res) => { recipes.editReview(req, res); });
+
+  // Delete a review
+  app.del('/api/v1/recipes/reviews/:id', AuthValidator.authenticate, RecipeValidator.validateID, (req, res) => { recipes.deleteReview(req, res); });
+
   // Sign up a user
   app.post('/api/v1/users/signup', UserValidator.validateSignUp, (req, res) => { UserController.signup(req, res); });
 

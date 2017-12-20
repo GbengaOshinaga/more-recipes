@@ -152,6 +152,50 @@ export default class RecipesController {
   }
 
   /**
+   * Edits a review
+   * @param {*} req
+   * @param {*} res
+   * @returns {*} res
+   */
+  editReview(req, res) {
+    db.Reviews.findById(req.params.id)
+      .then((review) => {
+        if (!review) {
+          return res.status(404).jsend.fail({ message: 'The Review does not exist' });
+        }
+        if (review.UserId !== req.user.userId) {
+          return res.status(401).jsend.fail({ message: 'You are not authorized to edit this review' });
+        }
+        review.update({
+          review: req.body.review || review.review
+        })
+          .then(updatedReview => res.status(200).jsend.success({ updatedReview }))
+          .catch(error => res.status(400).jsend.error(error));
+      });
+  }
+
+  /**
+   * Deletes a review
+   * @param {*} req
+   * @param {*} res
+   * @returns {*} res
+   */
+  deleteReview(req, res) {
+    db.Reviews.findById(req.params.id)
+      .then((review) => {
+        if (!review) {
+          return res.status(404).jsend.fail({ message: 'The Review does not exist' });
+        }
+        if (review.UserId !== req.user.userId) {
+          return res.status(401).jsend.fail({ message: 'You are not authorized to delete this review' });
+        }
+        review.destroy()
+          .then(() => res.status(200).jsend.success({ message: 'Review has been successfully deleted' }))
+          .catch(error => res.status(400).jsend.error(error));
+      });
+  }
+
+  /**
    * Search for recipes
    * @param {*} query
    * @param {*} res

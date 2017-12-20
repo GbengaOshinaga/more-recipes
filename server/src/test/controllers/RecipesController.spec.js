@@ -16,6 +16,8 @@ describe('Users can perform actions on recipe', () => {
   let token;
   let token2;
   let recipeId;
+  let reviewId;
+
   before(async () => {
     const user = await db.User.create({
       firstName: faker.name.findName(),
@@ -140,6 +142,86 @@ describe('Users can perform actions on recipe', () => {
       .end((err, res) => {
         expect(res).to.have.status(201);
         expect(res.body.data.review.review).to.equal(review);
+        reviewId = res.body.data.review.id;
+        done();
+      });
+  });
+
+  it('should edit a review for a recipe', (done) => {
+    const review = faker.lorem.sentence();
+    chai.request(app)
+      .put(`/api/v1/recipes/reviews/${reviewId}`)
+      .set('Access-Token', token)
+      .send({
+        review
+      })
+      .end((err, res) => {
+        expect(res).to.have.status(200);
+        expect(res.body.data.updatedReview.review).to.equal(review);
+        done();
+      });
+  });
+
+  it('should return unauthorized when editing recipe user did not create', (done) => {
+    const review = faker.lorem.sentence();
+    chai.request(app)
+      .put(`/api/v1/recipes/reviews/${reviewId}`)
+      .set('Access-Token', token2)
+      .send({
+        review
+      })
+      .end((err, res) => {
+        expect(res).to.have.status(401);
+        expect(res.body.data.message).to.equal('You are not authorized to edit this review');
+        done();
+      });
+  });
+
+  it('should return not found when editing an unknown recipe', (done) => {
+    const review = faker.lorem.sentence();
+    chai.request(app)
+      .put('/api/v1/recipes/reviews/99')
+      .set('Access-Token', token)
+      .send({
+        review
+      })
+      .end((err, res) => {
+        expect(res).to.have.status(404);
+        expect(res.body.data.message).to.equal('The Review does not exist');
+        done();
+      });
+  });
+
+  it('should return unauthorized when deleting recipe user did not create', (done) => {
+    chai.request(app)
+      .del(`/api/v1/recipes/reviews/${reviewId}`)
+      .set('Access-Token', token2)
+      .end((err, res) => {
+        expect(res).to.have.status(401);
+        expect(res.body.data.message).to.equal('You are not authorized to delete this review');
+        done();
+      });
+  });
+
+  it('should return not found when deleting unknown recipe', (done) => {
+    chai.request(app)
+      .del('/api/v1/recipes/reviews/99')
+      .set('Access-Token', token)
+      .end((err, res) => {
+        expect(res).to.have.status(404);
+        expect(res.body.data.message).to.equal('The Review does not exist');
+        done();
+      });
+  });
+
+  it('should delete a review for a recipe', (done) => {
+    chai.request(app)
+      .del(`/api/v1/recipes/reviews/${reviewId}`)
+      .set('Access-Token', token)
+      .end((err, res) => {
+        console.log(res.body);
+        expect(res).to.have.status(200);
+        expect(res.body.data.message).to.equal('Review has been successfully deleted');
         done();
       });
   });
@@ -256,12 +338,7 @@ describe('Pagination', () => {
         expect(res).to.have.status(200);
         expect(res.body.data.recipes).to.be.an('array');
         expect(res.body.data.recipes.length).to.equal(5);
-        if (err) {
-          console.log(res.body);
-          done(err);
-        } else {
-          done();
-        }
+        done();
       });
   });
 });
@@ -289,7 +366,6 @@ describe('Search for recipe', () => {
     chai.request(app)
       .get(`/api/v1/recipes?query=${recipeName}`)
       .end((err, res) => {
-        console.log(res.body);
         expect(res).to.have.status(200);
         expect(res.body.data.recipes[0].name).to.equal(recipeName);
         done();
