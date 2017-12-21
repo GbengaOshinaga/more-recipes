@@ -8,13 +8,13 @@
   "description": "server-side code for more-recipes app",
   "main": "index.js",
   "scripts": {
-    "test": "NODE_ENV=test mocha server/src/test/**.js --exit --compilers js:babel-core/register",
+    "test": "NODE_ENV=test mocha server/src/test/**/**.spec.js --exit --compilers js:babel-core/register",
     "drop:db": "NODE_ENV=test ./node_modules/.bin/sequelize db:drop",
     "create:db": "NODE_ENV=test ./node_modules/.bin/sequelize db:create more_recipes_test",
     "migrate:db": "NODE_ENV=test ./node_modules/.bin/sequelize db:migrate",
     "test:dev": "npm-run-all --sequential drop:db create:db migrate:db test",
     "babel-node": "babel-node ./server/src/index.js --presets=env",
-    "startDev": "NODE_ENV=test ./node_modules/.bin/babel-watch server/src/app.js",
+    "startDev": "./node_modules/.bin/babel-watch server/src/app.js",
     "build": "babel server/src -d server/dist",
     "heroku-postbuild": "npm run build",
     "start": "node server/dist/app.js",
@@ -61,7 +61,10 @@
     "sequelize": "^4.20.1",
     "sequelize-cli": "^3.0.0"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "eslint-plugin-react": "^7.5.1",
+    "faker": "^4.1.0"
+  },
   "babel": {
     "presets": [
       "latest"
