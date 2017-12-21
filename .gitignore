@@ -1,2 +1,4 @@
 /node_modules
 /.nyc_output
+server/.DS_Store
+template/.DS_Store
