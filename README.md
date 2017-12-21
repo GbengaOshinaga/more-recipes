@@ -70,6 +70,11 @@ https://gbengaoshinaga.github.io/more-recipes/template/
 + profilePic (string) - URL to user's profile picture
 + about (string) - User's about
 
+#### Get user by id - ```GET /api/v1/user/{user_id}```
+
+#### Delete a user - ```DELETE /api/v1/user/{user_id}```
+ Requires authentication
+
 #### Gets recipes created by user - ```GET /api/v1/users/recipes```
  Requires authentication
 
@@ -89,7 +94,12 @@ https://gbengaoshinaga.github.io/more-recipes/template/
 + ingredients (string) - Ingredients for the recipe, it should be a comma-separated string of ingredients, e.g 'pepper,salt,sauce'
 
 #### Gets all recipes - ```GET /api/v1/recipes```
- Gets all recipes
+
+#### Gets all recipes and sorts them by votes - ```GET /api/v1/recipes?sort=upvotes&order=asc```
+
+#### Searches for a recipe with query - ```GET /api/v1/recipes?query=search```
+
+#### Paginates recipe - ```GET /api/v1/recipes?from=0&to=5```
 
 #### Gets recipe by id - ```GET /api/v1/recipes/{recipe_id}```
  Get recipe with the specified id in the url
@@ -107,6 +117,12 @@ https://gbengaoshinaga.github.io/more-recipes/template/
 #### Add review for a recipe - ```POST /api/v1/recipes/{recipe_id}/reviews```
  Requires authentication
 + review (string) - Review
+
+#### Edit review - ```PUT /api/v1/recipes/reviews/{review_id}```
+ Requires authentication
+
+#### Delete review - ```DELETE /api/v1/recipes/reviews/{review_id}```
+ Requires authentication
 
 #### Upvote a recipe - ```POST /api/v1/recipes/upvote/{recipe_id}```
  Requires authentication
