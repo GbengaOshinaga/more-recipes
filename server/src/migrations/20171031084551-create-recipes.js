@@ -20,7 +20,8 @@ module.exports = {
       type: Sequelize.STRING
     },
     views: {
-      type: Sequelize.INTEGER
+      type: Sequelize.INTEGER,
+      defaultValue: 0
     },
     upvotes: {
       type: Sequelize.INTEGER,

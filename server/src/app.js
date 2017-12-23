@@ -1,11 +1,15 @@
 import Express from 'express';
 import logger from 'morgan';
 import bodyParser from 'body-parser';
+import cors from 'cors';
 import routes from './routes/index';
 import db from './models/index';
 
 // Set up the express app
 const app = new Express();
+
+app.use(cors());
+app.options('*', cors());
 
 // Log requests to the console.
 app.use(logger('dev'));
@@ -28,6 +32,12 @@ db.sequelize.sync().then(() => {
   app.listen(port, () => {
     console.log(`listening to port ${port}`);
   });
+});
+
+export default app;
+	app.listen(port, () => {
+	  console.log(`listening to port ${port}`);
+	});
 });
 
 export default app;

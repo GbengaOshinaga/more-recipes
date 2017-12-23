@@ -1,0 +1,42 @@
+@import 'partials/variables';
+@import 'partials/global';
+
+.parallax-container{
+	height: 250px;
+}
+
+.search-form{
+	margin-top: 65px;
+}
+
+input::placeholder{
+	font-family: $header-font;
+	font-size: 20px;
+}
+
+// Class for when element is above threshold
+  .pin-top {
+    position: relative;
+  }
+
+  // Class for when element is below threshold
+  .pin-bottom {
+    position: relative;
+  }
+
+  // Class for when element is pinned
+  .pinned {
+    position: fixed !important;
+  }
+
+  .section{
+  	background-color: #FAFAFA;
+  	padding-top: 0;
+  }
+
+  .pin-tab{
+  	.col{
+  		padding: 0;
+  	}
+  	
+  }

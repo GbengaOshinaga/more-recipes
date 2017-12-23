@@ -6,13 +6,16 @@ node_js:
 services:
   - postgresql
 
+services:
+  - postgresql
+
 install:
   - npm install
 
 before_script:
   - psql -c 'create database more_recipes_test;' -U postgres
   - NODE_ENV=test ./node_modules/.bin/sequelize db:migrate
-
+  
 script:
   - npm test
 

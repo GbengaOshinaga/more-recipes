@@ -20,4 +20,7 @@ textarea.materialize-textarea {
 .my-recipes {
   background-color: #FAFAFA; }
 
+.modal {
+  max-height: 90%; }
+
 /*# sourceMappingURL=my_recipes.css.map */

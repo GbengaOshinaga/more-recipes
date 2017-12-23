@@ -1,0 +1,7 @@
+{
+"version": 3,
+"mappings": "AAEA,UAAU;EACT,MAAM,EAAE,IAAI;EACZ,MAAM,EAAE,CAAC;EACT,WAAW,ECJA,SAAS;;ADOrB,sBAAsB;EACrB,WAAW,ECTE,UAAU;;ADcvB,yBAAyB;EAD1B,eAAe;IAEb,SAAS,EAAE,MAAM;;AAInB,iBAAiB;EAChB,SAAS,EAAE,KAAK;;AEjBjB,kBAAkB;EACd,gBAAgB,EAAE,OAAO",
+"sources": ["../scss/partials/_global.scss","../scss/partials/_variables.scss","../scss/favourite_recipes.scss"],
+"names": [],
+"file": "favourite_recipes.css"
+}

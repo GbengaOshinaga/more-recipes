@@ -28,4 +28,11 @@ body {
     margin-top: 50px;
     font-family: Montserrat; }
 
+.navigation {
+  margin-left: 35px;
+  margin-right: 35px; }
+
+h4 {
+  font-family: Open Sans; }
+
 /*# sourceMappingURL=index.css.map */

@@ -1,0 +1,53 @@
+@import 'partials/variables';
+@import 'partials/global';
+
+p{
+	font-family: $header-font;
+	margin: 15px;
+}
+
+.sign-body{
+	/* The image used */
+    background-image: url('../img/bg-image.jpg');
+
+    /* Full height */
+    height: 100vh; 
+
+    /* Center and scale the image nicely */
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.sign-box {
+	text-align: center;
+    width: 400px;
+    background: $white;
+    margin: 0 auto;
+    border-radius: 5px;
+    box-shadow: 0px 2px 0px 0px rgba(0, 0, 0, 0.1);
+    padding: 10px;
+    margin-top: 7%;
+}
+
+.signin-box{
+    @extend .sign-box;
+    height: 540px;
+}
+
+.signup-box{
+    @extend .sign-box;
+    height: 730px;
+}
+
+.social-login{
+	padding: 5px;
+	margin: 0 auto;
+	width: 100%;
+	display: inline-block;
+	position: relative;
+}
+
+.row{
+	margin-bottom: 0px;
+}
