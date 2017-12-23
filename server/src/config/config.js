@@ -1,3 +1,4 @@
+
 module.exports = {
   development: {
     username: 'postgres',
@@ -13,10 +14,10 @@ module.exports = {
     database: 'more_recipes_test',
     host: '127.0.0.1',
     port: 5432,
-    dialect: 'postgres'
+    dialect: 'postgres',
+    logging: false
   },
   production: {
     environment: 'production'
   }
 };
-

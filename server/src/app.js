@@ -29,6 +29,12 @@ app.get('*', (req, res) => res.status(200).send({
 const port = process.env.PORT || 8000;
 
 db.sequelize.sync().then(() => {
+  app.listen(port, () => {
+    console.log(`listening to port ${port}`);
+  });
+});
+
+export default app;
 	app.listen(port, () => {
 	  console.log(`listening to port ${port}`);
 	});

@@ -34,10 +34,14 @@ export default class FavouriteRecipesController {
     db.User.findById(req.user.userId)
       .then((user) => {
         user.getFavouriteRecipes()
-          .then(fav => res.status(200).jsend.success(fav))
+          .then((favourites) => {
+            if (favourites.length === 0) {
+              return res.status(404).jsend.fail({ message: 'No Favourites' });
+            }
+            res.status(200).jsend.success({ favourites });
+          })
           .catch(error => res.status(400).jsend.fail(error));
-      })
-      .catch(error => res.status(400).jsend.fail(error));
+      });
   }
 
   /**
@@ -48,7 +52,7 @@ export default class FavouriteRecipesController {
    */
   deleteFavourites(req, res) {
     db.sequelize.query(`DELETE FROM "Favourites" WHERE "UserId" = ${req.user.userId} AND "RecipeId" IN (${req.params.id})`)
-      .spread((results, metadata) => res.status(200).jsend.success({ message: 'Favourite deleted' }))
+      .spread(() => res.status(200).jsend.success({ message: 'Favourite deleted' }))
       .catch(error => res.status(400).jsend.fail(error));
   }
 }

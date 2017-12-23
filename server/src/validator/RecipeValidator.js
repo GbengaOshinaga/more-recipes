@@ -13,11 +13,23 @@ export default class RecipeValidator {
    */
   static validateRecipe(req, res, next) {
     const messages = [];
+
+    const isEmpty = (str) => {
+      const regexp = /^[a-zA-Z0-9-',?.":; ]*$/;
+      return (regexp.test(str) || !str.length);
+    };
+
     if (!req.body.name) {
       messages.push('Recipe Name is required');
     }
+    if (!req.body.name || !isEmpty(req.body.name)) {
+      messages.push('Recipe Name cannot be empty or contain illegal characters');
+    }
     if (!req.body.description) {
       messages.push('Recipe description is required');
+    }
+    if (!req.body.description || !isEmpty(req.body.description)) {
+      messages.push('Recipe description cannot be empty or contain illegal characters');
     }
     if (!req.body.ingredients) {
       messages.push('Ingredients are required');
@@ -51,20 +63,6 @@ export default class RecipeValidator {
   }
 
   /**
-   * Checks if any value is provided for edit
-   * @param {*} req
-   * @param {*} res
-   * @param {*} next
-   * @returns {*} res
-   */
-  static validateInput(req, res, next) {
-    if (Object.keys(req.body).length === 0) {
-      return res.status(400).jsend.fail({ error: 'You did not provide any value for updating' });
-    }
-    next();
-  }
-
-  /**
    * Validates query params
    * @param {*} req
    * @param {*} res
@@ -88,6 +86,19 @@ export default class RecipeValidator {
         messages.push('order query must be asc or desc');
       }
     }
+
+    if (req.query.from && !req.query.to) {
+      messages.push('to query is required if from query is passed');
+    }
+    if (!req.query.from && req.query.to) {
+      messages.push('from query is required if to query is passed');
+    }
+    if (req.query.from && req.query.to) {
+      if (isNaN(req.query.from) && isNaN(req.query.to)) {
+        messages.push('from and to query must be numbers');
+      }
+    }
+
     if (messages.length > 0) {
       return res.status(400).jsend.fail({ errors: messages });
     }

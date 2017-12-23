@@ -45,9 +45,18 @@ export default class VotesController {
       }
     })
       .then((vote) => {
-        // If user has voted already and the value of the vote is the same as the requested one
+        // If user has voted already and the value of the vote
+        // is the same as the requested one, remove the vote
         if (vote && vote.vote === valueOfVote) {
-          return res.status(400).jsend.fail({ message: `Recipe has already been ${message} by user` });
+          vote.destroy()
+            .then(() => {
+              db.Recipes.findById(req.params.id)
+                .then((recipe) => {
+                  recipe.decrement(`${typeOfVote}`);
+                });
+              res.status(200).jsend.success({ message: `Your ${typeOfVote.slice(0, typeOfVote.length - 1)} has been cancelled` });
+            })
+            .catch(error => res.status(400).jsend.fail(error));
         } else if (vote && vote.vote !== valueOfVote) {
           // If vote is different from previous vote, delete previous vote, and create present one
           vote.destroy({ force: true });
@@ -62,7 +71,7 @@ export default class VotesController {
             .then((recipe) => {
               recipe.decrement(`${otherTypeOfVote}`);
               recipe.increment(`${typeOfVote}`)
-                .then(res.status(200).jsend.success(`Recipe ${message}`))
+                .then(res.status(200).jsend.success({ message: `Recipe ${message}` }))
                 .catch(error => res.status(400).jsend.error(error));
             })
             .catch(error => res.status(400).jsend.error(error));
@@ -77,7 +86,7 @@ export default class VotesController {
               db.Recipes.findById(req.params.id)
                 .then((recipe) => {
                   recipe.increment(`${typeOfVote}`)
-                    .then(res.status(200).jsend.success(`Recipe ${message}`))
+                    .then(res.status(200).jsend.success({ message: `Recipe ${message}` }))
                     .catch(error => res.status(400).jsend.error(error));
                 });
             })

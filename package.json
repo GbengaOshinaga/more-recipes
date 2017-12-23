@@ -8,7 +8,11 @@
   "description": "server-side code for more-recipes app",
   "main": "index.js",
   "scripts": {
-    "test": "mocha server/src/test/**.js --exit --compilers js:babel-core/register",
+    "test": "NODE_ENV=test mocha server/src/test/**/**.spec.js --exit --compilers js:babel-core/register",
+    "drop:db": "NODE_ENV=test ./node_modules/.bin/sequelize db:drop",
+    "create:db": "NODE_ENV=test ./node_modules/.bin/sequelize db:create more_recipes_test",
+    "migrate:db": "NODE_ENV=test ./node_modules/.bin/sequelize db:migrate",
+    "test:dev": "npm-run-all --sequential drop:db create:db migrate:db test",
     "babel-node": "babel-node ./server/src/index.js --presets=env",
     "startServer": "./node_modules/.bin/babel-watch server/src/app.js",
     "startReact": "babel-node ./client/app.js",
@@ -16,8 +20,7 @@
     "build": "babel server/src -d server/dist",
     "heroku-postbuild": "npm run build",
     "start": "node server/dist/app.js",
-    "coverage": "nyc report --reporter=text-lcov | coveralls",
-    "coveralls": "nyc npm test&& nyc report --reporter=text-lcov | coveralls"
+    "coveralls": "nyc npm run test:dev&& nyc report --reporter=text-lcov | coveralls"
   },
   "author": "Gbenga Oshinaga",
   "license": "ISC",
@@ -40,6 +43,7 @@
     "chai-http": "^3.0.0",
     "cors": "^2.8.4",
     "coveralls": "^3.0.0",
+    "cross-env": "^5.1.1",
     "eslint": "^4.9.0",
     "eslint-config-airbnb": "^16.1.0",
     "eslint-config-airbnb-base": "^12.1.0",
@@ -56,6 +60,8 @@
     "material-ui-chip-input": "^0.18.3",
     "mocha": "^4.0.1",
     "morgan": "^1.9.0",
+    "nodemon": "^1.12.1",
+    "npm-run-all": "^4.1.2",
     "nyc": "^11.2.1",
     "pg": "^6.4.2",
     "pg-hstore": "^2.3.2",
@@ -92,6 +98,10 @@
     "webpack": "^3.8.1",
     "webpack-dev-middleware": "^1.12.1",
     "webpack-hot-middleware": "^2.20.0"
+  },
+  "devDependencies": {
+    "eslint-plugin-react": "^7.5.1",
+    "faker": "^4.1.0"
   },
   "babel": {
     "presets": [
