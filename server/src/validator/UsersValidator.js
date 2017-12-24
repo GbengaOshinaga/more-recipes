@@ -15,8 +15,20 @@ export default class UsersValidator {
     if (!req.body.firstName) {
       messages.push('First Name is required');
     }
+    if (req.body.firstName && req.body.firstName.trim().length === 0) {
+      messages.push('First Name is Empty');
+    }
+    if (/^[a-zA-Z0-9- ]*$/.test(req.body.firstName) === false) {
+      messages.push('First Name contains illegal characters');
+    }
     if (!req.body.lastName) {
       messages.push('Last Name is required');
+    }
+    if (req.body.lastName && req.body.lastName.trim().length === 0) {
+      messages.push('Last Name is Empty');
+    }
+    if (/^[a-zA-Z0-9- ]*$/.test(req.body.lastName) === false) {
+      messages.push('Last Name contains illegal characters');
     }
     if (!req.body.email) {
       messages.push('Email is required');
@@ -27,7 +39,7 @@ export default class UsersValidator {
     if (!req.body.confirmPassword) {
       messages.push('Confirm Password is required');
     }
-    const emailRegex = /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/;
+    const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
     if (!emailRegex.test(req.body.email)) {
       messages.push('Email Address is not valid');
     }
@@ -59,7 +71,9 @@ export default class UsersValidator {
     if (!req.body.password) {
       messages.push('Password is required');
     }
-    const emailRegex = /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/;
+
+    const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+
     if (!emailRegex.test(req.body.email)) {
       messages.push('Email Address is not valid');
     }
@@ -85,7 +99,6 @@ export default class UsersValidator {
       if (Object.keys(req.body).length !== 0) {
         return res.status(400).jsend.fail({ error: `${Object.keys(req.body)} are not valid attributes` });
       }
-      return res.status(400).jsend.fail({ error: 'You can not provide an empty value' });
     }
     next();
   }

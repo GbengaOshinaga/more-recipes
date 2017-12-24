@@ -113,6 +113,45 @@ export default class UserController {
   }
 
   /**
+   * Get specific user by id
+   * @param {*} req
+   * @param {*} res
+   * @returns {*} res
+   */
+  static getUserById(req, res) {
+    db.User.findById(req.params.id)
+      .then((user) => {
+        if (!user) {
+          return res.status(404).jsend.fail({ message: `User with Id of ${req.params.id} does not exist` });
+        }
+        res.status(200).jsend.success({ user });
+      })
+      .catch(error => res.status(400).jsend.error(error));
+  }
+
+  /**
+   * Deletes user by id
+   * @param {*} req
+   * @param {*} res
+   * @returns {*} res
+   */
+  static deleteUser(req, res) {
+    db.User.findById(req.params.id)
+      .then((user) => {
+        if (!user) {
+          return res.status(404).jsend.fail({ message: `User with Id of ${req.params.id} does not exist` });
+        }
+        if (req.user.userId !== user.id) {
+          return res.status(401).jsend.fail({ message: 'You are not authorized to delete this account' });
+        }
+        user.destroy()
+          .then(() => res.status(200).jsend.success({ message: 'User account deleted' }))
+          .catch(error => res.status(400).jsend.error(error));
+      })
+      .catch(error => res.status(400).jsend.error(error));
+  }
+
+  /**
    * Gets all recipes created by user
    * @param {*} req
    * @param {*} res
@@ -122,7 +161,7 @@ export default class UserController {
     db.User.findById(req.user.userId)
       .then((user) => {
         user.getRecipes()
-          .then(recipes => res.status(200).jsend.success(recipes))
+          .then(recipes => res.status(200).jsend.success({ recipes }))
           .catch(error => res.status(400).jsend.fail(error));
       })
       .catch(error => res.status(400).jsend.fail(error));

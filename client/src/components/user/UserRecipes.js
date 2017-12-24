@@ -6,6 +6,10 @@ import { sessionService } from 'redux-react-session';
 import Page from './UserRecipesPage';
 import * as userActions from '../../actions/userActions';
 
+const defaultProps = {
+  firstName: ''
+};
+
 /**
  * Class component for user recipes actions
  */
@@ -32,6 +36,16 @@ class UserRecipes extends React.Component {
     this.loadImage = this.loadImage.bind(this);
   }
 
+  /**
+   * Method when component has finished mounting
+   * @returns {*} undefined
+   */
+  componentDidMount() {
+    sessionService.loadSession()
+      .then((token) => {
+        this.props.actions.getUserRecipes(token);
+      });
+  }
 
   /**
    * Handle save event
@@ -42,6 +56,14 @@ class UserRecipes extends React.Component {
       .then((token) => {
         this.props.actions.addRecipe(token, this.state.data);
       });
+  }
+
+  /**
+   * Method to delete recipe
+   * @returns {*} null
+   */
+  onConfirmDelete() {
+
   }
 
   /**
@@ -103,6 +125,7 @@ class UserRecipes extends React.Component {
       <Page
         isLoggedIn={this.props.isLoggedIn}
         firstName={this.props.firstName}
+        userRecipes={this.props.userRecipes}
         onChipChange={chips => this.handleChipsChange(chips)}
         onInputChange={this.handleInputChange}
         inputValue={this.state.data.recipeName}
@@ -118,8 +141,11 @@ class UserRecipes extends React.Component {
 
 UserRecipes.propTypes = {
   isLoggedIn: PropTypes.bool.isRequired,
-  firstName: PropTypes.string
+  firstName: PropTypes.string,
+  userRecipes: PropTypes.array.isRequired
 };
+
+UserRecipes.defaultProps = defaultProps;
 
 /**
  * Maps state to component properties
@@ -131,6 +157,7 @@ function mapStateToProps(state, ownProps) {
   return {
     isLoggedIn: state.session.authenticated,
     firstName: state.session.user.firstName,
+    userRecipes: state.userRecipes
   };
 }
 
@@ -147,6 +174,6 @@ function mapDispatchToProps(dispatch) {
 
 UserRecipes.propTypes = {
   actions: PropTypes.object.isRequired
-}
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(UserRecipes);

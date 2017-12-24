@@ -13,8 +13,8 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false
     },
     image: {
-      type: DataTypes.TEXT,
-      allowNull: true,
+      type: DataTypes.STRING,
+      allowNull: true
     },
     views: {
       type: DataTypes.INTEGER,

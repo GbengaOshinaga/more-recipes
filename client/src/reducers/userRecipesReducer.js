@@ -8,11 +8,10 @@ import { ADD_RECIPE_SUCCESS, ADD_RECIPE_FAILURE, GET_USERS_RECIPES_SUCCESS, GET_
  * @returns {object} new state
  */
 export default function userRecipesReducer(state = initialState.userRecipes, action) {
-    debugger;
   const { response } = action;
   switch (action.type) {
     case ADD_RECIPE_SUCCESS:
-      return { ...state, ...response };
+      return state.concat(response);
     default:
       return state;
   }

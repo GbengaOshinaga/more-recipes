@@ -21,7 +21,6 @@ app.use(bodyParser.urlencoded({ extended: false }));
 // Setup a default catch-all route that sends back a welcome message in JSON format.
 routes(app);
 
-
 app.get('*', (req, res) => res.status(200).send({
   message: 'Welcome to the More-Recipes API Home.',
 }));
@@ -29,9 +28,9 @@ app.get('*', (req, res) => res.status(200).send({
 const port = process.env.PORT || 8000;
 
 db.sequelize.sync().then(() => {
-	app.listen(port, () => {
-	  console.log(`listening to port ${port}`);
-	});
+  app.listen(port, () => {
+    console.log(`listening to port ${port}`);
+  });
 });
 
 export default app;

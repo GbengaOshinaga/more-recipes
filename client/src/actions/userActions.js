@@ -22,11 +22,45 @@ export function addRecipe(token, data) {
       .then(response => response.json())
       .then((response) => {
         if (response.status === 'success') {
-            console.log(response);
-            dispatch(updateAddRecipeSuccess(response.data));
-        }else {
-            console.log(response);
-            console.log('something went wrong');
+          dispatch(updateAddRecipeSuccess(response.data.recipe));
+        } else {
+          console.log(response);
+          console.log('something went wrong');
+        }
+      });
+  };
+}
+
+/**
+ * Action to delete recipe
+ * @param {*} token
+ * @param {*} id
+ * @returns {*} response
+ */
+export function deleteRecipe(token, id) {
+  return function (dispatch) {
+    return UserApi.deleteRecipe(token, id)
+    .then(response => response.json())
+    .then((response) => {
+      if (response.status === 'success') {
+        console.log(response);
+      }
+    })
+  }
+}
+
+/**
+ * Action to get user recipes
+ * @param {*} token
+ * @returns {*} response
+ */
+export function getUserRecipes(token) {
+  return function (dispatch) {
+    return UserApi.getUserRecipes(token)
+      .then(response => response.json())
+      .then((response) => {
+        if (response.status === 'success') {
+          dispatch(updateAddRecipeSuccess(response.data.recipes));
         }
       });
   };

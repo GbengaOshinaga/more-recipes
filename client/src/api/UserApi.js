@@ -35,4 +35,20 @@ export default class User {
       body: `name=${data.recipeName}&description=${data.recipeDescription}&ingredients=${data.ingredients.join(',')}&image=${data.imageURL}`
     });
   }
+
+  /**
+   * Method for deleting recipe
+   * @param {*} token
+   * @param {*} id
+   * @returns {*} Promise
+   */
+  static deleteRecipe(token, id) {
+    return fetch(`http://localhost:8000/api/v1/recipes/${id}`, {
+      method: 'delete',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'Access-Token': token
+      }
+    });
+  }
 }
