@@ -158,7 +158,7 @@ export function DeleteModal({ onConfirm }) {
       </div>
       <div className="modal-footer">
         <a
-          href={onConfirm}
+          // href={onConfirm}
           className="modal-action modal-close waves-effect waves-green btn-flat"
         >
           DELETE

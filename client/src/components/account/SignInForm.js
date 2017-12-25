@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import InputField from '../common/InputField';
 import Button from '../common/Button';
 import SocialLoginButtons from './SocialLoginButtons';
-import { SignInAndSignUpHeader } from '../common/Header';
+import SignInAndSignUpHeader from '../common/Header/SignInAndSignUpHeader';
 
 const propTypes = {
   onChange: PropTypes.func.isRequired,

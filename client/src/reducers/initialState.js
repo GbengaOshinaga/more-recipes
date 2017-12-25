@@ -6,5 +6,6 @@ export default {
     token: '',
     errors: []
   },
-  userRecipes: []
+  userRecipes: [],
+  recipes: []
 };

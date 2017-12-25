@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
-import { Header } from '../common/Header';
+import Header from '../common/Header/Header';
 import { AddModal, DeleteModal } from './Modal';
 
 const cardPropTypes = {
@@ -25,7 +25,7 @@ const pagePropTypes = {
   onClickSave: PropTypes.func.isRequired,
   onFileChange: PropTypes.func.isRequired,
   inputRef: PropTypes.func.isRequired,
-  userRecipes: PropTypes.array.isRequired,
+  userRecipes: PropTypes.arrayOf(PropTypes.object).isRequired,
   onConfirmDelete: PropTypes.func.isRequired
 };
 
@@ -36,21 +36,23 @@ const pageDefaultProps = {
 /**
  * Displays recipes in cards
  * @param {*} recipes
+ * @param {func} onDelete
  * @returns {*} jsx
  */
-function displayRecipes(recipes) {
+function displayRecipes(recipes, onDelete) {
   const chunkedRecipes = _.chunk(recipes, 3);
   if (recipes === undefined || recipes.length === 0) {
     return 'No Recipe Available';
   }
   return chunkedRecipes.map((chunk, index) => (
     <div className="row" key={index}>
-      {chunk.map((recipe, index) => (
+      {chunk.map(recipe => (
         <Card
-          key={index}
+          key={recipe.id}
           image={recipe.image}
           recipeName={recipe.name}
           recipeDescription={recipe.description}
+          onDelete={onDelete}
         />
   ))}
     </div>
@@ -107,7 +109,7 @@ function Page({
  * @param {*} props
  * @returns {*} jsx
  */
-function Card({ image, recipeName, recipeDescription }) {
+function Card({ image, recipeName, recipeDescription, onDelete }) {
   return (
     <div className="col s12 m4 l4">
       <div className="card">
@@ -132,6 +134,7 @@ function Card({ image, recipeName, recipeDescription }) {
             <a
               className="modal-trigger btn-floating waves-effect waves-light red"
               href="#confirm-modal"
+              // onClick={onDelete}
             >
               <i className="material-icons">delete</i>
             </a>

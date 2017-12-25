@@ -23,6 +23,7 @@ class UserRecipes extends React.Component {
     super(props, context);
     this.state = {
       data: {
+        id: 0,
         recipeName: '',
         recipeDescription: '',
         ingredients: [],
@@ -60,10 +61,15 @@ class UserRecipes extends React.Component {
 
   /**
    * Method to delete recipe
+   * @param {*} event
    * @returns {*} null
    */
-  onConfirmDelete() {
-
+  onConfirmDelete(event) {
+    console.log(event);
+    // sessionService.loadSession()
+    //   .then((token) => {
+    //     this.props.actions.deleteRecipe(token, id);
+    //   });
   }
 
   /**
@@ -134,6 +140,7 @@ class UserRecipes extends React.Component {
         onClickSave={this.onClickSave}
         onFileChange={this.loadImage}
         inputRef={el => this.inputElement = el}
+        onConfirmDelete={this.onConfirmDelete}
       />
     );
   }
@@ -142,7 +149,7 @@ class UserRecipes extends React.Component {
 UserRecipes.propTypes = {
   isLoggedIn: PropTypes.bool.isRequired,
   firstName: PropTypes.string,
-  userRecipes: PropTypes.array.isRequired
+  userRecipes: PropTypes.arrayOf(PropTypes.object).isRequired
 };
 
 UserRecipes.defaultProps = defaultProps;

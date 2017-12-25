@@ -1,5 +1,5 @@
 import initialState from './initialState';
-import { ADD_RECIPE_SUCCESS, ADD_RECIPE_FAILURE, GET_USERS_RECIPES_SUCCESS, GET_USERS_RECIPES_FAILURE } from '../actions/actions';
+import { ADD_RECIPE_SUCCESS, ADD_RECIPE_FAILURE, GET_USERS_RECIPES_SUCCESS, GET_USERS_RECIPES_FAILURE, DELETE_RECIPE_SUCCESS } from '../actions/actions';
 
 /**
  * userRecipes reducer
@@ -12,6 +12,8 @@ export default function userRecipesReducer(state = initialState.userRecipes, act
   switch (action.type) {
     case ADD_RECIPE_SUCCESS:
       return state.concat(response);
+    case DELETE_RECIPE_SUCCESS:
+      return [...state.filter(recipe => recipe.id !== action.id)];
     default:
       return state;
   }

@@ -1,5 +1,6 @@
 import React from 'react';
-import { IndexHeader } from '../common/Header';
+import { Link } from 'react-router-dom';
+import IndexHeader from '../common/Header/IndexHeader';
 
 /**
  * Functional component for homepage
@@ -16,9 +17,9 @@ function HomePage() {
                   Find innovative recipes or share one of your own.
           </h4>
           <div className="cta-buttons">
-            <a href="catalog.html" className="waves-effect waves-light btn-large red darken-2">
+            <Link to="/catalog" className="waves-effect waves-light btn-large red darken-2">
               VIEW CATALOG
-            </a>
+            </Link>
           </div>
         </div>
       </div>

@@ -1,13 +1,22 @@
 import UserApi from '../api/UserApi';
-import { ADD_RECIPE_SUCCESS, ADD_RECIPE_FAILURE } from './actions';
+import { ADD_RECIPE_SUCCESS, ADD_RECIPE_FAILURE, DELETE_RECIPE_SUCCESS } from './actions';
 
 /**
  * Updates reducer if add recipe action is successful
  * @param {*} response
- * @returns {object} object
+ * @returns {Object} object
  */
 function updateAddRecipeSuccess(response) {
   return { type: ADD_RECIPE_SUCCESS, response };
+}
+
+/**
+ * Updates reducer if delete recipe action is successful
+ * @param {*} id
+ * @returns {Object} object
+ */
+function updateDeleteRecipeSuccess(id) {
+  return { type: DELETE_RECIPE_SUCCESS, id };
 }
 
 /**
@@ -40,13 +49,14 @@ export function addRecipe(token, data) {
 export function deleteRecipe(token, id) {
   return function (dispatch) {
     return UserApi.deleteRecipe(token, id)
-    .then(response => response.json())
-    .then((response) => {
-      if (response.status === 'success') {
-        console.log(response);
-      }
-    })
-  }
+      .then(response => response.json())
+      .then((response) => {
+        if (response.status === 'success') {
+          console.log(response);
+          dispatch(updateDeleteRecipeSuccess(id));
+        }
+      });
+  };
 }
 
 /**
