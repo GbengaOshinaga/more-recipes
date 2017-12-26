@@ -16,4 +16,18 @@ export default class RecipesApi {
       }
     });
   }
+
+  /**
+   * Method for getting a single recipe
+   * @param {*} id
+   * @returns {*} Promise
+   */
+  static getRecipe(id) {
+    return fetch(`http://localhost:8000/api/v1/recipes/${id}`, {
+      method: 'get',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      }
+    });
+  }
 }

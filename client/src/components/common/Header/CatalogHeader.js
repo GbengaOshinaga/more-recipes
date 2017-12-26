@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 
 /**
@@ -10,14 +11,14 @@ function loggedInHeader(name) {
   return (
     <header>
       <ul id="dropdown1" className="dropdown-content">
-        <li><a href="profile.html">Profile</a></li>
-        <li><a href="my_recipes.html">My Recipes</a></li>
+        <li><Link to="/profile">Profile</Link></li>
+        <li><Link to="/my_recipes">My Recipes</Link></li>
         <li><a href="favourite_recipes.html">Favourite Recipes</a></li>
         <li><a href="#!">Logout</a></li>
       </ul>
       <ul id="dropdown2" className="dropdown-content">
-        <li><a href="profile.html">Profile</a></li>
-        <li><a href="my_recipes.html">My Recipes</a></li>
+        <li><Link to="/profile">Profile</Link></li>
+        <li><Link to="/my_recipes">My Recipes</Link></li>
         <li><a href="favourite_recipes.html">Favourite Recipes</a></li>
         <li><a href="#!">Logout</a></li>
       </ul>
@@ -36,14 +37,28 @@ function loggedInHeader(name) {
                       <div className="row" id="topbarsearch">
                         <div className="input-field col s6 s12 white-text">
                           <i className="white-text material-icons prefix">search</i>
-                          <input type="text" placeholder="search" id="autocomplete-input" className="autocomplete white-text" />
+                          <input
+                            type="text"
+                            placeholder="search"
+                            id="autocomplete-input"
+                            className="autocomplete white-text"
+                          />
                         </div>
                       </div>
                     </div>
                   </div>
                 </li>
-                <li><a href="#">Catalog</a></li>
-                <li><a className="dropdown-button" href="#!" data-activates="dropdown1">{name}<i className="material-icons right">arrow_drop_down</i></a></li>
+                <li><Link to="/catalog">Catalog</Link></li>
+                <li>
+                  <a
+                    className="dropdown-button"
+                    href="#!"
+                    data-activates="dropdown1"
+                  >
+                    {name}
+                    <i className="material-icons right">arrow_drop_down</i>
+                  </a>
+                </li>
               </ul>
 
             </div>
@@ -58,14 +73,28 @@ function loggedInHeader(name) {
               <div className="row" id="topbarsearch">
                 <div className="input-field col s6 s12 black-text">
                   <i className="black-text material-icons prefix">search</i>
-                  <input type="text" placeholder="search" id="autocomplete-input" className="autocomplete black-text" />
+                  <input
+                    type="text"
+                    placeholder="search"
+                    id="autocomplete-input"
+                    className="autocomplete black-text"
+                  />
                 </div>
               </div>
             </div>
           </div>
         </li>
-        <li><a href="#">Catalog</a></li>
-        <li><a className="dropdown-button" href="#!" data-activates="dropdown2">{name}<i className="material-icons right">arrow_drop_down</i></a></li>
+        <li><Link to="/catalog">Catalog</Link></li>
+        <li>
+          <a
+            className="dropdown-button"
+            href="#!"
+            data-activates="dropdown2"
+          >
+            {name}
+            <i className="material-icons right">arrow_drop_down</i>
+          </a>
+        </li>
       </ul>
     </header>
 
@@ -94,15 +123,20 @@ function loggedOutHeader() {
                       <div className="row" id="topbarsearch">
                         <div className="input-field col s6 s12 white-text">
                           <i className="white-text material-icons prefix">search</i>
-                          <input type="text" placeholder="search" id="autocomplete-input" className="autocomplete white-text" />
+                          <input
+                            type="text"
+                            placeholder="search"
+                            id="autocomplete-input"
+                            className="autocomplete white-text"
+                          />
                         </div>
                       </div>
                     </div>
                   </div>
                 </li>
-                <li><a href="#">Catalog</a></li>
-                <li><a href="signup.html">Sign Up</a></li>
-                <li><a href="signin.html">Sign In</a></li>
+                <li><Link to="/catalog">Catalog</Link></li>
+                <li><Link to="/signup">Sign Up</Link></li>
+                <li><Link to="/signin">Sign In</Link></li>
               </ul>
 
             </div>
@@ -117,15 +151,20 @@ function loggedOutHeader() {
               <div className="row" id="topbarsearch">
                 <div className="input-field col s6 s12 black-text">
                   <i className="black-text material-icons prefix">search</i>
-                  <input type="text" placeholder="search" id="autocomplete-input" className="autocomplete black-text" />
+                  <input
+                    type="text"
+                    placeholder="search"
+                    id="autocomplete-input"
+                    className="autocomplete black-text"
+                  />
                 </div>
               </div>
             </div>
           </div>
         </li>
-        <li><a href="#">Catalog</a></li>
-        <li><a href="index.html">Sign Up</a></li>
-        <li><a href="signin.html">Sign In</a></li>
+        <li><Link to="/catalog">Catalog</Link></li>
+        <li><Link to="/signup">Sign Up</Link></li>
+        <li><Link to="/signin">Sign In</Link></li>
       </ul>
     </header>
 

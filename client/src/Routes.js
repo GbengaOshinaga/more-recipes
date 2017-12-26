@@ -7,6 +7,7 @@ import SignUp from './components/account/SignUp';
 import UserRecipes from './components/recipes/UserRecipes';
 import Profile from './components/user/Profile';
 import Catalog from './components/catalog/Catalog';
+import RecipeDetails from './components/recipes/RecipeDetails';
 
 const Routes = () => (
   <Switch>
@@ -17,6 +18,7 @@ const Routes = () => (
     <Route path="/my_recipes" onEnter={sessionService.checkAuth} component={UserRecipes} />
     <Route path="/profile" component={Profile} />
     <Route path="/catalog" component={Catalog} />
+    <Route path="/recipe/:id" component={RecipeDetails} />
   </Switch>
 );
 

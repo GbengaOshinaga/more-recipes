@@ -7,5 +7,6 @@ export default {
     errors: []
   },
   userRecipes: [],
-  recipes: []
+  recipes: [],
+  recipe: {}
 };

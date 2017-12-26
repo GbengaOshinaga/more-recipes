@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
+import { Link } from 'react-router-dom';
 import CatalogHeader from '../common/Header/CatalogHeader';
 import backgroundImage from '../../assets/img/bg-search.jpg';
 
@@ -12,6 +13,7 @@ const propTypes = {
 };
 
 const cardPropTypes = {
+  id: PropTypes.number.isRequired,
   image: PropTypes.string,
   recipeName: PropTypes.string.isRequired,
   recipeDescription: PropTypes.string.isRequired
@@ -40,6 +42,7 @@ function displayRecipes(recipes) {
       {chunk.map(recipe => (
         <Card
           key={recipe.id}
+          id={recipe.id}
           image={recipe.image}
           recipeName={recipe.name}
           recipeDescription={recipe.description}
@@ -114,7 +117,9 @@ export default function CatalogPage({
  * @param {*} param0
  * @returns {*} jsx
  */
-function Card({ image, recipeName, recipeDescription }) {
+function Card({
+  id, image, recipeName, recipeDescription
+}) {
   return (
     <div className="col s12 l4 m4">
       <div className="card">
@@ -123,7 +128,7 @@ function Card({ image, recipeName, recipeDescription }) {
         </div>
         <div className="card-stacked">
           <div className="card-content">
-            <a href="recipe_details.html"><span className="card-title">{recipeName}</span></a>
+            <Link to={`/recipe/${id}`}><span className="card-title">{recipeName}</span></Link>
             <p>{recipeDescription}</p>
 
           </div>

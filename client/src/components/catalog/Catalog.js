@@ -8,9 +8,13 @@ import * as recipeActions from '../../actions/RecipeActions';
 
 const propTypes = {
   isLoggedIn: PropTypes.bool.isRequired,
-  firstName: PropTypes.string.isRequired,
+  firstName: PropTypes.string,
   actions: PropTypes.object.isRequired,
   allRecipes: PropTypes.arrayOf(PropTypes.object).isRequired
+};
+
+const defaultProps = {
+  firstName: ''
 };
 
 /**
@@ -77,6 +81,7 @@ function mapDispatchToProps(dispatch) {
 
 
 Catalog.propTypes = propTypes;
+Catalog.defaultProps = defaultProps;
 
 export default connect(mapStateToProps, mapDispatchToProps)(Catalog);
 
