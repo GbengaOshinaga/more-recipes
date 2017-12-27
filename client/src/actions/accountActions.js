@@ -50,7 +50,6 @@ export function signIn(credentials) {
         if (response.status === 'success') {
           sessionService.saveSession(response.data.token);
           sessionService.saveUser(response.data.user);
-          dispatch(updateSignInSuccess({isLoggedIn: true, user: response.data.user, token: response.data.token }));
         } else {
           dispatch(updateSignInFailure(response.data.message || response.data.errors));
         }
@@ -70,7 +69,8 @@ export function signUp(data) {
       .then(response => response.json())
       .then((response) => {
         if (response.status === 'success') {
-          dispatch(updateSignUpSuccess({isLoggedIn: true, user: response.data.user, token: response.data.token }));
+          sessionService.saveSession(response.data.token);
+          sessionService.saveUser(response.data.user);
         } else {
           dispatch(updateSignUpFailure(response.data.message || response.data.errors));
         }

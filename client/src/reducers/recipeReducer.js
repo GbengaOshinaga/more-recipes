@@ -1,5 +1,5 @@
 import initialState from './initialState';
-import { GET_RECIPE_SUCCESS } from '../actions/actions';
+import { GET_RECIPE_SUCCESS, ADD_REVIEW_SUCCESS } from '../actions/actions';
 
 /**
  * Recipes reducer
@@ -12,6 +12,8 @@ export default function recipesReducer(state = initialState.recipe, action) {
   switch (action.type) {
     case GET_RECIPE_SUCCESS:
       return { ...state, ...response };
+    case ADD_REVIEW_SUCCESS:
+      return state.Reviews.concat(response);
     default:
       return state;
   }

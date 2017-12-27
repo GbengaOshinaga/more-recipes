@@ -26,8 +26,27 @@ export default class RecipesApi {
     return fetch(`http://localhost:8000/api/v1/recipes/${id}`, {
       method: 'get',
       headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
+        'Content-Type': 'application/x-www-form-urlencoded'
       }
+    });
+  }
+
+  /**
+   * Method for adding review for a recipe
+   * @param {*} id
+   * @param {*} token
+   * @param {*} review
+   * @returns {*} Promise
+   */
+  static addReview(id, token, review) {
+    debugger;
+    return fetch(`http://localhost:8000/api/v1/recipes/${id}/reviews`, {
+      method: 'post',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'Access-Token': token
+      },
+      body: `review=${review}`
     });
   }
 }

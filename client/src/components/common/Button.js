@@ -4,14 +4,15 @@ import PropTypes from 'prop-types';
 const propTypes = {
   onClick: PropTypes.func.isRequired,
   type: PropTypes.string.isRequired,
-  name: PropTypes.string.isRequired,
+  name: PropTypes.string,
   materialIcon: PropTypes.string,
   className: PropTypes.string.isRequired,
   buttonText: PropTypes.string.isRequired
 };
 
 const defaultProps = {
-  materialIcon: ''
+  materialIcon: '',
+  name: ''
 };
 
 /**

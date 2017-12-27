@@ -9,6 +9,10 @@ const propTypes = {
   errors: PropTypes.any
 };
 
+const defaultProps = {
+  errors: []
+};
+
 /**
  * Class component for signing in
  */
@@ -24,8 +28,7 @@ class SignIn extends React.Component {
       credentials: {
         email: '',
         password: ''
-      },
-      errors: []
+      }
     };
     this.onClickSave = this.onClickSave.bind(this);
     this.handleChange = this.handleChange.bind(this);
@@ -48,7 +51,7 @@ class SignIn extends React.Component {
     if (this.props.errors.length > 0) {
       return null;
     }
-    this.context.router.history.push('/my_recipes');
+    this.context.router.history.push('/catalog');
   }
 
   /**
@@ -81,6 +84,7 @@ class SignIn extends React.Component {
 
 
 SignIn.propTypes = propTypes;
+SignIn.defaultProps = defaultProps;
 
 SignIn.contextTypes = {
   router: PropTypes.object

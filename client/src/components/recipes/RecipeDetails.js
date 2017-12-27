@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
+import { sessionService } from 'redux-react-session';
 import { connect } from 'react-redux';
 import * as recipeActions from '../../actions/RecipeActions';
 import Page from './RecipeDetailsPage';
@@ -29,16 +30,11 @@ class RecipeDetails extends React.Component {
   constructor(props, context) {
     super(props, context);
     this.state = {
-      Reviews: [],
-      id: '',
-      name: '',
-      description: '',
-      ingredients: [],
-      image: '',
-      views: 0,
-      upvotes: 0,
-      downvotes: 0
+      newReview: ''
     };
+
+    this.onAddReviewChange = this.onAddReviewChange.bind(this);
+    this.onClickSaveReview = this.onClickSaveReview.bind(this);
   }
 
   /**
@@ -54,7 +50,22 @@ class RecipeDetails extends React.Component {
    * @returns {*} null
    */
   onClickSaveReview() {
+    const { id } = this.props.match.params;
+    debugger;
+    sessionService.loadSession()
+      .then((token) => {
+        this.props.actions.addReview(id, token, this.state.newReview);
+      });
+  }
 
+  /**
+   * onChange method for adding review
+   * @param {*} event
+   * @returns {*} new state
+   */
+  onAddReviewChange(event) {
+    const { value } = event.target;
+    this.setState({ newReview: value });
   }
 
   /**
@@ -66,15 +77,10 @@ class RecipeDetails extends React.Component {
       <Page
         isLoggedIn={this.props.isLoggedIn}
         firstName={this.props.firstName}
-        image={this.props.recipe.image}
-        recipeName={this.props.recipe.name}
-        recipeDescription={this.props.recipe.description}
-        ingredients={this.props.recipe.ingredients}
-        views={this.props.recipe.views}
-        upvotes={this.props.recipe.upvotes}
-        downvotes={this.props.recipe.downvotes}
-        reviews={this.props.recipe.Reviews}
+        recipe={this.props.recipe}
         onClickSaveReview={this.onClickSaveReview}
+        onAddReviewChange={this.onAddReviewChange}
+        newReview={this.state.newReview}
       />
     );
   }
