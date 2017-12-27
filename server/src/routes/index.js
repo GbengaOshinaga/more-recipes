@@ -29,7 +29,7 @@ export default (app) => {
   app.delete('/api/v1/recipes/:id', AuthValidator.authenticate, RecipeValidator.validateID, (req, res) => { recipes.deleteRecipe(req, res); });
 
   // Add a review for a recipe
-  app.post('/api/v1/recipes/:id/reviews', AuthValidator.authenticate, RecipeValidator.validateID, (req, res) => { recipes.addReview(req, res); });
+  app.post('/api/v1/recipes/:id/reviews', AuthValidator.authenticate, RecipeValidator.validateID, RecipeValidator.validateReview, (req, res) => { recipes.addReview(req, res); });
 
   // Edit a review
   app.put('/api/v1/recipes/reviews/:id', AuthValidator.authenticate, RecipeValidator.validateID, (req, res) => { recipes.editReview(req, res); });

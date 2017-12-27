@@ -41,6 +41,35 @@ export default class RecipeValidator {
   }
 
   /**
+   * Validates review
+   * @param {*} req
+   * @param {*} res
+   * @param {*} next
+   * @returns {*} response
+   */
+  static validateReview(req, res, next) {
+    const messages = [];
+    const review = req.body.review.trim();
+
+    const isEmpty = (str) => {
+      const regexp = /^[a-zA-Z0-9-',?.":; ]*$/;
+      return (regexp.test(str) || !str.length);
+    };
+
+    if (!review) {
+      messages.push('Review is required');
+    }
+    if (!review || !isEmpty(review)) {
+      messages.push('Review cannot be empty or contain illegal characters');
+    }
+
+    if (messages.length > 0) {
+      return res.status(400).jsend.fail({ errors: messages });
+    }
+    next();
+  }
+
+  /**
    * Validates id
    * @param {*} req
    * @param {*} res
