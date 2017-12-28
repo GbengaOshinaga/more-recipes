@@ -34,6 +34,21 @@ describe('RecipeValidator validates recipe inputs', () => {
       });
   });
 
+  it('should require review', (done) => {
+    chai.request(app)
+      .post('/api/v1/recipes/1/reviews')
+      .set('Access-Token', token)
+      .send({
+        review: ''
+      })
+      .end((err, res) => {
+        console.log(res.body);
+        expect(res).to.have.status(400);
+        expect(res.body.data.errors).to.be.an('array');
+        done();
+      });
+  });
+
   it('should require that parameter is an integer', (done) => {
     chai.request(app)
       .get('/api/v1/recipes/nan')

@@ -177,7 +177,7 @@ describe('Users can perform actions on recipe', () => {
       });
   });
 
-  it('should return not found when editing an unknown recipe', (done) => {
+  it('should return not found when editing an unknown review', (done) => {
     const review = faker.lorem.sentence();
     chai.request(app)
       .put('/api/v1/recipes/reviews/99')
@@ -192,7 +192,7 @@ describe('Users can perform actions on recipe', () => {
       });
   });
 
-  it('should return unauthorized when deleting recipe user did not create', (done) => {
+  it('should return unauthorized when deleting review user did not create', (done) => {
     chai.request(app)
       .del(`/api/v1/recipes/reviews/${reviewId}`)
       .set('Access-Token', token2)
@@ -203,7 +203,7 @@ describe('Users can perform actions on recipe', () => {
       });
   });
 
-  it('should return not found when deleting unknown recipe', (done) => {
+  it('should return not found when deleting unknown review', (done) => {
     chai.request(app)
       .del('/api/v1/recipes/reviews/99')
       .set('Access-Token', token)
