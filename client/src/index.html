@@ -62,27 +62,27 @@
 		$('#edit-photo').addClass('hide');
 	})
 
-	$('.upvotes').click(function(){
-		if($(this).next().attr('class') === 'downvotes black-text'){
-			$(this).next().removeClass('black-text');
-		}
-		if($(this).attr('class') === 'upvotes'){
-			$(this).addClass('green-text');
-		}else{
-			$(this).removeClass('green-text');
-		}
-	});
+	// $('.upvotes').click(function(){
+	// 	if($(this).next().attr('class') === 'downvotes black-text'){
+	// 		$(this).next().removeClass('black-text');
+	// 	}
+	// 	if($(this).attr('class') === 'upvotes'){
+	// 		$(this).addClass('green-text');
+	// 	}else{
+	// 		$(this).removeClass('green-text');
+	// 	}
+	// });
 
-	$('.downvotes').click(function(){
-		if($(this).prev().attr('class') === 'upvotes green-text'){
-			$(this).prev().removeClass('green-text');
-		}
-		if($(this).attr('class') === 'downvotes'){
-			$(this).addClass('black-text');
-		}else{
-			$(this).removeClass('black-text');
-		}
-	});
+	// $('.downvotes').click(function(){
+	// 	if($(this).prev().attr('class') === 'upvotes green-text'){
+	// 		$(this).prev().removeClass('green-text');
+	// 	}
+	// 	if($(this).attr('class') === 'downvotes'){
+	// 		$(this).addClass('black-text');
+	// 	}else{
+	// 		$(this).removeClass('black-text');
+	// 	}
+	// });
 
 	$('.favourite').click(function(){
 		if($(this).attr('class') === 'favourite'){

@@ -1,12 +1,8 @@
 
 export default {
-  account: {
-    isLoggedIn: false,
-    user: {},
-    token: '',
-    errors: []
-  },
+  account: { isLoginSuccessful: false },
   userRecipes: [],
+  userFavourites: [],
   recipes: [],
-  recipe: {}
+  recipe: {},
 };

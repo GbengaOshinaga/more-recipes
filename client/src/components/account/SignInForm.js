@@ -10,7 +10,9 @@ const propTypes = {
   email: PropTypes.string.isRequired,
   password: PropTypes.string.isRequired,
   onClickSave: PropTypes.func.isRequired,
-  errors: PropTypes.any
+  errors: PropTypes.any,
+  onSuccess: PropTypes.func.isRequired,
+  onFailure: PropTypes.func.isRequired
 };
 
 const defaultProps = {
@@ -22,12 +24,12 @@ const defaultProps = {
  * @param {*} errors
  * @returns {jsx} errors
  */
-function listErrors(errors) {
-  if (errors.constructor === Array) {
-    return errors.map((error, index) => <li key={index}>{error}</li>);
-  }
-  return errors;
-}
+// function listErrors(errors) {
+//   if (errors.constructor === Array) {
+//     return errors.map((error, index) => <li key={index}>{error}</li>);
+//   }
+//   return errors;
+// }
 
 /**
  * Functional component for signin form
@@ -35,7 +37,7 @@ function listErrors(errors) {
  * @returns {*} jsx
  */
 function SignInForm({
-  onChange, email, password, onClickSave, errors
+  onChange, email, password, onClickSave, onSuccess, onFailure
 }) {
   return (
     <div className="sign-body">
@@ -64,11 +66,12 @@ function SignInForm({
           materialIcon="arrow_forward"
           buttonText="Sign In"
         />
-        {errors && <ul className="red-text">{listErrors(errors)}</ul>}
         <SocialLoginButtons
           isAMemberText="Not a member?"
           href="/signup"
           hrefText="Sign Up"
+          onSuccess={onSuccess}
+          onFailure={onFailure}
         />
       </div>
     </div>

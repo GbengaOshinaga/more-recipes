@@ -39,7 +39,6 @@ export default class RecipesApi {
    * @returns {*} Promise
    */
   static addReview(id, token, review) {
-    debugger;
     return fetch(`http://localhost:8000/api/v1/recipes/${id}/reviews`, {
       method: 'post',
       headers: {
@@ -47,6 +46,38 @@ export default class RecipesApi {
         'Access-Token': token
       },
       body: `review=${review}`
+    });
+  }
+
+  /**
+   * Method for upvoting recipe
+   * @param {*} id
+   * @param {*} token
+   * @returns {*} Promise
+   */
+  static upvoteRecipe(id, token) {
+    return fetch(`http://localhost:8000/api/v1/recipes/upvote/${id}`, {
+      method: 'post',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'Access-Token': token
+      }
+    });
+  }
+
+  /**
+   * Method for downvoting recipe
+   * @param {*} id
+   * @param {*} token
+   * @returns {*} Promise
+   */
+  static downvoteRecipe(id, token) {
+    return fetch(`http://localhost:8000/api/v1/recipes/downvote/${id}`, {
+      method: 'post',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'Access-Token': token
+      }
     });
   }
 }

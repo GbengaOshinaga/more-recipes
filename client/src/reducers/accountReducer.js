@@ -9,16 +9,15 @@ import initialState from './initialState';
  */
 export default function accountReducer(state = initialState.account, action) {
   const { response } = action;
-  const { errors } = action;
   switch (action.type) {
     case SIGN_IN_SUCCESS:
-      return { ...state, ...response };
-    case SIGN_UP_SUCCESS:
-      return { ...state, ...response };
+      return { ...state, isLoginSuccessful: response };
     case SIGN_IN_FAILURE:
-      return { ...state.errors, errors };
+      return { ...state, isLoginSuccessful: response };
+    case SIGN_UP_SUCCESS:
+      return { ...state, isLoginSuccessful: response };
     case SIGN_UP_FAILURE:
-      return { ...state.errors, errors };
+      return { ...state, isLoginSuccessful: response };
     default:
       return state;
   }

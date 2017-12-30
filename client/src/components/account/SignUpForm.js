@@ -13,7 +13,9 @@ const propTypes = {
   email: PropTypes.string.isRequired,
   password: PropTypes.string.isRequired,
   confirmPassword: PropTypes.string.isRequired,
-  errors: PropTypes.any
+  errors: PropTypes.any,
+  onSuccess: PropTypes.func.isRequired,
+  onFailure: PropTypes.func.isRequired 
 };
 
 const defaultProps = {
@@ -38,7 +40,7 @@ function listErrors(errors) {
  * @returns {*} jsx
  */
 function SignUpForm({
-  onChange, onClickSave, firstName, lastName, email, password, confirmPassword, errors
+  onChange, onClickSave, firstName, lastName, email, password, confirmPassword, errors, onSuccess, onFailure
 }) {
   return (
     <div className="sign-body">
@@ -97,6 +99,8 @@ function SignUpForm({
           isAMemberText="Already a member?"
           href="/signin"
           hrefText="Sign In"
+          onSuccess={onSuccess}
+          onFailure={onFailure}
         />
       </div>
     </div>

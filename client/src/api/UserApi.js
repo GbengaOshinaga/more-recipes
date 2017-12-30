@@ -51,4 +51,19 @@ export default class User {
       }
     });
   }
+
+  /**
+   * Method for getting user's favourites
+   * @param {*} token
+   * @returns {*} Promise
+   */
+  static getFavourites(token) {
+    return fetch('http://localhost:8000/api/v1/users/recipes/favourites', {
+      method: 'get',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'Access-Token': token
+      }
+    });
+  }
 }

@@ -36,6 +36,7 @@ class SignUp extends React.Component {
     };
     this.onClickSave = this.onClickSave.bind(this);
     this.handleChange = this.handleChange.bind(this);
+    this.onGoogleLoginSuccess = this.onGoogleLoginSuccess.bind(this);
   }
 
   /**
@@ -45,6 +46,35 @@ class SignUp extends React.Component {
   onClickSave() {
     this.props.signUp(this.state.data);
   }
+
+  /**
+   * Method to handle on google login success
+   * @param {*} response
+   * @returns {*} null
+   */
+  onGoogleLoginSuccess(response) {
+    const credentials = {
+      firstName: response.profileObj.givenName,
+      lastName: response.profileObj.familyName,
+      email: response.profileObj.email,
+      password: 'google-login',
+      confirmPassword: 'google-login'
+    };
+    this.props.signUp(credentials)
+      .then(() => this.redirect());
+  }
+
+  /**
+   * Redirects to catalog page after successfully signing in
+   * @returns {null} if there are errors
+   */
+  redirect() {
+    if (this.props.errors.length > 0) {
+      return null;
+    }
+    this.context.router.history.push('/catalog');
+  }
+
 
   /**
    * Handles input field value change
@@ -72,6 +102,7 @@ class SignUp extends React.Component {
         password={this.state.data.password}
         confirmPassword={this.state.data.confirmPassword}
         errors={this.props.errors}
+        onSuccess={this.onGoogleLoginSuccess}
       />
     );
   }
@@ -80,6 +111,9 @@ class SignUp extends React.Component {
 
 SignUp.propTypes = propTypes;
 SignUp.defaultProps = defaultProps;
+SignUp.contextTypes = {
+  router: PropTypes.object
+};
 
 /**
  * mapStateToProps

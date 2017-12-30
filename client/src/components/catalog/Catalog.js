@@ -29,6 +29,8 @@ class Catalog extends React.Component {
   constructor(props, context) {
     super(props, context);
     this.state = {};
+
+    this.vote = this.vote.bind(this);
   }
 
   /**
@@ -40,6 +42,20 @@ class Catalog extends React.Component {
   }
 
   /**
+   * votes recipe
+   * @param {*} event
+   * @returns {*} null
+   */
+  vote(event) {
+    event.persist();
+    sessionService.loadSession()
+      .then((token) => {
+        event.target.firstChild.nodeValue === 'thumb_up' ?
+          this.props.actions.upvoteRecipe(event.target.id, token) :
+          this.props.actions.downvoteRecipe(event.target.id, token);
+      });
+  }
+  /**
    * Component render function
    * @returns {*} jsx
    */
@@ -49,6 +65,7 @@ class Catalog extends React.Component {
         isLoggedIn={this.props.isLoggedIn}
         firstName={this.props.firstName}
         allRecipes={this.props.allRecipes}
+        onClickVote={this.vote}
       />
     );
   }

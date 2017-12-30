@@ -13,13 +13,13 @@ function loggedInHeader(name) {
       <ul id="dropdown1" className="dropdown-content">
         <li><Link to="/profile">Profile</Link></li>
         <li><Link to="/my_recipes">My Recipes</Link></li>
-        <li><a href="favourite_recipes.html">Favourite Recipes</a></li>
+        <li><Link to="/favourites">Favourite Recipes</Link></li>
         <li><a href="#!">Logout</a></li>
       </ul>
       <ul id="dropdown2" className="dropdown-content">
         <li><Link to="/profile">Profile</Link></li>
         <li><Link to="/my_recipes">My Recipes</Link></li>
-        <li><a href="favourite_recipes.html">Favourite Recipes</a></li>
+        <li><Link to="/favourites">Favourite Recipes</Link></li>
         <li><a href="#!">Logout</a></li>
       </ul>
       <div className="navbar-fixed">
@@ -31,7 +31,7 @@ function loggedInHeader(name) {
                 <i className="material-icons">menu</i>
               </a>
               <ul className="right hide-on-med-and-down">
-                <li><a href="catalog.html">Catalog</a></li>
+                <li><Link to="/catalog">Catalog</Link></li>
                 <li>
                   <a className="dropdown-button" href="#!" data-activates="dropdown1">
                     {name}<i className="material-icons right">arrow_drop_down</i>
@@ -44,7 +44,7 @@ function loggedInHeader(name) {
 
       </div>
       <ul className="side-nav" id="mobile">
-        <li><a href="catalog.html">Catalog</a></li>
+        <li><Link to="/catalog">Catalog</Link></li>
         <li>
           <a className="dropdown-button" href="#!" data-activates="dropdown2">
             {name}<i className="material-icons right">arrow_drop_down</i>

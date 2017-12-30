@@ -15,6 +15,18 @@ const addModalPropTypes = {
   inputRef: PropTypes.func.isRequired
 };
 
+const editModalPropTypes = {
+  onChipChange: PropTypes.func.isRequired,
+  onInputChange: PropTypes.func.isRequired,
+  canvasId: PropTypes.string.isRequired,
+  inputValue: PropTypes.string.isRequired,
+  descValue: PropTypes.string.isRequired,
+  onClickSave: PropTypes.func.isRequired,
+  onFileChange: PropTypes.func.isRequired,
+  inputRef: PropTypes.func.isRequired,
+  editData: PropTypes.object.isRequired
+};
+
 const deleteModalPropTypes = {
   onConfirm: PropTypes.func.isRequired
 };
@@ -89,7 +101,10 @@ export function AddModal({
  * Functional component for edit modal
  * @returns {*} jsx
  */
-export function EditModal() {
+export function EditModal({
+  onChipChange, onInputChange, canvasId,
+  onClickSave, onFileChange, inputRef, editData
+}) {
   return (
     <div id="edit-modal" className="modal">
       <div className="modal-content">
@@ -97,45 +112,48 @@ export function EditModal() {
         <hr />
 
         <form action="#">
+          <InputField
+            id="recipeName"
+            type="text"
+            onChange={onInputChange}
+            value={editData.recipeName}
+            label="Recipe Name"
+            dataError="Recipe Name is required"
+          />
           <div className="row">
-            <div className="input-field col s12">
-              <input id="recipe-name" value="Recipe Name" type="text" className="validate" />
-              <label htmlFor="email">Recipe Name</label>
-            </div>
+            <TextArea
+              id="recipeDescription"
+              value={editData.recipeDescription}
+              onChange={onInputChange}
+              label="Recipe Details"
+            />
           </div>
           <div className="row">
-            <div className="input-field col s12">
-              <textarea id="recipe-details-textarea" className="materialize-textarea">
-                This is a recipe that i have been working on for a while.
-              </textarea>
-              <label htmlFor="recipe-details-textarea">
-                Recipe Details
-              </label>
-            </div>
-          </div>
-          <div className="row">
-            <div className="input-field col s12">
-              <textarea id="ingredients-textarea" className="materialize-textarea" />
-              <label htmlFor="ingredients-textarea" className="materialize-textarea">
-                Ingredients
-              </label>
-            </div>
+            <ChipInput
+              defaultValue={editData.ingredients}
+              onChange={onChipChange}
+            />
           </div>
           <div className="file-field input-field">
             <div className="btn">
               <span>UPLOAD NEW IMAGE</span>
-              <input type="file" />
+              <input type="file" id="editFileUpload" onChange={onFileChange} />
             </div>
-            <div className="file-path-wrapper">
-              <input className="file-path validate" type="text" />
-            </div>
+            <canvas id={canvasId} width="300" height="200" style={canvasStyle} ref={inputRef} />
           </div>
+
         </form>
 
       </div>
       <div className="modal-footer">
         <div className="container">
-          <a href="#!" className="modal-action modal-close waves-effect waves-green btn">Save</a>
+          <a
+            href="#!"
+            onClick={onClickSave}
+            className="modal-action modal-close waves-effect waves-green btn"
+          >
+            Save
+          </a>
           <a href="#!" className="modal-action modal-close waves-effect waves-green btn">Cancel</a>
         </div>
       </div>
@@ -158,7 +176,8 @@ export function DeleteModal({ onConfirm }) {
       </div>
       <div className="modal-footer">
         <a
-          // href={onConfirm}
+          href="#!"
+          onClick={onConfirm}
           className="modal-action modal-close waves-effect waves-green btn-flat"
         >
           DELETE
@@ -172,5 +191,5 @@ export function DeleteModal({ onConfirm }) {
 }
 
 AddModal.propTypes = addModalPropTypes;
-
 DeleteModal.propTypes = deleteModalPropTypes;
+EditModal.propTypes = editModalPropTypes;

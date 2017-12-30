@@ -11,7 +11,7 @@ export default function recipesReducer(state = initialState.recipes, action) {
   const { response } = action;
   switch (action.type) {
     case GET_RECIPES_SUCCESS:
-      return state.concat(response);
+      return [...response];
     default:
       return state;
   }

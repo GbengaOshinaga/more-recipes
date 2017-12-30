@@ -1,5 +1,6 @@
 import RecipesApi from '../api/RecipesApi';
 import { GET_RECIPES_SUCCESS, GET_RECIPE_SUCCESS, ADD_REVIEW_SUCCESS, ADD_RECIPE_FAILURE } from './actions';
+import { toASCII } from 'punycode';
 
 /**
  * Updates reducer if get recipes action is successful
@@ -74,9 +75,40 @@ export function addReview(id, token, review) {
     return RecipesApi.addReview(id, token, review)
       .then(response => response.json())
       .then((response) => {
-        debugger;
         console.log(response);
         dispatch(updateAddReviewSuccess(response.data.review));
+      });
+  };
+}
+
+/**
+ * Action to upvote a recipe
+ * @param {*} id
+ * @param {*} token
+ * @returns {*} response
+ */
+export function upvoteRecipe(id, token) {
+  return function (dispatch) {
+    return RecipesApi.upvoteRecipe(id, token)
+      .then(response => response.json())
+      .then((response) => {
+        console.log(response);
+      });
+  };
+}
+
+/**
+ * Action to downvote a recipe
+ * @param {*} id
+ * @param {*} token
+ * @returns {*} response
+ */
+export function downvoteRecipe(id, token) {
+  return function (dispatch) {
+    return RecipesApi.downvoteRecipe(id, token)
+      .then(response => response.json())
+      .then((response) => {
+        console.log(response);
       });
   };
 }

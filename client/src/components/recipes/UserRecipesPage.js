@@ -1,13 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
+import { Link } from 'react-router-dom';
 import Header from '../common/Header/Header';
-import { AddModal, DeleteModal } from './Modal';
+import { AddModal, DeleteModal, EditModal } from './Modal';
 
 const cardPropTypes = {
   image: PropTypes.string,
   recipeName: PropTypes.string.isRequired,
-  recipeDescription: PropTypes.string.isRequired
+  recipeDescription: PropTypes.string.isRequired,
+  id: PropTypes.number.isRequired,
+  getId: PropTypes.func.isRequired,
+  getIdForEdit: PropTypes.func.isRequired
 };
 
 const cardDefaultProps = {
@@ -25,8 +29,12 @@ const pagePropTypes = {
   onClickSave: PropTypes.func.isRequired,
   onFileChange: PropTypes.func.isRequired,
   inputRef: PropTypes.func.isRequired,
+  editInputRef: PropTypes.func.isRequired,
   userRecipes: PropTypes.arrayOf(PropTypes.object).isRequired,
-  onConfirmDelete: PropTypes.func.isRequired
+  onConfirmDelete: PropTypes.func.isRequired,
+  getId: PropTypes.func.isRequired,
+  getIdForEdit: PropTypes.func.isRequired,
+  editData: PropTypes.object.isRequired
 };
 
 const pageDefaultProps = {
@@ -36,10 +44,11 @@ const pageDefaultProps = {
 /**
  * Displays recipes in cards
  * @param {*} recipes
- * @param {func} onDelete
+ * @param {func} getId
+ * @param {func} getIdForEdit
  * @returns {*} jsx
  */
-function displayRecipes(recipes, onDelete) {
+function displayRecipes(recipes, getId, getIdForEdit) {
   const chunkedRecipes = _.chunk(recipes, 3);
   if (recipes === undefined || recipes.length === 0) {
     return 'No Recipe Available';
@@ -49,10 +58,12 @@ function displayRecipes(recipes, onDelete) {
       {chunk.map(recipe => (
         <Card
           key={recipe.id}
+          id={recipe.id}
           image={recipe.image}
           recipeName={recipe.name}
           recipeDescription={recipe.description}
-          onDelete={onDelete}
+          getId={getId}
+          getIdForEdit={getIdForEdit}
         />
   ))}
     </div>
@@ -66,7 +77,9 @@ function displayRecipes(recipes, onDelete) {
  */
 function Page({
   isLoggedIn, firstName, onChipChange, onInputChange, inputValue,
-  canvasId, descValue, onClickSave, onFileChange, inputRef, userRecipes, onConfirmDelete
+  canvasId, descValue, onClickSave, onFileChange, inputRef, editInputRef,
+  userRecipes, onConfirmDelete, getId,
+  getIdForEdit, editData
 }) {
   return (
     <div>
@@ -94,10 +107,21 @@ function Page({
         <DeleteModal
           onConfirm={onConfirmDelete}
         />
+        <EditModal
+          onChipChange={onChipChange}
+          onInputChange={onInputChange}
+          inputValue={inputValue}
+          editData={editData}
+          canvasId={canvasId}
+          descValue={descValue}
+          onClickSave={onClickSave}
+          onFileChange={onFileChange}
+          inputRef={editInputRef}
+        />
         <div className="favorited-recipes">
           <h4 className="center-align">My Recipes</h4>
           <hr />
-          {displayRecipes(userRecipes)}
+          {displayRecipes(userRecipes, getId, getIdForEdit)}
         </div>
       </div>
     </div>
@@ -109,7 +133,9 @@ function Page({
  * @param {*} props
  * @returns {*} jsx
  */
-function Card({ image, recipeName, recipeDescription, onDelete }) {
+function Card({
+  image, recipeName, recipeDescription, id, getId, getIdForEdit
+}) {
   return (
     <div className="col s12 m4 l4">
       <div className="card">
@@ -122,21 +148,22 @@ function Card({ image, recipeName, recipeDescription, onDelete }) {
             <p>{recipeDescription}</p>
           </div>
           <div className="card-action">
-            <a className="btn-floating waves-effect waves-light green" href="recipe_details.html">
+            <Link to={`/recipe/${id}`} className="btn-floating waves-effect waves-light green">
               <i className="material-icons">description</i>
-            </a>
+            </Link>
             <a
               className="modal-trigger btn-floating waves-effect waves-light blue"
               href="#edit-modal"
+              onClick={getIdForEdit}
             >
-              <i className="material-icons">edit</i>
+              <i id={id} className="material-icons">edit</i>
             </a>
             <a
               className="modal-trigger btn-floating waves-effect waves-light red"
               href="#confirm-modal"
-              // onClick={onDelete}
+              onClick={getId}
             >
-              <i className="material-icons">delete</i>
+              <i id={id} className="material-icons">delete</i>
             </a>
           </div>
         </div>

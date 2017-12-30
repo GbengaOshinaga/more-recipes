@@ -9,15 +9,17 @@ const propTypes = {
   isLoggedIn: PropTypes.bool.isRequired,
   firstName: PropTypes.string,
   allRecipes: PropTypes.arrayOf(PropTypes.object).isRequired,
-  mostFavouritedRecipes: PropTypes.arrayOf(PropTypes.object).isRequired
+  mostFavouritedRecipes: PropTypes.arrayOf(PropTypes.object).isRequired,
+  onClickVote: PropTypes.func.isRequired
 };
 
 const cardPropTypes = {
   id: PropTypes.number.isRequired,
   image: PropTypes.string,
   recipeName: PropTypes.string.isRequired,
-  recipeDescription: PropTypes.string.isRequired
-
+  recipeDescription: PropTypes.string.isRequired,
+  onClickVote: PropTypes.func.isRequired,
+  isLoggedIn: PropTypes.bool.isRequired
 };
 
 const defaultProps = {
@@ -29,10 +31,11 @@ const cardDefaultProps = { image: '' };
 /**
  * Displays recipes in cards
  * @param {*} recipes
- * @param {func} onDelete
+ * @param {func} onClickVote
+ * @param {bool} isLoggedIn
  * @returns {*} jsx
  */
-function displayRecipes(recipes) {
+function displayRecipes(recipes, onClickVote, isLoggedIn) {
   const chunkedRecipes = _.chunk(recipes, 3);
   if (recipes === undefined || recipes.length === 0) {
     return 'No Recipe Available';
@@ -46,6 +49,8 @@ function displayRecipes(recipes) {
           image={recipe.image}
           recipeName={recipe.name}
           recipeDescription={recipe.description}
+          onClickVote={onClickVote}
+          isLoggedIn={isLoggedIn}
         />
     ))}
     </div>
@@ -59,7 +64,7 @@ function displayRecipes(recipes) {
  * @returns {*} jsx
  */
 export default function CatalogPage({
-  isLoggedIn, firstName, allRecipes, mostFavouritedRecipes
+  isLoggedIn, firstName, allRecipes, mostFavouritedRecipes, onClickVote
 }) {
   return (
     <div>
@@ -99,12 +104,12 @@ export default function CatalogPage({
         </div>
         <div id="all">
           <div className="container">
-            {displayRecipes(allRecipes)}
+            {displayRecipes(allRecipes, onClickVote, isLoggedIn)}
           </div>
         </div>
         <div id="most-fav">
           <div className="container">
-            {displayRecipes(mostFavouritedRecipes)}
+            {displayRecipes(mostFavouritedRecipes, onClickVote, isLoggedIn)}
           </div>
         </div>
       </div>
@@ -118,7 +123,7 @@ export default function CatalogPage({
  * @returns {*} jsx
  */
 function Card({
-  id, image, recipeName, recipeDescription
+  id, image, recipeName, recipeDescription, onClickVote, isLoggedIn
 }) {
   return (
     <div className="col s12 l4 m4">
@@ -132,13 +137,27 @@ function Card({
             <p>{recipeDescription}</p>
 
           </div>
+
+          {isLoggedIn && 
           <div className="card-action">
             <div className="recipe-icons">
-              <a href="#!" className="upvotes"><i className="material-icons">thumb_up</i></a>
-              <a href="#!" className="downvotes"><i className="material-icons">thumb_down</i></a>
+              <a
+                href="#!"
+                className="upvotes"
+                onClick={onClickVote}
+              >
+                <i id={id} className="material-icons">thumb_up</i>
+              </a>
+              <a
+                href="#!"
+                className="downvotes"
+                onClick={onClickVote}
+              >
+                <i id={id} className="material-icons">thumb_down</i>
+              </a>
               <a href="#!" className="favourite"><i className="material-icons">favorite</i></a>
             </div>
-          </div>
+          </div>}
         </div>
       </div>
     </div>

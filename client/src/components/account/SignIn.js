@@ -1,16 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import toastr from 'toastr';
 import { signIn } from '../../actions/accountActions';
 import SignInForm from './SignInForm';
 
 const propTypes = {
-  signIn: PropTypes.func.isRequired,
-  errors: PropTypes.any
-};
-
-const defaultProps = {
-  errors: []
+  isLoggedIn: PropTypes.bool.isRequired,
+  signIn: PropTypes.func.isRequired
 };
 
 /**
@@ -30,8 +27,16 @@ class SignIn extends React.Component {
         password: ''
       }
     };
+
     this.onClickSave = this.onClickSave.bind(this);
     this.handleChange = this.handleChange.bind(this);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    debugger;
+    if (nextProps.isLoggedIn) {
+      this.redirect();
+    }
   }
 
   /**
@@ -39,8 +44,31 @@ class SignIn extends React.Component {
    * @returns {*} nothing
    */
   onClickSave() {
+    this.props.signIn(this.state.credentials);
+    debugger;
+    if (this.props.isLoggedIn) {
+      this.redirect();
+    }
+  }
+
+  /**
+   * Method to handle on google login success
+   * @param {*} response
+   * @returns {*} null
+   */
+  onGoogleLoginSuccess(response) {
+    this.setState({ credentials: { email: response.profileObj.email, password: 'google-login' } });
     this.props.signIn(this.state.credentials)
-      .then(() => this.redirect());
+      .then(() => this.redirect())
+      .catch(error => toastr.error(error));
+  }
+
+  /**
+   * Method to handle on google login failure
+   * @returns {*} null
+   */
+  onGoogleLoginFailure() {
+    toastr.error('An error occured');
   }
 
   /**
@@ -48,9 +76,6 @@ class SignIn extends React.Component {
    * @returns {null} if there are errors
    */
   redirect() {
-    if (this.props.errors.length > 0) {
-      return null;
-    }
     this.context.router.history.push('/catalog');
   }
 
@@ -76,7 +101,7 @@ class SignIn extends React.Component {
         email={this.state.credentials.email}
         password={this.state.credentials.password}
         onClickSave={this.onClickSave}
-        errors={this.props.errors}
+        onSuccess={this.onGoogleLoginSuccess}
       />
     );
   }
@@ -84,7 +109,6 @@ class SignIn extends React.Component {
 
 
 SignIn.propTypes = propTypes;
-SignIn.defaultProps = defaultProps;
 
 SignIn.contextTypes = {
   router: PropTypes.object
@@ -93,19 +117,18 @@ SignIn.contextTypes = {
 /**
  * mapStateToProps
  * @param {*} state
- * @param {*} ownProps
  * @returns {object} object
  */
-function mapStateToProps(state, ownProps) {
+function mapStateToProps(state) {
   return {
-    errors: state.account.errors
+    isLoggedIn: state.account.isLoginSuccessful
   };
 }
 
 /**
- * mapDispatchToProps
+ * Map dispatch to props
  * @param {*} dispatch
- * @returns {object} object
+ * @returns {Object} object
  */
 function mapDispatchToProps(dispatch) {
   return {

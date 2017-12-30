@@ -1,5 +1,5 @@
 import UserApi from '../api/UserApi';
-import { ADD_RECIPE_SUCCESS, ADD_RECIPE_FAILURE, DELETE_RECIPE_SUCCESS } from './actions';
+import { ADD_RECIPE_SUCCESS, ADD_RECIPE_FAILURE, DELETE_RECIPE_SUCCESS, GET_USER_FAVOURITES_SUCCESS } from './actions';
 
 /**
  * Updates reducer if add recipe action is successful
@@ -17,6 +17,15 @@ function updateAddRecipeSuccess(response) {
  */
 function updateDeleteRecipeSuccess(id) {
   return { type: DELETE_RECIPE_SUCCESS, id };
+}
+
+/**
+ * Updates reducer if get user favourites is successful
+ * @param {*} response
+ * @returns {Object} object
+ */
+function updateUserFavouritesSuccess(response) {
+  return { type: GET_USER_FAVOURITES_SUCCESS, response };
 }
 
 /**
@@ -71,6 +80,24 @@ export function getUserRecipes(token) {
       .then((response) => {
         if (response.status === 'success') {
           dispatch(updateAddRecipeSuccess(response.data.recipes));
+        }
+      });
+  };
+}
+
+/**
+ * Action to get user favourites
+ * @param {*} token
+ * @returns {*} response
+ */
+export function getFavourites(token) {
+  return function (dispatch) {
+    return UserApi.getFavourites(token)
+      .then(response => response.json())
+      .then((response) => {
+        if (response.status === 'success') {
+          console.log(response);
+          dispatch(updateUserFavouritesSuccess(response.data.favourites));
         }
       });
   };

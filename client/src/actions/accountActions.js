@@ -1,4 +1,5 @@
 import { sessionService } from 'redux-react-session';
+import toastr from 'toastr';
 import { SIGN_IN_SUCCESS, SIGN_UP_SUCCESS, SIGN_IN_FAILURE, SIGN_UP_FAILURE } from './actions';
 import AccountsApi from '../api/AccountsApi';
 /**
@@ -7,6 +8,7 @@ import AccountsApi from '../api/AccountsApi';
  * @returns {Object} action
  */
 export function updateSignInSuccess(response) {
+  debugger;
   return { type: SIGN_IN_SUCCESS, response };
 }
 
@@ -21,20 +23,20 @@ export function updateSignUpSuccess(response) {
 
 /**
  * Updates reducer if sign up fails
- * @param {*} errors
+ * @param {*} response
  * @returns {object} object
  */
-export function updateSignUpFailure(errors) {
-  return { type: SIGN_UP_FAILURE, errors };
+export function updateSignUpFailure(response) {
+  return { type: SIGN_UP_FAILURE, response };
 }
 
 /**
  * Updates reducer if sign in fails
- * @param {*} errors
+ * @param {*} response
  * @returns {object} object
  */
-export function updateSignInFailure(errors) {
-  return { type: SIGN_IN_FAILURE, errors };
+export function updateSignInFailure(response) {
+  return { type: SIGN_IN_FAILURE, response };
 }
 
 /**
@@ -50,11 +52,13 @@ export function signIn(credentials) {
         if (response.status === 'success') {
           sessionService.saveSession(response.data.token);
           sessionService.saveUser(response.data.user);
+          dispatch(updateSignInSuccess(true));
         } else {
-          dispatch(updateSignInFailure(response.data.message || response.data.errors));
+          dispatch(updateSignInFailure(false));
+          toastr.error(response.data.message || response.data.errors);
         }
       })
-      .catch((error) => { throw (error); });
+      .catch((error) => { toastr.error(error); });
   };
 }
 
@@ -72,7 +76,7 @@ export function signUp(data) {
           sessionService.saveSession(response.data.token);
           sessionService.saveUser(response.data.user);
         } else {
-          dispatch(updateSignUpFailure(response.data.message || response.data.errors));
+          throw (response.data.message || response.data.errors);
         }
       })
       .catch((error) => { throw (error); });

@@ -3,8 +3,16 @@ import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { sessionService } from 'redux-react-session';
+import toastr from 'toastr';
 import Page from './UserRecipesPage';
 import * as userActions from '../../actions/userActions';
+
+const propTypes = {
+  isLoggedIn: PropTypes.bool.isRequired,
+  firstName: PropTypes.string,
+  userRecipes: PropTypes.arrayOf(PropTypes.object).isRequired,
+  actions: PropTypes.object.isRequired
+};
 
 const defaultProps = {
   firstName: ''
@@ -28,13 +36,25 @@ class UserRecipes extends React.Component {
         recipeDescription: '',
         ingredients: [],
         imageURL: ''
-      }
+      },
+      deleteId: 0,
+      edit: {
+        id: 0,
+        recipeName: '',
+        recipeDescription: '',
+        ingredients: [],
+        imageURL: ''
+      },
+      imageFile: []
     };
 
     this.handleChipsChange = this.handleChipsChange.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
     this.onClickSave = this.onClickSave.bind(this);
     this.loadImage = this.loadImage.bind(this);
+    this.onConfirmDelete = this.onConfirmDelete.bind(this);
+    this.getId = this.getId.bind(this);
+    this.getIdForEdit = this.getIdForEdit.bind(this);
   }
 
   /**
@@ -64,12 +84,41 @@ class UserRecipes extends React.Component {
    * @param {*} event
    * @returns {*} null
    */
-  onConfirmDelete(event) {
-    console.log(event);
-    // sessionService.loadSession()
-    //   .then((token) => {
-    //     this.props.actions.deleteRecipe(token, id);
-    //   });
+  onConfirmDelete() {
+    sessionService.loadSession()
+      .then((token) => {
+        this.props.actions.deleteRecipe(token, this.state.deleteId);
+      })
+      .then(toastr.success('Recipe successfully deleted'));
+  }
+
+  /**
+   * Get id of recipe
+   * @param {*} event
+   * @returns {*} null
+   */
+  getId(event) {
+    this.setState({ deleteId: event.target.id });
+  }
+
+  /**
+   * Get id of recipe for edit
+   * @param {*} event
+   * @returns {*} null
+   */
+  getIdForEdit(event) {
+    const recipeForEdit = [
+      ...this.props.userRecipes.filter(recipe => recipe.id === Number(event.target.id))
+    ];
+    this.setState({
+      edit: {
+        id: recipeForEdit[0].id,
+        recipeName: recipeForEdit[0].name,
+        recipeDescription: recipeForEdit[0].description,
+        ingredients: [recipeForEdit[0].ingredients[0]],
+        imageURL: recipeForEdit[0].image
+      }
+    });
   }
 
   /**
@@ -78,7 +127,12 @@ class UserRecipes extends React.Component {
    * @returns {*} image src
    */
   loadImage(event) {
-    const context = this.inputElement.getContext('2d');
+    let context;
+    if (event.target.id === 'fileUpload') {
+      context = this.inputElement.getContext('2d');
+    } else {
+      context = this.editInputElement.getContext('2d');
+    }
     const file = event.target.files[0];
     const fileReader = new FileReader();
     fileReader.onload = function (e) {
@@ -92,9 +146,11 @@ class UserRecipes extends React.Component {
       fileReader.readAsDataURL(file);
     } catch (error) {
     }
-    const { data } = this.state;
-    data.imageURL = this.inputElement.toDataURL();
-    this.setState({ data });
+    let { imageFile } = this.state;
+    imageFile = file;
+    this.setState({ imageFile });
+    console.log(this.state.imageFile);
+    console.log(event.target.files);
   }
 
   /**
@@ -136,22 +192,22 @@ class UserRecipes extends React.Component {
         onInputChange={this.handleInputChange}
         inputValue={this.state.data.recipeName}
         descValue={this.state.data.recipeDescription}
+        editData={this.state.edit}
         canvasId="imageURL"
         onClickSave={this.onClickSave}
         onFileChange={this.loadImage}
         inputRef={el => this.inputElement = el}
+        editInputRef={el => this.editInputElement = el }
         onConfirmDelete={this.onConfirmDelete}
+        getId={this.getId}
+        getIdForEdit={this.getIdForEdit}
+        defaultIngredients={this.state.data.ingredients}
       />
     );
   }
 }
 
-UserRecipes.propTypes = {
-  isLoggedIn: PropTypes.bool.isRequired,
-  firstName: PropTypes.string,
-  userRecipes: PropTypes.arrayOf(PropTypes.object).isRequired
-};
-
+UserRecipes.propTypes = propTypes;
 UserRecipes.defaultProps = defaultProps;
 
 /**
@@ -178,9 +234,5 @@ function mapDispatchToProps(dispatch) {
     actions: bindActionCreators(userActions, dispatch)
   };
 }
-
-UserRecipes.propTypes = {
-  actions: PropTypes.object.isRequired
-};
 
 export default connect(mapStateToProps, mapDispatchToProps)(UserRecipes);

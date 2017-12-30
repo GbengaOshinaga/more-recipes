@@ -51,7 +51,6 @@ class RecipeDetails extends React.Component {
    */
   onClickSaveReview() {
     const { id } = this.props.match.params;
-    debugger;
     sessionService.loadSession()
       .then((token) => {
         this.props.actions.addReview(id, token, this.state.newReview);
