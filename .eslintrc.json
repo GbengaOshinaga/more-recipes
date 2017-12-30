@@ -17,6 +17,7 @@
       "curly": ["error", "multi-line"],
       "linebreak-style": ["error", "windows"],
       "no-underscore-dangle": ["off"],
+      "no-unused-expressions": [2, { "allowTernary": true }],
       "class-methods-use-this": "off",
       "no-restricted-syntax":"off",
       "react/prefer-stateless-function": 0,
