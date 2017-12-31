@@ -2,11 +2,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import toastr from 'toastr';
+import { sessionService } from 'redux-react-session';
 import { signIn } from '../../actions/accountActions';
 import SignInForm from './SignInForm';
 
 const propTypes = {
-  isLoggedIn: PropTypes.bool.isRequired,
   signIn: PropTypes.func.isRequired
 };
 
@@ -30,13 +30,7 @@ class SignIn extends React.Component {
 
     this.onClickSave = this.onClickSave.bind(this);
     this.handleChange = this.handleChange.bind(this);
-  }
-
-  componentWillReceiveProps(nextProps) {
-    debugger;
-    if (nextProps.isLoggedIn) {
-      this.redirect();
-    }
+    this.onGoogleLoginSuccess = this.onGoogleLoginSuccess.bind(this);
   }
 
   /**
@@ -44,11 +38,18 @@ class SignIn extends React.Component {
    * @returns {*} nothing
    */
   onClickSave() {
-    this.props.signIn(this.state.credentials);
-    debugger;
-    if (this.props.isLoggedIn) {
-      this.redirect();
-    }
+    this.props.signIn(this.state.credentials)
+      .then(response => response.json())
+      .then((response) => {
+        if (response.status === 'success') {
+          sessionService.saveSession(response.data.token);
+          sessionService.saveUser(response.data.user);
+          this.redirect();
+        } else {
+          toastr.error(response.data.message || response.data.errors);
+        }
+      })
+      .catch((error) => { toastr.error(error); });
   }
 
   /**
@@ -59,8 +60,17 @@ class SignIn extends React.Component {
   onGoogleLoginSuccess(response) {
     this.setState({ credentials: { email: response.profileObj.email, password: 'google-login' } });
     this.props.signIn(this.state.credentials)
-      .then(() => this.redirect())
-      .catch(error => toastr.error(error));
+      .then(serverResponse => serverResponse.json())
+      .then((serverResponse) => {
+        if (serverResponse.status === 'success') {
+          sessionService.saveSession(serverResponse.data.token);
+          sessionService.saveUser(serverResponse.data.user);
+          this.redirect();
+        } else {
+          toastr.error(serverResponse.data.message || serverResponse.data.errors);
+        }
+      })
+      .catch((error) => { toastr.error(error); });
   }
 
   /**
@@ -102,6 +112,7 @@ class SignIn extends React.Component {
         password={this.state.credentials.password}
         onClickSave={this.onClickSave}
         onSuccess={this.onGoogleLoginSuccess}
+        onFailure={this.onGoogleLoginFailure}
       />
     );
   }

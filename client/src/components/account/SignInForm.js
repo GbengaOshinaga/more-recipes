@@ -10,26 +10,9 @@ const propTypes = {
   email: PropTypes.string.isRequired,
   password: PropTypes.string.isRequired,
   onClickSave: PropTypes.func.isRequired,
-  errors: PropTypes.any,
   onSuccess: PropTypes.func.isRequired,
   onFailure: PropTypes.func.isRequired
 };
-
-const defaultProps = {
-  errors: []
-};
-
-/**
- * Display errors
- * @param {*} errors
- * @returns {jsx} errors
- */
-// function listErrors(errors) {
-//   if (errors.constructor === Array) {
-//     return errors.map((error, index) => <li key={index}>{error}</li>);
-//   }
-//   return errors;
-// }
 
 /**
  * Functional component for signin form
@@ -79,6 +62,5 @@ function SignInForm({
 }
 
 SignInForm.propTypes = propTypes;
-SignInForm.defaultProps = defaultProps;
 
 export default SignInForm;

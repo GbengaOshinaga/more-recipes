@@ -1,5 +1,3 @@
-import { sessionService } from 'redux-react-session';
-import toastr from 'toastr';
 import { SIGN_IN_SUCCESS, SIGN_UP_SUCCESS, SIGN_IN_FAILURE, SIGN_UP_FAILURE } from './actions';
 import AccountsApi from '../api/AccountsApi';
 /**
@@ -8,7 +6,6 @@ import AccountsApi from '../api/AccountsApi';
  * @returns {Object} action
  */
 export function updateSignInSuccess(response) {
-  debugger;
   return { type: SIGN_IN_SUCCESS, response };
 }
 
@@ -46,19 +43,7 @@ export function updateSignInFailure(response) {
  */
 export function signIn(credentials) {
   return function (dispatch) {
-    return AccountsApi.signIn(credentials)
-      .then(response => response.json())
-      .then((response) => {
-        if (response.status === 'success') {
-          sessionService.saveSession(response.data.token);
-          sessionService.saveUser(response.data.user);
-          dispatch(updateSignInSuccess(true));
-        } else {
-          dispatch(updateSignInFailure(false));
-          toastr.error(response.data.message || response.data.errors);
-        }
-      })
-      .catch((error) => { toastr.error(error); });
+    return AccountsApi.signIn(credentials);
   };
 }
 
@@ -69,16 +54,6 @@ export function signIn(credentials) {
  */
 export function signUp(data) {
   return function (dispatch) {
-    return AccountsApi.signUp(data)
-      .then(response => response.json())
-      .then((response) => {
-        if (response.status === 'success') {
-          sessionService.saveSession(response.data.token);
-          sessionService.saveUser(response.data.user);
-        } else {
-          throw (response.data.message || response.data.errors);
-        }
-      })
-      .catch((error) => { throw (error); });
+    return AccountsApi.signUp(data);
   };
 }

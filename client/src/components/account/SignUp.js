@@ -1,16 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import toastr from 'toastr';
+import { sessionService } from 'redux-react-session';
 import { signUp } from '../../actions/accountActions';
 import SignUpForm from './SignUpForm';
 
 const propTypes = {
-  signUp: PropTypes.func.isRequired,
-  errors: PropTypes.any
-};
-
-const defaultProps = {
-  errors: []
+  signUp: PropTypes.func.isRequired
 };
 
 /**
@@ -31,8 +28,7 @@ class SignUp extends React.Component {
         email: '',
         password: '',
         confirmPassword: ''
-      },
-      errors: []
+      }
     };
     this.onClickSave = this.onClickSave.bind(this);
     this.handleChange = this.handleChange.bind(this);
@@ -44,7 +40,18 @@ class SignUp extends React.Component {
    * @returns {*} nothing
    */
   onClickSave() {
-    this.props.signUp(this.state.data);
+    this.props.signUp(this.state.data)
+      .then(response => response.json())
+      .then((response) => {
+        if (response.status === 'success') {
+          sessionService.saveSession(response.data.token);
+          sessionService.saveUser(response.data.user);
+          this.redirect();
+        } else {
+          toastr.error(response.data.message || response.data.errors);
+        }
+      })
+      .catch((error) => { toastr.error(error); });
   }
 
   /**
@@ -61,7 +68,17 @@ class SignUp extends React.Component {
       confirmPassword: 'google-login'
     };
     this.props.signUp(credentials)
-      .then(() => this.redirect());
+      .then(serverResponse => serverResponse.json())
+      .then((serverResponse) => {
+        if (serverResponse.status === 'success') {
+          sessionService.saveSession(serverResponse.data.token);
+          sessionService.saveUser(serverResponse.data.user);
+          this.redirect();
+        } else {
+          toastr.error(serverResponse.data.message || serverResponse.data.errors);
+        }
+      })
+      .catch((error) => { toastr.error(error); });
   }
 
   /**
@@ -69,9 +86,6 @@ class SignUp extends React.Component {
    * @returns {null} if there are errors
    */
   redirect() {
-    if (this.props.errors.length > 0) {
-      return null;
-    }
     this.context.router.history.push('/catalog');
   }
 
@@ -110,7 +124,6 @@ class SignUp extends React.Component {
 
 
 SignUp.propTypes = propTypes;
-SignUp.defaultProps = defaultProps;
 SignUp.contextTypes = {
   router: PropTypes.object
 };

@@ -48,11 +48,16 @@ class Catalog extends React.Component {
    */
   vote(event) {
     event.persist();
+    const { currentTarget } = event;
     sessionService.loadSession()
       .then((token) => {
-        event.target.firstChild.nodeValue === 'thumb_up' ?
-          this.props.actions.upvoteRecipe(event.target.id, token) :
+        if (event.target.firstChild.nodeValue === 'thumb_up') {
+          this.props.actions.upvoteRecipe(event.target.id, token);
+          currentTarget.classList.toggle('green-text');
+        } else {
           this.props.actions.downvoteRecipe(event.target.id, token);
+          currentTarget.classList.toggle('black-text');
+        }
       });
   }
   /**

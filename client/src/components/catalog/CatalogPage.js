@@ -134,11 +134,11 @@ function Card({
         <div className="card-stacked">
           <div className="card-content">
             <Link to={`/recipe/${id}`}><span className="card-title">{recipeName}</span></Link>
-            <p>{recipeDescription}</p>
+            <p>{`${recipeDescription.slice(0, 30)}...`}</p>
 
           </div>
 
-          {isLoggedIn && 
+          {isLoggedIn &&
           <div className="card-action">
             <div className="recipe-icons">
               <a

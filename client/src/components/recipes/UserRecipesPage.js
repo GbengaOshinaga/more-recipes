@@ -145,7 +145,7 @@ function Card({
         <div className="card-stacked">
           <div className="card-content">
             <span className="card-title">{recipeName}</span>
-            <p>{recipeDescription}</p>
+            <p>{`${recipeDescription.slice(0, 30)}...`}</p>
           </div>
           <div className="card-action">
             <Link to={`/recipe/${id}`} className="btn-floating waves-effect waves-light green">

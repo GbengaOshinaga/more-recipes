@@ -26,7 +26,7 @@ class Profile extends React.Component {
     super(props, context);
     this.state = {
       profilePic: '',
-      name: '',
+      lastName: '',
       email: '',
       about: ''
     };
@@ -41,7 +41,7 @@ class Profile extends React.Component {
       .then((user) => {
         this.setState({
           profilePic: user.profilePic,
-          name: `${user.firstName} ${user.lastName}`,
+          lastName: user.lastName,
           email: user.email,
           about: user.about
         });
@@ -57,6 +57,7 @@ class Profile extends React.Component {
       <ProfilePage
         isLoggedIn={this.props.isLoggedIn}
         firstName={this.props.firstName}
+        lastName={this.state.lastName}
         profilePic={this.state.profilePic}
         name={this.state.name}
         email={this.state.email}
