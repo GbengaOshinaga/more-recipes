@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Avatar from 'material-ui';
+import { Link } from 'react-router-dom';
 import Button from '../common/Button';
 import Header from '../common/Header/Header';
 import TextArea from '../common/TextArea';
@@ -12,11 +13,11 @@ const propTypes = {
   firstName: PropTypes.string,
   onClickSaveReview: PropTypes.func.isRequired,
   onAddReviewChange: PropTypes.func.isRequired,
-  newReview: PropTypes.string.isRequired
+  newReview: PropTypes.string.isRequired,
+  location: PropTypes.string.isRequired
 };
 
 const defaultProps = {
-  image: '',
   userImage: '',
   firstName: ''
 };
@@ -65,7 +66,8 @@ function displayIngredients(ingredients) {
  * @returns {*} jsx
  */
 function RecipeDetailsPage({
-  recipe, userImage, isLoggedIn, firstName, onClickSaveReview, onAddReviewChange, newReview
+  recipe, userImage, isLoggedIn, firstName, onClickSaveReview, onAddReviewChange,
+  newReview, location
 }) {
   if (recipe === undefined) {
     return 'Waiting for recipe...';
@@ -91,6 +93,7 @@ function RecipeDetailsPage({
                   <p>{recipe.description}</p>
                   <ul>{displayIngredients(recipe.ingredients)}</ul>
                   <p className="grey-text">{recipe.views} views</p>
+                  {isLoggedIn &&
                   <div id="vote">
                     <a href="#!" id="details-thumb-up" className="thumb-up">
                       <i className="small material-icons">thumb_up</i>
@@ -104,17 +107,22 @@ function RecipeDetailsPage({
                       <i className="small material-icons">favorite</i>
                     </a>
                     <span id="favorites">0</span>
-                  </div>
+                  </div>}
                 </div>
                 <div className="review">
                   <h5>Reviews</h5>
                   {displayReviews(recipe.Reviews)}
+                  {isLoggedIn &&
                   <AddReview
                     userImage={userImage}
                     onClickSaveReview={onClickSaveReview}
                     onAddReviewChange={onAddReviewChange}
                     newReview={newReview}
-                  />
+                  />}
+                  {!isLoggedIn &&
+                  <div>
+                    <p><Link to={{ pathname: '/signin', state: { from: location } }}>Sign In</Link> To Add Review</p>
+                  </div>}
                 </div>
               </div>
             </div>

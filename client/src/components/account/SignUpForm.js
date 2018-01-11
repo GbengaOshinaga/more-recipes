@@ -40,7 +40,8 @@ function listErrors(errors) {
  * @returns {*} jsx
  */
 function SignUpForm({
-  onChange, onClickSave, firstName, lastName, email, password, confirmPassword, errors, onSuccess, onFailure
+  onChange, onClickSave, firstName, lastName, email,
+  password, confirmPassword, errors, onSuccess, onFailure
 }) {
   return (
     <div className="sign-body">

@@ -7,7 +7,8 @@ import { signIn } from '../../actions/accountActions';
 import SignInForm from './SignInForm';
 
 const propTypes = {
-  signIn: PropTypes.func.isRequired
+  signIn: PropTypes.func.isRequired,
+  location: PropTypes.object.isRequired
 };
 
 /**
@@ -83,10 +84,15 @@ class SignIn extends React.Component {
 
   /**
    * Redirects to catalog page after successfully signing in
-   * @returns {null} if there are errors
+   * @returns {*} null
    */
   redirect() {
-    this.context.router.history.push('/catalog');
+    if (this.props.location.state) {
+      const { from } = this.props.location.state;
+      this.context.router.history.push(from);
+    } else {
+      this.context.router.history.push('/catalog');
+    }
   }
 
   /**
@@ -128,11 +134,14 @@ SignIn.contextTypes = {
 /**
  * mapStateToProps
  * @param {*} state
+ * @param {*} ownProps
  * @returns {object} object
  */
-function mapStateToProps(state) {
+function mapStateToProps(state, ownProps) {
+  // console.log(ownProps.location.state.from.pathname);
   return {
-    isLoggedIn: state.account.isLoginSuccessful
+    isLoggedIn: state.account.isLoginSuccessful,
+    location: ownProps.location
   };
 }
 

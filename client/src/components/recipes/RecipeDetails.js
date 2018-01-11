@@ -11,7 +11,8 @@ const propTypes = {
   firstName: PropTypes.string,
   actions: PropTypes.object.isRequired,
   match: PropTypes.object.isRequired,
-  recipe: PropTypes.object.isRequired
+  recipe: PropTypes.object.isRequired,
+  location: PropTypes.object.isRequired
 };
 
 const defaultProps = {
@@ -80,6 +81,7 @@ class RecipeDetails extends React.Component {
         onClickSaveReview={this.onClickSaveReview}
         onAddReviewChange={this.onAddReviewChange}
         newReview={this.state.newReview}
+        location={this.props.location.pathname}
       />
     );
   }

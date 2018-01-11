@@ -17,7 +17,9 @@ const propTypes = {
  * @param {*} props
  * @returns {*} jsx
  */
-function SocialLoginButtons({ isAMemberText, href, hrefText, onSuccess, onFailure }) {
+function SocialLoginButtons({
+  isAMemberText, href, hrefText, onSuccess, onFailure
+}) {
   return (
     <div>
       <div className="row">
@@ -26,11 +28,10 @@ function SocialLoginButtons({ isAMemberText, href, hrefText, onSuccess, onFailur
       <div>
         <GoogleLogin
           clientId="827684783940-iisct8ub0eifot2ebb4fod5f3nrnk7ij.apps.googleusercontent.com"
-          buttonText="Login With Google"
+          buttonText="LOGIN WITH GOOGLE"
           onSuccess={onSuccess}
           onFailure={onFailure}
         />
-        {/* <div id="my-signin2" className="social-login" align="center" /> */}
       </div>
       <p>{isAMemberText} <Link to={href}>{hrefText}</Link></p>
     </div>

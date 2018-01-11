@@ -1,3 +1,4 @@
+import { sessionService } from 'redux-react-session';
 import UserApi from '../api/UserApi';
 import { ADD_RECIPE_SUCCESS, ADD_RECIPE_FAILURE, DELETE_RECIPE_SUCCESS, GET_USER_FAVOURITES_SUCCESS } from './actions';
 
@@ -96,8 +97,28 @@ export function getFavourites(token) {
       .then(response => response.json())
       .then((response) => {
         if (response.status === 'success') {
-          console.log(response);
           dispatch(updateUserFavouritesSuccess(response.data.favourites));
+        }
+      });
+  };
+}
+
+/**
+ * Action to modify user
+ * @param {*} token
+ * @param {*} data
+ * @returns {*} response
+ */
+export function modifyUser(token, data) {
+  return function (dispatch) {
+    return UserApi.modifyUser(token, data)
+      .then(response => response.json())
+      .then((response) => {
+        console.log(response);
+        if (response.status === 'success') {
+          sessionService.saveUser(response.data.user);
+        } else {
+          throw (response.data.error);
         }
       });
   };

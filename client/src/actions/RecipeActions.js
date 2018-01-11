@@ -1,6 +1,5 @@
 import RecipesApi from '../api/RecipesApi';
 import { GET_RECIPES_SUCCESS, GET_RECIPE_SUCCESS, ADD_REVIEW_SUCCESS, ADD_RECIPE_FAILURE } from './actions';
-import { toASCII } from 'punycode';
 
 /**
  * Updates reducer if get recipes action is successful
@@ -38,7 +37,6 @@ export function getAllRecipes() {
     return RecipesApi.getAllRecipes()
       .then(response => response.json())
       .then((response) => {
-        console.log(response);
         if (response.status === 'success') {
           dispatch(updateGetRecipesSuccess(response.data.recipes));
         }
@@ -75,7 +73,6 @@ export function addReview(id, token, review) {
     return RecipesApi.addReview(id, token, review)
       .then(response => response.json())
       .then((response) => {
-        console.log(response);
         dispatch(updateAddReviewSuccess(response.data.review));
       });
   };

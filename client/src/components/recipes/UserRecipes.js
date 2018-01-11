@@ -4,8 +4,15 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { sessionService } from 'redux-react-session';
 import toastr from 'toastr';
+import cloudinary from 'cloudinary';
 import Page from './UserRecipesPage';
 import * as userActions from '../../actions/userActions';
+
+cloudinary.config({
+  cloud_name: 'king-more-recipes',
+  api_key: '541495131929684',
+  api_secret: 'OyOXBWjA3yC7bqOGXdsGkJUF1Rw'
+});
 
 const propTypes = {
   isLoggedIn: PropTypes.bool.isRequired,
@@ -149,8 +156,6 @@ class UserRecipes extends React.Component {
     let { imageFile } = this.state;
     imageFile = file;
     this.setState({ imageFile });
-    console.log(this.state.imageFile);
-    console.log(event.target.files);
   }
 
   /**
@@ -196,8 +201,8 @@ class UserRecipes extends React.Component {
         canvasId="imageURL"
         onClickSave={this.onClickSave}
         onFileChange={this.loadImage}
-        inputRef={el => this.inputElement = el}
-        editInputRef={el => this.editInputElement = el }
+        inputRef={(el) => { this.inputElement = el; }}
+        editInputRef={(el) => { this.editInputElement = el; }}
         onConfirmDelete={this.onConfirmDelete}
         getId={this.getId}
         getIdForEdit={this.getIdForEdit}

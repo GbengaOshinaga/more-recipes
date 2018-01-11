@@ -14,13 +14,13 @@ function loggedInHeader(name) {
         <li><Link to="/profile">Profile</Link></li>
         <li><Link to="/my_recipes">My Recipes</Link></li>
         <li><Link to="/favourites">Favourite Recipes</Link></li>
-        <li><a href="#!">Logout</a></li>
+        <li><Link to="/logout">Logout</Link></li>
       </ul>
       <ul id="dropdown2" className="dropdown-content">
         <li><Link to="/profile">Profile</Link></li>
         <li><Link to="/my_recipes">My Recipes</Link></li>
         <li><Link to="/favourites">Favourite Recipes</Link></li>
-        <li><a href="#!">Logout</a></li>
+        <li><Link to="/logout">Logout</Link></li>
       </ul>
       <div className="navbar-fixed">
         <nav className="grey darken-2">

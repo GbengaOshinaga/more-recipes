@@ -82,6 +82,15 @@ class SignUp extends React.Component {
   }
 
   /**
+   * Method to handle on google login failure
+   * @returns {*} null
+   */
+  onGoogleLoginFailure() {
+    toastr.error('An error occured');
+  }
+
+
+  /**
    * Redirects to catalog page after successfully signing in
    * @returns {null} if there are errors
    */
@@ -115,8 +124,8 @@ class SignUp extends React.Component {
         email={this.state.data.email}
         password={this.state.data.password}
         confirmPassword={this.state.data.confirmPassword}
-        errors={this.props.errors}
         onSuccess={this.onGoogleLoginSuccess}
+        onFailure={this.onGoogleLoginFailure}
       />
     );
   }

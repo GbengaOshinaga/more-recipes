@@ -45,22 +45,22 @@
 	});
 
 	//Enable editing on profile when edit button is clicked
-	$('#edit-button').click(function(){
-		$('#profile-name').prop('disabled', false);
-		$('#profile-email').prop('disabled', false);
-		$('#desc-textarea').prop('disabled', false);
-		$('#save').removeClass('hide');
-		$('#edit-photo').removeClass('hide');
-	});
+	// $('#edit-button').click(function(){
+	// 	$('#profile-name').prop('disabled', false);
+	// 	$('#profile-email').prop('disabled', false);
+	// 	$('#desc-textarea').prop('disabled', false);
+	// 	$('#save').removeClass('hide');
+	// 	$('#edit-photo').removeClass('hide');
+	// });
 
 	//Disable editing on profile when save button is clicked
-	$('#save').click(function(){
-		$('#profile-name').prop('disabled', true);
-		$('#profile-email').prop('disabled', true);
-		$('#desc-textarea').prop('disabled', true);
-		$('#save').addClass('hide');
-		$('#edit-photo').addClass('hide');
-	})
+	// $('#save').click(function(){
+	// 	$('#profile-name').prop('disabled', true);
+	// 	$('#profile-email').prop('disabled', true);
+	// 	$('#desc-textarea').prop('disabled', true);
+	// 	$('#save').addClass('hide');
+	// 	$('#edit-photo').addClass('hide');
+	// })
 
 	// $('.upvotes').click(function(){
 	// 	if($(this).next().attr('class') === 'downvotes black-text'){
@@ -84,74 +84,53 @@
 	// 	}
 	// });
 
-	$('.favourite').click(function(){
-		if($(this).attr('class') === 'favourite'){
-			$(this).addClass('red-text');
-		}else{
-			$(this).removeClass('red-text');
-		}
-	});
+// 	$('.favourite').click(function(){
+// 		if($(this).attr('class') === 'favourite'){
+// 			$(this).addClass('red-text');
+// 		}else{
+// 			$(this).removeClass('red-text');
+// 		}
+// 	});
 
-	$('#details-thumb-up').click(function(){
-		if($('#details-thumb-down').attr('class') === 'thumb-down black-text'){
-			$('#details-thumb-down').removeClass('black-text');
-			$('#downvotes').text('0');
-		}
-		if($(this).attr('class') === 'thumb-up'){
-			$(this).addClass('green-text');
-			$(this).next().text('1');
-		}else{
-			$(this).removeClass('green-text');
-			$(this).next().text('0');
-		}
-	});
+// 	$('#details-thumb-up').click(function(){
+// 		if($('#details-thumb-down').attr('class') === 'thumb-down black-text'){
+// 			$('#details-thumb-down').removeClass('black-text');
+// 			$('#downvotes').text('0');
+// 		}
+// 		if($(this).attr('class') === 'thumb-up'){
+// 			$(this).addClass('green-text');
+// 			$(this).next().text('1');
+// 		}else{
+// 			$(this).removeClass('green-text');
+// 			$(this).next().text('0');
+// 		}
+// 	});
 
-	$('#details-thumb-down').click(function(){
-		if($('#details-thumb-up').attr('class') === 'thumb-up green-text'){
-			$('#details-thumb-up').removeClass('green-text');
-			$('#upvotes').text('0');
-		}
-		if($(this).attr('class') === 'thumb-down'){
-			$(this).addClass('black-text');
-			$(this).next().text('1');
-		}else{
-			$(this).removeClass('black-text');
-			$(this).next().text('0');
-		}
-	});
+// 	$('#details-thumb-down').click(function(){
+// 		if($('#details-thumb-up').attr('class') === 'thumb-up green-text'){
+// 			$('#details-thumb-up').removeClass('green-text');
+// 			$('#upvotes').text('0');
+// 		}
+// 		if($(this).attr('class') === 'thumb-down'){
+// 			$(this).addClass('black-text');
+// 			$(this).next().text('1');
+// 		}else{
+// 			$(this).removeClass('black-text');
+// 			$(this).next().text('0');
+// 		}
+// 	});
 
-	$('#details-favourite').click(function(){
-		if($(this).attr('class') === 'details-favourite'){
-			$(this).addClass('red-text');
-			$(this).next().text('1');
-		}else{
-			$(this).removeClass('red-text');
-			$(this).next().text('0');
-		}
-	});
+// 	$('#details-favourite').click(function(){
+// 		if($(this).attr('class') === 'details-favourite'){
+// 			$(this).addClass('red-text');
+// 			$(this).next().text('1');
+// 		}else{
+// 			$(this).removeClass('red-text');
+// 			$(this).next().text('0');
+// 		}
+// 	});
 
 });
-
-// function loadImage() {
-//   const canvas = document.getElementById('imageURL');
-//   const context = canvas.getContext('2d');
-
-//   const file = this.files[0];
-//   const fileReader = new FileReader();
-//   fileReader.onload = function (e) {
-//     const img = new Image(300, 200);
-//     img.addEventListener('load', () => {
-//       context.drawImage(img, 0, 0, 300, 200);
-//     });
-// 	img.src = e.target.result;
-//   };
-//   fileReader.readAsDataURL(file);
-//   console.log(canvas.toDataURL());
-//   const c =document.getElementById("test");
-//   c.src = canvas.toDataURL();
-// }
-
-//   document.getElementById('fileUpload').addEventListener('change', loadImage, false);
 
     </script>
   </body>

@@ -8,7 +8,13 @@ const propTypes = {
   email: PropTypes.string.isRequired,
   about: PropTypes.string,
   isLoggedIn: PropTypes.bool.isRequired,
-  firstName: PropTypes.string
+  firstName: PropTypes.string,
+  isDisabled: PropTypes.bool.isRequired,
+  saveButtonClass: PropTypes.string.isRequired,
+  onEditClick: PropTypes.func.isRequired,
+  onChange: PropTypes.func.isRequired,
+  onClickSave: PropTypes.func.isRequired,
+  editPhotoButtonClass: PropTypes.string.isRequired
 };
 
 const defaultProps = {
@@ -25,7 +31,8 @@ const editPhotoButtonStyle = { position: 'absolute', top: '10px', margin: '10px'
  * @returns {*} jsx
  */
 export default function ProfilePage({
-  profilePic, lastName, email, about, isLoggedIn, firstName
+  profilePic, lastName, email, about, isLoggedIn, firstName, isDisabled,
+  saveButtonClass, onEditClick, onChange, onClickSave, editPhotoButtonClass
 }) {
   return (
     <div>
@@ -45,7 +52,7 @@ export default function ProfilePage({
                 />
                 <a
                   id="edit-photo"
-                  className="btn-floating btn-large waves-effect waves-light teal lighten-1 hide"
+                  className={editPhotoButtonClass}
                   style={editPhotoButtonStyle}
                 >
                   <i className="material-icons">add_a_photo</i>
@@ -62,53 +69,65 @@ export default function ProfilePage({
                       <span className="card-title">
                         <div className="input-field">
                           <input
-                            id="profile-firstName"
+                            id="firstName"
                             type="text"
                             name="firstName"
-                            disabled
+                            disabled={isDisabled}
                             value={firstName}
+                            onChange={onChange}
                           />
                         </div>
                       </span>
                       <div className="input-field">
                         <input
-                          id="profile-lastName"
+                          id="lastName"
                           type="text"
                           name="lastName"
-                          disabled
+                          disabled={isDisabled}
                           value={lastName}
+                          onChange={onChange}
                         />
                       </div>
 
                       <div className="input-field">
                         <input
-                          id="profile-email"
+                          id="email"
                           type="text"
-                          name="username"
-                          disabled
+                          name="email"
+                          disabled={isDisabled}
                           value={email}
+                          onChange={onChange}
                         />
                       </div>
 
                       <div className="input-field">
                         <textarea
-                          id="desc-textarea"
+                          id="about"
                           className="materialize-textarea"
                           rows="2"
                           name="description"
-                          defaultValue={about}
-                          disabled
+                          value={about}
+                          disabled={isDisabled}
+                          onChange={onChange}
                         />
                       </div>
 
-                      <div id="save" className="card-action hide">
-                        <a id="save-button" className="waves-effect waves-light btn" href="#">SAVE</a>
+                      <div id="save" className={saveButtonClass}>
+                        <a
+                          id="save-button"
+                          className="waves-effect waves-light btn"
+                          href="#!"
+                          onClick={onClickSave}
+                        >
+                        SAVE
+                        </a>
                       </div>
                     </div>
                     <div className="col s2">
                       <a
                         id="edit-button"
                         className="btn-floating btn-large waves-effect waves-light teal lighten-1"
+                        onClick={onEditClick}
                       >
                         <i className="material-icons">edit</i>
                       </a>

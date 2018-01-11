@@ -66,4 +66,21 @@ export default class User {
       }
     });
   }
+
+  /**
+   * Method for editing user
+   * @param {*} token
+   * @param {*} data
+   * @returns {*} Promise
+   */
+  static modifyUser(token, data) {
+    return fetch('http://localhost:8000/api/v1/users/edit', {
+      method: 'post',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'Access-Token': token
+      },
+      body: `firstName=${data.firstName}&lastName=${data.lastName}&email=${data.email}&about=${data.about}`
+    });
+  }
 }
