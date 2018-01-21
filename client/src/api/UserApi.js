@@ -83,4 +83,22 @@ export default class User {
       body: `firstName=${data.firstName}&lastName=${data.lastName}&email=${data.email}&about=${data.about}`
     });
   }
+
+  /**
+   * Method for editing recipe
+   * @param {*} token
+   * @param {*} id
+   * @param {*} data
+   * @returns {*} Promise
+   */
+  static editRecipe(token, id, data) {
+    return fetch(`http://localhost:8000/api/v1/recipes/${id}`, {
+      method: 'put',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'Access-Token': token
+      },
+      body: `name=${data.recipeName}&description=${data.recipeDescription}&ingredients=${data.ingredients.join(',')}&image=${data.imageURL}`
+    });
+  }
 }

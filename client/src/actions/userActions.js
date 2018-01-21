@@ -1,6 +1,6 @@
 import { sessionService } from 'redux-react-session';
 import UserApi from '../api/UserApi';
-import { ADD_RECIPE_SUCCESS, ADD_RECIPE_FAILURE, DELETE_RECIPE_SUCCESS, GET_USER_FAVOURITES_SUCCESS } from './actions';
+import { ADD_RECIPE_SUCCESS, DELETE_RECIPE_SUCCESS, GET_USER_FAVOURITES_SUCCESS, EDIT_RECIPE_SUCCESS } from './actions';
 
 /**
  * Updates reducer if add recipe action is successful
@@ -21,12 +21,21 @@ function updateDeleteRecipeSuccess(id) {
 }
 
 /**
- * Updates reducer if get user favourites is successful
+ * Updates reducer if get user favourites action is successful
  * @param {*} response
  * @returns {Object} object
  */
 function updateUserFavouritesSuccess(response) {
   return { type: GET_USER_FAVOURITES_SUCCESS, response };
+}
+
+/**
+ * Updates reducer if edit recipe action is successful
+ * @param {*} response
+ * @returns {Object} object
+ */
+function updateEditRecipeSuccess(response) {
+  return { type: EDIT_RECIPE_SUCCESS, response };
 }
 
 /**
@@ -119,6 +128,28 @@ export function modifyUser(token, data) {
           sessionService.saveUser(response.data.user);
         } else {
           throw (response.data.error);
+        }
+      });
+  };
+}
+
+/**
+ * Action to modify recipe
+ * @param {*} token
+ * @param {*} id
+ * @param {*} data
+ * @returns {*} response
+ */
+export function editRecipe(token, id, data) {
+  return function (dispatch) {
+    return UserApi.editRecipe(token, id, data)
+      .then(response => response.json())
+      .then((response) => {
+        console.log(response);
+        if (response.status === 'success') {
+          dispatch(updateEditRecipeSuccess(response.data.updatedRecipe));
+        } else {
+          throw (response.data.message || response.data.messages);
         }
       });
   };

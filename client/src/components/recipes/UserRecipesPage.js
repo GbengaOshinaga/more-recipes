@@ -34,7 +34,9 @@ const pagePropTypes = {
   onConfirmDelete: PropTypes.func.isRequired,
   getId: PropTypes.func.isRequired,
   getIdForEdit: PropTypes.func.isRequired,
-  editData: PropTypes.object.isRequired
+  editData: PropTypes.object.isRequired,
+  onClickEdit: PropTypes.func.isRequired,
+  onEditInputChange: PropTypes.func.isRequired
 };
 
 const pageDefaultProps = {
@@ -79,7 +81,7 @@ function Page({
   isLoggedIn, firstName, onChipChange, onInputChange, inputValue,
   canvasId, descValue, onClickSave, onFileChange, inputRef, editInputRef,
   userRecipes, onConfirmDelete, getId,
-  getIdForEdit, editData
+  getIdForEdit, editData, onClickEdit, onEditInputChange
 }) {
   return (
     <div>
@@ -109,7 +111,7 @@ function Page({
         />
         <EditModal
           onChipChange={onChipChange}
-          onInputChange={onInputChange}
+          onInputChange={onEditInputChange}
           inputValue={inputValue}
           editData={editData}
           canvasId={canvasId}
@@ -117,6 +119,7 @@ function Page({
           onClickSave={onClickSave}
           onFileChange={onFileChange}
           inputRef={editInputRef}
+          onClickEdit={onClickEdit}
         />
         <div className="favorited-recipes">
           <h4 className="center-align">My Recipes</h4>

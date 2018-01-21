@@ -19,9 +19,7 @@ const editModalPropTypes = {
   onChipChange: PropTypes.func.isRequired,
   onInputChange: PropTypes.func.isRequired,
   canvasId: PropTypes.string.isRequired,
-  inputValue: PropTypes.string.isRequired,
-  descValue: PropTypes.string.isRequired,
-  onClickSave: PropTypes.func.isRequired,
+  onClickEdit: PropTypes.func.isRequired,
   onFileChange: PropTypes.func.isRequired,
   inputRef: PropTypes.func.isRequired,
   editData: PropTypes.object.isRequired
@@ -103,7 +101,7 @@ export function AddModal({
  */
 export function EditModal({
   onChipChange, onInputChange, canvasId,
-  onClickSave, onFileChange, inputRef, editData
+  onClickEdit, onFileChange, inputRef, editData
 }) {
   return (
     <div id="edit-modal" className="modal">
@@ -130,7 +128,7 @@ export function EditModal({
           </div>
           <div className="row">
             <ChipInput
-              defaultValue={editData.ingredients}
+              defaultValue={[...editData.ingredients]}
               onChange={onChipChange}
             />
           </div>
@@ -149,7 +147,7 @@ export function EditModal({
         <div className="container">
           <a
             href="#!"
-            onClick={onClickSave}
+            onClick={onClickEdit}
             className="modal-action modal-close waves-effect waves-green btn"
           >
             Save

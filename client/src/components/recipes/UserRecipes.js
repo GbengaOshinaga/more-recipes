@@ -62,6 +62,8 @@ class UserRecipes extends React.Component {
     this.onConfirmDelete = this.onConfirmDelete.bind(this);
     this.getId = this.getId.bind(this);
     this.getIdForEdit = this.getIdForEdit.bind(this);
+    this.onClickEdit = this.onClickEdit.bind(this);
+    this.handleEditInputChange = this.handleEditInputChange.bind(this);
   }
 
   /**
@@ -80,9 +82,26 @@ class UserRecipes extends React.Component {
    * @returns {*} null
    */
   onClickSave() {
+    cloudinary.v2.uploader.upload(this.state.imageFile, (error, result) => {
+      console.log(result);
+      this.setState({ data: { imageURL: result.url } });
+    });
+    console.log(this.state.data);
     sessionService.loadSession()
       .then((token) => {
         this.props.actions.addRecipe(token, this.state.data);
+      });
+  }
+
+  /**
+   * Handle edit
+   * @returns {*} null
+   */
+  onClickEdit() {
+    sessionService.loadSession()
+      .then((token) => {
+        this.props.actions.editRecipe(token, this.state.edit.id, this.state.edit)
+          .catch(error => toastr.error(error));
       });
   }
 
@@ -122,7 +141,7 @@ class UserRecipes extends React.Component {
         id: recipeForEdit[0].id,
         recipeName: recipeForEdit[0].name,
         recipeDescription: recipeForEdit[0].description,
-        ingredients: [recipeForEdit[0].ingredients[0]],
+        ingredients: [...recipeForEdit[0].ingredients],
         imageURL: recipeForEdit[0].image
       }
     });
@@ -151,10 +170,11 @@ class UserRecipes extends React.Component {
     };
     try {
       fileReader.readAsDataURL(file);
+      console.log(fileReader.result);
     } catch (error) {
     }
     let { imageFile } = this.state;
-    imageFile = file;
+    imageFile = fileReader.result;
     this.setState({ imageFile });
   }
 
@@ -184,6 +204,17 @@ class UserRecipes extends React.Component {
   }
 
   /**
+   * Handles input field value change
+   * @param {*} event
+   * @returns {*} new state
+   */
+  handleEditInputChange(event) {
+    const name = this.state.edit;
+    name[event.target.id] = event.target.value;
+    this.setState({ edit: name });
+  }
+
+  /**
    * Component render method
    * @returns {jsx} markup
    */
@@ -195,6 +226,7 @@ class UserRecipes extends React.Component {
         userRecipes={this.props.userRecipes}
         onChipChange={chips => this.handleChipsChange(chips)}
         onInputChange={this.handleInputChange}
+        onEditInputChange={this.handleEditInputChange}
         inputValue={this.state.data.recipeName}
         descValue={this.state.data.recipeDescription}
         editData={this.state.edit}
@@ -207,6 +239,7 @@ class UserRecipes extends React.Component {
         getId={this.getId}
         getIdForEdit={this.getIdForEdit}
         defaultIngredients={this.state.data.ingredients}
+        onClickEdit={this.onClickEdit}
       />
     );
   }
