@@ -42,7 +42,6 @@ describe('RecipeValidator validates recipe inputs', () => {
         review: ''
       })
       .end((err, res) => {
-        console.log(res.body);
         expect(res).to.have.status(400);
         expect(res.body.data.errors).to.be.an('array');
         done();

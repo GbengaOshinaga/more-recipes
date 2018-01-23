@@ -10,7 +10,11 @@ const propTypes = {
   firstName: PropTypes.string,
   allRecipes: PropTypes.arrayOf(PropTypes.object).isRequired,
   mostFavouritedRecipes: PropTypes.arrayOf(PropTypes.object).isRequired,
-  onClickVote: PropTypes.func.isRequired
+  onClickVote: PropTypes.func.isRequired,
+  onSearchChange: PropTypes.func.isRequired,
+  searchValue: PropTypes.string.isRequired,
+  hasSearchValue: PropTypes.bool.isRequired,
+  searchResults: PropTypes.arrayOf(PropTypes.object).isRequired
 };
 
 const cardPropTypes = {
@@ -64,7 +68,8 @@ function displayRecipes(recipes, onClickVote, isLoggedIn) {
  * @returns {*} jsx
  */
 export default function CatalogPage({
-  isLoggedIn, firstName, allRecipes, mostFavouritedRecipes, onClickVote
+  isLoggedIn, firstName, allRecipes, mostFavouritedRecipes, searchResults,
+  onClickVote, onSearchChange, searchValue, hasSearchValue
 }) {
   return (
     <div>
@@ -72,6 +77,8 @@ export default function CatalogPage({
         <CatalogHeader
           isLoggedIn={isLoggedIn}
           firstName={firstName}
+          onChange={onSearchChange}
+          value={searchValue}
         />
         <div className="parallax"><img src={backgroundImage} alt="parallax" /></div>
         <div className="search-form">
@@ -83,6 +90,8 @@ export default function CatalogPage({
                   placeholder="Search Catalog"
                   id="autocomplete-input"
                   className="autocomplete white-text"
+                  onChange={onSearchChange}
+                  value={searchValue}
                 />
               </div>
             </form>
@@ -96,22 +105,37 @@ export default function CatalogPage({
           <div className="col s12 pin">
             <ul className="tabs">
               <div className="container">
-                <li className="tab col s6"><a href="#all">All</a></li>
-                <li className="tab col s6"><a href="#most-fav">Most Favorited</a></li>
+                {hasSearchValue &&
+                <li className="tab col s12">
+                  <a href="#search-results" className="active">Search Results</a>
+                </li>}
+                {!hasSearchValue &&
+                <div>
+                  <li className="tab col s6"><a href="#all">All</a></li>
+                  <li className="tab col s6"><a href="#most-fav">Most Favorited</a></li>
+                </div>}
               </div>
             </ul>
           </div>
         </div>
+        {!hasSearchValue &&
         <div id="all">
           <div className="container">
             {displayRecipes(allRecipes, onClickVote, isLoggedIn)}
           </div>
-        </div>
+        </div>}
+        {!hasSearchValue &&
         <div id="most-fav">
           <div className="container">
             {displayRecipes(mostFavouritedRecipes, onClickVote, isLoggedIn)}
           </div>
-        </div>
+        </div>}
+        {hasSearchValue &&
+        <div id="search-results">
+          <div className="container">
+            {displayRecipes(searchResults, onClickVote, isLoggedIn)}
+          </div>
+        </div>}
       </div>
     </div>
   );

@@ -80,4 +80,18 @@ export default class RecipesApi {
       }
     });
   }
+
+  /**
+   * Search for recipe
+   * @param {*} query
+   * @returns {*} Promise
+   */
+  static search(query) {
+    return fetch(`http://localhost:8000/api/v1/recipes?query=${query}`, {
+      method: 'get',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded'
+      }
+    });
+  }
 }
