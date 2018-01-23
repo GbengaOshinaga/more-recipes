@@ -96,7 +96,7 @@ export default class UsersValidator {
     }
     const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
 
-    if (!emailRegex.test(req.body.email)) {
+    if (req.body.email && !emailRegex.test(req.body.email)) {
       return res.status(400).jsend.fail({ error: 'Email Address is not valid' });
     }
 
