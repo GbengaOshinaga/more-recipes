@@ -5,6 +5,7 @@ import userRecipes from './userRecipesReducer';
 import userFavourites from './userFavouritesReducer';
 import recipes from './recipesReducer';
 import recipe from './recipeReducer';
+import searchResults from './searchReducer';
 
 const rootReducer = combineReducers({
   account,
@@ -12,6 +13,7 @@ const rootReducer = combineReducers({
   userFavourites,
   recipes,
   recipe,
+  searchResults,
   session: sessionReducer
 });
 

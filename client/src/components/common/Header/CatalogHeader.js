@@ -5,9 +5,11 @@ import { Link } from 'react-router-dom';
 /**
    * Header for logged in users
    * @param {*} name
+   * @param {*} onChange
+   * @param {*} value
    * @returns {*} jsx
    */
-function loggedInHeader(name) {
+function loggedInHeader(name, onChange, value) {
   return (
     <header>
       <ul id="dropdown1" className="dropdown-content">
@@ -19,7 +21,7 @@ function loggedInHeader(name) {
       <ul id="dropdown2" className="dropdown-content">
         <li><Link to="/profile">Profile</Link></li>
         <li><Link to="/my_recipes">My Recipes</Link></li>
-        <li><a href="favourite_recipes.html">Favourite Recipes</a></li>
+        <li><Link to="/favourites">Favourite Recipes</Link></li>
         <li><Link to="/logout">Logout</Link></li>
       </ul>
       <div className="navbar-fixed">
@@ -27,7 +29,7 @@ function loggedInHeader(name) {
           <div className="container">
             <div className="nav-wrapper">
               <a href="#!" className="brand-logo">More-Recipes</a>
-              <a href="#" data-activates="mobile" className="button-collapse">
+              <a href="#!" data-activates="mobile" className="button-collapse">
                 <i className="material-icons">menu</i>
               </a>
               <ul className="right hide-on-med-and-down">
@@ -42,6 +44,8 @@ function loggedInHeader(name) {
                             placeholder="search"
                             id="autocomplete-input"
                             className="autocomplete white-text"
+                            onChange={onChange}
+                            value={value}
                           />
                         </div>
                       </div>
@@ -78,6 +82,8 @@ function loggedInHeader(name) {
                     placeholder="search"
                     id="autocomplete-input"
                     className="autocomplete black-text"
+                    onChange={onChange}
+                    value={value}
                   />
                 </div>
               </div>
@@ -103,9 +109,11 @@ function loggedInHeader(name) {
 
 /**
  * Header for logged out users
+ * @param {*} onChange
+ * @param {*} value
  * @returns {*} jsx
  */
-function loggedOutHeader() {
+function loggedOutHeader(onChange, value) {
   return (
     <header>
       <div className="navbar-fixed">
@@ -113,7 +121,7 @@ function loggedOutHeader() {
           <div className="container">
             <div className="nav-wrapper">
               <a href="#!" className="brand-logo">More-Recipes</a>
-              <a href="#" data-activates="mobile" className="button-collapse">
+              <a href="#!" data-activates="mobile" className="button-collapse">
                 <i className="material-icons">menu</i>
               </a>
               <ul className="right hide-on-med-and-down">
@@ -128,6 +136,8 @@ function loggedOutHeader() {
                             placeholder="search"
                             id="autocomplete-input"
                             className="autocomplete white-text"
+                            onChange={onChange}
+                            value={value}
                           />
                         </div>
                       </div>
@@ -156,6 +166,8 @@ function loggedOutHeader() {
                     placeholder="search"
                     id="autocomplete-input"
                     className="autocomplete black-text"
+                    onChange={onChange}
+                    value={value}
                   />
                 </div>
               </div>
@@ -175,9 +187,11 @@ function loggedOutHeader() {
  * Catalog header
  * @returns {*} jsx
  */
-export default function catalogHeader({ isLoggedIn, firstName }) {
+export default function catalogHeader({
+  isLoggedIn, firstName, onChange, value
+}) {
   if (isLoggedIn) {
-    return loggedInHeader(firstName);
+    return loggedInHeader(firstName, onChange, value);
   }
-  return loggedOutHeader();
+  return loggedOutHeader(onChange, value);
 }

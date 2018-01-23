@@ -10,7 +10,8 @@ const propTypes = {
   isLoggedIn: PropTypes.bool.isRequired,
   firstName: PropTypes.string,
   actions: PropTypes.object.isRequired,
-  allRecipes: PropTypes.arrayOf(PropTypes.object).isRequired
+  allRecipes: PropTypes.arrayOf(PropTypes.object).isRequired,
+  searchResults: PropTypes.arrayOf(PropTypes.object).isRequired
 };
 
 const defaultProps = {
@@ -28,9 +29,13 @@ class Catalog extends React.Component {
      */
   constructor(props, context) {
     super(props, context);
-    this.state = {};
+    this.state = {
+      searchValue: '',
+      hasSearchValue: false
+    };
 
     this.vote = this.vote.bind(this);
+    this.onSearchChange = this.onSearchChange.bind(this);
   }
 
   /**
@@ -40,6 +45,20 @@ class Catalog extends React.Component {
   componentDidMount() {
     this.props.actions.getAllRecipes();
   }
+
+  /**
+   * onChange event on search bars
+   * @param {*} event
+   * @returns {*} null
+   */
+  onSearchChange(event) {
+    const { value } = event.target;
+    this.setState({ searchValue: value, hasSearchValue: true }, () => {
+      this.props.actions.search(this.state.searchValue);
+    });
+    value === '' ? this.setState({ hasSearchValue: false }) : this.setState({ hasSearchValue: true });
+  }
+
 
   /**
    * votes recipe
@@ -60,6 +79,7 @@ class Catalog extends React.Component {
         }
       });
   }
+
   /**
    * Component render function
    * @returns {*} jsx
@@ -70,7 +90,11 @@ class Catalog extends React.Component {
         isLoggedIn={this.props.isLoggedIn}
         firstName={this.props.firstName}
         allRecipes={this.props.allRecipes}
+        searchResults={this.props.searchResults}
         onClickVote={this.vote}
+        onSearchChange={this.onSearchChange}
+        searchValue={this.state.searchValue}
+        hasSearchValue={this.state.hasSearchValue}
       />
     );
   }
@@ -86,7 +110,8 @@ function mapStateToProps(state, ownProps) {
   return {
     isLoggedIn: state.session.authenticated,
     firstName: state.session.user.firstName,
-    allRecipes: state.recipes
+    allRecipes: state.recipes,
+    searchResults: state.searchResults
   };
 }
 

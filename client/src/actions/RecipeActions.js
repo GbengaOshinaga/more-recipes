@@ -1,5 +1,5 @@
 import RecipesApi from '../api/RecipesApi';
-import { GET_RECIPES_SUCCESS, GET_RECIPE_SUCCESS, ADD_REVIEW_SUCCESS, ADD_RECIPE_FAILURE } from './actions';
+import { GET_RECIPES_SUCCESS, GET_RECIPE_SUCCESS, ADD_REVIEW_SUCCESS, GET_SEARCH_RESULTS, GET_SEARCH_RESULTS_FAILURE } from './actions';
 
 /**
  * Updates reducer if get recipes action is successful
@@ -26,6 +26,24 @@ function updateGetRecipeSuccess(response) {
  */
 function updateAddReviewSuccess(response) {
   return { type: ADD_REVIEW_SUCCESS, response };
+}
+
+/**
+ * Updates reducer with search results
+ * @param {*} response
+ * @returns {Object} object
+ */
+function updateSearchResultsSuccess(response) {
+  return { type: GET_SEARCH_RESULTS, response };
+}
+
+/**
+ * Updates reducer if there are no results
+ * @param {*} response
+ * @returns {Object} object
+ */
+function updateSearchResultsFailure() {
+  return { type: GET_SEARCH_RESULTS_FAILURE };
 }
 
 /**
@@ -106,6 +124,26 @@ export function downvoteRecipe(id, token) {
       .then(response => response.json())
       .then((response) => {
         console.log(response);
+      });
+  };
+}
+
+/**
+ * Action to search for recipes
+ * @param {*} query
+ * @returns {*} response
+ */
+export function search(query) {
+  return function (dispatch) {
+    return RecipesApi.search(query)
+      .then(response => response.json())
+      .then((response) => {
+        console.log(response);
+        if (response.status === 'success') {
+          dispatch(updateSearchResultsSuccess(response.data.recipes));
+        } else {
+          dispatch(updateSearchResultsFailure());
+        }
       });
   };
 }
