@@ -48,13 +48,16 @@ class RecipeDetails extends React.Component {
 
   /**
    * Method to save review
+   * @param {*} event
    * @returns {*} null
    */
-  onClickSaveReview() {
+  onClickSaveReview(event) {
+    event.preventDefault();
     const { id } = this.props.match.params;
     sessionService.loadSession()
       .then((token) => {
         this.props.actions.addReview(id, token, this.state.newReview);
+        this.setState({ newReview: '' });
       });
   }
 

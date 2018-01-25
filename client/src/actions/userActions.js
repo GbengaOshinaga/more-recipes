@@ -1,6 +1,12 @@
 import { sessionService } from 'redux-react-session';
 import UserApi from '../api/UserApi';
-import { ADD_RECIPE_SUCCESS, DELETE_RECIPE_SUCCESS, GET_USER_FAVOURITES_SUCCESS, EDIT_RECIPE_SUCCESS } from './actions';
+import {
+  ADD_RECIPE_SUCCESS,
+  DELETE_RECIPE_SUCCESS,
+  GET_USER_FAVOURITES_SUCCESS,
+  EDIT_RECIPE_SUCCESS,
+  GET_USERS_RECIPES_SUCCESS
+} from './actions';
 
 /**
  * Updates reducer if add recipe action is successful
@@ -9,6 +15,15 @@ import { ADD_RECIPE_SUCCESS, DELETE_RECIPE_SUCCESS, GET_USER_FAVOURITES_SUCCESS,
  */
 function updateAddRecipeSuccess(response) {
   return { type: ADD_RECIPE_SUCCESS, response };
+}
+
+/**
+ * Updates reducer if getting user recipes is successful
+ * @param {*} response
+ * @returns {Object} object
+ */
+function updateGetUserRecipesSuccess(response) {
+  return { type: GET_USERS_RECIPES_SUCCESS, response };
 }
 
 /**
@@ -89,7 +104,8 @@ export function getUserRecipes(token) {
       .then(response => response.json())
       .then((response) => {
         if (response.status === 'success') {
-          dispatch(updateAddRecipeSuccess(response.data.recipes));
+          console.log(response);
+          dispatch(updateGetUserRecipesSuccess(response.data.recipes));
         }
       });
   };
@@ -153,4 +169,13 @@ export function editRecipe(token, id, data) {
         }
       });
   };
+}
+
+/**
+ * Upload image to cloudinary
+ * @param {*} imageFile
+ * @returns {*} Promise
+ */
+export function uploadImage(imageFile) {
+  return UserApi.uploadImage(imageFile);
 }

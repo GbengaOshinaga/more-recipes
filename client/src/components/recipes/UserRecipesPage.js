@@ -24,7 +24,6 @@ const pagePropTypes = {
   onChipChange: PropTypes.func.isRequired,
   onInputChange: PropTypes.func.isRequired,
   inputValue: PropTypes.string.isRequired,
-  canvasId: PropTypes.string.isRequired,
   descValue: PropTypes.string.isRequired,
   onClickSave: PropTypes.func.isRequired,
   onFileChange: PropTypes.func.isRequired,
@@ -79,7 +78,7 @@ function displayRecipes(recipes, getId, getIdForEdit) {
  */
 function Page({
   isLoggedIn, firstName, onChipChange, onInputChange, inputValue,
-  canvasId, descValue, onClickSave, onFileChange, inputRef, editInputRef,
+  descValue, onClickSave, onFileChange, inputRef, editInputRef,
   userRecipes, onConfirmDelete, getId,
   getIdForEdit, editData, onClickEdit, onEditInputChange
 }) {
@@ -100,7 +99,6 @@ function Page({
           onChipChange={onChipChange}
           onInputChange={onInputChange}
           inputValue={inputValue}
-          canvasId={canvasId}
           descValue={descValue}
           onClickSave={onClickSave}
           onFileChange={onFileChange}
@@ -114,7 +112,6 @@ function Page({
           onInputChange={onEditInputChange}
           inputValue={inputValue}
           editData={editData}
-          canvasId={canvasId}
           descValue={descValue}
           onClickSave={onClickSave}
           onFileChange={onFileChange}
