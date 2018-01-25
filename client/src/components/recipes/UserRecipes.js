@@ -1,18 +1,11 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+import PropTypes, { instanceOf } from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { sessionService } from 'redux-react-session';
 import toastr from 'toastr';
-import cloudinary from 'cloudinary';
 import Page from './UserRecipesPage';
 import * as userActions from '../../actions/userActions';
-
-cloudinary.config({
-  cloud_name: 'king-more-recipes',
-  api_key: '541495131929684',
-  api_secret: 'OyOXBWjA3yC7bqOGXdsGkJUF1Rw'
-});
 
 const propTypes = {
   isLoggedIn: PropTypes.bool.isRequired,
@@ -52,7 +45,7 @@ class UserRecipes extends React.Component {
         ingredients: [],
         imageURL: ''
       },
-      imageFile: []
+      imageFile: {}
     };
 
     this.handleChipsChange = this.handleChipsChange.bind(this);
@@ -82,15 +75,19 @@ class UserRecipes extends React.Component {
    * @returns {*} null
    */
   onClickSave() {
-    cloudinary.v2.uploader.upload(this.state.imageFile, (error, result) => {
-      console.log(result);
-      this.setState({ data: { imageURL: result.url } });
-    });
-    console.log(this.state.data);
-    sessionService.loadSession()
-      .then((token) => {
-        this.props.actions.addRecipe(token, this.state.data);
-      });
+    if (!(this.state.imageFile instanceof File)) {
+      this.saveRecipe(this.state.data);
+    } else {
+      userActions.uploadImage(this.state.imageFile)
+        .then(response => response.json())
+        .then((response) => {
+          const { data } = this.state;
+          data.imageURL = response.secure_url;
+          this.setState({ data }, () => {
+            this.saveRecipe(this.state.data);
+          });
+        });
+    }
   }
 
   /**
@@ -98,11 +95,19 @@ class UserRecipes extends React.Component {
    * @returns {*} null
    */
   onClickEdit() {
-    sessionService.loadSession()
-      .then((token) => {
-        this.props.actions.editRecipe(token, this.state.edit.id, this.state.edit)
-          .catch(error => toastr.error(error));
-      });
+    if (!(this.state.imageFile instanceof File)) {
+      this.editRecipe();
+    } else {
+      userActions.uploadImage(this.state.imageFile)
+        .then(response => response.json())
+        .then((response) => {
+          const { edit } = this.state;
+          edit.imageURL = response.secure_url;
+          this.setState({ edit }, () => {
+            this.editRecipe();
+          });
+        });
+    }
   }
 
   /**
@@ -148,6 +153,51 @@ class UserRecipes extends React.Component {
   }
 
   /**
+   * Save recipe
+   * @param {*} data
+   * @returns {*} null
+   */
+  saveRecipe(data) {
+    sessionService.loadSession()
+      .then((token) => {
+        this.props.actions.addRecipe(token, data);
+        this.setState({
+          data: {
+            id: 0,
+            recipeName: '',
+            recipeDescription: '',
+            ingredients: [],
+            imageURL: ''
+          },
+          imageFile: {}
+        });
+      });
+  }
+
+  /**
+   * Save recipe
+   * @returns {*} null
+   */
+  editRecipe() {
+    sessionService.loadSession()
+      .then((token) => {
+        this.props.actions.editRecipe(token, this.state.edit.id, this.state.edit)
+          .catch(error => toastr.error(error));
+        this.setState({
+          edit: {
+            id: 0,
+            recipeName: '',
+            recipeDescription: '',
+            ingredients: [],
+            imageURL: ''
+          },
+          imageFile: {}
+        });
+      });
+  }
+
+
+  /**
    * Loads image to canvas
    * @param {*} event
    * @returns {*} image src
@@ -160,6 +210,7 @@ class UserRecipes extends React.Component {
       context = this.editInputElement.getContext('2d');
     }
     const file = event.target.files[0];
+    this.setState({ imageFile: file });
     const fileReader = new FileReader();
     fileReader.onload = function (e) {
       const img = new Image(300, 200);
@@ -170,12 +221,9 @@ class UserRecipes extends React.Component {
     };
     try {
       fileReader.readAsDataURL(file);
-      console.log(fileReader.result);
     } catch (error) {
+      throw error;
     }
-    let { imageFile } = this.state;
-    imageFile = fileReader.result;
-    this.setState({ imageFile });
   }
 
   /**
@@ -230,7 +278,6 @@ class UserRecipes extends React.Component {
         inputValue={this.state.data.recipeName}
         descValue={this.state.data.recipeDescription}
         editData={this.state.edit}
-        canvasId="imageURL"
         onClickSave={this.onClickSave}
         onFileChange={this.loadImage}
         inputRef={(el) => { this.inputElement = el; }}

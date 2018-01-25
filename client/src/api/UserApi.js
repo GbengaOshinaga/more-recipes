@@ -101,4 +101,20 @@ export default class User {
       body: `name=${data.recipeName}&description=${data.recipeDescription}&ingredients=${data.ingredients.join(',')}&image=${data.imageURL}`
     });
   }
+
+  /**
+   * Upload image to cloudinary
+   * @param {*} imageFile
+   * @returns {*} Promise
+   */
+  static uploadImage(imageFile) {
+    const formData = new FormData();
+    formData.append('file', imageFile);
+    formData.append('upload_preset', 'tyut3vgq');
+
+    return fetch('https://api.cloudinary.com/v1_1/king-more-recipes/image/upload', {
+      method: 'post',
+      body: formData
+    });
+  }
 }

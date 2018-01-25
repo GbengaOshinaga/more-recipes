@@ -13,7 +13,7 @@ export default function recipesReducer(state = initialState.recipe, action) {
     case GET_RECIPE_SUCCESS:
       return { ...state, ...response };
     case ADD_REVIEW_SUCCESS:
-      return state.Reviews.concat(response);
+      return { ...state, Reviews: [...state.Reviews, response] };
     default:
       return state;
   }

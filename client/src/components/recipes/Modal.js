@@ -7,7 +7,6 @@ import TextArea from '../common/TextArea';
 const addModalPropTypes = {
   onChipChange: PropTypes.func.isRequired,
   onInputChange: PropTypes.func.isRequired,
-  canvasId: PropTypes.string.isRequired,
   inputValue: PropTypes.string.isRequired,
   descValue: PropTypes.string.isRequired,
   onClickSave: PropTypes.func.isRequired,
@@ -18,7 +17,6 @@ const addModalPropTypes = {
 const editModalPropTypes = {
   onChipChange: PropTypes.func.isRequired,
   onInputChange: PropTypes.func.isRequired,
-  canvasId: PropTypes.string.isRequired,
   onClickEdit: PropTypes.func.isRequired,
   onFileChange: PropTypes.func.isRequired,
   inputRef: PropTypes.func.isRequired,
@@ -37,7 +35,7 @@ const canvasStyle = { border: '1px solid #000000', marginLeft: '10px' };
  * @returns {*} jsx
  */
 export function AddModal({
-  onChipChange, onInputChange, inputValue, canvasId, descValue, onClickSave, onFileChange, inputRef
+  onChipChange, onInputChange, inputValue, descValue, onClickSave, onFileChange, inputRef
 }) {
   return (
     <div id="add-modal" className="modal">
@@ -73,7 +71,7 @@ export function AddModal({
               <span>UPLOAD IMAGE</span>
               <input type="file" id="fileUpload" onChange={onFileChange} />
             </div>
-            <canvas id={canvasId} width="300" height="200" style={canvasStyle} ref={inputRef} />
+            <canvas width="300" height="200" style={canvasStyle} ref={inputRef} />
           </div>
 
         </form>
@@ -100,7 +98,7 @@ export function AddModal({
  * @returns {*} jsx
  */
 export function EditModal({
-  onChipChange, onInputChange, canvasId,
+  onChipChange, onInputChange,
   onClickEdit, onFileChange, inputRef, editData
 }) {
   return (
@@ -137,7 +135,7 @@ export function EditModal({
               <span>UPLOAD NEW IMAGE</span>
               <input type="file" id="editFileUpload" onChange={onFileChange} />
             </div>
-            <canvas id={canvasId} width="300" height="200" style={canvasStyle} ref={inputRef} />
+            <canvas width="300" height="200" style={canvasStyle} ref={inputRef} />
           </div>
 
         </form>
