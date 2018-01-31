@@ -11,7 +11,8 @@ const propTypes = {
   firstName: PropTypes.string,
   actions: PropTypes.object.isRequired,
   allRecipes: PropTypes.arrayOf(PropTypes.object).isRequired,
-  searchResults: PropTypes.arrayOf(PropTypes.object).isRequired
+  searchResults: PropTypes.arrayOf(PropTypes.object).isRequired,
+  userId: PropTypes.number.isRequired
 };
 
 const defaultProps = {
@@ -67,6 +68,7 @@ class Catalog extends React.Component {
    */
   vote(event) {
     event.persist();
+    event.preventDefault();
     const { currentTarget } = event;
     sessionService.loadSession()
       .then((token) => {
@@ -95,6 +97,8 @@ class Catalog extends React.Component {
         onSearchChange={this.onSearchChange}
         searchValue={this.state.searchValue}
         hasSearchValue={this.state.hasSearchValue}
+        votes={this.props.votes}
+        userId={this.props.userId}
       />
     );
   }
@@ -110,6 +114,7 @@ function mapStateToProps(state, ownProps) {
   return {
     isLoggedIn: state.session.authenticated,
     firstName: state.session.user.firstName,
+    userId: state.session.user.id,
     allRecipes: state.recipes,
     searchResults: state.searchResults
   };

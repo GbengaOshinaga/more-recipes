@@ -69,7 +69,7 @@ function RecipeDetailsPage({
   recipe, userImage, isLoggedIn, firstName, onClickSaveReview, onAddReviewChange,
   newReview, location
 }) {
-  if (recipe === undefined) {
+  if (recipe === undefined || Object.keys(recipe).length === 0) {
     return 'Waiting for recipe...';
   }
   return (
@@ -98,11 +98,11 @@ function RecipeDetailsPage({
                     <a href="#!" id="details-thumb-up" className="thumb-up">
                       <i className="small material-icons">thumb_up</i>
                     </a>
-                    <span id="upvotes">{recipe.upvotes}</span>
+                    <span id="upvotes">{recipe.upvotes.length}</span>
                     <a href="#!" id="details-thumb-down" className="thumb-down">
                       <i className="small material-icons">thumb_down</i>
                     </a>
-                    <span id="downvotes">{recipe.downvotes}</span>
+                    <span id="downvotes">{recipe.downvotes.length}</span>
                     <a href="#!" id="details-favourite" className="details-favourite">
                       <i className="small material-icons">favorite</i>
                     </a>

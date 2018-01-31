@@ -5,7 +5,8 @@ import {
   DELETE_RECIPE_SUCCESS,
   GET_USER_FAVOURITES_SUCCESS,
   EDIT_RECIPE_SUCCESS,
-  GET_USERS_RECIPES_SUCCESS
+  GET_USERS_RECIPES_SUCCESS,
+  GET_USER_VOTES
 } from './actions';
 
 /**
@@ -54,6 +55,15 @@ function updateEditRecipeSuccess(response) {
 }
 
 /**
+ * Updates reducer if get user votes is successful
+ * @param {*} response
+ * @returns {Object} object
+ */
+function updateGetUserVotes(response) {
+  return { type: GET_USER_VOTES, response };
+}
+
+/**
  * Action to add recipe
  * @param {*} token access token
  * @param {*} data
@@ -86,7 +96,6 @@ export function deleteRecipe(token, id) {
       .then(response => response.json())
       .then((response) => {
         if (response.status === 'success') {
-          console.log(response);
           dispatch(updateDeleteRecipeSuccess(id));
         }
       });
@@ -104,7 +113,6 @@ export function getUserRecipes(token) {
       .then(response => response.json())
       .then((response) => {
         if (response.status === 'success') {
-          console.log(response);
           dispatch(updateGetUserRecipesSuccess(response.data.recipes));
         }
       });
@@ -139,7 +147,6 @@ export function modifyUser(token, data) {
     return UserApi.modifyUser(token, data)
       .then(response => response.json())
       .then((response) => {
-        console.log(response);
         if (response.status === 'success') {
           sessionService.saveUser(response.data.user);
         } else {
@@ -161,7 +168,6 @@ export function editRecipe(token, id, data) {
     return UserApi.editRecipe(token, id, data)
       .then(response => response.json())
       .then((response) => {
-        console.log(response);
         if (response.status === 'success') {
           dispatch(updateEditRecipeSuccess(response.data.updatedRecipe));
         } else {
@@ -178,4 +184,22 @@ export function editRecipe(token, id, data) {
  */
 export function uploadImage(imageFile) {
   return UserApi.uploadImage(imageFile);
+}
+
+/**
+ * Get user votes
+ * @param {*} token
+ * @returns {*} Promise
+ */
+export function getUserVotes(token) {
+  return function (dispatch) {
+    return UserApi.getUserVotes(token)
+      .then(response => response.json())
+      .then((response) => {
+        console.log(response);
+        if (response.status === 'success') {
+          dispatch(updateGetUserVotes(response.data.votes));
+        }
+      });
+  };
 }

@@ -52,14 +52,25 @@ export default class VotesController {
             .then(() => {
               db.Recipes.findById(req.params.id)
                 .then((recipe) => {
-                  recipe.decrement(`${typeOfVote}`);
+                  // recipe.decrement(`${typeOfVote}`);
+                  if (typeOfVote === 'upvotes') {
+                    // recipe.upvotes.slice(recipe.upvotes.indexOf(req.user.userId), 1);
+                    recipe.update({
+                      upvotes: [recipe.upvotes.filter(id => id !== req.user.userId)]
+                    });
+                  } else {
+                    // recipe.downvotes.slice(recipe.downvotes.indexOf(req.user.userId), 1);
+                    recipe.update({
+                      downvotes: [recipe.downvotes.filter(id => id !== req.user.userId)]
+                    });
+                  }
                 });
               res.status(200).jsend.success({ message: `Your ${typeOfVote.slice(0, typeOfVote.length - 1)} has been cancelled` });
             })
             .catch(error => res.status(400).jsend.fail(error));
         } else if (vote && vote.vote !== valueOfVote) {
           // If vote is different from previous vote, delete previous vote, and create present one
-          vote.destroy({ force: true });
+          vote.destroy();
           db.Votes.create({
             UserId: req.user.userId,
             RecipeId: req.params.id,
@@ -69,10 +80,37 @@ export default class VotesController {
           // the present one
           db.Recipes.findById(req.params.id)
             .then((recipe) => {
-              recipe.decrement(`${otherTypeOfVote}`);
-              recipe.increment(`${typeOfVote}`)
-                .then(res.status(200).jsend.success({ message: `Recipe ${message}` }))
-                .catch(error => res.status(400).jsend.error(error));
+              // recipe.decrement(`${otherTypeOfVote}`);
+              // recipe.increment(`${typeOfVote}`)
+              // .then(res.status(200).jsend.success({ message: `Recipe ${message}` }))
+              // .catch(error => res.status(400).jsend.error(error));
+              if (typeOfVote === 'upvotes') {
+                // recipe.upvotes.push(req.user.userId);
+                recipe.update({
+                  upvotes: [...recipe.upvotes, req.user.userId]
+                })
+                  .then(() => {
+                    // recipe.downvotes.slice(recipe.downvotes.indexOf(req.user.userId), 1);
+                    recipe.update({
+                      downvotes: [recipe.downvotes.filter(id => id !== req.user.userId)]
+                    })
+                      .then(res.status(200).jsend.success({ recipe, message: `Recipe ${message}` }))
+                      .catch(error => res.status(400).jsend.error(error));
+                  });
+              } else {
+                // recipe.downvotes.push(req.user.userId);
+                recipe.update({
+                  downvotes: [...recipe.downvotes, req.user.userId]
+                })
+                  .then(() => {
+                    // recipe.upvotes.slice(recipe.upvotes.indexOf(req.user.userId), 1);
+                    recipe.update({
+                      upvotes: [recipe.upvotes.filter(id => id !== req.user.userId)]
+                    })
+                      .then(res.status(200).jsend.success({ recipe, message: `Recipe ${message}` }))
+                      .catch(error => res.status(400).jsend.error(error));
+                  });
+              }
             })
             .catch(error => res.status(400).jsend.error(error));
         } else {
@@ -85,14 +123,41 @@ export default class VotesController {
             .then(() => {
               db.Recipes.findById(req.params.id)
                 .then((recipe) => {
-                  recipe.increment(`${typeOfVote}`)
-                    .then(res.status(200).jsend.success({ message: `Recipe ${message}` }))
-                    .catch(error => res.status(400).jsend.error(error));
+                  // recipe.increment(`${typeOfVote}`)
+                  //   .then(res.status(200).jsend.success({ message: `Recipe ${message}` }))
+                  //   .catch(error => res.status(400).jsend.error(error));
+                  if (typeOfVote === 'upvotes') {
+                    // recipe.upvotes.push(req.user.userId);
+                    recipe.update({
+                      upvotes: [...recipe.upvotes, req.user.userId]
+                    })
+                      .then(res.status(200).jsend.success({ recipe, message: `Recipe ${message}` }))
+                      .catch(error => res.status(400).jsend.error(error));
+                  } else {
+                    // recipe.downvotes.push(req.user.userId);
+                    recipe.update({
+                      downvotes: [...recipe.downvotes, req.user.userId]
+                    })
+                      .then(res.status(200).jsend.success({ recipe, message: `Recipe ${message}` }))
+                      .catch(error => res.status(400).jsend.error(error));
+                  }
                 });
             })
             .catch(error => res.status(400).jsend.error(error));
         }
       })
+      .catch(error => res.status(400).jsend.error(error));
+  }
+
+  /**
+   * Get votes of user
+   * @param {*} req
+   * @param {*} res
+   * @returns {*} response
+   */
+  static getUserVotes(req, res) {
+    db.Votes.findAll({ where: { UserId: req.user.userId } })
+      .then(votes => res.status(200).jsend.success({ votes }))
       .catch(error => res.status(400).jsend.error(error));
   }
 }

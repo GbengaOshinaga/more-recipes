@@ -14,7 +14,8 @@ const propTypes = {
   onSearchChange: PropTypes.func.isRequired,
   searchValue: PropTypes.string.isRequired,
   hasSearchValue: PropTypes.bool.isRequired,
-  searchResults: PropTypes.arrayOf(PropTypes.object).isRequired
+  searchResults: PropTypes.arrayOf(PropTypes.object).isRequired,
+  userId: PropTypes.number.isRequired
 };
 
 const cardPropTypes = {
@@ -23,7 +24,9 @@ const cardPropTypes = {
   recipeName: PropTypes.string.isRequired,
   recipeDescription: PropTypes.string.isRequired,
   onClickVote: PropTypes.func.isRequired,
-  isLoggedIn: PropTypes.bool.isRequired
+  isLoggedIn: PropTypes.bool.isRequired,
+  upvoteClassName: PropTypes.string.isRequired,
+  downvoteClassName: PropTypes.string.isRequired
 };
 
 const defaultProps = {
@@ -33,21 +36,52 @@ const defaultProps = {
 const cardDefaultProps = { image: '' };
 
 /**
+ * Updates recipe depending on if user has voted
+ * @param {Object} recipe
+ * @param {Integer} userId
+ * @returns {Array} updated recipe
+ */
+function updateRecipeVoteState(recipe, userId) {
+  let hasVoted;
+  recipe.upvotes.map((upvote) => {
+    if (upvote === userId) {
+      hasVoted = 'upvoted';
+    }
+  });
+  recipe.downvotes.map((downvote) => {
+    if (downvote === userId) {
+      hasVoted = 'downvoted';
+    }
+  });
+  return hasVoted;
+}
+
+/**
  * Displays recipes in cards
  * @param {*} recipes
  * @param {func} onClickVote
  * @param {bool} isLoggedIn
+ * @param {Number} userId
  * @returns {*} jsx
  */
-function displayRecipes(recipes, onClickVote, isLoggedIn) {
+function displayRecipes(recipes, onClickVote, isLoggedIn, userId) {
   const chunkedRecipes = _.chunk(recipes, 3);
   if (recipes === undefined || recipes.length === 0) {
     return 'No Recipe Available';
   }
   return chunkedRecipes.map((chunk, index) => (
     <div className="row" key={index}>
-      {chunk.map(recipe => (
-        <Card
+      {chunk.map((recipe) => {
+        const voteStatus = updateRecipeVoteState(recipe, userId);
+        let upvoteClassName = 'upvotes';
+        let downvoteClassName = 'downvotes';
+        if (voteStatus === 'upvoted') {
+          upvoteClassName = 'upvotes green-text';
+        } else if (voteStatus === 'downvoted') {
+          downvoteClassName = 'downvotes black-text';
+        }
+
+        return (<Card
           key={recipe.id}
           id={recipe.id}
           image={recipe.image}
@@ -55,8 +89,10 @@ function displayRecipes(recipes, onClickVote, isLoggedIn) {
           recipeDescription={recipe.description}
           onClickVote={onClickVote}
           isLoggedIn={isLoggedIn}
-        />
-    ))}
+          upvoteClassName={upvoteClassName}
+          downvoteClassName={downvoteClassName}
+        />);
+      })}
     </div>
   ));
 }
@@ -69,7 +105,7 @@ function displayRecipes(recipes, onClickVote, isLoggedIn) {
  */
 export default function CatalogPage({
   isLoggedIn, firstName, allRecipes, mostFavouritedRecipes, searchResults,
-  onClickVote, onSearchChange, searchValue, hasSearchValue
+  onClickVote, onSearchChange, searchValue, hasSearchValue, userId
 }) {
   return (
     <div>
@@ -121,19 +157,19 @@ export default function CatalogPage({
         {!hasSearchValue &&
         <div id="all">
           <div className="container">
-            {displayRecipes(allRecipes, onClickVote, isLoggedIn)}
+            {displayRecipes(allRecipes, onClickVote, isLoggedIn, userId)}
           </div>
         </div>}
         {!hasSearchValue &&
         <div id="most-fav">
           <div className="container">
-            {displayRecipes(mostFavouritedRecipes, onClickVote, isLoggedIn)}
+            {displayRecipes(mostFavouritedRecipes, onClickVote, isLoggedIn, userId)}
           </div>
         </div>}
         {hasSearchValue &&
         <div id="search-results">
           <div className="container">
-            {displayRecipes(searchResults, onClickVote, isLoggedIn)}
+            {displayRecipes(searchResults, onClickVote, isLoggedIn, userId)}
           </div>
         </div>}
       </div>
@@ -147,7 +183,7 @@ export default function CatalogPage({
  * @returns {*} jsx
  */
 function Card({
-  id, image, recipeName, recipeDescription, onClickVote, isLoggedIn
+  id, image, recipeName, recipeDescription, onClickVote, isLoggedIn, upvoteClassName, downvoteClassName
 }) {
   return (
     <div className="col s12 l4 m4">
@@ -167,14 +203,14 @@ function Card({
             <div className="recipe-icons">
               <a
                 href="#!"
-                className="upvotes"
+                className={upvoteClassName}
                 onClick={onClickVote}
               >
                 <i id={id} className="material-icons">thumb_up</i>
               </a>
               <a
                 href="#!"
-                className="downvotes"
+                className={downvoteClassName}
                 onClick={onClickVote}
               >
                 <i id={id} className="material-icons">thumb_down</i>

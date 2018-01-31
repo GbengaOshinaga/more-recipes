@@ -36,10 +36,12 @@ class FavouriteRecipes extends React.Component {
    * @returns {*} undefined
    */
   componentDidMount() {
-    sessionService.loadSession()
-      .then((token) => {
-        this.props.actions.getFavourites(token);
-      });
+    if (this.props.recipes.length === 0) {
+      sessionService.loadSession()
+        .then((token) => {
+          this.props.actions.getFavourites(token);
+        });
+    }
   }
 
   /**
