@@ -117,19 +117,4 @@ export default class User {
       body: formData
     });
   }
-
-  /**
-   * Get user votes
-   * @param {*} token
-   * @returns {*} Promise
-   */
-  static getUserVotes(token) {
-    return fetch('http://localhost:8000/api/v1/users/votes', {
-      method: 'get',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
-        'Access-Token': token
-      }
-    });
-  }
 }

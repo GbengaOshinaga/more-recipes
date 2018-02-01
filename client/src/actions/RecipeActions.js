@@ -1,5 +1,14 @@
 import RecipesApi from '../api/RecipesApi';
-import { GET_RECIPES_SUCCESS, GET_RECIPE_SUCCESS, ADD_REVIEW_SUCCESS, GET_SEARCH_RESULTS, GET_SEARCH_RESULTS_FAILURE } from './actions';
+import UserApi from '../api/UserApi';
+import {
+  GET_RECIPES_SUCCESS,
+  GET_RECIPE_SUCCESS,
+  ADD_REVIEW_SUCCESS,
+  GET_SEARCH_RESULTS,
+  GET_SEARCH_RESULTS_FAILURE,
+  GET_USER_FAVOURITES_SUCCESS,
+  GET_USER_FAVOURITES_FAILURE
+} from './actions';
 
 /**
  * Updates reducer if get recipes action is successful
@@ -45,6 +54,26 @@ function updateSearchResultsSuccess(response) {
 function updateSearchResultsFailure() {
   return { type: GET_SEARCH_RESULTS_FAILURE };
 }
+
+/**
+ * Updates reducer if get user favourites action is successful
+ * @param {*} response
+ * @returns {Object} object
+ */
+function updateUserFavouritesSuccess(response) {
+  return { type: GET_USER_FAVOURITES_SUCCESS, response };
+}
+
+
+/**
+ * Updates reducer if get user favourites action is not successful
+ * @param {*} response
+ * @returns {Object} object
+ */
+function updateUserFavouritesFailure() {
+  return { type: GET_USER_FAVOURITES_FAILURE };
+}
+
 
 /**
  * Action to get all recipes
@@ -138,11 +167,80 @@ export function search(query) {
     return RecipesApi.search(query)
       .then(response => response.json())
       .then((response) => {
-        console.log(response);
         if (response.status === 'success') {
           dispatch(updateSearchResultsSuccess(response.data.recipes));
         } else {
           dispatch(updateSearchResultsFailure());
+        }
+      });
+  };
+}
+
+/**
+ * Action to add favourite for user
+ * @param {*} token
+ * @param {*} recipeId
+ * @returns {*} response
+ */
+export function addFavourite(token, recipeId) {
+  return function (dispatch) {
+    return RecipesApi.addFavourite(token, recipeId)
+      .then(response => response.json())
+      .then((response) => {
+        if (response.status === 'success') {
+          UserApi.getFavourites(token)
+            .then(favResponse => favResponse.json())
+            .then((favResponse) => {
+              if (favResponse.status === 'success') {
+                dispatch(updateUserFavouritesSuccess(favResponse.data.favourites));
+              }
+            });
+        }
+      });
+  };
+}
+
+/**
+ * Action to get user favourites
+ * @param {*} token
+ * @returns {*} response
+ */
+export function getFavourites(token) {
+  return function (dispatch) {
+    return UserApi.getFavourites(token)
+      .then(response => response.json())
+      .then((response) => {
+        if (response.status === 'success') {
+          dispatch(updateUserFavouritesSuccess(response.data.favourites));
+        } else {
+          dispatch(updateUserFavouritesFailure());
+        }
+      });
+  };
+}
+
+/**
+ * Action to add favourite for user
+ * @param {*} token
+ * @param {*} recipeId
+ * @returns {*} response
+ */
+export function deleteFavourite(token, recipeId) {
+  return function (dispatch) {
+    return RecipesApi.deleteFavourite(token, recipeId)
+      .then(response => response.json())
+      .then((response) => {
+        console.log(response);
+        if (response.status === 'success') {
+          UserApi.getFavourites(token)
+            .then(favResponse => favResponse.json())
+            .then((favResponse) => {
+              if (favResponse.status === 'success') {
+                dispatch(updateUserFavouritesSuccess(favResponse.data.favourites));
+              } else {
+                dispatch(updateUserFavouritesFailure());
+              }
+            });
         }
       });
   };

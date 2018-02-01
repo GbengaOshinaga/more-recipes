@@ -3,7 +3,6 @@ import UserApi from '../api/UserApi';
 import {
   ADD_RECIPE_SUCCESS,
   DELETE_RECIPE_SUCCESS,
-  GET_USER_FAVOURITES_SUCCESS,
   EDIT_RECIPE_SUCCESS,
   GET_USERS_RECIPES_SUCCESS,
   GET_USER_VOTES
@@ -34,15 +33,6 @@ function updateGetUserRecipesSuccess(response) {
  */
 function updateDeleteRecipeSuccess(id) {
   return { type: DELETE_RECIPE_SUCCESS, id };
-}
-
-/**
- * Updates reducer if get user favourites action is successful
- * @param {*} response
- * @returns {Object} object
- */
-function updateUserFavouritesSuccess(response) {
-  return { type: GET_USER_FAVOURITES_SUCCESS, response };
 }
 
 /**
@@ -114,23 +104,6 @@ export function getUserRecipes(token) {
       .then((response) => {
         if (response.status === 'success') {
           dispatch(updateGetUserRecipesSuccess(response.data.recipes));
-        }
-      });
-  };
-}
-
-/**
- * Action to get user favourites
- * @param {*} token
- * @returns {*} response
- */
-export function getFavourites(token) {
-  return function (dispatch) {
-    return UserApi.getFavourites(token)
-      .then(response => response.json())
-      .then((response) => {
-        if (response.status === 'success') {
-          dispatch(updateUserFavouritesSuccess(response.data.favourites));
         }
       });
   };

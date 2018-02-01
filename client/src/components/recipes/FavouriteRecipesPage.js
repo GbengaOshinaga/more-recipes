@@ -7,7 +7,10 @@ import Header from '../common/Header/Header';
 const propTypes = {
   isLoggedIn: PropTypes.bool.isRequired,
   firstName: PropTypes.string,
-  recipes: PropTypes.arrayOf(PropTypes.object).isRequired
+  recipes: PropTypes.arrayOf(PropTypes.object).isRequired,
+  userId: PropTypes.number.isRequired,
+  onClickVote: PropTypes.func.isRequired,
+  onClickFavourite: PropTypes.func.isRequired
 };
 
 const cardPropTypes = {
@@ -15,7 +18,10 @@ const cardPropTypes = {
   image: PropTypes.string,
   recipeName: PropTypes.string.isRequired,
   recipeDescription: PropTypes.string.isRequired,
-  onClickVote: PropTypes.func.isRequired
+  onClickVote: PropTypes.func.isRequired,
+  upvoteClassName: PropTypes.string.isRequired,
+  downvoteClassName: PropTypes.string.isRequired,
+  onClickFavourite: PropTypes.func.isRequired
 };
 
 const defaultProps = {
@@ -25,28 +31,65 @@ const defaultProps = {
 const cardDefaultProps = { image: '' };
 
 /**
+ * Updates recipe depending on if user has voted
+ * @param {Object} recipe
+ * @param {Integer} userId
+ * @returns {Object} updated recipe
+ */
+function updateRecipeVoteState(recipe, userId) {
+  let hasVoted;
+  recipe.upvotes.map((upvote) => {
+    if (upvote === userId) {
+      hasVoted = 'upvoted';
+    }
+  });
+  recipe.downvotes.map((downvote) => {
+    if (downvote === userId) {
+      hasVoted = 'downvoted';
+    }
+  });
+  return hasVoted;
+}
+
+/**
  * Displays recipes in cards
- * @param {*} recipes
- * @param {func} onDelete
+ * @param {Array} recipes
+ * @param {Number} userId
+ * @param {func} onClickVote
+ * @param {func} onClickFavourite
  * @returns {*} jsx
  */
-function displayRecipes(recipes) {
+function displayRecipes(recipes, userId, onClickVote, onClickFavourite) {
   const chunkedRecipes = _.chunk(recipes, 3);
-  chunkedRecipes.map((chunk) => chunk.map(recipe => console.log(recipe.id)));
   if (recipes === undefined || recipes.length === 0) {
     return 'No Recipe Available';
   }
   return chunkedRecipes.map((chunk, index) => (
     <div className="row" key={index}>
-      {chunk.map(recipe => (
-        <Card
+      {chunk.map((recipe) => {
+        const voteStatus = updateRecipeVoteState(recipe, userId);
+
+        let upvoteClassName = 'upvotes';
+        let downvoteClassName = 'downvotes';
+
+        if (voteStatus === 'upvoted') {
+          upvoteClassName = 'upvotes green-text';
+        } else if (voteStatus === 'downvoted') {
+          downvoteClassName = 'downvotes black-text';
+        }
+
+        return (<Card
           key={recipe.id}
           id={recipe.id}
           image={recipe.image}
           recipeName={recipe.name}
           recipeDescription={recipe.description}
-        />
-    ))}
+          upvoteClassName={upvoteClassName}
+          downvoteClassName={downvoteClassName}
+          onClickVote={onClickVote}
+          onClickFavourite={onClickFavourite}
+        />);
+      })}
     </div>
   ));
 }
@@ -56,7 +99,9 @@ function displayRecipes(recipes) {
  * @param {*} props
  * @returns {*} jsx
  */
-function FavouriteRecipesPage({ isLoggedIn, firstName, recipes }) {
+function FavouriteRecipesPage({
+  isLoggedIn, firstName, recipes, userId, onClickVote, onClickFavourite
+}) {
   return (
     <div>
       <Header
@@ -67,7 +112,7 @@ function FavouriteRecipesPage({ isLoggedIn, firstName, recipes }) {
         <div className="favorited-reviews">
           <h4>Favorited Recipes</h4>
           <hr />
-          {displayRecipes(recipes)}
+          {displayRecipes(recipes, userId, onClickVote, onClickFavourite)}
         </div>
       </div>
 
@@ -81,7 +126,8 @@ function FavouriteRecipesPage({ isLoggedIn, firstName, recipes }) {
  * @returns {*} jsx
  */
 function Card({
-  id, image, recipeName, recipeDescription, onClickVote
+  id, image, recipeName, recipeDescription, onClickVote,
+  upvoteClassName, downvoteClassName, onClickFavourite
 }) {
   return (
     <div className="col s12 l4 m4">
@@ -92,27 +138,31 @@ function Card({
         <div className="card-stacked">
           <div className="card-content">
             <Link to={`/recipe/${id}`}><span className="card-title">{recipeName}</span></Link>
-            <p>{recipeDescription}</p>
+            <p>{`${recipeDescription.slice(0, 30)}...`}</p>
 
           </div>
           <div className="card-action">
             <div className="recipe-icons">
               <a
                 href="#!"
-                className="upvotes"
+                className={upvoteClassName}
                 onClick={onClickVote}
               >
                 <i id={id} className="material-icons">thumb_up</i>
               </a>
               <a
                 href="#!"
-                className="downvotes"
+                className={downvoteClassName}
                 onClick={onClickVote}
               >
                 <i id={id} className="material-icons">thumb_down</i>
               </a>
-              <a href="#!" className="favourite red-text">
-                <i className="material-icons">favorite</i>
+              <a
+                href="#!"
+                className="favourite red-text"
+                onClick={onClickFavourite}
+              >
+                <i id={id} className="material-icons">favorite</i>
               </a>
             </div>
           </div>

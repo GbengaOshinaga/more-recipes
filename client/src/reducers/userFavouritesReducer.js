@@ -1,5 +1,5 @@
 import initialState from './initialState';
-import { GET_USER_FAVOURITES_SUCCESS } from '../actions/actions';
+import { GET_USER_FAVOURITES_SUCCESS, GET_USER_FAVOURITES_FAILURE } from '../actions/actions';
 
 /**
  * userRecipes reducer
@@ -12,6 +12,8 @@ export default function userRecipesReducer(state = initialState.userFavourites, 
   switch (action.type) {
     case GET_USER_FAVOURITES_SUCCESS:
       return [...response];
+    case GET_USER_FAVOURITES_FAILURE:
+      return [];
     default:
       return state;
   }

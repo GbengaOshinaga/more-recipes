@@ -94,4 +94,36 @@ export default class RecipesApi {
       }
     });
   }
+
+  /**
+   * Method for adding to user's favourites
+   * @param {*} token
+   * @param {*} recipeId
+   * @returns {*} Promise
+   */
+  static addFavourite(token, recipeId) {
+    return fetch(`http://localhost:8000/api/v1/users/recipes/${recipeId}/favourites`, {
+      method: 'post',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'Access-Token': token
+      }
+    });
+  }
+
+  /**
+   * Method for delete a user's favourite
+   * @param {*} token
+   * @param {*} recipeId
+   * @returns {*} Promise
+   */
+  static deleteFavourite(token, recipeId) {
+    return fetch(`http://localhost:8000/api/v1/users/recipes/${recipeId}/favourites`, {
+      method: 'delete',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'Access-Token': token
+      }
+    });
+  }
 }

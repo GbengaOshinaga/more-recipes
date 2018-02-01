@@ -4,13 +4,14 @@ import { bindActionCreators } from 'redux';
 import { sessionService } from 'redux-react-session';
 import { connect } from 'react-redux';
 import Page from './FavouriteRecipesPage';
-import * as userActions from '../../actions/userActions';
+import * as recipeActions from '../../actions/RecipeActions';
 
 const propTypes = {
   isLoggedIn: PropTypes.bool.isRequired,
   firstName: PropTypes.string,
   actions: PropTypes.object.isRequired,
-  recipes: PropTypes.arrayOf(PropTypes.object).isRequired
+  recipes: PropTypes.arrayOf(PropTypes.object).isRequired,
+  userId: PropTypes.number.isRequired
 };
 
 const defaultProps = {
@@ -29,6 +30,8 @@ class FavouriteRecipes extends React.Component {
   constructor(props, context) {
     super(props, context);
     this.state = {};
+    this.vote = this.vote.bind(this);
+    this.removeFavourite = this.removeFavourite.bind(this);
   }
 
   /**
@@ -45,6 +48,42 @@ class FavouriteRecipes extends React.Component {
   }
 
   /**
+   * votes recipe
+   * @param {*} event
+   * @returns {*} null
+   */
+  vote(event) {
+    event.persist();
+    event.preventDefault();
+    const { currentTarget } = event;
+    sessionService.loadSession()
+      .then((token) => {
+        if (event.target.firstChild.nodeValue === 'thumb_up') {
+          this.props.actions.upvoteRecipe(event.target.id, token);
+          currentTarget.classList.toggle('green-text');
+        } else {
+          this.props.actions.downvoteRecipe(event.target.id, token);
+          currentTarget.classList.toggle('black-text');
+        }
+      });
+  }
+
+  /**
+   * Remove favourite
+   * @param {*} event
+   * @returns {*} null
+   */
+  removeFavourite(event) {
+    event.persist();
+    event.preventDefault();
+    sessionService.loadSession()
+      .then((token) => {
+        this.props.actions.deleteFavourite(token, event.target.id);
+      });
+  }
+
+
+  /**
    * Component render function
    * @returns {*} jsx
    */
@@ -54,6 +93,9 @@ class FavouriteRecipes extends React.Component {
         isLoggedIn={this.props.isLoggedIn}
         firstName={this.props.firstName}
         recipes={this.props.recipes}
+        userId={this.props.userId}
+        onClickVote={this.vote}
+        onClickFavourite={this.removeFavourite}
       />
     );
   }
@@ -69,6 +111,7 @@ function mapStateToProps(state, ownProps) {
   return {
     isLoggedIn: state.session.authenticated,
     firstName: state.session.user.firstName,
+    userId: state.session.user.id,
     recipes: state.userFavourites
   };
 }
@@ -80,7 +123,7 @@ function mapStateToProps(state, ownProps) {
      */
 function mapDispatchToProps(dispatch) {
   return {
-    actions: bindActionCreators(userActions, dispatch)
+    actions: bindActionCreators(recipeActions, dispatch)
   };
 }
 
