@@ -69,6 +69,7 @@ describe('Users should be able to upvote and downvote a recipe', () => {
       .post(`/api/v1/recipes/upvote/${recipeId}`)
       .set('Access-Token', token)
       .end((err, res) => {
+        console.log(res.body);
         expect(res).to.have.status(200);
         expect(res.body.data.message).to.equal('Recipe upvoted');
         done();

@@ -11,11 +11,14 @@ const propTypes = {
   firstName: PropTypes.string,
   actions: PropTypes.object.isRequired,
   allRecipes: PropTypes.arrayOf(PropTypes.object).isRequired,
-  searchResults: PropTypes.arrayOf(PropTypes.object).isRequired
+  searchResults: PropTypes.arrayOf(PropTypes.object).isRequired,
+  userId: PropTypes.number,
+  favourites: PropTypes.arrayOf(PropTypes.object).isRequired
 };
 
 const defaultProps = {
-  firstName: ''
+  firstName: '',
+  userId: 0
 };
 
 /**
@@ -36,6 +39,7 @@ class Catalog extends React.Component {
 
     this.vote = this.vote.bind(this);
     this.onSearchChange = this.onSearchChange.bind(this);
+    this.addFavourite = this.addFavourite.bind(this);
   }
 
   /**
@@ -44,6 +48,10 @@ class Catalog extends React.Component {
    */
   componentDidMount() {
     this.props.actions.getAllRecipes();
+    sessionService.loadSession()
+      .then((token) => {
+        this.props.actions.getFavourites(token);
+      });
   }
 
   /**
@@ -67,6 +75,7 @@ class Catalog extends React.Component {
    */
   vote(event) {
     event.persist();
+    event.preventDefault();
     const { currentTarget } = event;
     sessionService.loadSession()
       .then((token) => {
@@ -77,6 +86,25 @@ class Catalog extends React.Component {
           this.props.actions.downvoteRecipe(event.target.id, token);
           currentTarget.classList.toggle('black-text');
         }
+      });
+  }
+
+  /**
+   * Add recipe to favourite
+   * @param {*} event
+   * @returns {*} null
+   */
+  addFavourite(event) {
+    event.persist();
+    event.preventDefault();
+    const { currentTarget } = event;
+    sessionService.loadSession()
+      .then((token) => {
+        currentTarget.classList.value === 'favourite' ?
+          this.props.actions.addFavourite(token, event.target.id) :
+          this.props.actions.deleteFavourite(token, event.target.id);
+
+        currentTarget.classList.toggle('red-text');
       });
   }
 
@@ -95,6 +123,9 @@ class Catalog extends React.Component {
         onSearchChange={this.onSearchChange}
         searchValue={this.state.searchValue}
         hasSearchValue={this.state.hasSearchValue}
+        userId={this.props.userId}
+        onClickFavourite={this.addFavourite}
+        favourites={this.props.favourites}
       />
     );
   }
@@ -110,8 +141,10 @@ function mapStateToProps(state, ownProps) {
   return {
     isLoggedIn: state.session.authenticated,
     firstName: state.session.user.firstName,
+    userId: state.session.user.id,
     allRecipes: state.recipes,
-    searchResults: state.searchResults
+    searchResults: state.searchResults,
+    favourites: state.userFavourites
   };
 }
 

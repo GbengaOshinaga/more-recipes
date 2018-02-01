@@ -14,7 +14,10 @@ const propTypes = {
   onSearchChange: PropTypes.func.isRequired,
   searchValue: PropTypes.string.isRequired,
   hasSearchValue: PropTypes.bool.isRequired,
-  searchResults: PropTypes.arrayOf(PropTypes.object).isRequired
+  searchResults: PropTypes.arrayOf(PropTypes.object).isRequired,
+  userId: PropTypes.number,
+  onClickFavourite: PropTypes.func.isRequired,
+  favourites: PropTypes.arrayOf(PropTypes.object).isRequired
 };
 
 const cardPropTypes = {
@@ -23,31 +26,93 @@ const cardPropTypes = {
   recipeName: PropTypes.string.isRequired,
   recipeDescription: PropTypes.string.isRequired,
   onClickVote: PropTypes.func.isRequired,
-  isLoggedIn: PropTypes.bool.isRequired
+  isLoggedIn: PropTypes.bool.isRequired,
+  upvoteClassName: PropTypes.string.isRequired,
+  downvoteClassName: PropTypes.string.isRequired,
+  favouriteClassName: PropTypes.string.isRequired,
+  onClickFavourite: PropTypes.func.isRequired
 };
 
 const defaultProps = {
-  firstName: ''
+  firstName: '',
+  userId: 0
 };
 
 const cardDefaultProps = { image: '' };
 
 /**
+ * Updates recipe depending on if user has voted
+ * @param {Object} recipe
+ * @param {Integer} userId
+ * @returns {Object} updated recipe
+ */
+function updateRecipeVoteState(recipe, userId) {
+  let hasVoted;
+  recipe.upvotes.map((upvote) => {
+    if (upvote === userId) {
+      hasVoted = 'upvoted';
+    }
+  });
+  recipe.downvotes.map((downvote) => {
+    if (downvote === userId) {
+      hasVoted = 'downvoted';
+    }
+  });
+  return hasVoted;
+}
+
+/**
+ * Updates recipe depending on if user has favourited
+ * @param {Object} recipe
+ * @param {Array} favourites
+ * @returns {Object} updated recipe
+ */
+function updateFavouriteState(recipe, favourites) {
+  let hasFavourited = false;
+  favourites.map((favourite) => {
+    if (recipe.id === favourite.Favourites.RecipeId) {
+      hasFavourited = true;
+    }
+  });
+  return hasFavourited;
+}
+
+/**
  * Displays recipes in cards
- * @param {*} recipes
+ * @param {Array} recipes
  * @param {func} onClickVote
+ * @param {func} onClickFavourite
  * @param {bool} isLoggedIn
+ * @param {Number} userId
+ * @param {Array} favourites
  * @returns {*} jsx
  */
-function displayRecipes(recipes, onClickVote, isLoggedIn) {
+function displayRecipes(recipes, onClickVote, onClickFavourite, isLoggedIn, userId, favourites) {
   const chunkedRecipes = _.chunk(recipes, 3);
   if (recipes === undefined || recipes.length === 0) {
     return 'No Recipe Available';
   }
   return chunkedRecipes.map((chunk, index) => (
     <div className="row" key={index}>
-      {chunk.map(recipe => (
-        <Card
+      {chunk.map((recipe) => {
+        const voteStatus = updateRecipeVoteState(recipe, userId);
+        const favouriteStatus = updateFavouriteState(recipe, favourites);
+
+        let upvoteClassName = 'upvotes';
+        let downvoteClassName = 'downvotes';
+        let favouriteClassName = 'favourite';
+
+        if (voteStatus === 'upvoted') {
+          upvoteClassName = 'upvotes green-text';
+        } else if (voteStatus === 'downvoted') {
+          downvoteClassName = 'downvotes black-text';
+        }
+
+        if (favouriteStatus) {
+          favouriteClassName = 'favourite red-text';
+        }
+
+        return (<Card
           key={recipe.id}
           id={recipe.id}
           image={recipe.image}
@@ -55,8 +120,12 @@ function displayRecipes(recipes, onClickVote, isLoggedIn) {
           recipeDescription={recipe.description}
           onClickVote={onClickVote}
           isLoggedIn={isLoggedIn}
-        />
-    ))}
+          upvoteClassName={upvoteClassName}
+          downvoteClassName={downvoteClassName}
+          favouriteClassName={favouriteClassName}
+          onClickFavourite={onClickFavourite}
+        />);
+      })}
     </div>
   ));
 }
@@ -69,7 +138,7 @@ function displayRecipes(recipes, onClickVote, isLoggedIn) {
  */
 export default function CatalogPage({
   isLoggedIn, firstName, allRecipes, mostFavouritedRecipes, searchResults,
-  onClickVote, onSearchChange, searchValue, hasSearchValue
+  onClickVote, onSearchChange, searchValue, hasSearchValue, userId, onClickFavourite, favourites
 }) {
   return (
     <div>
@@ -121,19 +190,19 @@ export default function CatalogPage({
         {!hasSearchValue &&
         <div id="all">
           <div className="container">
-            {displayRecipes(allRecipes, onClickVote, isLoggedIn)}
+            {displayRecipes(allRecipes, onClickVote, onClickFavourite, isLoggedIn, userId, favourites)}
           </div>
         </div>}
         {!hasSearchValue &&
         <div id="most-fav">
           <div className="container">
-            {displayRecipes(mostFavouritedRecipes, onClickVote, isLoggedIn)}
+            {displayRecipes(mostFavouritedRecipes, onClickVote, onClickFavourite, isLoggedIn, userId, favourites)}
           </div>
         </div>}
         {hasSearchValue &&
         <div id="search-results">
           <div className="container">
-            {displayRecipes(searchResults, onClickVote, isLoggedIn)}
+            {displayRecipes(searchResults, onClickVote, onClickFavourite, isLoggedIn, userId, favourites)}
           </div>
         </div>}
       </div>
@@ -143,11 +212,12 @@ export default function CatalogPage({
 
 /**
  * Component for displaying card
- * @param {*} param0
+ * @param {*} props
  * @returns {*} jsx
  */
 function Card({
-  id, image, recipeName, recipeDescription, onClickVote, isLoggedIn
+  id, image, recipeName, recipeDescription, onClickVote,
+  isLoggedIn, upvoteClassName, downvoteClassName, favouriteClassName, onClickFavourite
 }) {
   return (
     <div className="col s12 l4 m4">
@@ -167,19 +237,25 @@ function Card({
             <div className="recipe-icons">
               <a
                 href="#!"
-                className="upvotes"
+                className={upvoteClassName}
                 onClick={onClickVote}
               >
                 <i id={id} className="material-icons">thumb_up</i>
               </a>
               <a
                 href="#!"
-                className="downvotes"
+                className={downvoteClassName}
                 onClick={onClickVote}
               >
                 <i id={id} className="material-icons">thumb_down</i>
               </a>
-              <a href="#!" className="favourite"><i className="material-icons">favorite</i></a>
+              <a
+                href="#!"
+                className={favouriteClassName}
+                onClick={onClickFavourite}
+              >
+                <i id={id} className="material-icons">favorite</i>
+              </a>
             </div>
           </div>}
         </div>

@@ -15,7 +15,7 @@ function loggedInHeader(name, onChange, value) {
       <ul id="dropdown1" className="dropdown-content">
         <li><Link to="/profile">Profile</Link></li>
         <li><Link to="/my_recipes">My Recipes</Link></li>
-        <li><a href="favourite_recipes.html">Favourite Recipes</a></li>
+        <li><Link to="/favourites">Favourite Recipes</Link></li>
         <li><Link to="/logout">Logout</Link></li>
       </ul>
       <ul id="dropdown2" className="dropdown-content">
