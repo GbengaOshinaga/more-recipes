@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { sessionService } from 'redux-react-session';
 import { connect } from 'react-redux';
+import $ from 'jquery';
+import '../../../../node_modules/materialize-css/dist/js/materialize';
 import * as recipeActions from '../../actions/RecipeActions';
 import Page from './RecipeDetailsPage';
 
@@ -43,6 +45,9 @@ class RecipeDetails extends React.Component {
    * @returns {*} undefined
    */
   componentDidMount() {
+    $('.button-collapse').sideNav();
+    $('.dropdown-button').dropdown();
+
     this.props.actions.getRecipe(this.props.match.params.id);
   }
 

@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { sessionService } from 'redux-react-session';
+import $ from 'jquery';
+import '../../../../node_modules/materialize-css/dist/js/materialize';
 import CatalogPage from './CatalogPage';
 import * as recipeActions from '../../actions/RecipeActions';
 
@@ -44,9 +46,14 @@ class Catalog extends React.Component {
 
   /**
    * Method when component has finished mounting
-   * @returns {*} undefined
+   * @returns {*} null
    */
   componentDidMount() {
+    $('.button-collapse').sideNav();
+    $('.parallax').parallax();
+    $('.dropdown-button').dropdown();
+    $('ul.tabs').tabs();
+
     this.props.actions.getAllRecipes();
     sessionService.loadSession()
       .then((token) => {
@@ -64,7 +71,13 @@ class Catalog extends React.Component {
     this.setState({ searchValue: value, hasSearchValue: true }, () => {
       this.props.actions.search(this.state.searchValue);
     });
-    value === '' ? this.setState({ hasSearchValue: false }) : this.setState({ hasSearchValue: true });
+    if (value === '') {
+      // $('ul.tabs').tabs('select_tab', 'all');
+      this.setState({ hasSearchValue: false });
+    } else {
+      // $('ul.tabs').tabs('select_tab', 'search-results');
+      this.setState({ hasSearchValue: true });
+    }
   }
 
 
