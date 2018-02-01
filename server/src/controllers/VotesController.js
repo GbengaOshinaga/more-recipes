@@ -52,14 +52,11 @@ export default class VotesController {
             .then(() => {
               db.Recipes.findById(req.params.id)
                 .then((recipe) => {
-                  // recipe.decrement(`${typeOfVote}`);
                   if (typeOfVote === 'upvotes') {
-                    // recipe.upvotes.slice(recipe.upvotes.indexOf(req.user.userId), 1);
                     recipe.update({
                       upvotes: [recipe.upvotes.filter(id => id !== req.user.userId)]
                     });
                   } else {
-                    // recipe.downvotes.slice(recipe.downvotes.indexOf(req.user.userId), 1);
                     recipe.update({
                       downvotes: [recipe.downvotes.filter(id => id !== req.user.userId)]
                     });
@@ -80,17 +77,11 @@ export default class VotesController {
           // the present one
           db.Recipes.findById(req.params.id)
             .then((recipe) => {
-              // recipe.decrement(`${otherTypeOfVote}`);
-              // recipe.increment(`${typeOfVote}`)
-              // .then(res.status(200).jsend.success({ message: `Recipe ${message}` }))
-              // .catch(error => res.status(400).jsend.error(error));
               if (typeOfVote === 'upvotes') {
-                // recipe.upvotes.push(req.user.userId);
                 recipe.update({
                   upvotes: [...recipe.upvotes, req.user.userId]
                 })
                   .then(() => {
-                    // recipe.downvotes.slice(recipe.downvotes.indexOf(req.user.userId), 1);
                     recipe.update({
                       downvotes: [recipe.downvotes.filter(id => id !== req.user.userId)]
                     })
@@ -98,12 +89,10 @@ export default class VotesController {
                       .catch(error => res.status(400).jsend.error(error));
                   });
               } else {
-                // recipe.downvotes.push(req.user.userId);
                 recipe.update({
                   downvotes: [...recipe.downvotes, req.user.userId]
                 })
                   .then(() => {
-                    // recipe.upvotes.slice(recipe.upvotes.indexOf(req.user.userId), 1);
                     recipe.update({
                       upvotes: [recipe.upvotes.filter(id => id !== req.user.userId)]
                     })
@@ -123,18 +112,13 @@ export default class VotesController {
             .then(() => {
               db.Recipes.findById(req.params.id)
                 .then((recipe) => {
-                  // recipe.increment(`${typeOfVote}`)
-                  //   .then(res.status(200).jsend.success({ message: `Recipe ${message}` }))
-                  //   .catch(error => res.status(400).jsend.error(error));
                   if (typeOfVote === 'upvotes') {
-                    // recipe.upvotes.push(req.user.userId);
                     recipe.update({
                       upvotes: [...recipe.upvotes, req.user.userId]
                     })
                       .then(res.status(200).jsend.success({ recipe, message: `Recipe ${message}` }))
                       .catch(error => res.status(400).jsend.error(error));
                   } else {
-                    // recipe.downvotes.push(req.user.userId);
                     recipe.update({
                       downvotes: [...recipe.downvotes, req.user.userId]
                     })
