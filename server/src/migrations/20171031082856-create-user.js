@@ -21,10 +21,11 @@ module.exports = {
       type: Sequelize.STRING
     },
     profilePic: {
-      type: Sequelize.BLOB
+      type: Sequelize.STRING
     },
     about: {
-      type: Sequelize.STRING
+      type: Sequelize.STRING,
+      defaultValue: ''
     },
     createdAt: {
       allowNull: false,

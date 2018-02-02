@@ -41,6 +41,7 @@ class Profile extends React.Component {
     this.onEditClick = this.onEditClick.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
     this.onClickSave = this.onClickSave.bind(this);
+    this.onFileChange = this.onFileChange.bind(this);
   }
 
   /**
@@ -79,9 +80,11 @@ class Profile extends React.Component {
 
   /**
    * Method for when save button is clicked
+   * @param {*} event
    * @returns {*} null
    */
-  onClickSave() {
+  onClickSave(event) {
+    event.preventDefault();
     sessionService.loadSession()
       .then((token) => {
         this.props.actions.modifyUser(token, this.state.data)
@@ -101,6 +104,25 @@ class Profile extends React.Component {
             }
           });
       });
+  }
+
+  /**
+   * Method for when file loads
+   * @param {*} event
+   * @returns {*} null
+   */
+  onFileChange(event) {
+    const file = event.target.files[0];
+    if (file) {
+      userActions.uploadImage(file)
+        .then(response => response.json())
+        .then((response) => {
+          console.log(response);
+          const { data } = this.state;
+          data.profilePic = response.secure_url;
+          this.setState({ data }, () => console.log(this.state.data));
+        });
+    }
   }
 
   /**
@@ -134,6 +156,7 @@ class Profile extends React.Component {
         onChange={this.handleInputChange}
         onClickSave={this.onClickSave}
         editPhotoButtonClass={this.state.editPhotoButtonClass}
+        onFileChange={this.onFileChange}
       />
     );
   }

@@ -18,12 +18,13 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
     },
     profilePic: {
-      type: DataTypes.BLOB,
+      type: DataTypes.STRING,
       allowNull: true,
     },
     about: {
       type: DataTypes.STRING,
       allowNull: true,
+      defaultValue: ''
     }
   });
 

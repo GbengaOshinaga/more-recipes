@@ -14,7 +14,8 @@ const propTypes = {
   onEditClick: PropTypes.func.isRequired,
   onChange: PropTypes.func.isRequired,
   onClickSave: PropTypes.func.isRequired,
-  editPhotoButtonClass: PropTypes.string.isRequired
+  editPhotoButtonClass: PropTypes.string.isRequired,
+  onFileChange: PropTypes.func.isRequired
 };
 
 const defaultProps = {
@@ -32,7 +33,8 @@ const editPhotoButtonStyle = { position: 'absolute', top: '10px', margin: '10px'
  */
 export default function ProfilePage({
   profilePic, lastName, email, about, isLoggedIn, firstName, isDisabled,
-  saveButtonClass, onEditClick, onChange, onClickSave, editPhotoButtonClass
+  saveButtonClass, onEditClick, onChange, onClickSave, editPhotoButtonClass,
+  onFileChange
 }) {
   return (
     <div>
@@ -50,13 +52,16 @@ export default function ProfilePage({
                   className="responsive-img"
                   alt="profile"
                 />
-                <a
-                  id="edit-photo"
-                  className={editPhotoButtonClass}
-                  style={editPhotoButtonStyle}
-                >
-                  <i className="material-icons">add_a_photo</i>
-                </a>
+                <div className="file-field">
+                  <div
+                    id="edit-photo"
+                    className={editPhotoButtonClass}
+                    style={editPhotoButtonStyle}
+                  >
+                    <input type="file" onChange={onFileChange} />
+                    <span><i className="material-icons">add_a_photo</i></span>
+                  </div>
+                </div>
               </div>
             </div>
             <div className="card-stacked">

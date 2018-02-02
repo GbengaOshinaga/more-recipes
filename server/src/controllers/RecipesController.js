@@ -53,7 +53,7 @@ export default class RecipesController {
     } else if (req.query.from && req.query.to) {
       this.paginateRecipes(req.query.from, req.query.to, res);
     } else if (req.query.query) {
-      this.searchRecipes(req.query.query, res);
+      this.searchRecipes(req.query.query.trim(), res);
     } else {
       db.Recipes.findAll({
         include: [{
