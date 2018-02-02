@@ -15,7 +15,8 @@ const propTypes = {
   onChange: PropTypes.func.isRequired,
   onClickSave: PropTypes.func.isRequired,
   editPhotoButtonClass: PropTypes.string.isRequired,
-  onFileChange: PropTypes.func.isRequired
+  onFileChange: PropTypes.func.isRequired,
+  onClickCancel: PropTypes.func.isRequired
 };
 
 const defaultProps = {
@@ -25,6 +26,7 @@ const defaultProps = {
 };
 
 const editPhotoButtonStyle = { position: 'absolute', top: '10px', margin: '10px' };
+const buttonStyle = { margin: '10px' };
 
 /**
  * Page for profile component
@@ -34,7 +36,7 @@ const editPhotoButtonStyle = { position: 'absolute', top: '10px', margin: '10px'
 export default function ProfilePage({
   profilePic, lastName, email, about, isLoggedIn, firstName, isDisabled,
   saveButtonClass, onEditClick, onChange, onClickSave, editPhotoButtonClass,
-  onFileChange
+  onFileChange, onClickCancel
 }) {
   return (
     <div>
@@ -123,15 +125,28 @@ export default function ProfilePage({
                           className="waves-effect waves-light btn"
                           href="#!"
                           onClick={onClickSave}
+                          style={buttonStyle}
                         >
                         SAVE
                         </a>
+                        <a
+                          id="cancel-button"
+                          className="waves-effect waves-light btn"
+                          href="#!"
+                          onClick={onClickCancel}
+                          style={buttonStyle}
+                        >
+                        CANCEL
+                        </a>
                       </div>
+                      {/* <div id="cancel" className={saveButtonClass}> */}
+                      {/* </div> */}
                     </div>
                     <div className="col s2">
                       <a
                         id="edit-button"
                         className="btn-floating btn-large waves-effect waves-light teal lighten-1"
+                        href="#!"
                         onClick={onEditClick}
                       >
                         <i className="material-icons">edit</i>

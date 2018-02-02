@@ -41,6 +41,7 @@ class Profile extends React.Component {
     this.onEditClick = this.onEditClick.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
     this.onClickSave = this.onClickSave.bind(this);
+    this.onClickCancel = this.onClickCancel.bind(this);
     this.onFileChange = this.onFileChange.bind(this);
   }
 
@@ -68,9 +69,11 @@ class Profile extends React.Component {
 
   /**
    * Method for when edit button is clicked
+   * @param {*} event
    * @returns {*} new state
    */
-  onEditClick() {
+  onEditClick(event) {
+    event.preventDefault();
     this.setState({
       isDisabled: false,
       saveButtonClass: 'card-action',
@@ -104,6 +107,20 @@ class Profile extends React.Component {
             }
           });
       });
+  }
+
+  /**
+   * Method for when cancel button is clicked
+   * @param {*} event
+   * @returns {*} null
+   */
+  onClickCancel(event) {
+    event.preventDefault();
+    this.setState({
+      isDisabled: true,
+      saveButtonClass: 'card-action hide',
+      editPhotoButtonClass: 'btn-floating btn-large waves-effect waves-light teal lighten-1 hide'
+    });
   }
 
   /**
@@ -155,6 +172,7 @@ class Profile extends React.Component {
         onEditClick={this.onEditClick}
         onChange={this.handleInputChange}
         onClickSave={this.onClickSave}
+        onClickCancel={this.onClickCancel}
         editPhotoButtonClass={this.state.editPhotoButtonClass}
         onFileChange={this.onFileChange}
       />
