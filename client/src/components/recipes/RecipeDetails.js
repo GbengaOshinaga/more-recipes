@@ -14,7 +14,8 @@ const propTypes = {
   actions: PropTypes.object.isRequired,
   match: PropTypes.object.isRequired,
   recipe: PropTypes.object.isRequired,
-  location: PropTypes.object.isRequired
+  location: PropTypes.object.isRequired,
+  profilePic: PropTypes.string.isRequired
 };
 
 const defaultProps = {
@@ -90,6 +91,7 @@ class RecipeDetails extends React.Component {
         onAddReviewChange={this.onAddReviewChange}
         newReview={this.state.newReview}
         location={this.props.location.pathname}
+        profilePic={this.props.profilePic}
       />
     );
   }
@@ -108,6 +110,7 @@ function mapStateToProps(state, ownProps) {
   return {
     isLoggedIn: state.session.authenticated,
     firstName: state.session.user.firstName,
+    profilePic: state.session.user.profilePic,
     recipe: state.recipe
   };
 }

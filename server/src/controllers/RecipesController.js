@@ -58,6 +58,9 @@ export default class RecipesController {
       db.Recipes.findAll({
         include: [{
           model: db.Reviews,
+          include: [{
+            model: db.User
+          }]
         }]
       })
         .then(recipes => res.status(200).jsend.success({ recipes }))
@@ -72,7 +75,14 @@ export default class RecipesController {
    * @returns {*} res
    */
   getRecipeById(req, res) {
-    db.Recipes.findById(req.params.id, { include: [{ model: db.Reviews }] })
+    db.Recipes.findById(req.params.id, {
+      include: [{
+        model: db.Reviews,
+        include: [{
+          model: db.User
+        }]
+      }]
+    })
       .then((recipe) => {
         if (!recipe) {
           return res.status(404).jsend.fail({ message: `Recipe with Id of ${req.params.id} does not exist` });

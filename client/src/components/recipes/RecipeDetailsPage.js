@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Avatar from 'material-ui';
+import { Avatar } from 'material-ui';
 import { Link } from 'react-router-dom';
 import Button from '../common/Button';
 import Header from '../common/Header/Header';
@@ -8,7 +8,7 @@ import TextArea from '../common/TextArea';
 
 const propTypes = {
   recipe: PropTypes.object.isRequired,
-  userImage: PropTypes.string,
+  profilePic: PropTypes.string,
   isLoggedIn: PropTypes.bool.isRequired,
   firstName: PropTypes.string,
   onClickSaveReview: PropTypes.func.isRequired,
@@ -18,23 +18,24 @@ const propTypes = {
 };
 
 const defaultProps = {
-  userImage: '',
+  profilePic: '',
   firstName: ''
 };
 
 const reviewPropTypes = {
-  review: PropTypes.string.isRequired
+  review: PropTypes.string.isRequired,
+  profilePic: PropTypes.string.isRequired
 };
 
 const addReviewPropTypes = {
-  userImage: PropTypes.string,
+  profilePic: PropTypes.string,
   onClickSaveReview: PropTypes.func.isRequired,
   onAddReviewChange: PropTypes.func.isRequired,
   newReview: PropTypes.string.isRequired
 };
 
 const addReviewDefaultProps = {
-  userImage: ''
+  profilePic: ''
 };
 
 /**
@@ -46,7 +47,7 @@ function displayReviews(reviews) {
   if (reviews === undefined || reviews.length === 0) {
     return 'No Reviews';
   }
-  return reviews.map(review => <Reviews key={review.id} review={review.review} />);
+  return reviews.map(review => <Reviews key={review.id} review={review.review} profilePic={review.User.profilePic} />);
 }
 
 /**
@@ -67,7 +68,7 @@ function displayIngredients(ingredients) {
  */
 function RecipeDetailsPage({
   recipe, userImage, isLoggedIn, firstName, onClickSaveReview, onAddReviewChange,
-  newReview, location
+  newReview, location, profilePic
 }) {
   if (recipe === undefined || Object.keys(recipe).length === 0) {
     return 'Waiting for recipe...';
@@ -118,6 +119,7 @@ function RecipeDetailsPage({
                     onClickSaveReview={onClickSaveReview}
                     onAddReviewChange={onAddReviewChange}
                     newReview={newReview}
+                    profilePic={profilePic}
                   />}
                   {!isLoggedIn &&
                   <div>
@@ -138,12 +140,13 @@ function RecipeDetailsPage({
  * @param {*} props
  * @returns {*} jsx
  */
-function Reviews({ review }) {
+function Reviews({ review, profilePic }) {
   return (
       <div className="row">
         <div className="col s2">
           <a href="profile.html">
-            <img src="img/profile-pic.jpg" className="circle responsive-img" alt="user" />
+            {/* <img src={profilePic} className="circle responsive-img" alt="user" /> */}
+            <Avatar src={profilePic} size={80} />
           </a>
         </div>
         <div className="col s10">
@@ -161,13 +164,13 @@ function Reviews({ review }) {
  * @returns {*} jsx
  */
 function AddReview({
-  userImage, onClickSaveReview, onAddReviewChange, newReview
+  profilePic, onClickSaveReview, onAddReviewChange, newReview
 }) {
   return (
     <div className="row">
       <div className="col s2">
         <a href="profile.html">
-          <img src={userImage} className="circle responsive-img" alt="user" />
+          <Avatar src={profilePic} size={80} />
         </a>
       </div>
       <div className="col s10">
