@@ -57,9 +57,11 @@ function updateRecipeVoteState(recipe, userId) {
  * @param {Number} userId
  * @param {func} onClickVote
  * @param {func} onClickFavourite
+ * @param {func} upvoteRef
+ * @param {func} downvoteRef
  * @returns {*} jsx
  */
-function displayRecipes(recipes, userId, onClickVote, onClickFavourite) {
+function displayRecipes(recipes, userId, onClickVote, onClickFavourite, upvoteRef, downvoteRef) {
   const chunkedRecipes = _.chunk(recipes, 3);
   if (recipes === undefined || recipes.length === 0) {
     return 'No Recipe Available';
@@ -88,6 +90,8 @@ function displayRecipes(recipes, userId, onClickVote, onClickFavourite) {
           downvoteClassName={downvoteClassName}
           onClickVote={onClickVote}
           onClickFavourite={onClickFavourite}
+          upvoteRef={upvoteRef}
+          downvoteRef={downvoteRef}
         />);
       })}
     </div>
@@ -100,7 +104,8 @@ function displayRecipes(recipes, userId, onClickVote, onClickFavourite) {
  * @returns {*} jsx
  */
 function FavouriteRecipesPage({
-  isLoggedIn, firstName, recipes, userId, onClickVote, onClickFavourite
+  isLoggedIn, firstName, recipes, userId, onClickVote, onClickFavourite,
+  upvoteRef, downvoteRef
 }) {
   return (
     <div>
@@ -112,7 +117,7 @@ function FavouriteRecipesPage({
         <div className="favorited-reviews">
           <h4>Favorited Recipes</h4>
           <hr />
-          {displayRecipes(recipes, userId, onClickVote, onClickFavourite)}
+          {displayRecipes(recipes, userId, onClickVote, onClickFavourite, upvoteRef, downvoteRef)}
         </div>
       </div>
 
@@ -127,7 +132,8 @@ function FavouriteRecipesPage({
  */
 function Card({
   id, image, recipeName, recipeDescription, onClickVote,
-  upvoteClassName, downvoteClassName, onClickFavourite
+  upvoteClassName, downvoteClassName, onClickFavourite,
+  upvoteRef, downvoteRef
 }) {
   return (
     <div className="col s12 l4 m4">
@@ -147,6 +153,7 @@ function Card({
                 href="#!"
                 className={upvoteClassName}
                 onClick={onClickVote}
+                ref={upvoteRef}
               >
                 <i id={id} className="material-icons">thumb_up</i>
               </a>
@@ -154,6 +161,7 @@ function Card({
                 href="#!"
                 className={downvoteClassName}
                 onClick={onClickVote}
+                ref={downvoteRef}
               >
                 <i id={id} className="material-icons">thumb_down</i>
               </a>

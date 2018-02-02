@@ -17,7 +17,9 @@ const propTypes = {
   searchResults: PropTypes.arrayOf(PropTypes.object).isRequired,
   userId: PropTypes.number,
   onClickFavourite: PropTypes.func.isRequired,
-  favourites: PropTypes.arrayOf(PropTypes.object).isRequired
+  favourites: PropTypes.arrayOf(PropTypes.object).isRequired,
+  upvoteRef: PropTypes.func.isRequired,
+  downvoteRef: PropTypes.func.isRequired
 };
 
 const cardPropTypes = {
@@ -30,7 +32,9 @@ const cardPropTypes = {
   upvoteClassName: PropTypes.string.isRequired,
   downvoteClassName: PropTypes.string.isRequired,
   favouriteClassName: PropTypes.string.isRequired,
-  onClickFavourite: PropTypes.func.isRequired
+  onClickFavourite: PropTypes.func.isRequired,
+  upvoteRef: PropTypes.func.isRequired,
+  downvoteRef: PropTypes.func.isRequired
 };
 
 const defaultProps = {
@@ -85,9 +89,11 @@ function updateFavouriteState(recipe, favourites) {
  * @param {bool} isLoggedIn
  * @param {Number} userId
  * @param {Array} favourites
+ * @param {func} upvoteRef
+ * @param {func} downvoteRef
  * @returns {*} jsx
  */
-function displayRecipes(recipes, onClickVote, onClickFavourite, isLoggedIn, userId, favourites) {
+function displayRecipes(recipes, onClickVote, onClickFavourite, isLoggedIn, userId, favourites, upvoteRef, downvoteRef) {
   const chunkedRecipes = _.chunk(recipes, 3);
   if (recipes === undefined || recipes.length === 0) {
     return 'No Recipe Available';
@@ -124,6 +130,8 @@ function displayRecipes(recipes, onClickVote, onClickFavourite, isLoggedIn, user
           downvoteClassName={downvoteClassName}
           favouriteClassName={favouriteClassName}
           onClickFavourite={onClickFavourite}
+          upvoteRef={upvoteRef}
+          downvoteRef={downvoteRef}
         />);
       })}
     </div>
@@ -138,7 +146,8 @@ function displayRecipes(recipes, onClickVote, onClickFavourite, isLoggedIn, user
  */
 export default function CatalogPage({
   isLoggedIn, firstName, allRecipes, mostFavouritedRecipes, searchResults,
-  onClickVote, onSearchChange, searchValue, hasSearchValue, userId, onClickFavourite, favourites
+  onClickVote, onSearchChange, searchValue, hasSearchValue, userId, onClickFavourite, favourites,
+  upvoteRef, downvoteRef
 }) {
   return (
     <div>
@@ -190,19 +199,45 @@ export default function CatalogPage({
         {!hasSearchValue &&
         <div id="all">
           <div className="container">
-            {displayRecipes(allRecipes, onClickVote, onClickFavourite, isLoggedIn, userId, favourites)}
+            {displayRecipes(
+              allRecipes,
+              onClickVote,
+              onClickFavourite,
+              isLoggedIn,
+              userId,
+              favourites,
+              upvoteRef,
+              downvoteRef
+              )}
           </div>
         </div>}
         {!hasSearchValue &&
         <div id="most-fav">
           <div className="container">
-            {displayRecipes(mostFavouritedRecipes, onClickVote, onClickFavourite, isLoggedIn, userId, favourites)}
+            {displayRecipes(
+              mostFavouritedRecipes,
+              onClickVote,
+               onClickFavourite,
+               isLoggedIn,
+               userId,
+               favourites,
+               upvoteRef,
+               downvoteRef
+              )}
           </div>
         </div>}
         {hasSearchValue &&
         <div id="search-results">
           <div className="container">
-            {displayRecipes(searchResults, onClickVote, onClickFavourite, isLoggedIn, userId, favourites)}
+            {displayRecipes(
+              searchResults,
+              onClickVote,
+              onClickFavourite,
+              isLoggedIn, userId,
+              favourites,
+              upvoteRef,
+              downvoteRef
+              )}
           </div>
         </div>}
       </div>
@@ -217,7 +252,8 @@ export default function CatalogPage({
  */
 function Card({
   id, image, recipeName, recipeDescription, onClickVote,
-  isLoggedIn, upvoteClassName, downvoteClassName, favouriteClassName, onClickFavourite
+  isLoggedIn, upvoteClassName, downvoteClassName, favouriteClassName, onClickFavourite,
+  upvoteRef, downvoteRef
 }) {
   return (
     <div className="col s12 l4 m4">
@@ -239,6 +275,7 @@ function Card({
                 href="#!"
                 className={upvoteClassName}
                 onClick={onClickVote}
+                ref={upvoteRef}
               >
                 <i id={id} className="material-icons">thumb_up</i>
               </a>
@@ -246,6 +283,7 @@ function Card({
                 href="#!"
                 className={downvoteClassName}
                 onClick={onClickVote}
+                ref={downvoteRef}
               >
                 <i id={id} className="material-icons">thumb_down</i>
               </a>

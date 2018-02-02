@@ -36,7 +36,9 @@ class Catalog extends React.Component {
     super(props, context);
     this.state = {
       searchValue: '',
-      hasSearchValue: false
+      hasSearchValue: false,
+      upvoteClassName: '',
+      downvoteClassName: ''
     };
 
     this.vote = this.vote.bind(this);
@@ -95,9 +97,15 @@ class Catalog extends React.Component {
         if (event.target.firstChild.nodeValue === 'thumb_up') {
           this.props.actions.upvoteRecipe(event.target.id, token);
           currentTarget.classList.toggle('green-text');
+          if (this.downvoteRef.className === 'downvotes black-text') {
+            this.downvoteRef.className = 'downvotes';
+          }
         } else {
           this.props.actions.downvoteRecipe(event.target.id, token);
           currentTarget.classList.toggle('black-text');
+          if (this.upvoteRef.className === 'upvotes green-text') {
+            this.upvoteRef.className = 'upvotes';
+          }
         }
       });
   }
@@ -139,6 +147,8 @@ class Catalog extends React.Component {
         userId={this.props.userId}
         onClickFavourite={this.addFavourite}
         favourites={this.props.favourites}
+        upvoteRef={(el) => { this.upvoteRef = el; }}
+        downvoteRef={(el) => { this.downvoteRef = el; }}
       />
     );
   }
