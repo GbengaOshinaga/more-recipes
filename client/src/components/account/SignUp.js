@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
+// import { connect } from 'react-redux';
 import toastr from 'toastr';
 import { sessionService } from 'redux-react-session';
 import { signUp } from '../../actions/accountActions';
@@ -41,7 +41,7 @@ class SignUp extends React.Component {
    * @returns {*} nothing
    */
   onClickSave() {
-    this.props.signUp(this.state.data)
+    signUp(this.state.data)
       .then(response => response.json())
       .then((response) => {
         if (response.status === 'success') {
@@ -69,7 +69,7 @@ class SignUp extends React.Component {
       confirmPassword: 'google-login',
       profilePic: response.profileObj.imageUrl
     };
-    this.props.signUp(credentials)
+    signUp(credentials)
       .then(serverResponse => serverResponse.json())
       .then((serverResponse) => {
         if (serverResponse.status === 'success') {
@@ -139,28 +139,28 @@ SignUp.contextTypes = {
   router: PropTypes.object
 };
 
-/**
- * mapStateToProps
- * @param {*} state
- * @param {*} ownProps
- * @returns {object} object
- */
-function mapStateToProps(state, ownProps) {
-  return {
-    data: state.account.data,
-    errors: state.account.errors
-  };
-}
+// /**
+//  * mapStateToProps
+//  * @param {*} state
+//  * @param {*} ownProps
+//  * @returns {object} object
+//  */
+// // function mapStateToProps(state, ownProps) {
+// //   return {
+// //     data: state.account.data,
+// //     errors: state.account.errors
+// //   };
+// // }
 
-/**
- * mapDispatchToProps
- * @param {*} dispatch
- * @returns {object} object
- */
-function mapDispatchToProps(dispatch) {
-  return {
-    signUp: data => dispatch(signUp(data))
-  };
-}
+// /**
+//  * mapDispatchToProps
+//  * @param {*} dispatch
+//  * @returns {object} object
+//  */
+// function mapDispatchToProps(dispatch) {
+//   return {
+//     signUp: data => dispatch(signUp(data))
+//   };
+// }
 
-export default connect(mapStateToProps, mapDispatchToProps)(SignUp);
+export default SignUp;

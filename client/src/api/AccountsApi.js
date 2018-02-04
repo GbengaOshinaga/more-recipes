@@ -30,9 +30,7 @@ export default class AccountsApi {
         'Content-Type': 'application/x-www-form-urlencoded',
         'Cache-Control': 'no-cache'
       },
-      body: `firstName=${data.firstName}&lastName=${data.lastName}
-      &email=${data.email}&password=${data.password}&confirmPassword=${data.confirmPassword}
-      &profilePic=${data.profilePic}`
+      body: `firstName=${data.firstName}&lastName=${data.lastName}&email=${data.email}&password=${data.password}&confirmPassword=${data.confirmPassword}&profilePic=${data.profilePic}`
     });
   }
 }

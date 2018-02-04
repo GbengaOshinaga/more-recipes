@@ -74,7 +74,6 @@ describe('Users can signup, signin, and modify data', () => {
         firstName
       })
       .end((err, res) => {
-        console.log(res.body);
         expect(res).to.have.status(200);
         expect(res.body.status).to.equal('success');
         expect(res.body.data.user.firstName).to.equal(firstName);
