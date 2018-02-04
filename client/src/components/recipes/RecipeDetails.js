@@ -15,7 +15,10 @@ const propTypes = {
   match: PropTypes.object.isRequired,
   recipe: PropTypes.object.isRequired,
   location: PropTypes.object.isRequired,
-  profilePic: PropTypes.string.isRequired
+  profilePic: PropTypes.string.isRequired,
+  recipes: PropTypes.arrayOf(PropTypes.object).isRequired,
+  userId: PropTypes.number.isRequired,
+  userFavourites: PropTypes.arrayOf(PropTypes.object).isRequired
 };
 
 const defaultProps = {
@@ -34,11 +37,17 @@ class RecipeDetails extends React.Component {
   constructor(props, context) {
     super(props, context);
     this.state = {
-      newReview: ''
+      newReview: '',
+      recipe: {},
+      upvoteClassName: 'thumb-up',
+      downvoteClassName: 'thumb-down',
+      favouriteClassName: 'favourite'
     };
 
     this.onAddReviewChange = this.onAddReviewChange.bind(this);
     this.onClickSaveReview = this.onClickSaveReview.bind(this);
+    this.vote = this.vote.bind(this);
+    this.addFavourite = this.addFavourite.bind(this);
   }
 
   /**
@@ -49,7 +58,29 @@ class RecipeDetails extends React.Component {
     $('.button-collapse').sideNav();
     $('.dropdown-button').dropdown();
 
-    this.props.actions.getRecipe(this.props.match.params.id);
+    if (this.props.recipes.length === 0) {
+      this.props.actions.getRecipe(this.props.match.params.id);
+    }
+    this.props.recipes.map((recipe) => {
+      if (recipe.id === Number(this.props.match.params.id)) {
+        this.upvoteVoteStatus(recipe, this.props.userId, this.props.userFavourites);
+        this.setState({ recipe });
+      }
+    });
+  }
+
+  /**
+   * Method called when component is receiving new props
+   * @param {*} nextProps
+   * @returns {*} null
+   */
+  componentWillReceiveProps(nextProps) {
+    nextProps.recipes.map((recipe) => {
+      if (recipe.id === Number(this.props.match.params.id)) {
+        this.upvoteVoteStatus(recipe, this.props.userId, this.props.userFavourites);
+        this.setState({ recipe });
+      }
+    });
   }
 
   /**
@@ -78,6 +109,82 @@ class RecipeDetails extends React.Component {
   }
 
   /**
+   * Update vote status
+   * @param {*} recipe
+   * @param {*} userId
+   * @param {*} userFavourites
+   * @returns {*} new state
+   */
+  upvoteVoteStatus(recipe, userId, userFavourites) {
+    recipe.upvotes.map((upvote) => {
+      if (upvote === userId) {
+        this.setState({ upvoteClassName: 'thumb-up green-text' });
+        if (this.state.downvoteClassName === 'thumb-down black-text') {
+          this.setState({ downvoteClassName: 'thumb-down' });
+        }
+      }
+    });
+    recipe.downvotes.map((downvote) => {
+      if (downvote === userId) {
+        this.setState({ downvoteClassName: 'thumb-down black-text' });
+        if (this.state.upvoteClassName === 'thumb-up green-text') {
+          this.setState({ upvoteClassName: 'thumb-up' });
+        }
+      }
+    });
+
+    userFavourites.map((favourite) => {
+      if (recipe.id === favourite.Favourites.RecipeId) {
+        this.setState({ favouriteClassName: 'favourite red-text' });
+      } else {
+        this.setState({ favouriteClassName: 'favourite' });
+      }
+    });
+  }
+
+
+  /**
+   * votes recipe
+   * @param {*} event
+   * @returns {*} null
+   */
+  vote(event) {
+    event.persist();
+    event.preventDefault();
+    const { currentTarget } = event;
+    sessionService.loadSession()
+      .then((token) => {
+        if (event.target.firstChild.nodeValue === 'thumb_up') {
+          this.props.actions.upvoteRecipe(this.props.match.params.id, token);
+          currentTarget.classList.toggle('green-text');
+        } else {
+          this.props.actions.downvoteRecipe(this.props.match.params.id, token);
+          currentTarget.classList.toggle('black-text');
+        }
+      });
+  }
+
+  /**
+   * Add recipe to favourite
+   * @param {*} event
+   * @returns {*} null
+   */
+  addFavourite(event) {
+    event.persist();
+    event.preventDefault();
+    const { currentTarget } = event;
+    sessionService.loadSession()
+      .then((token) => {
+        currentTarget.classList.value === 'favourite' ?
+          this.props.actions.addFavourite(token, this.props.match.params.id) :
+          this.props.actions.deleteFavourite(token, this.props.match.params.id);
+
+        currentTarget.classList.toggle('red-text');
+      });
+  }
+
+
+  /**
    * Component render method
    * @returns {*} jsx
    */
@@ -86,12 +193,17 @@ class RecipeDetails extends React.Component {
       <Page
         isLoggedIn={this.props.isLoggedIn}
         firstName={this.props.firstName}
-        recipe={this.props.recipe}
+        recipe={this.state.recipe}
         onClickSaveReview={this.onClickSaveReview}
         onAddReviewChange={this.onAddReviewChange}
         newReview={this.state.newReview}
         location={this.props.location.pathname}
         profilePic={this.props.profilePic}
+        onClickVote={this.vote}
+        onClickFavourite={this.addFavourite}
+        upvoteClassName={this.state.upvoteClassName}
+        downvoteClassName={this.state.downvoteClassName}
+        favouriteClassName={this.state.favouriteClassName}
       />
     );
   }
@@ -111,7 +223,10 @@ function mapStateToProps(state, ownProps) {
     isLoggedIn: state.session.authenticated,
     firstName: state.session.user.firstName,
     profilePic: state.session.user.profilePic,
-    recipe: state.recipe
+    userId: state.session.user.id,
+    recipe: state.recipe,
+    recipes: state.recipes,
+    userFavourites: state.userFavourites
   };
 }
 

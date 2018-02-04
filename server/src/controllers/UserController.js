@@ -13,12 +13,18 @@ export default class UserController {
      * @returns {User} created user
      */
   static signup(req, res) {
+    let picture = '';
+    if (req.body.profilePic) {
+      picture = req.body.profilePic;
+    }
+
     bcrypt.hash(req.body.password, 10, (err, hash) => {
       db.User.create({
         firstName: req.body.firstName,
         lastName: req.body.lastName,
         email: req.body.email,
-        password: hash
+        password: hash,
+        profilePic: picture
       })
         .then((user) => {
           const accessToken = jwt.sign({ userId: user.id, email: user.email }, 'mysecret');

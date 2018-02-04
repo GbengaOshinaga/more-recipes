@@ -27,9 +27,12 @@ export default class AccountsApi {
     return fetch('http://localhost:8000/api/v1/users/signup', {
       method: 'post',
       headers: {
-        'Content-Type': 'application/x-www-form-urlencoded'
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'Cache-Control': 'no-cache'
       },
-      body: `firstName=${data.firstName}&lastName=${data.lastName}&email=${data.email}&password=${data.password}&confirmPassword=${data.confirmPassword}`
+      body: `firstName=${data.firstName}&lastName=${data.lastName}
+      &email=${data.email}&password=${data.password}&confirmPassword=${data.confirmPassword}
+      &profilePic=${data.profilePic}`
     });
   }
 }

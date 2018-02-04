@@ -42,9 +42,7 @@ export function updateSignInFailure(response) {
  * @returns {object} response
  */
 export function signIn(credentials) {
-  return function (dispatch) {
-    return AccountsApi.signIn(credentials);
-  };
+  return AccountsApi.signIn(credentials);
 }
 
 /**
@@ -53,7 +51,5 @@ export function signIn(credentials) {
  * @returns {function} function
  */
 export function signUp(data) {
-  return function (dispatch) {
-    return AccountsApi.signUp(data);
-  };
+  return AccountsApi.signUp(data);
 }

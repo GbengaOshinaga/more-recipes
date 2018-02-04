@@ -37,8 +37,6 @@ class Catalog extends React.Component {
     this.state = {
       searchValue: '',
       hasSearchValue: false,
-      upvoteClassName: '',
-      downvoteClassName: ''
     };
 
     this.vote = this.vote.bind(this);
@@ -74,10 +72,8 @@ class Catalog extends React.Component {
       this.props.actions.search(this.state.searchValue);
     });
     if (value === '') {
-      // $('ul.tabs').tabs('select_tab', 'all');
       this.setState({ hasSearchValue: false });
     } else {
-      // $('ul.tabs').tabs('select_tab', 'search-results');
       this.setState({ hasSearchValue: true });
     }
   }
@@ -97,15 +93,9 @@ class Catalog extends React.Component {
         if (event.target.firstChild.nodeValue === 'thumb_up') {
           this.props.actions.upvoteRecipe(event.target.id, token);
           currentTarget.classList.toggle('green-text');
-          if (this.downvoteRef.className === 'downvotes black-text') {
-            this.downvoteRef.className = 'downvotes';
-          }
         } else {
           this.props.actions.downvoteRecipe(event.target.id, token);
           currentTarget.classList.toggle('black-text');
-          if (this.upvoteRef.className === 'upvotes green-text') {
-            this.upvoteRef.className = 'upvotes';
-          }
         }
       });
   }
@@ -147,8 +137,6 @@ class Catalog extends React.Component {
         userId={this.props.userId}
         onClickFavourite={this.addFavourite}
         favourites={this.props.favourites}
-        upvoteRef={(el) => { this.upvoteRef = el; }}
-        downvoteRef={(el) => { this.downvoteRef = el; }}
       />
     );
   }

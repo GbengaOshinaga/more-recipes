@@ -157,7 +157,8 @@ export default class RecipesController {
       UserId: req.user.userId,
       RecipeId: req.params.id
     })
-      .then(review => res.status(201).jsend.success({ review }))
+      .then(review => db.Reviews.findById(review.id, { include: [{ model: db.User }] }))
+      .then(userReviews => res.status(201).jsend.success({ review: userReviews }))
       .catch(error => res.status(400).jsend.error(error));
   }
 

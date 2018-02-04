@@ -38,7 +38,6 @@ export default class VotesController {
    * @returns {*} res
    */
   static addVote(valueOfVote, typeOfVote, otherTypeOfVote, message, req, res) {
-    console.log(typeOfVote);
     db.Votes.findOne({
       where: {
         UserId: req.user.userId,
@@ -46,7 +45,6 @@ export default class VotesController {
       }
     })
       .then((vote) => {
-        console.log('the vote', vote);
         // If user has voted already and the value of the vote
         // is the same as the requested one, remove the vote
         if (vote && vote.vote === valueOfVote) {
@@ -64,8 +62,8 @@ export default class VotesController {
                       downvotes: [...recipe.downvotes.filter(id => id !== req.user.userId)]
                     });
                   }
+                  return res.status(200).jsend.success({ recipe, message: `Your ${typeOfVote.slice(0, typeOfVote.length - 1)} has been cancelled` });
                 });
-              return res.status(200).jsend.success({ message: `Your ${typeOfVote.slice(0, typeOfVote.length - 1)} has been cancelled` });
             })
             .catch(error => res.status(400).jsend.fail(error));
         } else if (vote && vote.vote !== valueOfVote) {

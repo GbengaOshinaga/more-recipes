@@ -4,6 +4,5 @@ export default {
   userRecipes: [],
   userFavourites: [],
   recipes: [],
-  recipe: {},
   searchResults: []
 };

@@ -7,7 +7,8 @@ import {
   GET_SEARCH_RESULTS,
   GET_SEARCH_RESULTS_FAILURE,
   GET_USER_FAVOURITES_SUCCESS,
-  GET_USER_FAVOURITES_FAILURE
+  GET_USER_FAVOURITES_FAILURE,
+  VOTE_SUCCESS
 } from './actions';
 
 /**
@@ -57,7 +58,7 @@ function updateSearchResultsFailure() {
 
 /**
  * Updates reducer if get user favourites action is successful
- * @param {*} response
+ * @param {Object} response
  * @returns {Object} object
  */
 function updateUserFavouritesSuccess(response) {
@@ -67,11 +68,19 @@ function updateUserFavouritesSuccess(response) {
 
 /**
  * Updates reducer if get user favourites action is not successful
- * @param {*} response
  * @returns {Object} object
  */
 function updateUserFavouritesFailure() {
   return { type: GET_USER_FAVOURITES_FAILURE };
+}
+
+/**
+ * Updates reducer if vote is successful
+ * @param {Object} response
+ * @returns {Object} object
+ */
+function updateVoteSuccess(response) {
+  return { type: VOTE_SUCCESS, response };
 }
 
 
@@ -137,6 +146,9 @@ export function upvoteRecipe(id, token) {
       .then(response => response.json())
       .then((response) => {
         console.log(response);
+        if (response.status === 'success') {
+          dispatch(updateVoteSuccess(response.data.recipe));
+        }
       });
   };
 }
@@ -153,6 +165,9 @@ export function downvoteRecipe(id, token) {
       .then(response => response.json())
       .then((response) => {
         console.log(response);
+        if (response.status === 'success') {
+          dispatch(updateVoteSuccess(response.data.recipe));
+        }
       });
   };
 }

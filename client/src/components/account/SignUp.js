@@ -27,7 +27,8 @@ class SignUp extends React.Component {
         lastName: '',
         email: '',
         password: '',
-        confirmPassword: ''
+        confirmPassword: '',
+        profilePic: ''
       }
     };
     this.onClickSave = this.onClickSave.bind(this);
@@ -65,7 +66,8 @@ class SignUp extends React.Component {
       lastName: response.profileObj.familyName,
       email: response.profileObj.email,
       password: 'google-login',
-      confirmPassword: 'google-login'
+      confirmPassword: 'google-login',
+      profilePic: response.profileObj.imageUrl
     };
     this.props.signUp(credentials)
       .then(serverResponse => serverResponse.json())
