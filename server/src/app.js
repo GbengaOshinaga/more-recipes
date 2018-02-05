@@ -2,8 +2,11 @@ import Express from 'express';
 import logger from 'morgan';
 import bodyParser from 'body-parser';
 import cors from 'cors';
+import config from 'dotenv';
 import routes from './routes/index';
 import db from './models/index';
+
+config.config();
 
 // Set up the express app
 const app = new Express();

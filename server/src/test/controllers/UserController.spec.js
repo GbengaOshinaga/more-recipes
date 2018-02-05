@@ -23,7 +23,7 @@ describe('Users can signup, signin, and modify data', () => {
       email: faker.internet.email(),
       password: await bcrypt.hash('password', 10)
     });
-    token = jwt.sign({ userId: user.id, email: user.email }, 'mysecret');
+    token = jwt.sign({ userId: user.id, email: user.email }, process.env.JWT_SECRET);
   });
 
   it('it should sign up a user and return user and token', (done) => {

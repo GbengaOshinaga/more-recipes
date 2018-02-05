@@ -121,6 +121,18 @@ class Profile extends React.Component {
       saveButtonClass: 'card-action hide',
       editPhotoButtonClass: 'btn-floating btn-large waves-effect waves-light teal lighten-1 hide'
     });
+    sessionService.loadUser()
+      .then((user) => {
+        this.setState({
+          data: {
+            profilePic: user.profilePic,
+            firstName: user.firstName,
+            lastName: user.lastName,
+            email: user.email,
+            about: user.about
+          }
+        });
+      });
   }
 
   /**
