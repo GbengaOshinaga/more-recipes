@@ -55,4 +55,20 @@ export default class FavouriteRecipesController {
       .spread(() => res.status(200).jsend.success({ message: 'Favourite deleted' }))
       .catch(error => res.status(400).jsend.fail(error));
   }
+
+  /**
+   * Get recipes by most favourited
+   * @param {*} req
+   * @param {*} res
+   * @returns {*} res
+   */
+  getMostFavourited(req, res) {
+    db.sequelize.query(`SELECT "Recipes"."id", "Recipes"."name", "Recipes"."description",
+    "Recipes"."ingredients", "Recipes"."image", "Recipes"."upvotes",
+    "Recipes"."downvotes", "Recipes"."UserId", count(*) FROM "Favourites"
+    LEFT OUTER JOIN "Recipes" ON "Favourites"."RecipeId" = "Recipes"."id"
+    GROUP BY "Recipes"."name", "Recipes"."id"
+    ORDER BY count(*) DESC`)
+      .spread(results => res.status(200).jsend.success({ recipes: results }));
+  }
 }

@@ -4,12 +4,14 @@ import userRecipes from './userRecipesReducer';
 import userFavourites from './userFavouritesReducer';
 import recipes from './recipesReducer';
 import searchResults from './searchReducer';
+import mostFavourited from './mostFavouritedReducer';
 
 const rootReducer = combineReducers({
   userRecipes,
   userFavourites,
   recipes,
   searchResults,
+  mostFavourited,
   session: sessionReducer
 });
 

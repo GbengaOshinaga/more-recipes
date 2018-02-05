@@ -16,6 +16,7 @@ export default (app) => {
   // Get all recipes
   app.get('/api/v1/recipes/', RecipeValidator.validateQueryParams, (req, res) => { recipes.getRecipes(req, res); });
 
+  app.get('/api/v1/recipes/most_favourited', favourites.getMostFavourited);
   // Get recipe by ID
   app.get('/api/v1/recipes/:id', RecipeValidator.validateID, (req, res) => { recipes.getRecipeById(req, res); });
 

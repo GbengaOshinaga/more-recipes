@@ -1,8 +1,8 @@
 
 export default {
-  account: { isLoginSuccessful: false },
   userRecipes: [],
   userFavourites: [],
   recipes: [],
-  searchResults: []
+  searchResults: [],
+  mostFavourited: []
 };

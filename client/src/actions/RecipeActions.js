@@ -8,7 +8,8 @@ import {
   GET_SEARCH_RESULTS_FAILURE,
   GET_USER_FAVOURITES_SUCCESS,
   GET_USER_FAVOURITES_FAILURE,
-  VOTE_SUCCESS
+  VOTE_SUCCESS,
+  GET_MOST_FAVOURITED_RECIPES_SUCCESS
 } from './actions';
 
 /**
@@ -40,7 +41,7 @@ function updateAddReviewSuccess(response) {
 
 /**
  * Updates reducer with search results
- * @param {*} response
+ * @param {Array} response
  * @returns {Object} object
  */
 function updateSearchResultsSuccess(response) {
@@ -49,7 +50,6 @@ function updateSearchResultsSuccess(response) {
 
 /**
  * Updates reducer if there are no results
- * @param {*} response
  * @returns {Object} object
  */
 function updateSearchResultsFailure() {
@@ -72,6 +72,15 @@ function updateUserFavouritesSuccess(response) {
  */
 function updateUserFavouritesFailure() {
   return { type: GET_USER_FAVOURITES_FAILURE };
+}
+
+/**
+ * Updates reducer if getting most favourited recipes is successful
+ * @param {Array} response
+ * @returns {Object} object
+ */
+function updateGetMostFavouritedSuccess(response) {
+  return { type: GET_MOST_FAVOURITED_RECIPES_SUCCESS, response };
 }
 
 /**
@@ -256,6 +265,23 @@ export function deleteFavourite(token, recipeId) {
                 dispatch(updateUserFavouritesFailure());
               }
             });
+        }
+      });
+  };
+}
+
+/**
+ * Action to get most favourited recipes
+ * @returns {func} dispatch
+ */
+export function getMostFavouritedRecipes() {
+  return function (dispatch) {
+    return RecipesApi.getMostFavourited()
+      .then(response => response.json())
+      .then((response) => {
+        console.log(response);
+        if (response.status === 'success') {
+          dispatch(updateGetMostFavouritedSuccess(response.data.recipes));
         }
       });
   };

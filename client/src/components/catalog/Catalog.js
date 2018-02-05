@@ -13,6 +13,7 @@ const propTypes = {
   firstName: PropTypes.string,
   actions: PropTypes.object.isRequired,
   allRecipes: PropTypes.arrayOf(PropTypes.object).isRequired,
+  mostFavouritedRecipes: PropTypes.arrayOf(PropTypes.object).isRequired,
   searchResults: PropTypes.arrayOf(PropTypes.object).isRequired,
   userId: PropTypes.number,
   favourites: PropTypes.arrayOf(PropTypes.object).isRequired
@@ -55,6 +56,7 @@ class Catalog extends React.Component {
     $('ul.tabs').tabs();
 
     this.props.actions.getAllRecipes();
+    this.props.actions.getMostFavouritedRecipes();
     sessionService.loadSession()
       .then((token) => {
         this.props.actions.getFavourites(token);
@@ -129,6 +131,7 @@ class Catalog extends React.Component {
         isLoggedIn={this.props.isLoggedIn}
         firstName={this.props.firstName}
         allRecipes={this.props.allRecipes}
+        mostFavouritedRecipes={this.props.mostFavouritedRecipes}
         searchResults={this.props.searchResults}
         onClickVote={this.vote}
         onSearchChange={this.onSearchChange}
@@ -155,7 +158,8 @@ function mapStateToProps(state, ownProps) {
     userId: state.session.user.id,
     allRecipes: state.recipes,
     searchResults: state.searchResults,
-    favourites: state.userFavourites
+    favourites: state.userFavourites,
+    mostFavouritedRecipes: state.mostFavourited
   };
 }
 

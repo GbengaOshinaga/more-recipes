@@ -135,9 +135,7 @@ class RecipeDetails extends React.Component {
 
     userFavourites.map((favourite) => {
       if (recipe.id === favourite.Favourites.RecipeId) {
-        this.setState({ favouriteClassName: 'favourite red-text' });
-      } else {
-        this.setState({ favouriteClassName: 'favourite' });
+        return this.setState({ favouriteClassName: 'favourite red-text' });
       }
     });
   }
