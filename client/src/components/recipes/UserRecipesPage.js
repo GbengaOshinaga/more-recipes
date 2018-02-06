@@ -152,14 +152,14 @@ function Card({
               <i className="material-icons">description</i>
             </Link>
             <a
-              className="modal-trigger btn-floating waves-effect waves-light blue"
+              className="modal-trigger btn-floating waves-effect waves-light blue icons"
               href="#edit-modal"
               onClick={getIdForEdit}
             >
               <i id={id} className="material-icons">edit</i>
             </a>
             <a
-              className="modal-trigger btn-floating waves-effect waves-light red"
+              className="modal-trigger btn-floating waves-effect waves-light red icons"
               href="#confirm-modal"
               onClick={getId}
             >

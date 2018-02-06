@@ -39,7 +39,7 @@ export default function ProfilePage({
   onFileChange, onClickCancel
 }) {
   return (
-    <div>
+    <div className="profile-body">
       <Header
         isLoggedIn={isLoggedIn}
         firstName={firstName}
