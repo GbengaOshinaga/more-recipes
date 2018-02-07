@@ -20,6 +20,8 @@ const defaultProps = {
   firstName: ''
 };
 
+const defaultImage = 'http://res.cloudinary.com/king-more-recipes/image/upload/v1518028470/10546i3DAC5A5993C8BC8C_vtqogc.jpg';
+
 /**
  * Class component for user recipes actions
  */
@@ -82,7 +84,11 @@ class UserRecipes extends React.Component {
    */
   onClickSave() {
     if (!(this.state.imageFile instanceof File)) {
-      this.saveRecipe(this.state.data);
+      const { data } = this.state;
+      data.imageURL = defaultImage;
+      this.setState({ data }, () => {
+        this.saveRecipe(this.state.data);
+      });
     } else {
       userActions.uploadImage(this.state.imageFile)
         .then(response => response.json())

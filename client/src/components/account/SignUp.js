@@ -6,9 +6,7 @@ import { sessionService } from 'redux-react-session';
 import { signUp } from '../../actions/accountActions';
 import SignUpForm from './SignUpForm';
 
-const propTypes = {
-  signUp: PropTypes.func.isRequired
-};
+const defaultUserAvatar = 'http://res.cloudinary.com/king-more-recipes/image/upload/v1518031651/Expert-tutor-placeholder_cg9wet.jpg';
 
 /**
  * Class component for signing in
@@ -28,7 +26,7 @@ class SignUp extends React.Component {
         email: '',
         password: '',
         confirmPassword: '',
-        profilePic: ''
+        profilePic: defaultUserAvatar
       }
     };
     this.onClickSave = this.onClickSave.bind(this);
