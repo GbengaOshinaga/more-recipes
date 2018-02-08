@@ -137,7 +137,7 @@ function Card({
 }) {
   return (
     <div className="col s12 l4 m4">
-      <div className="card">
+      <div className="card recipe-card">
         <div className="card-image">
           <img src={image} alt="recipe" />
         </div>
