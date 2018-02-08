@@ -1,5 +1,5 @@
 import React from 'react';
-import PropTypes, { instanceOf } from 'prop-types';
+import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { sessionService } from 'redux-react-session';
@@ -21,6 +21,7 @@ const defaultProps = {
 };
 
 const defaultImage = 'http://res.cloudinary.com/king-more-recipes/image/upload/v1518028470/10546i3DAC5A5993C8BC8C_vtqogc.jpg';
+let context;
 
 /**
  * Class component for user recipes actions
@@ -61,6 +62,8 @@ class UserRecipes extends React.Component {
     this.getIdForEdit = this.getIdForEdit.bind(this);
     this.onClickEdit = this.onClickEdit.bind(this);
     this.handleEditInputChange = this.handleEditInputChange.bind(this);
+    this.handleChipAdd = this.handleChipAdd.bind(this);
+    this.handleChipDelete = this.handleChipDelete.bind(this);
   }
 
   /**
@@ -80,9 +83,11 @@ class UserRecipes extends React.Component {
 
   /**
    * Handle save event
+   * @param {Object} event
    * @returns {*} null
    */
-  onClickSave() {
+  onClickSave(event) {
+    event.preventDefault();
     if (!(this.state.imageFile instanceof File)) {
       const { data } = this.state;
       data.imageURL = defaultImage;
@@ -104,9 +109,11 @@ class UserRecipes extends React.Component {
 
   /**
    * Handle edit
+   * @param {Object} event
    * @returns {*} null
    */
-  onClickEdit() {
+  onClickEdit(event) {
+    event.preventDefault();
     if (!(this.state.imageFile instanceof File)) {
       this.editRecipe();
     } else {
@@ -127,7 +134,8 @@ class UserRecipes extends React.Component {
    * @param {*} event
    * @returns {*} null
    */
-  onConfirmDelete() {
+  onConfirmDelete(event) {
+    event.preventDefault();
     sessionService.loadSession()
       .then((token) => {
         this.props.actions.deleteRecipe(token, this.state.deleteId);
@@ -141,6 +149,7 @@ class UserRecipes extends React.Component {
    * @returns {*} null
    */
   getId(event) {
+    event.preventDefault();
     this.setState({ deleteId: event.target.id });
   }
 
@@ -162,6 +171,10 @@ class UserRecipes extends React.Component {
         imageURL: recipeForEdit[0].image
       }
     });
+    const img = new Image(300, 200);
+    img.src = recipeForEdit[0].image;
+    context = this.editInputElement.getContext('2d');
+    context.drawImage(img, 0, 0, 300, 200);
   }
 
   /**
@@ -183,6 +196,7 @@ class UserRecipes extends React.Component {
           },
           imageFile: {}
         });
+        context.clearRect(0, 0, 300, 200);
       });
   }
 
@@ -205,6 +219,7 @@ class UserRecipes extends React.Component {
           },
           imageFile: {}
         });
+        context.clearRect(0, 0, 300, 200);
       });
   }
 
@@ -215,7 +230,6 @@ class UserRecipes extends React.Component {
    * @returns {*} image src
    */
   loadImage(event) {
-    let context;
     if (event.target.id === 'fileUpload') {
       context = this.inputElement.getContext('2d');
     } else {
@@ -240,8 +254,8 @@ class UserRecipes extends React.Component {
 
   /**
  * Handle chip change
- * @param {*} chips
- * @returns {*} new state
+ * @param {Array} chips
+ * @returns {Object} new state
  */
   handleChipsChange(chips) {
     if (chips[0] === 'Enter Ingredients') {
@@ -250,6 +264,28 @@ class UserRecipes extends React.Component {
     const { data } = this.state;
     data.ingredients = chips;
     this.setState({ data });
+  }
+
+  /**
+   * Handle adding of ingredient in edit mode
+   * @param {String} chip
+   * @returns {Object} new state
+   */
+  handleChipAdd(chip) {
+    const { edit } = this.state;
+    edit.ingredients = [...edit.ingredients, chip];
+    this.setState({ edit });
+  }
+
+  /**
+   * Handle deleting of ingredient in edit mode
+   * @param {String} chip
+   * @returns {Object} new state
+   */
+  handleChipDelete(chip) {
+    const { edit } = this.state;
+    edit.ingredients = edit.ingredients.filter(ingredient => ingredient !== chip);
+    this.setState({ edit });
   }
 
   /**
@@ -299,6 +335,8 @@ class UserRecipes extends React.Component {
         getIdForEdit={this.getIdForEdit}
         defaultIngredients={this.state.data.ingredients}
         onClickEdit={this.onClickEdit}
+        handleChipAdd={this.handleChipAdd}
+        handleChipDelete={this.handleChipDelete}
       />
     );
   }

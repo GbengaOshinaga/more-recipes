@@ -3,9 +3,13 @@ import PropTypes from 'prop-types';
 
 const propTypes = {
   id: PropTypes.string.isRequired,
-  label: PropTypes.string.isRequired,
+  label: PropTypes.string,
   onChange: PropTypes.func.isRequired,
   value: PropTypes.string.isRequired
+};
+
+const defaultProps = {
+  label: ''
 };
 
 /**
@@ -25,5 +29,6 @@ function TextArea({
 }
 
 TextArea.propTypes = propTypes;
+TextArea.defaultProps = defaultProps;
 
 export default TextArea;

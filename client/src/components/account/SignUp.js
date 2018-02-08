@@ -131,8 +131,6 @@ class SignUp extends React.Component {
   }
 }
 
-
-SignUp.propTypes = propTypes;
 SignUp.contextTypes = {
   router: PropTypes.object
 };

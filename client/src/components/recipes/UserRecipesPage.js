@@ -35,7 +35,9 @@ const pagePropTypes = {
   getIdForEdit: PropTypes.func.isRequired,
   editData: PropTypes.object.isRequired,
   onClickEdit: PropTypes.func.isRequired,
-  onEditInputChange: PropTypes.func.isRequired
+  onEditInputChange: PropTypes.func.isRequired,
+  handleChipAdd: PropTypes.func.isRequired,
+  handleChipDelete: PropTypes.func.isRequired
 };
 
 const pageDefaultProps = {
@@ -79,7 +81,7 @@ function displayRecipes(recipes, getId, getIdForEdit) {
 function Page({
   isLoggedIn, firstName, onChipChange, onInputChange, inputValue,
   descValue, onClickSave, onFileChange, inputRef, editInputRef,
-  userRecipes, onConfirmDelete, getId,
+  userRecipes, onConfirmDelete, getId, handleChipAdd, handleChipDelete,
   getIdForEdit, editData, onClickEdit, onEditInputChange
 }) {
   return (
@@ -108,7 +110,6 @@ function Page({
           onConfirm={onConfirmDelete}
         />
         <EditModal
-          onChipChange={onChipChange}
           onInputChange={onEditInputChange}
           inputValue={inputValue}
           editData={editData}
@@ -117,6 +118,8 @@ function Page({
           onFileChange={onFileChange}
           inputRef={editInputRef}
           onClickEdit={onClickEdit}
+          handleChipAdd={handleChipAdd}
+          handleChipDelete={handleChipDelete}
         />
         <div className="favorited-recipes">
           <h4 className="center-align">My Recipes</h4>
@@ -149,7 +152,7 @@ function Card({
           </div>
           <div className="card-action">
             <Link to={`/recipe/${id}`} className="btn-floating waves-effect waves-light green">
-              <i className="material-icons">description</i>
+              <i id="desc" className="material-icons">description</i>
             </Link>
             <a
               className="modal-trigger btn-floating waves-effect waves-light blue icons"
