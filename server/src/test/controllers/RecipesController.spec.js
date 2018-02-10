@@ -219,7 +219,6 @@ describe('Users can perform actions on recipe', () => {
       .del(`/api/v1/recipes/reviews/${reviewId}`)
       .set('Access-Token', token)
       .end((err, res) => {
-        console.log(res.body);
         expect(res).to.have.status(200);
         expect(res.body.data.message).to.equal('Review has been successfully deleted');
         done();

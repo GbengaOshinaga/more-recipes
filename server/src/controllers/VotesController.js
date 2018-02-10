@@ -6,9 +6,9 @@ import db from '../models/index';
 export default class VotesController {
   /**
      * Adds an upvote to a recipe
-     * @param {*} req
-     * @param {*} res
-     * @returns {*} res
+     * @param {Object} req
+     * @param {Object} res
+     * @returns {Object} res
      */
   static addUpvote(req, res) {
     this.addVote(1, 'upvotes', 'downvotes', 'upvoted', req, res);
@@ -16,9 +16,9 @@ export default class VotesController {
 
   /**
    * Adds a downvote to a recipe
-   * @param {*} req
-   * @param {*} res
-   * @returns {*} res
+   * @param {Object} req
+   * @param {Object} res
+   * @returns {Object} res
    */
   static addDownvote(req, res) {
     this.addVote(0, 'downvotes', 'upvotes', 'downvoted', req, res);
@@ -29,13 +29,13 @@ export default class VotesController {
    * Users are allowed to vote more than once, if and only if their previous vote is
    * different from the next one, for example, a user can only upvote once, but a user
    * can downvote after already upvoting, and vice versa
-   * @param {*} valueOfVote
-   * @param {*} typeOfVote
-   * @param {*} otherTypeOfVote
-   * @param {*} message
-   * @param {*} req
-   * @param {*} res
-   * @returns {*} res
+   * @param {Number} valueOfVote
+   * @param {String} typeOfVote
+   * @param {String} otherTypeOfVote
+   * @param {String} message
+   * @param {Object} req
+   * @param {Object} res
+   * @returns {Object} res
    */
   static addVote(valueOfVote, typeOfVote, otherTypeOfVote, message, req, res) {
     db.Votes.findOne({
@@ -131,18 +131,6 @@ export default class VotesController {
             .catch(error => res.status(400).jsend.error(error));
         }
       })
-      .catch(error => res.status(400).jsend.error(error));
-  }
-
-  /**
-   * Get votes of user
-   * @param {*} req
-   * @param {*} res
-   * @returns {*} response
-   */
-  static getUserVotes(req, res) {
-    db.Votes.findAll({ where: { UserId: req.user.userId } })
-      .then(votes => res.status(200).jsend.success({ votes }))
       .catch(error => res.status(400).jsend.error(error));
   }
 }

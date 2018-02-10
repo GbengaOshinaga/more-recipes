@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-// import { connect } from 'react-redux';
 import toastr from 'toastr';
 import { sessionService } from 'redux-react-session';
 import { signUp } from '../../actions/accountActions';
@@ -36,7 +35,7 @@ class SignUp extends React.Component {
 
   /**
    * Saves input
-   * @returns {*} nothing
+   * @returns {func} redirect
    */
   onClickSave() {
     signUp(this.state.data)
@@ -47,15 +46,18 @@ class SignUp extends React.Component {
           sessionService.saveUser(response.data.user);
           this.redirect();
         } else {
-          toastr.error(response.data.message || response.data.errors);
+          if (response.data.errors) {
+            return response.data.errors.map(error => toastr.error(error));
+          }
+          toastr.error(response.data.message);
         }
       })
-      .catch((error) => { toastr.error(error); });
+      .catch((error) => { toastr.error([...error]); });
   }
 
   /**
    * Method to handle on google login success
-   * @param {*} response
+   * @param {Object} response
    * @returns {*} null
    */
   onGoogleLoginSuccess(response) {
@@ -92,7 +94,7 @@ class SignUp extends React.Component {
 
   /**
    * Redirects to catalog page after successfully signing in
-   * @returns {null} if there are errors
+   * @returns {null} null
    */
   redirect() {
     this.context.router.history.push('/catalog');
@@ -101,8 +103,8 @@ class SignUp extends React.Component {
 
   /**
    * Handles input field value change
-   * @param {*} event
-   * @returns {*} new state
+   * @param {Object} event
+   * @returns {Object} new state
    */
   handleChange(event) {
     const entries = this.state.data;
@@ -134,29 +136,5 @@ class SignUp extends React.Component {
 SignUp.contextTypes = {
   router: PropTypes.object
 };
-
-// /**
-//  * mapStateToProps
-//  * @param {*} state
-//  * @param {*} ownProps
-//  * @returns {object} object
-//  */
-// // function mapStateToProps(state, ownProps) {
-// //   return {
-// //     data: state.account.data,
-// //     errors: state.account.errors
-// //   };
-// // }
-
-// /**
-//  * mapDispatchToProps
-//  * @param {*} dispatch
-//  * @returns {object} object
-//  */
-// function mapDispatchToProps(dispatch) {
-//   return {
-//     signUp: data => dispatch(signUp(data))
-//   };
-// }
 
 export default SignUp;

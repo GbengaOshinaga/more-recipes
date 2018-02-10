@@ -58,20 +58,23 @@ class RecipeDetails extends React.Component {
     $('.button-collapse').sideNav();
     $('.dropdown-button').dropdown();
 
-    if (this.props.recipes.length === 0) {
-      this.props.actions.getRecipe(this.props.match.params.id);
-    }
+    let isRecipeAvailable = false;
+
     this.props.recipes.map((recipe) => {
       if (recipe.id === Number(this.props.match.params.id)) {
+        isRecipeAvailable = true;
         this.upvoteVoteStatus(recipe, this.props.userId, this.props.userFavourites);
         this.setState({ recipe });
       }
     });
+    if (!isRecipeAvailable) {
+      this.props.actions.getRecipe(this.props.match.params.id);
+    }
   }
 
   /**
    * Method called when component is receiving new props
-   * @param {*} nextProps
+   * @param {Object} nextProps
    * @returns {*} null
    */
   componentWillReceiveProps(nextProps) {
@@ -85,7 +88,7 @@ class RecipeDetails extends React.Component {
 
   /**
    * Method to save review
-   * @param {*} event
+   * @param {Object} event
    * @returns {*} null
    */
   onClickSaveReview(event) {
@@ -100,8 +103,8 @@ class RecipeDetails extends React.Component {
 
   /**
    * onChange method for adding review
-   * @param {*} event
-   * @returns {*} new state
+   * @param {Object} event
+   * @returns {Object} new state
    */
   onAddReviewChange(event) {
     const { value } = event.target;
@@ -110,10 +113,10 @@ class RecipeDetails extends React.Component {
 
   /**
    * Update vote status
-   * @param {*} recipe
-   * @param {*} userId
-   * @param {*} userFavourites
-   * @returns {*} new state
+   * @param {Object} recipe
+   * @param {Object} userId
+   * @param {Array} userFavourites
+   * @returns {Object} new state
    */
   upvoteVoteStatus(recipe, userId, userFavourites) {
     recipe.upvotes.map((upvote) => {
@@ -135,7 +138,7 @@ class RecipeDetails extends React.Component {
 
     userFavourites.map((favourite) => {
       if (recipe.id === favourite.Favourites.RecipeId) {
-        return this.setState({ favouriteClassName: 'favourite red-text' });
+        this.setState({ favouriteClassName: 'favourite red-text' });
       }
     });
   }
@@ -143,7 +146,7 @@ class RecipeDetails extends React.Component {
 
   /**
    * votes recipe
-   * @param {*} event
+   * @param {Object} event
    * @returns {*} null
    */
   vote(event) {
@@ -164,7 +167,7 @@ class RecipeDetails extends React.Component {
 
   /**
    * Add recipe to favourite
-   * @param {*} event
+   * @param {Object} event
    * @returns {*} null
    */
   addFavourite(event) {
@@ -184,7 +187,7 @@ class RecipeDetails extends React.Component {
 
   /**
    * Component render method
-   * @returns {*} jsx
+   * @returns {Node} jsx
    */
   render() {
     return (
@@ -212,8 +215,8 @@ RecipeDetails.defaultProps = defaultProps;
 
 /**
  * Maps state to component properties
- * @param {*} state
- * @param {*} ownProps
+ * @param {Object} state
+ * @param {Object} ownProps
  * @returns {object} object
  */
 function mapStateToProps(state, ownProps) {

@@ -21,6 +21,7 @@
       "class-methods-use-this": "off",
       "no-restricted-syntax":"off",
       "react/prefer-stateless-function": 0,
+      "func-names": ["error", "never"],
       "react/jsx-filename-extension": 0,
       "import/no-unresolved": [2, { "commonjs": true }],
       "import/no-extraneous-dependencies": "off",

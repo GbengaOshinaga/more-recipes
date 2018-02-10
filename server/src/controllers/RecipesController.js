@@ -6,11 +6,11 @@ import db from '../models/index';
 export default class RecipesController {
   /**
    * Adds a recipe
-   * @param {*} req
-   * @param {*} res
-   * @returns {Recipes} all recipes
+   * @param {Object} req
+   * @param {Object} res
+   * @returns {Array} all recipes
    */
-  addRecipe(req, res) {
+  static addRecipe(req, res) {
     const ingredientsArray = req.body.ingredients.split(',');
 
     db.Recipes.findOne({
@@ -38,11 +38,11 @@ export default class RecipesController {
 
   /**
    * Gets Recipes
-   * @param {*} req
-   * @param {*} res
-   * @returns {Recipes} all recipes
+   * @param {Object} req
+   * @param {Object} res
+   * @returns {Array} all recipes
    */
-  getRecipes(req, res) {
+  static getRecipes(req, res) {
     if (req.query.sort && req.query.order) {
       db.Recipes.findAll({
         group: 'id',
@@ -70,11 +70,11 @@ export default class RecipesController {
 
   /**
    * Gets recipe with specified id
-   * @param {*} req
-   * @param {*} res
-   * @returns {*} res
+   * @param {Object} req
+   * @param {Object} res
+   * @returns {Object} res
    */
-  getRecipeById(req, res) {
+  static getRecipeById(req, res) {
     db.Recipes.findById(req.params.id, {
       include: [{
         model: db.Reviews,
@@ -87,18 +87,20 @@ export default class RecipesController {
         if (!recipe) {
           return res.status(404).jsend.fail({ message: `Recipe with Id of ${req.params.id} does not exist` });
         }
-        res.status(200).jsend.success({ recipe });
+        recipe.getFavouriteUsers()
+          .then(userFavourites =>
+            res.status(200).jsend.success({ recipe, favourites: userFavourites }));
       })
       .catch(() => res.status(400).jsend.error('An error occured'));
   }
 
   /**
    * Modifies a recipe
-   * @param {*} req
-   * @param {*} res
-   * @returns {Recipes} Modified recipe
+   * @param {Object} req
+   * @param {Object} res
+   * @returns {Object} Modified recipe
    */
-  modifyRecipe(req, res) {
+  static modifyRecipe(req, res) {
     let ingredientsArray;
     if (req.body.ingredients) {
       ingredientsArray = req.body.ingredients.split(',');
@@ -125,11 +127,11 @@ export default class RecipesController {
 
   /**
    * Deletes specified recipe
-   * @param {*} req
-   * @param {*} res
-   * @returns {*} message
+   * @param {Object} req
+   * @param {Object} res
+   * @returns {String} message
    */
-  deleteRecipe(req, res) {
+  static deleteRecipe(req, res) {
     db.Recipes.findById(req.params.id)
       .then((recipe) => {
         if (!recipe) {
@@ -147,11 +149,11 @@ export default class RecipesController {
 
   /**
    * Add review to recipe
-   * @param {*} req
-   * @param {*} res
-   * @returns {Recipes} recipe object
+   * @param {Object} req
+   * @param {Object} res
+   * @returns {Object} recipe object
    */
-  addReview(req, res) {
+  static addReview(req, res) {
     db.Reviews.create({
       review: req.body.review,
       UserId: req.user.userId,
@@ -164,11 +166,11 @@ export default class RecipesController {
 
   /**
    * Edits a review
-   * @param {*} req
-   * @param {*} res
-   * @returns {*} res
+   * @param {Object} req
+   * @param {Object} res
+   * @returns {Object} res
    */
-  editReview(req, res) {
+  static editReview(req, res) {
     db.Reviews.findById(req.params.id)
       .then((review) => {
         if (!review) {
@@ -187,11 +189,11 @@ export default class RecipesController {
 
   /**
    * Deletes a review
-   * @param {*} req
-   * @param {*} res
-   * @returns {*} res
+   * @param {Object} req
+   * @param {Object} res
+   * @returns {String} res
    */
-  deleteReview(req, res) {
+  static deleteReview(req, res) {
     db.Reviews.findById(req.params.id)
       .then((review) => {
         if (!review) {
@@ -208,11 +210,11 @@ export default class RecipesController {
 
   /**
    * Search for recipes
-   * @param {*} query
-   * @param {*} res
-   * @returns {*} res
+   * @param {String} query
+   * @param {Object} res
+   * @returns {Array} res
    */
-  searchRecipes(query, res) {
+  static searchRecipes(query, res) {
     const op = db.Sequelize.Op;
 
     db.Recipes.findAll({
@@ -240,13 +242,13 @@ export default class RecipesController {
   }
 
   /**
-   * Paginalte recipes
-   * @param {*} offset
-   * @param {*} limit
-   * @param {*} res
-   * @returns {*} res
+   * Paginate recipes
+   * @param {Number} offset
+   * @param {Number} limit
+   * @param {Object} res
+   * @returns {Array} res
    */
-  paginateRecipes(offset, limit, res) {
+  static paginateRecipes(offset, limit, res) {
     db.Recipes.findAll({ offset, limit })
       .then(recipes => res.status(200).jsend.success({ recipes }))
       .catch(error => res.status(400).jsend.error(error));

@@ -105,7 +105,6 @@ function RecipeDetailsPage({
                   <h4>{recipe.name}</h4>
                   <p>{recipe.description}</p>
                   <ul>{displayIngredients(recipe.ingredients)}</ul>
-                  <p className="grey-text">{recipe.views} views</p>
                   {isLoggedIn &&
                   <div id="vote">
                     <a

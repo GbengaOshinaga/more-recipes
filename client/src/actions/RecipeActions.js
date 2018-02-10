@@ -14,7 +14,7 @@ import {
 
 /**
  * Updates reducer if get recipes action is successful
- * @param {*} response
+ * @param {Array} response
  * @returns {Object} object
  */
 function updateGetRecipesSuccess(response) {
@@ -23,7 +23,7 @@ function updateGetRecipesSuccess(response) {
 
 /**
  * Updates reducer if get recipe action is successful
- * @param {*} response
+ * @param {Object} response
  * @returns {Object} object
  */
 function updateGetRecipeSuccess(response) {
@@ -32,7 +32,7 @@ function updateGetRecipeSuccess(response) {
 
 /**
  * Updates reducer if add review action is successful
- * @param {*} response
+ * @param {Object} response
  * @returns {Object} object
  */
 function updateAddReviewSuccess(response) {
@@ -95,7 +95,7 @@ function updateVoteSuccess(response) {
 
 /**
  * Action to get all recipes
- * @returns {*} response
+ * @returns {func} dispatch
  */
 export function getAllRecipes() {
   return function (dispatch) {
@@ -111,8 +111,8 @@ export function getAllRecipes() {
 
 /**
  * Action to get single recipe
- * @param {*} id
- * @returns {*} response
+ * @param {Number} id
+ * @returns {func} dispatch
  */
 export function getRecipe(id) {
   return function (dispatch) {
@@ -128,10 +128,10 @@ export function getRecipe(id) {
 
 /**
  * Action to add review for recipe
- * @param {*} id
- * @param {*} token
- * @param {*} review
- * @returns {*} response
+ * @param {Number} id
+ * @param {String} token
+ * @param {String} review
+ * @returns {func} dispatch
  */
 export function addReview(id, token, review) {
   return function (dispatch) {
@@ -145,16 +145,15 @@ export function addReview(id, token, review) {
 
 /**
  * Action to upvote a recipe
- * @param {*} id
- * @param {*} token
- * @returns {*} response
+ * @param {Number} id
+ * @param {String} token
+ * @returns {func} dispatch
  */
 export function upvoteRecipe(id, token) {
   return function (dispatch) {
     return RecipesApi.upvoteRecipe(id, token)
       .then(response => response.json())
       .then((response) => {
-        console.log(response);
         if (response.status === 'success') {
           dispatch(updateVoteSuccess(response.data.recipe));
         }
@@ -164,16 +163,15 @@ export function upvoteRecipe(id, token) {
 
 /**
  * Action to downvote a recipe
- * @param {*} id
- * @param {*} token
- * @returns {*} response
+ * @param {Number} id
+ * @param {String} token
+ * @returns {func} dispatch
  */
 export function downvoteRecipe(id, token) {
   return function (dispatch) {
     return RecipesApi.downvoteRecipe(id, token)
       .then(response => response.json())
       .then((response) => {
-        console.log(response);
         if (response.status === 'success') {
           dispatch(updateVoteSuccess(response.data.recipe));
         }
@@ -183,8 +181,8 @@ export function downvoteRecipe(id, token) {
 
 /**
  * Action to search for recipes
- * @param {*} query
- * @returns {*} response
+ * @param {String} query
+ * @returns {func} dispatch
  */
 export function search(query) {
   return function (dispatch) {
@@ -202,9 +200,9 @@ export function search(query) {
 
 /**
  * Action to add favourite for user
- * @param {*} token
- * @param {*} recipeId
- * @returns {*} response
+ * @param {String} token
+ * @param {Number} recipeId
+ * @returns {func} dispatch
  */
 export function addFavourite(token, recipeId) {
   return function (dispatch) {
@@ -226,8 +224,8 @@ export function addFavourite(token, recipeId) {
 
 /**
  * Action to get user favourites
- * @param {*} token
- * @returns {*} response
+ * @param {String} token
+ * @returns {func} dispatch
  */
 export function getFavourites(token) {
   return function (dispatch) {
@@ -245,16 +243,15 @@ export function getFavourites(token) {
 
 /**
  * Action to add favourite for user
- * @param {*} token
- * @param {*} recipeId
- * @returns {*} response
+ * @param {String} token
+ * @param {Number} recipeId
+ * @returns {func} dispatch
  */
 export function deleteFavourite(token, recipeId) {
   return function (dispatch) {
     return RecipesApi.deleteFavourite(token, recipeId)
       .then(response => response.json())
       .then((response) => {
-        console.log(response);
         if (response.status === 'success') {
           UserApi.getFavourites(token)
             .then(favResponse => favResponse.json())
@@ -279,7 +276,6 @@ export function getMostFavouritedRecipes() {
     return RecipesApi.getMostFavourited()
       .then(response => response.json())
       .then((response) => {
-        console.log(response);
         if (response.status === 'success') {
           dispatch(updateGetMostFavouritedSuccess(response.data.recipes));
         }

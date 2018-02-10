@@ -27,7 +27,7 @@ function loggedInHeader(name) {
           <div className="container">
             <div className="nav-wrapper">
               <a href="catalog.html" className="brand-logo">More-Recipes</a>
-              <a href="#" data-activates="mobile" className="button-collapse">
+              <a href="#!" data-activates="mobile" className="button-collapse">
                 <i className="material-icons">menu</i>
               </a>
               <ul className="right hide-on-med-and-down">

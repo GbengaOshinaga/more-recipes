@@ -23,12 +23,20 @@ export default {
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NoEmitOnErrorsPlugin()
   ],
-  node: {
-    fs: 'empty'
+  resolve: {
+    extensions: ['.js', '.jsx']
   },
   module: {
     loaders: [
-      { test: /\.js$/, include: path.join(__dirname, 'client/src'), loaders: ['babel-loader'] },
+      {
+        test: /\.js|jsx$/,
+        include: path.join(__dirname, 'client/src'),
+        loader: 'babel-loader',
+        query: {
+          plugins: ['transform-runtime'],
+          presets: ['es2015', 'stage-0', 'react']
+        }
+      },
       { test: /(\.jpg)$/, use: [{ loader: 'file-loader' }] },
       {
         test: /\.scss$/,

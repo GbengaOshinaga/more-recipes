@@ -10,7 +10,6 @@ export default class UsersValidator {
      * @returns {*} res
      */
   static validateSignUp(req, res, next) {
-    console.log(req.body);
     const messages = [];
 
     if (!req.body.firstName) {

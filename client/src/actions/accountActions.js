@@ -20,7 +20,7 @@ export function updateSignUpSuccess(response) {
 
 /**
  * Updates reducer if sign up fails
- * @param {*} response
+ * @param {Object} response
  * @returns {object} object
  */
 export function updateSignUpFailure(response) {
@@ -29,7 +29,7 @@ export function updateSignUpFailure(response) {
 
 /**
  * Updates reducer if sign in fails
- * @param {*} response
+ * @param {Object} response
  * @returns {object} object
  */
 export function updateSignInFailure(response) {
@@ -38,7 +38,7 @@ export function updateSignInFailure(response) {
 
 /**
  * Signs in
- * @param {*} credentials
+ * @param {Object} credentials
  * @returns {object} response
  */
 export function signIn(credentials) {
@@ -47,7 +47,7 @@ export function signIn(credentials) {
 
 /**
  * Sign up
- * @param {*} data
+ * @param {Object} data
  * @returns {function} function
  */
 export function signUp(data) {
