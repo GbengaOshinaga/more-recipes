@@ -231,6 +231,18 @@ export default function CatalogPage({
 }
 
 /**
+ * Formats recipe description based on length
+ * @param {String} content
+ * @returns {String} formatted description
+ */
+function formatContent(content) {
+  if (content.length > 40) {
+    return `${content.slice(0, 40)}...`;
+  }
+  return content;
+}
+
+/**
  * Component for displaying card
  * @param {*} props
  * @returns {*} jsx
@@ -247,8 +259,8 @@ function Card({
         </div>
         <div className="card-stacked">
           <div className="card-content">
-            <Link to={`/recipe/${id}`}><span className="card-title">{recipeName}</span></Link>
-            <p>{`${recipeDescription.slice(0, 30)}...`}</p>
+            <Link to={`/recipe/${id}`}><span className="card-title">{formatContent(recipeName)}</span></Link>
+            <p>{formatContent(recipeDescription)}</p>
 
           </div>
 

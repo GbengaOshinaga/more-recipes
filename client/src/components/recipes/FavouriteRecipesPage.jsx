@@ -57,11 +57,9 @@ function updateRecipeVoteState(recipe, userId) {
  * @param {Number} userId
  * @param {func} onClickVote
  * @param {func} onClickFavourite
- * @param {func} upvoteRef
- * @param {func} downvoteRef
  * @returns {*} jsx
  */
-function displayRecipes(recipes, userId, onClickVote, onClickFavourite, upvoteRef, downvoteRef) {
+function displayRecipes(recipes, userId, onClickVote, onClickFavourite) {
   const chunkedRecipes = _.chunk(recipes, 3);
   if (recipes === undefined || recipes.length === 0) {
     return 'No Recipe Available';
@@ -90,8 +88,6 @@ function displayRecipes(recipes, userId, onClickVote, onClickFavourite, upvoteRe
           downvoteClassName={downvoteClassName}
           onClickVote={onClickVote}
           onClickFavourite={onClickFavourite}
-          upvoteRef={upvoteRef}
-          downvoteRef={downvoteRef}
         />);
       })}
     </div>
@@ -104,8 +100,7 @@ function displayRecipes(recipes, userId, onClickVote, onClickFavourite, upvoteRe
  * @returns {*} jsx
  */
 function FavouriteRecipesPage({
-  isLoggedIn, firstName, recipes, userId, onClickVote, onClickFavourite,
-  upvoteRef, downvoteRef
+  isLoggedIn, firstName, recipes, userId, onClickVote, onClickFavourite
 }) {
   return (
     <div>
@@ -117,13 +112,26 @@ function FavouriteRecipesPage({
         <div className="favorited-reviews">
           <h4>Favorited Recipes</h4>
           <hr />
-          {displayRecipes(recipes, userId, onClickVote, onClickFavourite, upvoteRef, downvoteRef)}
+          {displayRecipes(recipes, userId, onClickVote, onClickFavourite)}
         </div>
       </div>
 
     </div>
   );
 }
+
+/**
+ * Formats recipe description based on length
+ * @param {String} content
+ * @returns {String} formatted description
+ */
+function formatContent(content) {
+  if (content.length > 40) {
+    return `${content.slice(0, 40)}...`;
+  }
+  return content;
+}
+
 
 /**
  * Component for displaying card
@@ -133,7 +141,6 @@ function FavouriteRecipesPage({
 function Card({
   id, image, recipeName, recipeDescription, onClickVote,
   upvoteClassName, downvoteClassName, onClickFavourite,
-  upvoteRef, downvoteRef
 }) {
   return (
     <div className="col s12 l4 m4">
@@ -143,8 +150,8 @@ function Card({
         </div>
         <div className="card-stacked">
           <div className="card-content">
-            <Link to={`/recipe/${id}`}><span className="card-title">{recipeName}</span></Link>
-            <p>{`${recipeDescription.slice(0, 30)}...`}</p>
+            <Link to={`/recipe/${id}`}><span className="card-title">{formatContent(recipeName)}</span></Link>
+            <p>{formatContent(recipeDescription)}</p>
 
           </div>
           <div className="card-action">
@@ -153,7 +160,6 @@ function Card({
                 href="#!"
                 className={upvoteClassName}
                 onClick={onClickVote}
-                ref={upvoteRef}
               >
                 <i id={id} className="material-icons">thumb_up</i>
               </a>
@@ -161,7 +167,6 @@ function Card({
                 href="#!"
                 className={downvoteClassName}
                 onClick={onClickVote}
-                ref={downvoteRef}
               >
                 <i id={id} className="material-icons">thumb_down</i>
               </a>

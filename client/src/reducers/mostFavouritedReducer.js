@@ -1,5 +1,5 @@
 import initialState from './initialState';
-import { GET_MOST_FAVOURITED_RECIPES_SUCCESS } from '../actions/actions';
+import { GET_MOST_FAVOURITED_RECIPES_SUCCESS, VOTE_SUCCESS } from '../actions/actions';
 
 /**
  * Most favourited recipes reducer
@@ -12,6 +12,15 @@ export default function mostFavouritedReducer(state = initialState.mostFavourite
   switch (action.type) {
     case GET_MOST_FAVOURITED_RECIPES_SUCCESS:
       return [...response];
+
+    case VOTE_SUCCESS:
+      return [...state.map((recipe) => {
+        if (recipe.id === response.id) {
+          return { ...recipe, ...response };
+        }
+        return recipe;
+      })];
+
     default:
       return state;
   }

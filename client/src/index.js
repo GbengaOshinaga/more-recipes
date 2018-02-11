@@ -9,7 +9,7 @@ import App from './components/App';
 
 const store = configureStore();
 
-const options = { refreshOnCheckAuth: true, redirectPath: '/home', driver: 'COOKIES' };
+const options = { refreshOnCheckAuth: true, redirectPath: '/catalog', driver: 'COOKIES' };
 sessionService.initSessionService(store, options);
 
 render(

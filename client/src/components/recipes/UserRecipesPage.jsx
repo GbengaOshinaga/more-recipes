@@ -132,6 +132,19 @@ function Page({
 }
 
 /**
+ * Formats recipe description based on length
+ * @param {String} content
+ * @returns {String} formatted description
+ */
+function formatContent(content) {
+  if (content.length > 40) {
+    return `${content.slice(0, 40)}...`;
+  }
+  return content;
+}
+
+
+/**
  * Card component for displaying components
  * @param {*} props
  * @returns {*} jsx
@@ -147,8 +160,8 @@ function Card({
         </div>
         <div className="card-stacked">
           <div className="card-content">
-            <span className="card-title">{recipeName}</span>
-            <p>{`${recipeDescription.slice(0, 30)}...`}</p>
+            <span className="card-title">{formatContent(recipeName)}</span>
+            <p>{formatContent(recipeDescription)}</p>
           </div>
           <div className="card-action">
             <Link to={`/recipe/${id}`} className="btn-floating waves-effect waves-light green">
