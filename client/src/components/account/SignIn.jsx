@@ -7,8 +7,7 @@ import { signIn } from '../../actions/accountActions';
 import SignInForm from './SignInForm';
 
 const propTypes = {
-  signIn: PropTypes.func.isRequired,
-  location: PropTypes.object.isRequired
+  location: PropTypes.objectOf(PropTypes.any).isRequired
 };
 
 /**

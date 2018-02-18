@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import toastr from 'toastr';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { sessionService } from 'redux-react-session';
@@ -11,7 +12,7 @@ import * as recipeActions from '../../actions/RecipeActions';
 const propTypes = {
   isLoggedIn: PropTypes.bool.isRequired,
   firstName: PropTypes.string,
-  actions: PropTypes.object.isRequired,
+  actions: PropTypes.objectOf(PropTypes.func).isRequired,
   allRecipes: PropTypes.arrayOf(PropTypes.object).isRequired,
   mostFavouritedRecipes: PropTypes.arrayOf(PropTypes.object).isRequired,
   searchResults: PropTypes.arrayOf(PropTypes.object).isRequired,
@@ -43,6 +44,7 @@ class Catalog extends React.Component {
     this.vote = this.vote.bind(this);
     this.onSearchChange = this.onSearchChange.bind(this);
     this.addFavourite = this.addFavourite.bind(this);
+    toastr.options.closeButton = true;
   }
 
   /**
@@ -113,9 +115,13 @@ class Catalog extends React.Component {
     const { currentTarget } = event;
     sessionService.loadSession()
       .then((token) => {
-        currentTarget.classList.value === 'favourite' ?
-          this.props.actions.addFavourite(token, event.target.id) :
-          this.props.actions.deleteFavourite(token, event.target.id);
+        if (currentTarget.classList.value === 'favourite') {
+          this.props.actions.addFavourite(token, event.target.id)
+            .then(() => toastr.success('Added to favourites'));
+        } else {
+          this.props.actions.deleteFavourite(token, event.target.id)
+            .then(() => toastr.success('Removed from favourites'));
+        }
 
         currentTarget.classList.toggle('red-text');
       });
@@ -148,10 +154,9 @@ class Catalog extends React.Component {
 /**
  * Maps state to component properties
  * @param {*} state
- * @param {*} ownProps
  * @returns {object} object
  */
-function mapStateToProps(state, ownProps) {
+function mapStateToProps(state) {
   return {
     isLoggedIn: state.session.authenticated,
     firstName: state.session.user.firstName,
