@@ -13,7 +13,7 @@ const propTypes = {
   isLoggedIn: PropTypes.bool.isRequired,
   firstName: PropTypes.string,
   userRecipes: PropTypes.arrayOf(PropTypes.object).isRequired,
-  actions: PropTypes.object.isRequired
+  actions: PropTypes.objectOf(PropTypes.func).isRequired
 };
 
 const defaultProps = {
@@ -21,7 +21,7 @@ const defaultProps = {
 };
 
 const defaultImage = 'http://res.cloudinary.com/king-more-recipes/image/upload/v1518028470/10546i3DAC5A5993C8BC8C_vtqogc.jpg';
-let context;
+let imageContext;
 
 /**
  * Class component for user recipes actions
@@ -29,8 +29,8 @@ let context;
 class UserRecipes extends React.Component {
   /**
      * Component constructor
-     * @param {*} props
-     * @param {*} context
+     * @param {Object} props
+     * @param {Object} context
      */
   constructor(props, context) {
     super(props, context);
@@ -64,11 +64,12 @@ class UserRecipes extends React.Component {
     this.handleEditInputChange = this.handleEditInputChange.bind(this);
     this.handleChipAdd = this.handleChipAdd.bind(this);
     this.handleChipDelete = this.handleChipDelete.bind(this);
+    toastr.options.closeButton = true;
   }
 
   /**
    * Method when component has finished mounting
-   * @returns {*} undefined
+   * @returns {null} null
    */
   componentDidMount() {
     $('.button-collapse').sideNav();
@@ -84,7 +85,7 @@ class UserRecipes extends React.Component {
   /**
    * Handle save event
    * @param {Object} event
-   * @returns {*} null
+   * @returns {null} null
    */
   onClickSave(event) {
     event.preventDefault();
@@ -110,7 +111,7 @@ class UserRecipes extends React.Component {
   /**
    * Handle edit
    * @param {Object} event
-   * @returns {*} null
+   * @returns {null} null
    */
   onClickEdit(event) {
     event.preventDefault();
@@ -131,8 +132,8 @@ class UserRecipes extends React.Component {
 
   /**
    * Method to delete recipe
-   * @param {*} event
-   * @returns {*} null
+   * @param {Object} event
+   * @returns {null} null
    */
   onConfirmDelete(event) {
     event.preventDefault();
@@ -145,8 +146,8 @@ class UserRecipes extends React.Component {
 
   /**
    * Get id of recipe
-   * @param {*} event
-   * @returns {*} null
+   * @param {Object} event
+   * @returns {null} null
    */
   getId(event) {
     event.preventDefault();
@@ -155,8 +156,8 @@ class UserRecipes extends React.Component {
 
   /**
    * Get id of recipe for edit
-   * @param {*} event
-   * @returns {*} null
+   * @param {Object} event
+   * @returns {null} null
    */
   getIdForEdit(event) {
     const recipeForEdit = [
@@ -173,19 +174,21 @@ class UserRecipes extends React.Component {
     });
     const img = new Image(300, 200);
     img.src = recipeForEdit[0].image;
-    context = this.editInputElement.getContext('2d');
-    context.drawImage(img, 0, 0, 300, 200);
+    imageContext = this.editInputElement.getContext('2d');
+    imageContext.drawImage(img, 0, 0, 300, 200);
   }
 
   /**
    * Save recipe
-   * @param {*} data
-   * @returns {*} null
+   * @param {Object} data
+   * @returns {null} null
    */
   saveRecipe(data) {
     sessionService.loadSession()
       .then((token) => {
-        this.props.actions.addRecipe(token, data);
+        this.props.actions.addRecipe(token, data)
+          .then(() => toastr.success('Recipe Added'))
+          .catch(errors => errors.map(error => toastr.error(error)));
         this.setState({
           data: {
             id: 0,
@@ -196,18 +199,19 @@ class UserRecipes extends React.Component {
           },
           imageFile: {}
         });
-        context.clearRect(0, 0, 300, 200);
+        imageContext.clearRect(0, 0, 300, 200);
       });
   }
 
   /**
-   * Save recipe
-   * @returns {*} null
+   * Edits recipe
+   * @returns {null} null
    */
   editRecipe() {
     sessionService.loadSession()
       .then((token) => {
         this.props.actions.editRecipe(token, this.state.edit.id, this.state.edit)
+          .then(() => toastr.success('Recipe modified successfully'))
           .catch(error => toastr.error(error));
         this.setState({
           edit: {
@@ -219,21 +223,21 @@ class UserRecipes extends React.Component {
           },
           imageFile: {}
         });
-        context.clearRect(0, 0, 300, 200);
+        imageContext.clearRect(0, 0, 300, 200);
       });
   }
 
 
   /**
    * Loads image to canvas
-   * @param {*} event
-   * @returns {*} image src
+   * @param {Object} event
+   * @returns {null} null
    */
   loadImage(event) {
     if (event.target.id === 'fileUpload') {
-      context = this.inputElement.getContext('2d');
+      imageContext = this.inputElement.getContext('2d');
     } else {
-      context = this.editInputElement.getContext('2d');
+      imageContext = this.editInputElement.getContext('2d');
     }
     const file = event.target.files[0];
     this.setState({ imageFile: file });
@@ -241,7 +245,7 @@ class UserRecipes extends React.Component {
     fileReader.onload = function (e) {
       const img = new Image(300, 200);
       img.addEventListener('load', () => {
-        context.drawImage(img, 0, 0, 300, 200);
+        imageContext.drawImage(img, 0, 0, 300, 200);
       });
       img.src = e.target.result;
     };
@@ -290,8 +294,8 @@ class UserRecipes extends React.Component {
 
   /**
    * Handles input field value change
-   * @param {*} event
-   * @returns {*} new state
+   * @param {Object} event
+   * @returns {Object} new state
    */
   handleInputChange(event) {
     const name = this.state.data;
@@ -301,8 +305,8 @@ class UserRecipes extends React.Component {
 
   /**
    * Handles input field value change
-   * @param {*} event
-   * @returns {*} new state
+   * @param {Object} event
+   * @returns {Object} new state
    */
   handleEditInputChange(event) {
     const name = this.state.edit;
@@ -312,7 +316,7 @@ class UserRecipes extends React.Component {
 
   /**
    * Component render method
-   * @returns {jsx} markup
+   * @returns {Node} Page component
    */
   render() {
     return (
@@ -347,11 +351,10 @@ UserRecipes.defaultProps = defaultProps;
 
 /**
  * Maps state to component properties
- * @param {*} state
- * @param {*} ownProps
+ * @param {Object} state
  * @returns {object} object
  */
-function mapStateToProps(state, ownProps) {
+function mapStateToProps(state) {
   return {
     isLoggedIn: state.session.authenticated,
     firstName: state.session.user.firstName,
@@ -361,8 +364,8 @@ function mapStateToProps(state, ownProps) {
 
 /**
  * Maps actions to component properties
- * @param {*} dispatch
- * @returns {*} actions
+ * @param {func} dispatch
+ * @returns {Object} actions
  */
 function mapDispatchToProps(dispatch) {
   return {

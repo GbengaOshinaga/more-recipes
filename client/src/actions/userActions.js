@@ -68,7 +68,7 @@ export function addRecipe(token, data) {
           dispatch(updateAddRecipeSuccess(response.data.recipe));
         } else {
           console.log(response);
-          console.log('something went wrong');
+          throw (response.data.errors);
         }
       });
   };

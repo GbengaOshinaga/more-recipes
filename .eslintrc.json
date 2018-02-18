@@ -6,6 +6,12 @@
       "es6": true,
       "mocha": true
     },
+    "globals": {
+      "File": false,
+      "Image": false,
+      "FileReader": false,
+      "jest": false
+    },
     "rules": {
       "one-var": 0,
       "one-var-declaration-per-line": 0,
@@ -14,6 +20,7 @@
       "no-param-reassign": 0,
       "comma-dangle": 0,
       "allowAfterThis": 0,
+      "array-callback-return": 0,
       "curly": ["error", "multi-line"],
       "linebreak-style": ["error", "windows"],
       "no-underscore-dangle": ["off"],

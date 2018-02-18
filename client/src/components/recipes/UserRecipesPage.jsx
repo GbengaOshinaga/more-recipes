@@ -3,19 +3,13 @@ import PropTypes from 'prop-types';
 import _ from 'lodash';
 import { Link } from 'react-router-dom';
 import Header from '../common/Header/Header';
+import Card from '../common/Card';
 import { AddModal, DeleteModal, EditModal } from './Modal';
 
-const cardPropTypes = {
-  image: PropTypes.string,
-  recipeName: PropTypes.string.isRequired,
-  recipeDescription: PropTypes.string.isRequired,
+const cardActionPropTypes = {
   id: PropTypes.number.isRequired,
   getId: PropTypes.func.isRequired,
   getIdForEdit: PropTypes.func.isRequired
-};
-
-const cardDefaultProps = {
-  image: ''
 };
 
 const pagePropTypes = {
@@ -46,10 +40,10 @@ const pageDefaultProps = {
 
 /**
  * Displays recipes in cards
- * @param {*} recipes
+ * @param {Array} recipes
  * @param {func} getId
  * @param {func} getIdForEdit
- * @returns {*} jsx
+ * @returns {Node} Card component
  */
 function displayRecipes(recipes, getId, getIdForEdit) {
   const chunkedRecipes = _.chunk(recipes, 3);
@@ -65,8 +59,11 @@ function displayRecipes(recipes, getId, getIdForEdit) {
           image={recipe.image}
           recipeName={recipe.name}
           recipeDescription={recipe.description}
-          getId={getId}
-          getIdForEdit={getIdForEdit}
+          cardAction={<CardAction
+            id={recipe.id}
+            getId={getId}
+            getIdForEdit={getIdForEdit}
+          />}
         />
   ))}
     </div>
@@ -75,8 +72,8 @@ function displayRecipes(recipes, getId, getIdForEdit) {
 
 /**
  * Page component
- * @param {*} props
- * @returns {*} jsx
+ * @param {Object} props
+ * @returns {Node} jsx
  */
 function Page({
   isLoggedIn, firstName, onChipChange, onInputChange, inputValue,
@@ -132,64 +129,37 @@ function Page({
 }
 
 /**
- * Formats recipe description based on length
- * @param {String} content
- * @returns {String} formatted description
+ * Component for displaying card actions
+ * @param {Object} props
+ * @returns {Node} jsx
  */
-function formatContent(content) {
-  if (content.length > 40) {
-    return `${content.slice(0, 40)}...`;
-  }
-  return content;
-}
-
-
-/**
- * Card component for displaying components
- * @param {*} props
- * @returns {*} jsx
- */
-function Card({
-  image, recipeName, recipeDescription, id, getId, getIdForEdit
+function CardAction({
+  id, getId, getIdForEdit
 }) {
   return (
-    <div className="col s12 m4 l4">
-      <div className="card recipe-card">
-        <div className="card-image">
-          <img alt="recipe" src={image} />
-        </div>
-        <div className="card-stacked">
-          <div className="card-content">
-            <span className="card-title">{formatContent(recipeName)}</span>
-            <p>{formatContent(recipeDescription)}</p>
-          </div>
-          <div className="card-action">
-            <Link to={`/recipe/${id}`} className="btn-floating waves-effect waves-light green">
-              <i id="desc" className="material-icons">description</i>
-            </Link>
-            <a
-              className="modal-trigger btn-floating waves-effect waves-light blue icons"
-              href="#edit-modal"
-              onClick={getIdForEdit}
-            >
-              <i id={id} className="material-icons">edit</i>
-            </a>
-            <a
-              className="modal-trigger btn-floating waves-effect waves-light red icons"
-              href="#confirm-modal"
-              onClick={getId}
-            >
-              <i id={id} className="material-icons">delete</i>
-            </a>
-          </div>
-        </div>
-      </div>
+    <div className="card-action">
+      <Link to={`/recipe/${id}`} className="btn-floating waves-effect waves-light green">
+        <i id="desc" className="material-icons">description</i>
+      </Link>
+      <a
+        className="modal-trigger btn-floating waves-effect waves-light blue icons"
+        href="#edit-modal"
+        onClick={getIdForEdit}
+      >
+        <i id={id} className="material-icons">edit</i>
+      </a>
+      <a
+        className="modal-trigger btn-floating waves-effect waves-light red icons"
+        href="#confirm-modal"
+        onClick={getId}
+      >
+        <i id={id} className="material-icons">delete</i>
+      </a>
     </div>
   );
 }
 
-Card.propTypes = cardPropTypes;
-Card.defaultProps = cardDefaultProps;
+CardAction.propTypes = cardActionPropTypes;
 
 Page.propTypes = pagePropTypes;
 Page.defaultProps = pageDefaultProps;
