@@ -6,9 +6,9 @@ import db from '../models/index';
 export default class VotesController {
   /**
      * Adds an upvote to a recipe
-     * @param {*} req
-     * @param {*} res
-     * @returns {*} res
+     * @param {Object} req
+     * @param {Object} res
+     * @returns {Object} res
      */
   static addUpvote(req, res) {
     this.addVote(1, 'upvotes', 'downvotes', 'upvoted', req, res);
@@ -16,9 +16,9 @@ export default class VotesController {
 
   /**
    * Adds a downvote to a recipe
-   * @param {*} req
-   * @param {*} res
-   * @returns {*} res
+   * @param {Object} req
+   * @param {Object} res
+   * @returns {Object} res
    */
   static addDownvote(req, res) {
     this.addVote(0, 'downvotes', 'upvotes', 'downvoted', req, res);
@@ -29,13 +29,13 @@ export default class VotesController {
    * Users are allowed to vote more than once, if and only if their previous vote is
    * different from the next one, for example, a user can only upvote once, but a user
    * can downvote after already upvoting, and vice versa
-   * @param {*} valueOfVote
-   * @param {*} typeOfVote
-   * @param {*} otherTypeOfVote
-   * @param {*} message
-   * @param {*} req
-   * @param {*} res
-   * @returns {*} res
+   * @param {Number} valueOfVote
+   * @param {String} typeOfVote
+   * @param {String} otherTypeOfVote
+   * @param {String} message
+   * @param {Object} req
+   * @param {Object} res
+   * @returns {Object} res
    */
   static addVote(valueOfVote, typeOfVote, otherTypeOfVote, message, req, res) {
     db.Votes.findOne({
@@ -52,20 +52,18 @@ export default class VotesController {
             .then(() => {
               db.Recipes.findById(req.params.id)
                 .then((recipe) => {
-                  // recipe.decrement(`${typeOfVote}`);
                   if (typeOfVote === 'upvotes') {
-                    // recipe.upvotes.slice(recipe.upvotes.indexOf(req.user.userId), 1);
+                    const newUpvotesArray = [...recipe.upvotes.filter(id => id !== req.user.userId)];
                     recipe.update({
-                      upvotes: [recipe.upvotes.filter(id => id !== req.user.userId)]
+                      upvotes: newUpvotesArray
                     });
                   } else {
-                    // recipe.downvotes.slice(recipe.downvotes.indexOf(req.user.userId), 1);
                     recipe.update({
-                      downvotes: [recipe.downvotes.filter(id => id !== req.user.userId)]
+                      downvotes: [...recipe.downvotes.filter(id => id !== req.user.userId)]
                     });
                   }
+                  return res.status(200).jsend.success({ recipe, message: `Your ${typeOfVote.slice(0, typeOfVote.length - 1)} has been cancelled` });
                 });
-              res.status(200).jsend.success({ message: `Your ${typeOfVote.slice(0, typeOfVote.length - 1)} has been cancelled` });
             })
             .catch(error => res.status(400).jsend.fail(error));
         } else if (vote && vote.vote !== valueOfVote) {
@@ -80,34 +78,26 @@ export default class VotesController {
           // the present one
           db.Recipes.findById(req.params.id)
             .then((recipe) => {
-              // recipe.decrement(`${otherTypeOfVote}`);
-              // recipe.increment(`${typeOfVote}`)
-              // .then(res.status(200).jsend.success({ message: `Recipe ${message}` }))
-              // .catch(error => res.status(400).jsend.error(error));
               if (typeOfVote === 'upvotes') {
-                // recipe.upvotes.push(req.user.userId);
                 recipe.update({
                   upvotes: [...recipe.upvotes, req.user.userId]
                 })
                   .then(() => {
-                    // recipe.downvotes.slice(recipe.downvotes.indexOf(req.user.userId), 1);
                     recipe.update({
-                      downvotes: [recipe.downvotes.filter(id => id !== req.user.userId)]
+                      downvotes: [...recipe.downvotes.filter(id => id !== req.user.userId)]
                     })
-                      .then(res.status(200).jsend.success({ recipe, message: `Recipe ${message}` }))
+                      .then(() => res.status(200).jsend.success({ recipe, message: `Recipe ${message}` }))
                       .catch(error => res.status(400).jsend.error(error));
                   });
               } else {
-                // recipe.downvotes.push(req.user.userId);
                 recipe.update({
                   downvotes: [...recipe.downvotes, req.user.userId]
                 })
                   .then(() => {
-                    // recipe.upvotes.slice(recipe.upvotes.indexOf(req.user.userId), 1);
                     recipe.update({
-                      upvotes: [recipe.upvotes.filter(id => id !== req.user.userId)]
+                      upvotes: [...recipe.upvotes.filter(id => id !== req.user.userId)]
                     })
-                      .then(res.status(200).jsend.success({ recipe, message: `Recipe ${message}` }))
+                      .then(() => res.status(200).jsend.success({ recipe, message: `Recipe ${message}` }))
                       .catch(error => res.status(400).jsend.error(error));
                   });
               }
@@ -123,18 +113,13 @@ export default class VotesController {
             .then(() => {
               db.Recipes.findById(req.params.id)
                 .then((recipe) => {
-                  // recipe.increment(`${typeOfVote}`)
-                  //   .then(res.status(200).jsend.success({ message: `Recipe ${message}` }))
-                  //   .catch(error => res.status(400).jsend.error(error));
                   if (typeOfVote === 'upvotes') {
-                    // recipe.upvotes.push(req.user.userId);
                     recipe.update({
                       upvotes: [...recipe.upvotes, req.user.userId]
                     })
                       .then(res.status(200).jsend.success({ recipe, message: `Recipe ${message}` }))
                       .catch(error => res.status(400).jsend.error(error));
                   } else {
-                    // recipe.downvotes.push(req.user.userId);
                     recipe.update({
                       downvotes: [...recipe.downvotes, req.user.userId]
                     })
@@ -146,18 +131,6 @@ export default class VotesController {
             .catch(error => res.status(400).jsend.error(error));
         }
       })
-      .catch(error => res.status(400).jsend.error(error));
-  }
-
-  /**
-   * Get votes of user
-   * @param {*} req
-   * @param {*} res
-   * @returns {*} response
-   */
-  static getUserVotes(req, res) {
-    db.Votes.findAll({ where: { UserId: req.user.userId } })
-      .then(votes => res.status(200).jsend.success({ votes }))
       .catch(error => res.status(400).jsend.error(error));
   }
 }

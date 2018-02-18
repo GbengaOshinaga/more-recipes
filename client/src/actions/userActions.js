@@ -10,7 +10,7 @@ import {
 
 /**
  * Updates reducer if add recipe action is successful
- * @param {*} response
+ * @param {Object} response
  * @returns {Object} object
  */
 function updateAddRecipeSuccess(response) {
@@ -19,7 +19,7 @@ function updateAddRecipeSuccess(response) {
 
 /**
  * Updates reducer if getting user recipes is successful
- * @param {*} response
+ * @param {Array} response
  * @returns {Object} object
  */
 function updateGetUserRecipesSuccess(response) {
@@ -28,7 +28,7 @@ function updateGetUserRecipesSuccess(response) {
 
 /**
  * Updates reducer if delete recipe action is successful
- * @param {*} id
+ * @param {Number} id
  * @returns {Object} object
  */
 function updateDeleteRecipeSuccess(id) {
@@ -37,7 +37,7 @@ function updateDeleteRecipeSuccess(id) {
 
 /**
  * Updates reducer if edit recipe action is successful
- * @param {*} response
+ * @param {Object} response
  * @returns {Object} object
  */
 function updateEditRecipeSuccess(response) {
@@ -46,7 +46,7 @@ function updateEditRecipeSuccess(response) {
 
 /**
  * Updates reducer if get user votes is successful
- * @param {*} response
+ * @param {Object} response
  * @returns {Object} object
  */
 function updateGetUserVotes(response) {
@@ -55,9 +55,9 @@ function updateGetUserVotes(response) {
 
 /**
  * Action to add recipe
- * @param {*} token access token
- * @param {*} data
- * @returns {*} response
+ * @param {String} token access token
+ * @param {Object} data
+ * @returns {func} dispatch
  */
 export function addRecipe(token, data) {
   return function (dispatch) {
@@ -68,7 +68,7 @@ export function addRecipe(token, data) {
           dispatch(updateAddRecipeSuccess(response.data.recipe));
         } else {
           console.log(response);
-          console.log('something went wrong');
+          throw (response.data.errors);
         }
       });
   };
@@ -76,9 +76,9 @@ export function addRecipe(token, data) {
 
 /**
  * Action to delete recipe
- * @param {*} token
- * @param {*} id
- * @returns {*} response
+ * @param {String} token
+ * @param {Number} id
+ * @returns {func} dispatch
  */
 export function deleteRecipe(token, id) {
   return function (dispatch) {
@@ -94,8 +94,8 @@ export function deleteRecipe(token, id) {
 
 /**
  * Action to get user recipes
- * @param {*} token
- * @returns {*} response
+ * @param {String} token
+ * @returns {func} dispatch
  */
 export function getUserRecipes(token) {
   return function (dispatch) {
@@ -111,9 +111,9 @@ export function getUserRecipes(token) {
 
 /**
  * Action to modify user
- * @param {*} token
- * @param {*} data
- * @returns {*} response
+ * @param {String} token
+ * @param {Object} data
+ * @returns {func} dispatch
  */
 export function modifyUser(token, data) {
   return function (dispatch) {
@@ -131,10 +131,10 @@ export function modifyUser(token, data) {
 
 /**
  * Action to modify recipe
- * @param {*} token
- * @param {*} id
- * @param {*} data
- * @returns {*} response
+ * @param {String} token
+ * @param {Number} id
+ * @param {Object} data
+ * @returns {func} dispatch
  */
 export function editRecipe(token, id, data) {
   return function (dispatch) {
@@ -152,8 +152,8 @@ export function editRecipe(token, id, data) {
 
 /**
  * Upload image to cloudinary
- * @param {*} imageFile
- * @returns {*} Promise
+ * @param {File} imageFile
+ * @returns {Promise} Promise
  */
 export function uploadImage(imageFile) {
   return UserApi.uploadImage(imageFile);

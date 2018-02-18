@@ -13,9 +13,9 @@ const propTypes = {
   email: PropTypes.string.isRequired,
   password: PropTypes.string.isRequired,
   confirmPassword: PropTypes.string.isRequired,
-  errors: PropTypes.any,
+  errors: PropTypes.arrayOf(PropTypes.string),
   onSuccess: PropTypes.func.isRequired,
-  onFailure: PropTypes.func.isRequired 
+  onFailure: PropTypes.func.isRequired
 };
 
 const defaultProps = {
@@ -102,6 +102,7 @@ function SignUpForm({
           hrefText="Sign In"
           onSuccess={onSuccess}
           onFailure={onFailure}
+          buttonText="Sign Up With Google"
         />
       </div>
     </div>

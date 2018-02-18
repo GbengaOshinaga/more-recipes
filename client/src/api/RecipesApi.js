@@ -1,4 +1,4 @@
-import 'babel-polyfill';
+import 'cross-fetch/polyfill';
 
 /**
  * Class for accessing recipes api endpoints
@@ -6,7 +6,7 @@ import 'babel-polyfill';
 export default class RecipesApi {
   /**
      * Method for getting all recipes
-     * @returns {*} Promise
+     * @returns {Promise} Promise
      */
   static getAllRecipes() {
     return fetch('http://localhost:8000/api/v1/recipes', {
@@ -19,8 +19,8 @@ export default class RecipesApi {
 
   /**
    * Method for getting a single recipe
-   * @param {*} id
-   * @returns {*} Promise
+   * @param {Number} id
+   * @returns {Promise} Promise
    */
   static getRecipe(id) {
     return fetch(`http://localhost:8000/api/v1/recipes/${id}`, {
@@ -33,10 +33,10 @@ export default class RecipesApi {
 
   /**
    * Method for adding review for a recipe
-   * @param {*} id
-   * @param {*} token
-   * @param {*} review
-   * @returns {*} Promise
+   * @param {Number} id
+   * @param {String} token
+   * @param {String} review
+   * @returns {Promise} Promise
    */
   static addReview(id, token, review) {
     return fetch(`http://localhost:8000/api/v1/recipes/${id}/reviews`, {
@@ -51,9 +51,9 @@ export default class RecipesApi {
 
   /**
    * Method for upvoting recipe
-   * @param {*} id
-   * @param {*} token
-   * @returns {*} Promise
+   * @param {Number} id
+   * @param {String} token
+   * @returns {Promise} Promise
    */
   static upvoteRecipe(id, token) {
     return fetch(`http://localhost:8000/api/v1/recipes/upvote/${id}`, {
@@ -67,9 +67,9 @@ export default class RecipesApi {
 
   /**
    * Method for downvoting recipe
-   * @param {*} id
-   * @param {*} token
-   * @returns {*} Promise
+   * @param {Number} id
+   * @param {String} token
+   * @returns {Promise} Promise
    */
   static downvoteRecipe(id, token) {
     return fetch(`http://localhost:8000/api/v1/recipes/downvote/${id}`, {
@@ -83,8 +83,8 @@ export default class RecipesApi {
 
   /**
    * Search for recipe
-   * @param {*} query
-   * @returns {*} Promise
+   * @param {String} query
+   * @returns {Promise} Promise
    */
   static search(query) {
     return fetch(`http://localhost:8000/api/v1/recipes?query=${query}`, {
@@ -97,9 +97,9 @@ export default class RecipesApi {
 
   /**
    * Method for adding to user's favourites
-   * @param {*} token
-   * @param {*} recipeId
-   * @returns {*} Promise
+   * @param {String} token
+   * @param {Number} recipeId
+   * @returns {Promise} Promise
    */
   static addFavourite(token, recipeId) {
     return fetch(`http://localhost:8000/api/v1/users/recipes/${recipeId}/favourites`, {
@@ -113,9 +113,9 @@ export default class RecipesApi {
 
   /**
    * Method for delete a user's favourite
-   * @param {*} token
-   * @param {*} recipeId
-   * @returns {*} Promise
+   * @param {String} token
+   * @param {Number} recipeId
+   * @returns {Promise} Promise
    */
   static deleteFavourite(token, recipeId) {
     return fetch(`http://localhost:8000/api/v1/users/recipes/${recipeId}/favourites`, {
@@ -123,6 +123,19 @@ export default class RecipesApi {
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
         'Access-Token': token
+      }
+    });
+  }
+
+  /**
+   * Method for getting most favourited recipes
+   * @returns {Promise} Promise
+   */
+  static getMostFavourited() {
+    return fetch('http://localhost:8000/api/v1/recipes/most_favourited', {
+      method: 'get',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded'
       }
     });
   }

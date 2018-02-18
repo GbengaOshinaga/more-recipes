@@ -1,40 +1,47 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Avatar from 'material-ui';
+import { Avatar } from 'material-ui';
 import { Link } from 'react-router-dom';
 import Button from '../common/Button';
 import Header from '../common/Header/Header';
 import TextArea from '../common/TextArea';
 
 const propTypes = {
-  recipe: PropTypes.object.isRequired,
-  userImage: PropTypes.string,
+  recipe: PropTypes.object,
+  profilePic: PropTypes.string,
   isLoggedIn: PropTypes.bool.isRequired,
   firstName: PropTypes.string,
   onClickSaveReview: PropTypes.func.isRequired,
   onAddReviewChange: PropTypes.func.isRequired,
   newReview: PropTypes.string.isRequired,
-  location: PropTypes.string.isRequired
+  location: PropTypes.string.isRequired,
+  onClickVote: PropTypes.func.isRequired,
+  onClickFavourite: PropTypes.func.isRequired,
+  upvoteClassName: PropTypes.string.isRequired,
+  downvoteClassName: PropTypes.string.isRequired,
+  favouriteClassName: PropTypes.string.isRequired
 };
 
 const defaultProps = {
-  userImage: '',
+  recipe: {},
+  profilePic: '',
   firstName: ''
 };
 
 const reviewPropTypes = {
-  review: PropTypes.string.isRequired
+  review: PropTypes.string.isRequired,
+  profilePic: PropTypes.string.isRequired
 };
 
 const addReviewPropTypes = {
-  userImage: PropTypes.string,
+  profilePic: PropTypes.string,
   onClickSaveReview: PropTypes.func.isRequired,
   onAddReviewChange: PropTypes.func.isRequired,
   newReview: PropTypes.string.isRequired
 };
 
 const addReviewDefaultProps = {
-  userImage: ''
+  profilePic: ''
 };
 
 /**
@@ -46,7 +53,12 @@ function displayReviews(reviews) {
   if (reviews === undefined || reviews.length === 0) {
     return 'No Reviews';
   }
-  return reviews.map(review => <Reviews key={review.id} review={review.review} />);
+  return reviews.map(review =>
+    (<Reviews
+      key={review.id}
+      review={review.review}
+      profilePic={review.User.profilePic}
+    />));
 }
 
 /**
@@ -66,8 +78,9 @@ function displayIngredients(ingredients) {
  * @returns {*} jsx
  */
 function RecipeDetailsPage({
-  recipe, userImage, isLoggedIn, firstName, onClickSaveReview, onAddReviewChange,
-  newReview, location
+  recipe, isLoggedIn, firstName, onClickSaveReview, onAddReviewChange,
+  newReview, location, profilePic, onClickVote, onClickFavourite,
+  upvoteClassName, downvoteClassName, favouriteClassName
 }) {
   if (recipe === undefined || Object.keys(recipe).length === 0) {
     return 'Waiting for recipe...';
@@ -92,18 +105,32 @@ function RecipeDetailsPage({
                   <h4>{recipe.name}</h4>
                   <p>{recipe.description}</p>
                   <ul>{displayIngredients(recipe.ingredients)}</ul>
-                  <p className="grey-text">{recipe.views} views</p>
                   {isLoggedIn &&
                   <div id="vote">
-                    <a href="#!" id="details-thumb-up" className="thumb-up">
+                    <a
+                      href="#!"
+                      id="details-thumb-up"
+                      className={upvoteClassName}
+                      onClick={onClickVote}
+                    >
                       <i className="small material-icons">thumb_up</i>
                     </a>
                     <span id="upvotes">{recipe.upvotes.length}</span>
-                    <a href="#!" id="details-thumb-down" className="thumb-down">
+                    <a
+                      href="#!"
+                      id="details-thumb-down"
+                      className={downvoteClassName}
+                      onClick={onClickVote}
+                    >
                       <i className="small material-icons">thumb_down</i>
                     </a>
                     <span id="downvotes">{recipe.downvotes.length}</span>
-                    <a href="#!" id="details-favourite" className="details-favourite">
+                    <a
+                      href="#!"
+                      id="details-favourite"
+                      className={favouriteClassName}
+                      onClick={onClickFavourite}
+                    >
                       <i className="small material-icons">favorite</i>
                     </a>
                     <span id="favorites">0</span>
@@ -114,10 +141,10 @@ function RecipeDetailsPage({
                   {displayReviews(recipe.Reviews)}
                   {isLoggedIn &&
                   <AddReview
-                    userImage={userImage}
                     onClickSaveReview={onClickSaveReview}
                     onAddReviewChange={onAddReviewChange}
                     newReview={newReview}
+                    profilePic={profilePic}
                   />}
                   {!isLoggedIn &&
                   <div>
@@ -138,20 +165,18 @@ function RecipeDetailsPage({
  * @param {*} props
  * @returns {*} jsx
  */
-function Reviews({ review }) {
+function Reviews({ review, profilePic }) {
   return (
-      <div className="row">
-        <div className="col s2">
-          <a href="profile.html">
-            <img src="img/profile-pic.jpg" className="circle responsive-img" alt="user" />
-          </a>
-        </div>
-        <div className="col s10">
-          <div className="review-container">
-            <p>{review}</p>
-          </div>
+    <div className="row">
+      <div className="col s2">
+        <Avatar src={profilePic} size={80} />
+      </div>
+      <div className="col s10">
+        <div className="review-container">
+          <p>{review}</p>
         </div>
       </div>
+    </div>
   );
 }
 
@@ -161,13 +186,13 @@ function Reviews({ review }) {
  * @returns {*} jsx
  */
 function AddReview({
-  userImage, onClickSaveReview, onAddReviewChange, newReview
+  profilePic, onClickSaveReview, onAddReviewChange, newReview
 }) {
   return (
     <div className="row">
       <div className="col s2">
         <a href="profile.html">
-          <img src={userImage} className="circle responsive-img" alt="user" />
+          <Avatar src={profilePic} size={80} />
         </a>
       </div>
       <div className="col s10">

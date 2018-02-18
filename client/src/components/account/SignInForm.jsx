@@ -55,6 +55,7 @@ function SignInForm({
           hrefText="Sign Up"
           onSuccess={onSuccess}
           onFailure={onFailure}
+          buttonText="Sign In With Google"
         />
       </div>
     </div>

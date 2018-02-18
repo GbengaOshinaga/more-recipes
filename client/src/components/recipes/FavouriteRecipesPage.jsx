@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
 import _ from 'lodash';
 import Header from '../common/Header/Header';
+import Card from '../common/Card';
 
 const propTypes = {
   isLoggedIn: PropTypes.bool.isRequired,
@@ -13,11 +13,8 @@ const propTypes = {
   onClickFavourite: PropTypes.func.isRequired
 };
 
-const cardPropTypes = {
+const cardActionPropTypes = {
   id: PropTypes.number.isRequired,
-  image: PropTypes.string,
-  recipeName: PropTypes.string.isRequired,
-  recipeDescription: PropTypes.string.isRequired,
   onClickVote: PropTypes.func.isRequired,
   upvoteClassName: PropTypes.string.isRequired,
   downvoteClassName: PropTypes.string.isRequired,
@@ -27,8 +24,6 @@ const cardPropTypes = {
 const defaultProps = {
   firstName: ''
 };
-
-const cardDefaultProps = { image: '' };
 
 /**
  * Updates recipe depending on if user has voted
@@ -57,7 +52,7 @@ function updateRecipeVoteState(recipe, userId) {
  * @param {Number} userId
  * @param {func} onClickVote
  * @param {func} onClickFavourite
- * @returns {*} jsx
+ * @returns {Node} jsx
  */
 function displayRecipes(recipes, userId, onClickVote, onClickFavourite) {
   const chunkedRecipes = _.chunk(recipes, 3);
@@ -84,10 +79,13 @@ function displayRecipes(recipes, userId, onClickVote, onClickFavourite) {
           image={recipe.image}
           recipeName={recipe.name}
           recipeDescription={recipe.description}
-          upvoteClassName={upvoteClassName}
-          downvoteClassName={downvoteClassName}
-          onClickVote={onClickVote}
-          onClickFavourite={onClickFavourite}
+          cardAction={<CardAction
+            id={recipe.id}
+            upvoteClassName={upvoteClassName}
+            downvoteClassName={downvoteClassName}
+            onClickVote={onClickVote}
+            onClickFavourite={onClickFavourite}
+          />}
         />);
       })}
     </div>
@@ -96,8 +94,8 @@ function displayRecipes(recipes, userId, onClickVote, onClickFavourite) {
 
 /**
  * Functional component for favourite recipes page
- * @param {*} props
- * @returns {*} jsx
+ * @param {Object} props
+ * @returns {Node} jsx
  */
 function FavouriteRecipesPage({
   isLoggedIn, firstName, recipes, userId, onClickVote, onClickFavourite
@@ -120,64 +118,48 @@ function FavouriteRecipesPage({
   );
 }
 
+
 /**
- * Component for displaying card
- * @param {*} param0
- * @returns {*} jsx
+ * Component for displaying card actions
+ * @param {Object} props
+ * @returns {Node} jsx
  */
-function Card({
-  id, image, recipeName, recipeDescription, onClickVote,
-  upvoteClassName, downvoteClassName, onClickFavourite
+function CardAction({
+  id, onClickVote, upvoteClassName, downvoteClassName, onClickFavourite,
 }) {
   return (
-    <div className="col s12 l4 m4">
-      <div className="card">
-        <div className="card-image">
-          <img src={image} alt="recipe" />
-        </div>
-        <div className="card-stacked">
-          <div className="card-content">
-            <Link to={`/recipe/${id}`}><span className="card-title">{recipeName}</span></Link>
-            <p>{`${recipeDescription.slice(0, 30)}...`}</p>
-
-          </div>
-          <div className="card-action">
-            <div className="recipe-icons">
-              <a
-                href="#!"
-                className={upvoteClassName}
-                onClick={onClickVote}
-              >
-                <i id={id} className="material-icons">thumb_up</i>
-              </a>
-              <a
-                href="#!"
-                className={downvoteClassName}
-                onClick={onClickVote}
-              >
-                <i id={id} className="material-icons">thumb_down</i>
-              </a>
-              <a
-                href="#!"
-                className="favourite red-text"
-                onClick={onClickFavourite}
-              >
-                <i id={id} className="material-icons">favorite</i>
-              </a>
-            </div>
-          </div>
-        </div>
+    <div className="card-action">
+      <div className="recipe-icons">
+        <a
+          href="#!"
+          className={upvoteClassName}
+          onClick={onClickVote}
+        >
+          <i id={id} className="material-icons">thumb_up</i>
+        </a>
+        <a
+          href="#!"
+          className={downvoteClassName}
+          onClick={onClickVote}
+        >
+          <i id={id} className="material-icons">thumb_down</i>
+        </a>
+        <a
+          href="#!"
+          className="favourite red-text"
+          onClick={onClickFavourite}
+        >
+          <i id={id} className="material-icons">favorite</i>
+        </a>
       </div>
     </div>
-
   );
 }
 
 FavouriteRecipesPage.propTypes = propTypes;
 FavouriteRecipesPage.defaultProps = defaultProps;
 
-Card.propTypes = cardPropTypes;
-Card.defaultProps = cardDefaultProps;
+CardAction.propTypes = cardActionPropTypes;
 
 export default FavouriteRecipesPage;
 

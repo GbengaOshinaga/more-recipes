@@ -15,12 +15,13 @@ const addModalPropTypes = {
 };
 
 const editModalPropTypes = {
-  onChipChange: PropTypes.func.isRequired,
   onInputChange: PropTypes.func.isRequired,
   onClickEdit: PropTypes.func.isRequired,
   onFileChange: PropTypes.func.isRequired,
   inputRef: PropTypes.func.isRequired,
-  editData: PropTypes.object.isRequired
+  editData: PropTypes.object.isRequired,
+  handleChipAdd: PropTypes.func.isRequired,
+  handleChipDelete: PropTypes.func.isRequired
 };
 
 const deleteModalPropTypes = {
@@ -98,7 +99,7 @@ export function AddModal({
  * @returns {*} jsx
  */
 export function EditModal({
-  onChipChange, onInputChange,
+  onInputChange, handleChipAdd, handleChipDelete,
   onClickEdit, onFileChange, inputRef, editData
 }) {
   return (
@@ -113,7 +114,6 @@ export function EditModal({
             type="text"
             onChange={onInputChange}
             value={editData.recipeName}
-            label="Recipe Name"
             dataError="Recipe Name is required"
           />
           <div className="row">
@@ -121,13 +121,13 @@ export function EditModal({
               id="recipeDescription"
               value={editData.recipeDescription}
               onChange={onInputChange}
-              label="Recipe Details"
             />
           </div>
           <div className="row">
             <ChipInput
-              defaultValue={[...editData.ingredients]}
-              onChange={onChipChange}
+              value={[...editData.ingredients]}
+              onRequestAdd={chip => handleChipAdd(chip)}
+              onRequestDelete={chip => handleChipDelete(chip)}
             />
           </div>
           <div className="file-field input-field">

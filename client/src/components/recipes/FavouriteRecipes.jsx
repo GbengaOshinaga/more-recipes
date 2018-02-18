@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { sessionService } from 'redux-react-session';
 import { connect } from 'react-redux';
+import $ from 'jquery';
+import '../../../../node_modules/materialize-css/dist/js/materialize';
 import Page from './FavouriteRecipesPage';
 import * as recipeActions from '../../actions/RecipeActions';
 
@@ -39,6 +41,9 @@ class FavouriteRecipes extends React.Component {
    * @returns {*} undefined
    */
   componentDidMount() {
+    $('.button-collapse').sideNav();
+    $('.dropdown-button').dropdown();
+
     if (this.props.recipes.length === 0) {
       sessionService.loadSession()
         .then((token) => {

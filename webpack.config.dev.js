@@ -12,7 +12,7 @@ export default {
   ],
   target: 'web',
   output: {
-    path: `${__dirname}/dist`, // Note: Physical files are only output by the production build task `npm run build`.
+    path: `${__dirname}/dist`,
     publicPath: '/',
     filename: 'bundle.js'
   },
@@ -23,13 +23,22 @@ export default {
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NoEmitOnErrorsPlugin()
   ],
-  node: {
-    fs: 'empty'
+  resolve: {
+    extensions: ['.js', '.jsx']
   },
   module: {
     loaders: [
-      { test: /\.js$/, include: path.join(__dirname, 'client/src'), loaders: ['babel-loader'] },
+      {
+        test: /\.js|jsx$/,
+        include: path.join(__dirname, 'client/src'),
+        loader: 'babel-loader',
+        query: {
+          plugins: ['transform-runtime'],
+          presets: ['es2015', 'stage-0', 'react']
+        }
+      },
       { test: /(\.jpg)$/, use: [{ loader: 'file-loader' }] },
+      { test: /(\.png)$/, use: [{ loader: 'file-loader' }] },
       {
         test: /\.scss$/,
         use: [{
@@ -39,11 +48,7 @@ export default {
         }, {
           loader: 'sass-loader',
         }]
-      },
-      { test: /\.eot(\?v=\d+\.\d+\.\d+)?$/, loader: 'file' },
-      { test: /\.(woff|woff2)$/, loader: 'url?prefix=font/&limit=5000' },
-      { test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/, loader: 'url?limit=10000&mimetype=application/octet-stream' },
-      { test: /\.svg(\?v=\d+\.\d+\.\d+)?$/, loader: 'url?limit=10000&mimetype=image/svg+xml' }
+      }
     ]
   }
 };

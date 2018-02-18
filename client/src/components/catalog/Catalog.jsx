@@ -1,16 +1,20 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import toastr from 'toastr';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { sessionService } from 'redux-react-session';
+import $ from 'jquery';
+import '../../../../node_modules/materialize-css/dist/js/materialize';
 import CatalogPage from './CatalogPage';
 import * as recipeActions from '../../actions/RecipeActions';
 
 const propTypes = {
   isLoggedIn: PropTypes.bool.isRequired,
   firstName: PropTypes.string,
-  actions: PropTypes.object.isRequired,
+  actions: PropTypes.objectOf(PropTypes.func).isRequired,
   allRecipes: PropTypes.arrayOf(PropTypes.object).isRequired,
+  mostFavouritedRecipes: PropTypes.arrayOf(PropTypes.object).isRequired,
   searchResults: PropTypes.arrayOf(PropTypes.object).isRequired,
   userId: PropTypes.number,
   favourites: PropTypes.arrayOf(PropTypes.object).isRequired
@@ -34,20 +38,27 @@ class Catalog extends React.Component {
     super(props, context);
     this.state = {
       searchValue: '',
-      hasSearchValue: false
+      hasSearchValue: false,
     };
 
     this.vote = this.vote.bind(this);
     this.onSearchChange = this.onSearchChange.bind(this);
     this.addFavourite = this.addFavourite.bind(this);
+    toastr.options.closeButton = true;
   }
 
   /**
    * Method when component has finished mounting
-   * @returns {*} undefined
+   * @returns {*} null
    */
   componentDidMount() {
+    $('.button-collapse').sideNav();
+    $('.parallax').parallax();
+    $('.dropdown-button').dropdown();
+    $('ul.tabs').tabs();
+
     this.props.actions.getAllRecipes();
+    this.props.actions.getMostFavouritedRecipes();
     sessionService.loadSession()
       .then((token) => {
         this.props.actions.getFavourites(token);
@@ -64,7 +75,11 @@ class Catalog extends React.Component {
     this.setState({ searchValue: value, hasSearchValue: true }, () => {
       this.props.actions.search(this.state.searchValue);
     });
-    value === '' ? this.setState({ hasSearchValue: false }) : this.setState({ hasSearchValue: true });
+    if (value === '') {
+      this.setState({ hasSearchValue: false });
+    } else {
+      this.setState({ hasSearchValue: true });
+    }
   }
 
 
@@ -100,9 +115,13 @@ class Catalog extends React.Component {
     const { currentTarget } = event;
     sessionService.loadSession()
       .then((token) => {
-        currentTarget.classList.value === 'favourite' ?
-          this.props.actions.addFavourite(token, event.target.id) :
-          this.props.actions.deleteFavourite(token, event.target.id);
+        if (currentTarget.classList.value === 'favourite') {
+          this.props.actions.addFavourite(token, event.target.id)
+            .then(() => toastr.success('Added to favourites'));
+        } else {
+          this.props.actions.deleteFavourite(token, event.target.id)
+            .then(() => toastr.success('Removed from favourites'));
+        }
 
         currentTarget.classList.toggle('red-text');
       });
@@ -118,6 +137,7 @@ class Catalog extends React.Component {
         isLoggedIn={this.props.isLoggedIn}
         firstName={this.props.firstName}
         allRecipes={this.props.allRecipes}
+        mostFavouritedRecipes={this.props.mostFavouritedRecipes}
         searchResults={this.props.searchResults}
         onClickVote={this.vote}
         onSearchChange={this.onSearchChange}
@@ -134,17 +154,17 @@ class Catalog extends React.Component {
 /**
  * Maps state to component properties
  * @param {*} state
- * @param {*} ownProps
  * @returns {object} object
  */
-function mapStateToProps(state, ownProps) {
+function mapStateToProps(state) {
   return {
     isLoggedIn: state.session.authenticated,
     firstName: state.session.user.firstName,
     userId: state.session.user.id,
     allRecipes: state.recipes,
     searchResults: state.searchResults,
-    favourites: state.userFavourites
+    favourites: state.userFavourites,
+    mostFavouritedRecipes: state.mostFavourited
   };
 }
 

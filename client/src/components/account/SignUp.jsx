@@ -1,14 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
 import toastr from 'toastr';
 import { sessionService } from 'redux-react-session';
 import { signUp } from '../../actions/accountActions';
 import SignUpForm from './SignUpForm';
 
-const propTypes = {
-  signUp: PropTypes.func.isRequired
-};
+const defaultUserAvatar = 'http://res.cloudinary.com/king-more-recipes/image/upload/v1518031651/Expert-tutor-placeholder_cg9wet.jpg';
 
 /**
  * Class component for signing in
@@ -27,7 +24,8 @@ class SignUp extends React.Component {
         lastName: '',
         email: '',
         password: '',
-        confirmPassword: ''
+        confirmPassword: '',
+        profilePic: defaultUserAvatar
       }
     };
     this.onClickSave = this.onClickSave.bind(this);
@@ -37,10 +35,10 @@ class SignUp extends React.Component {
 
   /**
    * Saves input
-   * @returns {*} nothing
+   * @returns {func} redirect
    */
   onClickSave() {
-    this.props.signUp(this.state.data)
+    signUp(this.state.data)
       .then(response => response.json())
       .then((response) => {
         if (response.status === 'success') {
@@ -48,15 +46,18 @@ class SignUp extends React.Component {
           sessionService.saveUser(response.data.user);
           this.redirect();
         } else {
-          toastr.error(response.data.message || response.data.errors);
+          if (response.data.errors) {
+            return response.data.errors.map(error => toastr.error(error));
+          }
+          toastr.error(response.data.message);
         }
       })
-      .catch((error) => { toastr.error(error); });
+      .catch((error) => { toastr.error([...error]); });
   }
 
   /**
    * Method to handle on google login success
-   * @param {*} response
+   * @param {Object} response
    * @returns {*} null
    */
   onGoogleLoginSuccess(response) {
@@ -65,9 +66,10 @@ class SignUp extends React.Component {
       lastName: response.profileObj.familyName,
       email: response.profileObj.email,
       password: 'google-login',
-      confirmPassword: 'google-login'
+      confirmPassword: 'google-login',
+      profilePic: response.profileObj.imageUrl
     };
-    this.props.signUp(credentials)
+    signUp(credentials)
       .then(serverResponse => serverResponse.json())
       .then((serverResponse) => {
         if (serverResponse.status === 'success') {
@@ -92,7 +94,7 @@ class SignUp extends React.Component {
 
   /**
    * Redirects to catalog page after successfully signing in
-   * @returns {null} if there are errors
+   * @returns {null} null
    */
   redirect() {
     this.context.router.history.push('/catalog');
@@ -101,8 +103,8 @@ class SignUp extends React.Component {
 
   /**
    * Handles input field value change
-   * @param {*} event
-   * @returns {*} new state
+   * @param {Object} event
+   * @returns {Object} new state
    */
   handleChange(event) {
     const entries = this.state.data;
@@ -131,34 +133,8 @@ class SignUp extends React.Component {
   }
 }
 
-
-SignUp.propTypes = propTypes;
 SignUp.contextTypes = {
   router: PropTypes.object
 };
 
-/**
- * mapStateToProps
- * @param {*} state
- * @param {*} ownProps
- * @returns {object} object
- */
-function mapStateToProps(state, ownProps) {
-  return {
-    data: state.account.data,
-    errors: state.account.errors
-  };
-}
-
-/**
- * mapDispatchToProps
- * @param {*} dispatch
- * @returns {object} object
- */
-function mapDispatchToProps(dispatch) {
-  return {
-    signUp: data => dispatch(signUp(data))
-  };
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(SignUp);
+export default SignUp;

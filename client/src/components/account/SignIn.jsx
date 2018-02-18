@@ -7,8 +7,7 @@ import { signIn } from '../../actions/accountActions';
 import SignInForm from './SignInForm';
 
 const propTypes = {
-  signIn: PropTypes.func.isRequired,
-  location: PropTypes.object.isRequired
+  location: PropTypes.objectOf(PropTypes.any).isRequired
 };
 
 /**
@@ -39,7 +38,7 @@ class SignIn extends React.Component {
    * @returns {*} nothing
    */
   onClickSave() {
-    this.props.signIn(this.state.credentials)
+    signIn(this.state.credentials)
       .then(response => response.json())
       .then((response) => {
         if (response.status === 'success') {
@@ -60,7 +59,7 @@ class SignIn extends React.Component {
    */
   onGoogleLoginSuccess(response) {
     this.setState({ credentials: { email: response.profileObj.email, password: 'google-login' } });
-    this.props.signIn(this.state.credentials)
+    signIn(this.state.credentials)
       .then(serverResponse => serverResponse.json())
       .then((serverResponse) => {
         if (serverResponse.status === 'success') {
@@ -138,9 +137,7 @@ SignIn.contextTypes = {
  * @returns {object} object
  */
 function mapStateToProps(state, ownProps) {
-  // console.log(ownProps.location.state.from.pathname);
   return {
-    isLoggedIn: state.account.isLoginSuccessful,
     location: ownProps.location
   };
 }

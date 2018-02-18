@@ -6,11 +6,12 @@ const propTypes = {
   type: PropTypes.string.isRequired,
   onChange: PropTypes.func.isRequired,
   value: PropTypes.string.isRequired,
-  label: PropTypes.string.isRequired,
+  label: PropTypes.string,
   dataError: PropTypes.string
 };
 
 const defaultProps = {
+  label: '',
   dataError: ''
 };
 

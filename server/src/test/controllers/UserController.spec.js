@@ -23,7 +23,7 @@ describe('Users can signup, signin, and modify data', () => {
       email: faker.internet.email(),
       password: await bcrypt.hash('password', 10)
     });
-    token = jwt.sign({ userId: user.id, email: user.email }, 'mysecret');
+    token = jwt.sign({ userId: user.id, email: user.email }, process.env.JWT_SECRET);
   });
 
   it('it should sign up a user and return user and token', (done) => {
@@ -74,7 +74,6 @@ describe('Users can signup, signin, and modify data', () => {
         firstName
       })
       .end((err, res) => {
-        console.log(res.body);
         expect(res).to.have.status(200);
         expect(res.body.status).to.equal('success');
         expect(res.body.data.user.firstName).to.equal(firstName);

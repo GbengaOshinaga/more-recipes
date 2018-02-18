@@ -4,6 +4,8 @@ import { sessionService } from 'redux-react-session';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import toastr from 'toastr';
+import $ from 'jquery';
+import '../../../../node_modules/materialize-css/dist/js/materialize';
 import ProfilePage from './ProfilePage';
 import * as userActions from '../../actions/userActions';
 
@@ -39,6 +41,8 @@ class Profile extends React.Component {
     this.onEditClick = this.onEditClick.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
     this.onClickSave = this.onClickSave.bind(this);
+    this.onClickCancel = this.onClickCancel.bind(this);
+    this.onFileChange = this.onFileChange.bind(this);
   }
 
   /**
@@ -46,6 +50,9 @@ class Profile extends React.Component {
    * @returns {*} undefined
    */
   componentDidMount() {
+    $('.button-collapse').sideNav();
+    $('.dropdown-button').dropdown();
+
     sessionService.loadUser()
       .then((user) => {
         this.setState({
@@ -62,9 +69,11 @@ class Profile extends React.Component {
 
   /**
    * Method for when edit button is clicked
+   * @param {*} event
    * @returns {*} new state
    */
-  onEditClick() {
+  onEditClick(event) {
+    event.preventDefault();
     this.setState({
       isDisabled: false,
       saveButtonClass: 'card-action',
@@ -74,9 +83,11 @@ class Profile extends React.Component {
 
   /**
    * Method for when save button is clicked
+   * @param {*} event
    * @returns {*} null
    */
-  onClickSave() {
+  onClickSave(event) {
+    event.preventDefault();
     sessionService.loadSession()
       .then((token) => {
         this.props.actions.modifyUser(token, this.state.data)
@@ -96,6 +107,51 @@ class Profile extends React.Component {
             }
           });
       });
+  }
+
+  /**
+   * Method for when cancel button is clicked
+   * @param {*} event
+   * @returns {*} null
+   */
+  onClickCancel(event) {
+    event.preventDefault();
+    this.setState({
+      isDisabled: true,
+      saveButtonClass: 'card-action hide',
+      editPhotoButtonClass: 'btn-floating btn-large waves-effect waves-light teal lighten-1 hide'
+    });
+    sessionService.loadUser()
+      .then((user) => {
+        this.setState({
+          data: {
+            profilePic: user.profilePic,
+            firstName: user.firstName,
+            lastName: user.lastName,
+            email: user.email,
+            about: user.about
+          }
+        });
+      });
+  }
+
+  /**
+   * Method for when file loads
+   * @param {*} event
+   * @returns {*} null
+   */
+  onFileChange(event) {
+    const file = event.target.files[0];
+    if (file) {
+      userActions.uploadImage(file)
+        .then(response => response.json())
+        .then((response) => {
+          console.log(response);
+          const { data } = this.state;
+          data.profilePic = response.secure_url;
+          this.setState({ data }, () => console.log(this.state.data));
+        });
+    }
   }
 
   /**
@@ -128,7 +184,9 @@ class Profile extends React.Component {
         onEditClick={this.onEditClick}
         onChange={this.handleInputChange}
         onClickSave={this.onClickSave}
+        onClickCancel={this.onClickCancel}
         editPhotoButtonClass={this.state.editPhotoButtonClass}
+        onFileChange={this.onFileChange}
       />
     );
   }

@@ -8,7 +8,8 @@ const propTypes = {
   href: PropTypes.string.isRequired,
   hrefText: PropTypes.string.isRequired,
   onSuccess: PropTypes.func.isRequired,
-  onFailure: PropTypes.func.isRequired
+  onFailure: PropTypes.func.isRequired,
+  buttonText: PropTypes.string.isRequired
 };
 
 
@@ -18,7 +19,7 @@ const propTypes = {
  * @returns {*} jsx
  */
 function SocialLoginButtons({
-  isAMemberText, href, hrefText, onSuccess, onFailure
+  isAMemberText, href, hrefText, onSuccess, onFailure, buttonText
 }) {
   return (
     <div>
@@ -28,7 +29,7 @@ function SocialLoginButtons({
       <div>
         <GoogleLogin
           clientId="827684783940-iisct8ub0eifot2ebb4fod5f3nrnk7ij.apps.googleusercontent.com"
-          buttonText="LOGIN WITH GOOGLE"
+          buttonText={buttonText}
           onSuccess={onSuccess}
           onFailure={onFailure}
         />

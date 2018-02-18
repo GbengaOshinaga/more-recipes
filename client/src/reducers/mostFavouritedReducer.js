@@ -1,20 +1,17 @@
 import initialState from './initialState';
-import { GET_USER_FAVOURITES_SUCCESS, GET_USER_FAVOURITES_FAILURE, VOTE_SUCCESS } from '../actions/actions';
+import { GET_MOST_FAVOURITED_RECIPES_SUCCESS, VOTE_SUCCESS } from '../actions/actions';
 
 /**
- * userRecipes reducer
+ * Most favourited recipes reducer
  * @param {*} state
  * @param {*} action
- * @returns {object} new state
+ * @returns {*} new state
  */
-export default function userRecipesReducer(state = initialState.userFavourites, action) {
+export default function mostFavouritedReducer(state = initialState.mostFavourited, action) {
   const { response } = action;
   switch (action.type) {
-    case GET_USER_FAVOURITES_SUCCESS:
+    case GET_MOST_FAVOURITED_RECIPES_SUCCESS:
       return [...response];
-
-    case GET_USER_FAVOURITES_FAILURE:
-      return [];
 
     case VOTE_SUCCESS:
       return [...state.map((recipe) => {
@@ -28,4 +25,3 @@ export default function userRecipesReducer(state = initialState.userFavourites, 
       return state;
   }
 }
-

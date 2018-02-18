@@ -80,7 +80,7 @@ export default class User {
         'Content-Type': 'application/x-www-form-urlencoded',
         'Access-Token': token
       },
-      body: `firstName=${data.firstName}&lastName=${data.lastName}&email=${data.email}&about=${data.about}`
+      body: `firstName=${data.firstName}&lastName=${data.lastName}&email=${data.email}&about=${data.about}&profilePic=${data.profilePic}`
     });
   }
 
