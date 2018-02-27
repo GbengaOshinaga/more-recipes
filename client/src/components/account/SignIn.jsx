@@ -31,6 +31,10 @@ class SignIn extends React.Component {
     this.onClickSave = this.onClickSave.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.onGoogleLoginSuccess = this.onGoogleLoginSuccess.bind(this);
+    toastr.options = {
+      closeButton: true,
+      positionClass: 'toast-top-right'
+    };
   }
 
   /**
@@ -41,6 +45,7 @@ class SignIn extends React.Component {
     signIn(this.state.credentials)
       .then(response => response.json())
       .then((response) => {
+        console.log(response);
         if (response.status === 'success') {
           sessionService.saveSession(response.data.token);
           sessionService.saveUser(response.data.user);

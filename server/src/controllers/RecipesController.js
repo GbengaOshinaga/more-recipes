@@ -31,7 +31,7 @@ export default class RecipesController {
           ingredients: ingredientsArray
         })
           .then(recipe => res.status(201).jsend.success({ recipe }))
-          .catch(() => res.status(400).jsend.error('An error occured'));
+          .catch(error => res.status(400).jsend.error(error));
       })
       .catch(error => res.status(400).jsend.error(error));
   }

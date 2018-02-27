@@ -8,10 +8,10 @@ const GLOBALS = {
 
 module.exports = {
   devtool: 'source-map',
-  entry: './client/src/index.js',
+  entry: path.join(__dirname, 'client/src/index.js'),
   target: 'web',
   output: {
-    path: `${__dirname}/dist`,
+    path: path.join(__dirname, 'dist'),
     publicPath: '/',
     filename: 'bundle.js'
   },
@@ -41,7 +41,7 @@ module.exports = {
       { test: /(\.jpg)$/, use: [{ loader: 'file-loader' }] },
       { test: /(\.png)$/, use: [{ loader: 'file-loader' }] },
       {
-        test: /\.scss$/,
+        test: /\.css$/,
         use: [{
           loader: 'style-loader'
         }, {
@@ -49,6 +49,14 @@ module.exports = {
         }, {
           loader: 'sass-loader',
         }]
+      },
+      {
+        test: /\.scss$/,
+        use: ExtractTextPlugin.extract({
+          fallback: 'style-loader',
+          // resolve-url-loader may be chained before sass-loader if necessary
+          use: ['css-loader', 'sass-loader'],
+        }),
       }
     ]
   }

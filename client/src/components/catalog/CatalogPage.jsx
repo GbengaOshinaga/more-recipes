@@ -147,7 +147,7 @@ export default function CatalogPage({
           onChange={onSearchChange}
           value={searchValue}
         />
-        <div className="parallax"><img src={backgroundImage} alt="parallax" /></div>
+        <div className="parallax"><img src="/assets/img/bg-search.jpg" alt="parallax" /></div>
         <div className="search-form">
           <div className="container">
             <form>

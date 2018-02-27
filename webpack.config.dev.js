@@ -1,7 +1,8 @@
-import webpack from 'webpack';
-import path from 'path';
+const webpack = require('webpack');
+const path = require('path');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
-export default {
+module.exports = {
   devtool: 'cheap-module-eval-source-map',
   entry: [
     'webpack-hot-middleware/client?reload=true',
@@ -18,7 +19,8 @@ export default {
   },
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
-    new webpack.NoEmitOnErrorsPlugin()
+    new webpack.NoEmitOnErrorsPlugin(),
+    new ExtractTextPlugin({ filename: 'style.css' }),
   ],
   resolve: {
     extensions: ['.js', '.jsx']
@@ -37,7 +39,7 @@ export default {
       { test: /(\.jpg)$/, use: [{ loader: 'file-loader' }] },
       { test: /(\.png)$/, use: [{ loader: 'file-loader' }] },
       {
-        test: /\.scss$/,
+        test: /\.css$/,
         use: [{
           loader: 'style-loader'
         }, {
@@ -45,6 +47,14 @@ export default {
         }, {
           loader: 'sass-loader',
         }]
+      },
+      {
+        test: /\.scss$/,
+        use: ExtractTextPlugin.extract({
+          fallback: 'style-loader',
+          // resolve-url-loader may be chained before sass-loader if necessary
+          use: ['css-loader', 'sass-loader'],
+        }),
       }
     ]
   }

@@ -3,14 +3,29 @@ import logger from 'morgan';
 import bodyParser from 'body-parser';
 import cors from 'cors';
 import path from 'path';
-import config from 'dotenv';
+import webpack from 'webpack';
+import dotenv from 'dotenv';
+import config from '../../webpack.config.dev';
 import routes from './routes/index';
 import db from './models/index';
 
-config.config();
+dotenv.config();
 
 // Set up the express app
 const app = new Express();
+
+app.use('/', Express.static(path.join(__dirname, '../../dist')));
+
+if (process.env.NODE_ENV === 'development') {
+  const compiler = webpack(config);
+
+  app.use(require('webpack-dev-middleware')(compiler, {
+    noInfo: true,
+    publicPath: config.output.publicPath
+  }));
+
+  app.use(require('webpack-hot-middleware')(compiler));
+}
 
 app.use(cors());
 app.options('*', cors());

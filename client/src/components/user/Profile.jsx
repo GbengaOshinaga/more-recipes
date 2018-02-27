@@ -4,6 +4,7 @@ import { sessionService } from 'redux-react-session';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import toastr from 'toastr';
+import Loader from 'react-loader';
 import ProfilePage from './ProfilePage';
 import * as userActions from '../../actions/userActions';
 
@@ -33,7 +34,8 @@ class Profile extends React.Component {
       },
       isDisabled: true,
       saveButtonClass: 'card-action hide',
-      editPhotoButtonClass: 'btn-floating btn-large waves-effect waves-light teal lighten-1 hide'
+      editPhotoButtonClass: 'btn-floating btn-large waves-effect waves-light teal lighten-1 hide',
+      loaded: true
     };
 
     this.onEditClick = this.onEditClick.bind(this);
@@ -41,6 +43,10 @@ class Profile extends React.Component {
     this.onClickSave = this.onClickSave.bind(this);
     this.onClickCancel = this.onClickCancel.bind(this);
     this.onFileChange = this.onFileChange.bind(this);
+    toastr.options = {
+      closeButton: true,
+      positionClass: 'toast-top-right'
+    };
   }
 
   /**
@@ -95,6 +101,7 @@ class Profile extends React.Component {
             editPhotoButtonClass: 'btn-floating btn-large waves-effect waves-light teal lighten-1 hide'
           }))
           .catch((error) => {
+            console.log(error);
             toastr.error(error);
             if (error) {
               this.setState({
@@ -139,15 +146,15 @@ class Profile extends React.Component {
    * @returns {*} null
    */
   onFileChange(event) {
+    this.setState({ loaded: false });
     const file = event.target.files[0];
     if (file) {
       userActions.uploadImage(file)
         .then(response => response.json())
         .then((response) => {
-          console.log(response);
           const { data } = this.state;
           data.profilePic = response.secure_url;
-          this.setState({ data }, () => console.log(this.state.data));
+          this.setState({ data, loaded: true });
         });
     }
   }
@@ -169,23 +176,46 @@ class Profile extends React.Component {
    */
   render() {
     return (
-      <ProfilePage
-        isLoggedIn={this.props.isLoggedIn}
-        firstName={this.state.data.firstName}
-        lastName={this.state.data.lastName}
-        profilePic={this.state.data.profilePic}
-        name={this.state.data.name}
-        email={this.state.data.email}
-        about={this.state.data.about}
-        isDisabled={this.state.isDisabled}
-        saveButtonClass={this.state.saveButtonClass}
-        onEditClick={this.onEditClick}
-        onChange={this.handleInputChange}
-        onClickSave={this.onClickSave}
-        onClickCancel={this.onClickCancel}
-        editPhotoButtonClass={this.state.editPhotoButtonClass}
-        onFileChange={this.onFileChange}
-      />
+      <div>
+        <ProfilePage
+          isLoggedIn={this.props.isLoggedIn}
+          firstName={this.state.data.firstName}
+          lastName={this.state.data.lastName}
+          profilePic={this.state.data.profilePic}
+          name={this.state.data.name}
+          email={this.state.data.email}
+          about={this.state.data.about}
+          isDisabled={this.state.isDisabled}
+          saveButtonClass={this.state.saveButtonClass}
+          onEditClick={this.onEditClick}
+          onChange={this.handleInputChange}
+          onClickSave={this.onClickSave}
+          onClickCancel={this.onClickCancel}
+          editPhotoButtonClass={this.state.editPhotoButtonClass}
+          onFileChange={this.onFileChange}
+        />
+        <Loader
+          loaded={this.state.loaded}
+          lines={13}
+          length={20}
+          width={10}
+          radius={30}
+          corners={1}
+          rotate={0}
+          direction={1}
+          color="#000"
+          speed={1}
+          trail={60}
+          shadow={false}
+          hwaccel={false}
+          className="spinner"
+          zIndex={2e9}
+          top="50%"
+          left="50%"
+          scale={1.00}
+          loadedClassName="loadedContent"
+        />
+      </div>
     );
   }
 }
@@ -193,10 +223,9 @@ class Profile extends React.Component {
 /**
  * Maps state to component properties
  * @param {*} state
- * @param {*} ownProps
  * @returns {object} object
  */
-function mapStateToProps(state, ownProps) {
+function mapStateToProps(state) {
   return {
     isLoggedIn: state.session.authenticated,
     firstName: state.session.user.firstName,

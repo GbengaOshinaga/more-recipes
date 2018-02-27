@@ -31,6 +31,10 @@ class SignUp extends React.Component {
     this.onClickSave = this.onClickSave.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.onGoogleLoginSuccess = this.onGoogleLoginSuccess.bind(this);
+    toastr.options = {
+      closeButton: true,
+      positionClass: 'toast-top-right'
+    };
   }
 
   /**

@@ -42,7 +42,10 @@ export class Catalog extends React.Component {
     this.vote = this.vote.bind(this);
     this.onSearchChange = this.onSearchChange.bind(this);
     this.addFavourite = this.addFavourite.bind(this);
-    toastr.options.closeButton = true;
+    toastr.options = {
+      closeButton: true,
+      positionClass: 'toast-top-right'
+    };
   }
 
   /**

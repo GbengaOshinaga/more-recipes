@@ -4,6 +4,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { sessionService } from 'redux-react-session';
 import toastr from 'toastr';
+import Loader from 'react-loader';
 import Page from './UserRecipesPage';
 import * as userActions from '../../actions/userActions';
 
@@ -48,7 +49,8 @@ class UserRecipes extends React.Component {
         ingredients: [],
         imageURL: ''
       },
-      imageFile: {}
+      imageFile: {},
+      loaded: true
     };
 
     this.handleChipsChange = this.handleChipsChange.bind(this);
@@ -62,7 +64,10 @@ class UserRecipes extends React.Component {
     this.handleEditInputChange = this.handleEditInputChange.bind(this);
     this.handleChipAdd = this.handleChipAdd.bind(this);
     this.handleChipDelete = this.handleChipDelete.bind(this);
-    toastr.options.closeButton = true;
+    toastr.options = {
+      closeButton: true,
+      positionClass: 'toast-top-right'
+    };
   }
 
   /**
@@ -87,12 +92,14 @@ class UserRecipes extends React.Component {
    */
   onClickSave(event) {
     event.preventDefault();
+    this.setState({ loaded: false });
     if (!(this.state.imageFile instanceof File)) {
       const { data } = this.state;
       data.imageURL = defaultImage;
       this.setState({ data }, () => {
         this.saveRecipe(this.state.data);
       });
+      this.setState({ loaded: true });
     } else {
       userActions.uploadImage(this.state.imageFile)
         .then(response => response.json())
@@ -102,6 +109,7 @@ class UserRecipes extends React.Component {
           this.setState({ data }, () => {
             this.saveRecipe(this.state.data);
           });
+          this.setState({ loaded: true });
         });
     }
   }
@@ -113,8 +121,10 @@ class UserRecipes extends React.Component {
    */
   onClickEdit(event) {
     event.preventDefault();
+    this.setState({ loaded: false });
     if (!(this.state.imageFile instanceof File)) {
       this.editRecipe();
+      this.setState({ loaded: true });
     } else {
       userActions.uploadImage(this.state.imageFile)
         .then(response => response.json())
@@ -125,6 +135,7 @@ class UserRecipes extends React.Component {
             this.editRecipe();
           });
         });
+      this.setState({ loaded: true });
     }
   }
 
@@ -318,28 +329,51 @@ class UserRecipes extends React.Component {
    */
   render() {
     return (
-      <Page
-        isLoggedIn={this.props.isLoggedIn}
-        firstName={this.props.firstName}
-        userRecipes={this.props.userRecipes}
-        onChipChange={chips => this.handleChipsChange(chips)}
-        onInputChange={this.handleInputChange}
-        onEditInputChange={this.handleEditInputChange}
-        inputValue={this.state.data.recipeName}
-        descValue={this.state.data.recipeDescription}
-        editData={this.state.edit}
-        onClickSave={this.onClickSave}
-        onFileChange={this.loadImage}
-        inputRef={(el) => { this.inputElement = el; }}
-        editInputRef={(el) => { this.editInputElement = el; }}
-        onConfirmDelete={this.onConfirmDelete}
-        getId={this.getId}
-        getIdForEdit={this.getIdForEdit}
-        defaultIngredients={this.state.data.ingredients}
-        onClickEdit={this.onClickEdit}
-        handleChipAdd={this.handleChipAdd}
-        handleChipDelete={this.handleChipDelete}
-      />
+      <div>
+        <Page
+          isLoggedIn={this.props.isLoggedIn}
+          firstName={this.props.firstName}
+          userRecipes={this.props.userRecipes}
+          onChipChange={chips => this.handleChipsChange(chips)}
+          onInputChange={this.handleInputChange}
+          onEditInputChange={this.handleEditInputChange}
+          inputValue={this.state.data.recipeName}
+          descValue={this.state.data.recipeDescription}
+          editData={this.state.edit}
+          onClickSave={this.onClickSave}
+          onFileChange={this.loadImage}
+          inputRef={(el) => { this.inputElement = el; }}
+          editInputRef={(el) => { this.editInputElement = el; }}
+          onConfirmDelete={this.onConfirmDelete}
+          getId={this.getId}
+          getIdForEdit={this.getIdForEdit}
+          defaultIngredients={this.state.data.ingredients}
+          onClickEdit={this.onClickEdit}
+          handleChipAdd={this.handleChipAdd}
+          handleChipDelete={this.handleChipDelete}
+        />
+        <Loader
+          loaded={this.state.loaded}
+          lines={13}
+          length={20}
+          width={10}
+          radius={30}
+          corners={1}
+          rotate={0}
+          direction={1}
+          color="#000"
+          speed={1}
+          trail={60}
+          shadow={false}
+          hwaccel={false}
+          className="spinner"
+          zIndex={2e9}
+          top="50%"
+          left="50%"
+          scale={1.00}
+          loadedClassName="loadedContent"
+        />
+      </div>
     );
   }
 }

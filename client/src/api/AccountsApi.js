@@ -9,7 +9,7 @@ export default class AccountsApi {
      * @returns {object} response
      */
   static signIn(credentials) {
-    return fetch('/api/v1/users/signin', {
+    return fetch('https://more-recipe-gbenga.herokuapp.com/api/v1/users/signin', {
       method: 'post',
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded'
