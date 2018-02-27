@@ -4,8 +4,6 @@ import toastr from 'toastr';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { sessionService } from 'redux-react-session';
-import $ from 'jquery';
-import '../../../../node_modules/materialize-css/dist/js/materialize';
 import CatalogPage from './CatalogPage';
 import * as recipeActions from '../../actions/RecipeActions';
 
@@ -28,17 +26,17 @@ const defaultProps = {
 /**
  * Class component for catalog page
  */
-class Catalog extends React.Component {
+export class Catalog extends React.Component {
   /**
      * Component constructor
-     * @param {*} props
-     * @param {*} context
+     * @param {Object} props
+     * @param {Object} context
      */
   constructor(props, context) {
     super(props, context);
     this.state = {
       searchValue: '',
-      hasSearchValue: false,
+      hasSearchValue: false
     };
 
     this.vote = this.vote.bind(this);
@@ -67,8 +65,8 @@ class Catalog extends React.Component {
 
   /**
    * onChange event on search bars
-   * @param {*} event
-   * @returns {*} null
+   * @param {Object} event
+   * @returns {null} null
    */
   onSearchChange(event) {
     const { value } = event.target;
@@ -85,8 +83,8 @@ class Catalog extends React.Component {
 
   /**
    * votes recipe
-   * @param {*} event
-   * @returns {*} null
+   * @param {Object} event
+   * @returns {null} null
    */
   vote(event) {
     event.persist();
@@ -106,8 +104,8 @@ class Catalog extends React.Component {
 
   /**
    * Add recipe to favourite
-   * @param {*} event
-   * @returns {*} null
+   * @param {Object} event
+   * @returns {null} null
    */
   addFavourite(event) {
     event.persist();
@@ -129,7 +127,7 @@ class Catalog extends React.Component {
 
   /**
    * Component render function
-   * @returns {*} jsx
+   * @returns {Node} jsx
    */
   render() {
     return (
@@ -153,7 +151,7 @@ class Catalog extends React.Component {
 
 /**
  * Maps state to component properties
- * @param {*} state
+ * @param {Object} state
  * @returns {object} object
  */
 function mapStateToProps(state) {
@@ -171,7 +169,7 @@ function mapStateToProps(state) {
 /**
  * Maps actions to component properties
  * @param {*} dispatch
- * @returns {*} actions
+ * @returns {Object} actions
  */
 function mapDispatchToProps(dispatch) {
   return {

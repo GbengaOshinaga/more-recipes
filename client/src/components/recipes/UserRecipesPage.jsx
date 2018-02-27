@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
 import { Link } from 'react-router-dom';
-import Header from '../common/Header/Header';
+import { MainHeader } from '../common/Header';
 import Card from '../common/Card';
 import { AddModal, DeleteModal, EditModal } from './Modal';
 
@@ -27,7 +27,7 @@ const pagePropTypes = {
   onConfirmDelete: PropTypes.func.isRequired,
   getId: PropTypes.func.isRequired,
   getIdForEdit: PropTypes.func.isRequired,
-  editData: PropTypes.object.isRequired,
+  editData: PropTypes.objectOf(PropTypes.any).isRequired,
   onClickEdit: PropTypes.func.isRequired,
   onEditInputChange: PropTypes.func.isRequired,
   handleChipAdd: PropTypes.func.isRequired,
@@ -83,13 +83,14 @@ function Page({
 }) {
   return (
     <div>
-      <Header
+      <MainHeader
         isLoggedIn={isLoggedIn}
         firstName={firstName}
       />
       <div className="container">
         <a
-          className="btn-floating btn-large waves-effect waves-light teal lighten-1 right modal-trigger pulse"
+          className="btn-floating btn-large waves-effect
+          waves-light teal lighten-1 right modal-trigger pulse"
           href="#add-modal"
         >
           <i className="material-icons">add</i>

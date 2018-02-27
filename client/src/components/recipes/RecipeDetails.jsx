@@ -3,18 +3,15 @@ import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { sessionService } from 'redux-react-session';
 import { connect } from 'react-redux';
-import $ from 'jquery';
-import '../../../../node_modules/materialize-css/dist/js/materialize';
 import * as recipeActions from '../../actions/RecipeActions';
 import Page from './RecipeDetailsPage';
 
 const propTypes = {
   isLoggedIn: PropTypes.bool.isRequired,
   firstName: PropTypes.string,
-  actions: PropTypes.object.isRequired,
-  match: PropTypes.object.isRequired,
-  recipe: PropTypes.object.isRequired,
-  location: PropTypes.object.isRequired,
+  actions: PropTypes.objectOf(PropTypes.any).isRequired,
+  match: PropTypes.objectOf(PropTypes.any).isRequired,
+  location: PropTypes.objectOf(PropTypes.any).isRequired,
   profilePic: PropTypes.string.isRequired,
   recipes: PropTypes.arrayOf(PropTypes.object).isRequired,
   userId: PropTypes.number.isRequired,
@@ -216,10 +213,9 @@ RecipeDetails.defaultProps = defaultProps;
 /**
  * Maps state to component properties
  * @param {Object} state
- * @param {Object} ownProps
  * @returns {object} object
  */
-function mapStateToProps(state, ownProps) {
+function mapStateToProps(state) {
   return {
     isLoggedIn: state.session.authenticated,
     firstName: state.session.user.firstName,

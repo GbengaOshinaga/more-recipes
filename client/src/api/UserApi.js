@@ -10,7 +10,7 @@ export default class User {
      * @returns {object} Promise
      */
   static getUserRecipes(token) {
-    return fetch('http://localhost:8000/api/v1/users/recipes', {
+    return fetch('/api/v1/users/recipes', {
       method: 'get',
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
@@ -26,7 +26,7 @@ export default class User {
      * @returns {object} Promise
      */
   static addRecipe(token, data) {
-    return fetch('http://localhost:8000/api/v1/recipes', {
+    return fetch('/api/v1/recipes', {
       method: 'post',
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
@@ -43,7 +43,7 @@ export default class User {
    * @returns {*} Promise
    */
   static deleteRecipe(token, id) {
-    return fetch(`http://localhost:8000/api/v1/recipes/${id}`, {
+    return fetch(`/api/v1/recipes/${id}`, {
       method: 'delete',
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
@@ -58,7 +58,7 @@ export default class User {
    * @returns {*} Promise
    */
   static getFavourites(token) {
-    return fetch('http://localhost:8000/api/v1/users/recipes/favourites', {
+    return fetch('/api/v1/users/recipes/favourites', {
       method: 'get',
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
@@ -74,7 +74,7 @@ export default class User {
    * @returns {*} Promise
    */
   static modifyUser(token, data) {
-    return fetch('http://localhost:8000/api/v1/users/edit', {
+    return fetch('/api/v1/users/edit', {
       method: 'post',
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
@@ -92,7 +92,7 @@ export default class User {
    * @returns {*} Promise
    */
   static editRecipe(token, id, data) {
-    return fetch(`http://localhost:8000/api/v1/recipes/${id}`, {
+    return fetch(`/api/v1/recipes/${id}`, {
       method: 'put',
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',

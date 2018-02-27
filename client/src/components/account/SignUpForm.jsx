@@ -1,9 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 import InputField from '../common/InputField';
 import Button from '../common/Button';
 import SocialLoginButtons from './SocialLoginButtons';
-import SignInAndSignUpHeader from '../common/Header/SignInAndSignUpHeader';
+import { Header } from '../common/Header';
 
 const propTypes = {
   onChange: PropTypes.func.isRequired,
@@ -13,26 +14,9 @@ const propTypes = {
   email: PropTypes.string.isRequired,
   password: PropTypes.string.isRequired,
   confirmPassword: PropTypes.string.isRequired,
-  errors: PropTypes.arrayOf(PropTypes.string),
   onSuccess: PropTypes.func.isRequired,
   onFailure: PropTypes.func.isRequired
 };
-
-const defaultProps = {
-  errors: []
-};
-
-/**
- * Display errors
- * @param {*} errors
- * @returns {jsx} errors
- */
-function listErrors(errors) {
-  if (errors.constructor === Array) {
-    return errors.map((error, index) => <li key={index}>{error}</li>);
-  }
-  return errors;
-}
 
 /**
  * Functional component for sign up form
@@ -41,11 +25,16 @@ function listErrors(errors) {
  */
 function SignUpForm({
   onChange, onClickSave, firstName, lastName, email,
-  password, confirmPassword, errors, onSuccess, onFailure
+  password, confirmPassword, onSuccess, onFailure
 }) {
   return (
     <div className="sign-body">
-      <SignInAndSignUpHeader />
+      <Header
+        links={
+          <React.Fragment>
+            <li><Link to="/catalog">Catalog</Link></li>
+          </React.Fragment>}
+      />
       <div className="signup-box">
         <InputField
           id="firstName"
@@ -95,7 +84,6 @@ function SignUpForm({
           materialIcon="send"
           buttonText="Submit"
         />
-        {errors && <ul className="red-text">{listErrors(errors)}</ul>}
         <SocialLoginButtons
           isAMemberText="Already a member?"
           href="/signin"
@@ -110,6 +98,5 @@ function SignUpForm({
 }
 
 SignUpForm.propTypes = propTypes;
-SignUpForm.defaultProps = defaultProps;
 
 export default SignUpForm;

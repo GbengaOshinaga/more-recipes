@@ -4,8 +4,6 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { sessionService } from 'redux-react-session';
 import toastr from 'toastr';
-import $ from 'jquery';
-import '../../../../node_modules/materialize-css/dist/js/materialize';
 import Page from './UserRecipesPage';
 import * as userActions from '../../actions/userActions';
 

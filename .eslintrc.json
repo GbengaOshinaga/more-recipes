@@ -10,7 +10,10 @@
       "File": false,
       "Image": false,
       "FileReader": false,
-      "jest": false
+      "jest": false,
+      "window": false,
+      "document": false,
+      "$": false
     },
     "rules": {
       "one-var": 0,

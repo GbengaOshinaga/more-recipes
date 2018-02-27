@@ -12,13 +12,15 @@
     "drop:db": "NODE_ENV=test ./node_modules/.bin/sequelize db:drop",
     "create:db": "NODE_ENV=test ./node_modules/.bin/sequelize db:create more_recipes_test",
     "migrate:db": "NODE_ENV=test ./node_modules/.bin/sequelize db:migrate",
+    "migrate": "./node_modules/.bin/sequelize db:migrate",
     "test:dev": "npm-run-all --sequential drop:db create:db migrate:db test",
     "test:react": "jest ./client/src/test/**/**.spec.js",
     "babel-node": "babel-node ./server/src/index.js --presets=env",
     "startServer": "./node_modules/.bin/babel-watch server/src/app.js",
     "startReact": "babel-node ./client/app.js",
-    "buildReact": "",
-    "build": "babel server/src -d server/dist",
+    "buildReact": "webpack --config ./webpack.config.prod.js",
+    "buildServer": "babel server/src -d server/dist",
+    "build": "npm-run-all --sequential buildReact buildServer migrate",
     "heroku-postbuild": "npm run build",
     "start": "node server/dist/app.js",
     "coveralls": "nyc npm run test:dev&& nyc report --reporter=text-lcov | coveralls"
@@ -80,44 +82,61 @@
     "react": "^16.1.1",
     "react-dom": "^16.1.1",
     "react-google-login": "^3.0.2",
+    "react-infinite-scroll-component": "^3.0.2",
     "react-redux": "^5.0.6",
     "react-router": "^4.2.0",
     "react-router-dom": "^4.2.2",
     "react-router-redux": "^4.0.8",
     "redux": "^3.7.2",
+    "webpack": "^3.10.0",
     "redux-react-session": "^2.2.1",
     "redux-thunk": "^2.2.0",
     "sequelize": "^4.20.1",
     "sequelize-cli": "^3.0.0",
-    "toastr": "^2.1.2"
-  },
-  "devDependencies": {
+    "toastr": "^2.1.2",
+    "extract-text-webpack-plugin": "^3.0.2",
     "babel-core": "^6.26.0",
-    "babel-jest": "^22.2.2",
     "babel-loader": "^7.1.2",
     "babel-preset-env": "^1.6.1",
+    "sass-loader": "^6.0.6",
+    "style-loader": "^0.19.1",
+    "node-sass": "^4.7.2",
+    "react-materialize": "^1.1.2",
+    "css-loader": "^0.28.7"
+  },
+  "devDependencies": {
+    "babel-jest": "^22.2.2",
     "babel-preset-react-hmre": "^1.1.1",
-    "css-loader": "^0.28.7",
     "enzyme": "^3.3.0",
     "enzyme-adapter-react-16": "^1.1.1",
     "eslint-plugin-react": "^7.5.1",
-    "extract-text-webpack-plugin": "^3.0.2",
     "faker": "^4.1.0",
     "fetch-mock": "^6.0.0",
     "jest": "^22.2.2",
-    "node-sass": "^4.7.2",
+    "jsdom": "^11.6.2",
     "redux-immutable-state-invariant": "^2.1.0",
     "redux-logger": "^3.0.6",
     "redux-mock-store": "^1.5.1",
-    "sass-loader": "^6.0.6",
-    "style-loader": "^0.19.1",
-    "webpack": "^3.10.0",
     "webpack-dev-middleware": "^2.0.3",
     "webpack-hot-middleware": "^2.21.0"
   },
   "babel": {
     "presets": [
       "latest"
+    ]
+  },
+  "jest": {
+    "setupTestFrameworkScriptFile": "jest-environment-jsdom",
+    "testEnvironment": "jsdom",
+    "moduleNameMapper": {
+      "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/client/src/test/mocks/fileMock.js"
+    },
+    "transform": {
+      ".*": "<rootDir>/node_modules/babel-jest"
+    },
+    "collectCoverage": true,
+    "setupFiles": [
+      "<rootDir>/client/testSetup.js"
     ]
   },
   "repository": {

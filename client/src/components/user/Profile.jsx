@@ -4,8 +4,6 @@ import { sessionService } from 'redux-react-session';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import toastr from 'toastr';
-import $ from 'jquery';
-import '../../../../node_modules/materialize-css/dist/js/materialize';
 import ProfilePage from './ProfilePage';
 import * as userActions from '../../actions/userActions';
 

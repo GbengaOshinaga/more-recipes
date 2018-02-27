@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Avatar } from 'material-ui';
 import { Link } from 'react-router-dom';
 import Button from '../common/Button';
-import Header from '../common/Header/Header';
+import { MainHeader } from '../common/Header';
 import TextArea from '../common/TextArea';
 
 const propTypes = {
@@ -87,7 +87,7 @@ function RecipeDetailsPage({
   }
   return (
     <div>
-      <Header
+      <MainHeader
         isLoggedIn={isLoggedIn}
         firstName={firstName}
       />

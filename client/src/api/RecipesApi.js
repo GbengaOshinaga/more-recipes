@@ -9,7 +9,7 @@ export default class RecipesApi {
      * @returns {Promise} Promise
      */
   static getAllRecipes() {
-    return fetch('http://localhost:8000/api/v1/recipes', {
+    return fetch('/api/v1/recipes', {
       method: 'get',
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
@@ -23,7 +23,7 @@ export default class RecipesApi {
    * @returns {Promise} Promise
    */
   static getRecipe(id) {
-    return fetch(`http://localhost:8000/api/v1/recipes/${id}`, {
+    return fetch(`/api/v1/recipes/${id}`, {
       method: 'get',
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded'
@@ -39,7 +39,7 @@ export default class RecipesApi {
    * @returns {Promise} Promise
    */
   static addReview(id, token, review) {
-    return fetch(`http://localhost:8000/api/v1/recipes/${id}/reviews`, {
+    return fetch(`/api/v1/recipes/${id}/reviews`, {
       method: 'post',
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
@@ -56,7 +56,7 @@ export default class RecipesApi {
    * @returns {Promise} Promise
    */
   static upvoteRecipe(id, token) {
-    return fetch(`http://localhost:8000/api/v1/recipes/upvote/${id}`, {
+    return fetch(`/api/v1/recipes/upvote/${id}`, {
       method: 'post',
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
@@ -72,7 +72,7 @@ export default class RecipesApi {
    * @returns {Promise} Promise
    */
   static downvoteRecipe(id, token) {
-    return fetch(`http://localhost:8000/api/v1/recipes/downvote/${id}`, {
+    return fetch(`/api/v1/recipes/downvote/${id}`, {
       method: 'post',
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
@@ -87,7 +87,7 @@ export default class RecipesApi {
    * @returns {Promise} Promise
    */
   static search(query) {
-    return fetch(`http://localhost:8000/api/v1/recipes?query=${query}`, {
+    return fetch(`/api/v1/recipes?query=${query}`, {
       method: 'get',
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded'
@@ -102,7 +102,7 @@ export default class RecipesApi {
    * @returns {Promise} Promise
    */
   static addFavourite(token, recipeId) {
-    return fetch(`http://localhost:8000/api/v1/users/recipes/${recipeId}/favourites`, {
+    return fetch(`/api/v1/users/recipes/${recipeId}/favourites`, {
       method: 'post',
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
@@ -118,7 +118,7 @@ export default class RecipesApi {
    * @returns {Promise} Promise
    */
   static deleteFavourite(token, recipeId) {
-    return fetch(`http://localhost:8000/api/v1/users/recipes/${recipeId}/favourites`, {
+    return fetch(`/api/v1/users/recipes/${recipeId}/favourites`, {
       method: 'delete',
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
@@ -132,7 +132,7 @@ export default class RecipesApi {
    * @returns {Promise} Promise
    */
   static getMostFavourited() {
-    return fetch('http://localhost:8000/api/v1/recipes/most_favourited', {
+    return fetch('/api/v1/recipes/most_favourited', {
       method: 'get',
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded'

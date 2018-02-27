@@ -9,7 +9,7 @@ export default class AccountsApi {
      * @returns {object} response
      */
   static signIn(credentials) {
-    return fetch('http://localhost:8000/api/v1/users/signin', {
+    return fetch('/api/v1/users/signin', {
       method: 'post',
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded'
@@ -24,7 +24,7 @@ export default class AccountsApi {
      * @returns {object} response
      */
   static signUp(data) {
-    return fetch('http://localhost:8000/api/v1/users/signup', {
+    return fetch('/api/v1/users/signup', {
       method: 'post',
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',

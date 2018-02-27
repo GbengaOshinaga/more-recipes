@@ -2,6 +2,7 @@
 <html>
   <head>
     <title>More-Recipes</title>
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; font-src 'self' data:font/wof;">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat">
@@ -10,14 +11,8 @@
     <meta name="google-signin-client_id" content="827684783940-iisct8ub0eifot2ebb4fod5f3nrnk7ij.apps.googleusercontent.com">
   </head>
   <body>
-      <div id="fb-root"></div>
     <div id='app'></div>
-    <!-- <fb:login-button scope="public_profile,email" onlogin="checkLoginState();">
-	</fb:login-button> -->
-	<img id="test" />
     <script src="/bundle.js"></script>
-    <!-- <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script> -->
     <script src="https://apis.google.com/js/platform.js?onload=renderButton" async defer></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
     <script>

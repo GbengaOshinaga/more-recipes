@@ -1,9 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 import InputField from '../common/InputField';
 import Button from '../common/Button';
 import SocialLoginButtons from './SocialLoginButtons';
-import SignInAndSignUpHeader from '../common/Header/SignInAndSignUpHeader';
+import { Header } from '../common/Header';
 
 const propTypes = {
   onChange: PropTypes.func.isRequired,
@@ -24,7 +25,12 @@ function SignInForm({
 }) {
   return (
     <div className="sign-body">
-      <SignInAndSignUpHeader />
+      <Header
+        links={
+          <React.Fragment>
+            <li><Link to="/catalog">Catalog</Link></li>
+          </React.Fragment>}
+      />
       <div className="signin-box">
         <InputField
           id="email"

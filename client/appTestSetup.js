@@ -31,11 +31,14 @@ require.extensions['.jpg'] = function () {return null;};
 
 // Configure JSDOM and set global variables
 // to simulate a browser environment for tests.
-var jsdom = require('jsdom').jsdom;
+var jsdom = require('jsdom');
+const { JSDOM } = jsdom;
+
+const { document } = (new JSDOM('')).window;
+global.document = document;
 
 var exposedProperties = ['window', 'navigator', 'document'];
 
-global.document = jsdom('');
 global.window = document.defaultView;
 Object.keys(document.defaultView).forEach((property) => {
   if (typeof global[property] === 'undefined') {
@@ -44,8 +47,18 @@ Object.keys(document.defaultView).forEach((property) => {
   }
 });
 
+global.$ = () => ({
+  tabs: () => null,
+  attr: () => null,
+  sideNav: () => null,
+  modal: () => null,
+  parallax: () => null,
+  show: () => null,
+  hide: () => null
+});
+
 global.navigator = {
   userAgent: 'node.js'
 };
 
-documentRef = document;  
+var documentRef = document;

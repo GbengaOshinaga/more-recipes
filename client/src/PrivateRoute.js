@@ -30,7 +30,7 @@ class PrivateRoute extends React.Component {
    */
   async componentWillMount() {
     try {
-      const response = await sessionService.loadSession();
+      await sessionService.loadSession();
       this.setState({
         authenticated: true,
         loading: false

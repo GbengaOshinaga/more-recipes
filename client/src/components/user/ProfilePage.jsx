@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Header from '../common/Header/Header';
+import { MainHeader } from '../common/Header';
 
 const propTypes = {
   profilePic: PropTypes.string,
@@ -40,7 +40,7 @@ export default function ProfilePage({
 }) {
   return (
     <div className="profile-body">
-      <Header
+      <MainHeader
         isLoggedIn={isLoggedIn}
         firstName={firstName}
       />
@@ -139,8 +139,6 @@ export default function ProfilePage({
                         CANCEL
                         </a>
                       </div>
-                      {/* <div id="cancel" className={saveButtonClass}> */}
-                      {/* </div> */}
                     </div>
                     <div className="col s2">
                       <a

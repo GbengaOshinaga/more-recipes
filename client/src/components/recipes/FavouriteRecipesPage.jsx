@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
-import Header from '../common/Header/Header';
+import { MainHeader } from '../common/Header';
 import Card from '../common/Card';
 
 const propTypes = {
@@ -102,7 +102,7 @@ function FavouriteRecipesPage({
 }) {
   return (
     <div>
-      <Header
+      <MainHeader
         isLoggedIn={isLoggedIn}
         firstName={firstName}
       />

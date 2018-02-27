@@ -1,12 +1,14 @@
-import webpack from 'webpack';
-import path from 'path';
+const webpack = require('webpack');
+const path = require('path');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
-export default {
-  devtool: 'cheap-module-eval-source-map',
-  entry: [
-    'webpack-hot-middleware/client?reload=true',
-    './client/src/index.js'
-  ],
+const GLOBALS = {
+  'process.env.NODE_ENV': JSON.stringify('production')
+};
+
+module.exports = {
+  devtool: 'source-map',
+  entry: './client/src/index.js',
   target: 'web',
   output: {
     path: `${__dirname}/dist`,
@@ -14,11 +16,13 @@ export default {
     filename: 'bundle.js'
   },
   devServer: {
-    contentBase: path.resolve(__dirname, 'client/src')
+    contentBase: path.resolve(__dirname, 'client/dist')
   },
   plugins: [
-    new webpack.HotModuleReplacementPlugin(),
-    new webpack.NoEmitOnErrorsPlugin()
+    new webpack.optimize.OccurrenceOrderPlugin(),
+    new webpack.DefinePlugin(GLOBALS),
+    new ExtractTextPlugin({ filename: 'style.css' }),
+    new webpack.optimize.UglifyJsPlugin()
   ],
   resolve: {
     extensions: ['.js', '.jsx']

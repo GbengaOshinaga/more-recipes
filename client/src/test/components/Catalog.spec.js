@@ -2,7 +2,11 @@ import React from 'react';
 import Enzyme, { mount } from 'enzyme';
 import expect from 'expect';
 import Adapter from 'enzyme-adapter-react-16';
-import Catalog from '../../components/catalog/Catalog';
+import configureStore from 'redux-mock-store';
+import { MemoryRouter } from 'react-router-dom';
+import { Catalog } from '../../components/catalog/Catalog';
+
+const mockStore = configureStore({});
 
 Enzyme.configure({ adapter: new Adapter() });
 
@@ -12,11 +16,34 @@ Enzyme.configure({ adapter: new Adapter() });
  */
 function setup() {
   const props = {
-    upvoteRecipe: jest.fn(),
-    downvoteRecipe: jest.fn()
+    isLoggedIn: true,
+    allRecipes: [],
+    actions: {
+      upvoteRecipe: jest.fn(),
+      downvoteRecipe: jest.fn(),
+      getAllRecipes: jest.fn(),
+      getMostFavouritedRecipes: jest.fn()
+    },
+    mostFavouritedRecipes: [],
+    searchResults: [],
+    favourites: []
   };
 
-  const enzymeWrapper = mount(<Catalog {...props} />);
+  const store = mockStore({
+    recipes: [],
+    mostFavourited: [],
+    searchResults: [],
+    userFavourites: [],
+    session: {
+      authenticated: true,
+      checked: true,
+      user:
+        { firstName: '' }
+    }
+  });
+
+
+  const enzymeWrapper = mount(<MemoryRouter><Catalog store={store} {...props} /></MemoryRouter>);
 
   return {
     props, enzymeWrapper
@@ -27,7 +54,8 @@ describe('Catalog', () => {
   it('should render self and components', () => {
     const { enzymeWrapper } = setup();
 
-    const catalogHeaderProps = enzymeWrapper.find('CatalogHeader').props();
-    expect(catalogHeaderProps.firstName).toEqual('');
+    const catalogProps = enzymeWrapper.find('Catalog').props();
+    expect(catalogProps.firstName).toEqual('');
+    expect(catalogProps.isLoggedIn).toEqual(true);
   });
 });
