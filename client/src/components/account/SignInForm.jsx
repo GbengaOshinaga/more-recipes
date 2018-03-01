@@ -26,7 +26,7 @@ function SignInForm({
   return (
     <div className="sign-body">
       <Header
-        links={
+        mainLinks={
           <React.Fragment>
             <li><Link to="/catalog">Catalog</Link></li>
           </React.Fragment>}

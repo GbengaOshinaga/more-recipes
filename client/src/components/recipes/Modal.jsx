@@ -5,13 +5,15 @@ import InputField from '../common/InputField';
 import TextArea from '../common/TextArea';
 
 const addModalPropTypes = {
-  onChipChange: PropTypes.func.isRequired,
   onInputChange: PropTypes.func.isRequired,
   inputValue: PropTypes.string.isRequired,
   descValue: PropTypes.string.isRequired,
   onClickSave: PropTypes.func.isRequired,
   onFileChange: PropTypes.func.isRequired,
-  inputRef: PropTypes.func.isRequired
+  inputRef: PropTypes.func.isRequired,
+  handleAddModalChipAdd: PropTypes.func.isRequired,
+  handleAddModalChipDelete: PropTypes.func.isRequired,
+  data: PropTypes.objectOf(PropTypes.any).isRequired
 };
 
 const editModalPropTypes = {
@@ -19,7 +21,7 @@ const editModalPropTypes = {
   onClickEdit: PropTypes.func.isRequired,
   onFileChange: PropTypes.func.isRequired,
   inputRef: PropTypes.func.isRequired,
-  editData: PropTypes.object.isRequired,
+  editData: PropTypes.objectOf(PropTypes.any).isRequired,
   handleChipAdd: PropTypes.func.isRequired,
   handleChipDelete: PropTypes.func.isRequired
 };
@@ -36,7 +38,8 @@ const canvasStyle = { border: '1px solid #000000', marginLeft: '10px' };
  * @returns {*} jsx
  */
 export function AddModal({
-  onChipChange, onInputChange, inputValue, descValue, onClickSave, onFileChange, inputRef
+  onInputChange, inputValue, descValue, onClickSave, onFileChange, inputRef,
+  handleAddModalChipAdd, handleAddModalChipDelete, data
 }) {
   return (
     <div id="add-modal" className="modal">
@@ -63,8 +66,10 @@ export function AddModal({
           </div>
           <div className="row">
             <ChipInput
-              defaultValue={['Enter Ingredients']}
-              onChange={onChipChange}
+              value={[...data.ingredients]}
+              onRequestAdd={chip => handleAddModalChipAdd(chip)}
+              onRequestDelete={chip => handleAddModalChipDelete(chip)}
+              floatingLabelText="Enter Ingredients - Press enter after entering each"
             />
           </div>
           <div className="file-field input-field">
@@ -132,7 +137,7 @@ export function EditModal({
           </div>
           <div className="file-field input-field">
             <div className="btn">
-              <span>UPLOAD NEW IMAGE</span>
+              <span>CHOOSE NEW IMAGE</span>
               <input type="file" id="editFileUpload" onChange={onFileChange} />
             </div>
             <canvas width="300" height="200" style={canvasStyle} ref={inputRef} />

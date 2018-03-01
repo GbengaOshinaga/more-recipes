@@ -15,24 +15,5 @@
     <script src="/bundle.js"></script>
     <script src="https://apis.google.com/js/platform.js?onload=renderButton" async defer></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
-    <script>
-      $(document).ready(function(){
-
-	//Transform catalog navbar on scroll
-	$(window).scroll(function(){
-		if($(window).scrollTop() > 0){
-			$('#search-nav').removeClass('hide');
-			$('#nav').addClass('grey darken-2');
-			$('#nav').removeClass('transparent z-depth-0');
-		}else{
-			$('#search-nav').addClass('hide');
-			$('#nav').removeClass('grey darken-2');
-			$('#nav').addClass('transparent z-depth-0');
-		}
-
-	});
-});
-
-    </script>
   </body>
 </html>

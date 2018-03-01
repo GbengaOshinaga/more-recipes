@@ -7,6 +7,7 @@ import toastr from 'toastr';
 import Loader from 'react-loader';
 import ProfilePage from './ProfilePage';
 import * as userActions from '../../actions/userActions';
+import { pluginsInit } from '../../helpers/jqueryHelper';
 
 const propTypes = {
   isLoggedIn: PropTypes.bool.isRequired,
@@ -54,8 +55,7 @@ class Profile extends React.Component {
    * @returns {*} undefined
    */
   componentDidMount() {
-    $('.button-collapse').sideNav();
-    $('.dropdown-button').dropdown();
+    pluginsInit();
 
     sessionService.loadUser()
       .then((user) => {
@@ -101,7 +101,6 @@ class Profile extends React.Component {
             editPhotoButtonClass: 'btn-floating btn-large waves-effect waves-light teal lighten-1 hide'
           }))
           .catch((error) => {
-            console.log(error);
             toastr.error(error);
             if (error) {
               this.setState({

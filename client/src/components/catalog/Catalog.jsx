@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 import { sessionService } from 'redux-react-session';
 import CatalogPage from './CatalogPage';
 import * as recipeActions from '../../actions/RecipeActions';
+import { pluginsInit, transformNavBar } from '../../helpers/jqueryHelper';
 
 const propTypes = {
   isLoggedIn: PropTypes.bool.isRequired,
@@ -53,17 +54,15 @@ export class Catalog extends React.Component {
    * @returns {*} null
    */
   componentDidMount() {
-    $('.button-collapse').sideNav();
-    $('.parallax').parallax();
-    $('.dropdown-button').dropdown();
-    $('ul.tabs').tabs();
-
+    pluginsInit();
+    transformNavBar();
     this.props.actions.getAllRecipes();
     this.props.actions.getMostFavouritedRecipes();
     sessionService.loadSession()
       .then((token) => {
         this.props.actions.getFavourites(token);
-      });
+      })
+      .catch(() => {});
   }
 
   /**

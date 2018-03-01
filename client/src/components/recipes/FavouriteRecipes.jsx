@@ -7,6 +7,7 @@ import $ from 'jquery';
 import '../../../../node_modules/materialize-css/dist/js/materialize';
 import Page from './FavouriteRecipesPage';
 import * as recipeActions from '../../actions/RecipeActions';
+import { pluginsInit } from '../../helpers/jqueryHelper';
 
 const propTypes = {
   isLoggedIn: PropTypes.bool.isRequired,
@@ -41,8 +42,7 @@ class FavouriteRecipes extends React.Component {
    * @returns {*} undefined
    */
   componentDidMount() {
-    $('.button-collapse').sideNav();
-    $('.dropdown-button').dropdown();
+    pluginsInit();
 
     if (this.props.recipes.length === 0) {
       sessionService.loadSession()

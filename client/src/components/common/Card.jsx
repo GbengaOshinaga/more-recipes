@@ -36,7 +36,7 @@ function Card({
   image, id, recipeName, recipeDescription, cardAction
 }) {
   return (
-    <div className="col s12 l4 m4">
+    <div className="col s12 l4 m6">
       <div className="card recipe-card">
         <div className="card-image">
           <img src={image} alt="recipe" />

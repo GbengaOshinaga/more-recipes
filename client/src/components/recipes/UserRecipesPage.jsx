@@ -15,7 +15,7 @@ const cardActionPropTypes = {
 const pagePropTypes = {
   isLoggedIn: PropTypes.bool.isRequired,
   firstName: PropTypes.string,
-  onChipChange: PropTypes.func.isRequired,
+  data: PropTypes.objectOf(PropTypes.any).isRequired,
   onInputChange: PropTypes.func.isRequired,
   inputValue: PropTypes.string.isRequired,
   descValue: PropTypes.string.isRequired,
@@ -31,7 +31,9 @@ const pagePropTypes = {
   onClickEdit: PropTypes.func.isRequired,
   onEditInputChange: PropTypes.func.isRequired,
   handleChipAdd: PropTypes.func.isRequired,
-  handleChipDelete: PropTypes.func.isRequired
+  handleChipDelete: PropTypes.func.isRequired,
+  handleAddModalChipAdd: PropTypes.func.isRequired,
+  handleAddModalChipDelete: PropTypes.func.isRequired
 };
 
 const pageDefaultProps = {
@@ -76,10 +78,11 @@ function displayRecipes(recipes, getId, getIdForEdit) {
  * @returns {Node} jsx
  */
 function Page({
-  isLoggedIn, firstName, onChipChange, onInputChange, inputValue,
+  isLoggedIn, firstName, data, onInputChange, inputValue,
   descValue, onClickSave, onFileChange, inputRef, editInputRef,
   userRecipes, onConfirmDelete, getId, handleChipAdd, handleChipDelete,
-  getIdForEdit, editData, onClickEdit, onEditInputChange
+  getIdForEdit, editData, onClickEdit, onEditInputChange,
+  handleAddModalChipAdd, handleAddModalChipDelete
 }) {
   return (
     <div>
@@ -96,13 +99,15 @@ function Page({
           <i className="material-icons">add</i>
         </a>
         <AddModal
-          onChipChange={onChipChange}
+          handleAddModalChipAdd={handleAddModalChipAdd}
+          handleAddModalChipDelete={handleAddModalChipDelete}
           onInputChange={onInputChange}
           inputValue={inputValue}
           descValue={descValue}
           onClickSave={onClickSave}
           onFileChange={onFileChange}
           inputRef={inputRef}
+          data={data}
         />
         <DeleteModal
           onConfirm={onConfirmDelete}

@@ -5,6 +5,7 @@ import { sessionService } from 'redux-react-session';
 import { connect } from 'react-redux';
 import * as recipeActions from '../../actions/RecipeActions';
 import Page from './RecipeDetailsPage';
+import { pluginsInit } from '../../helpers/jqueryHelper';
 
 const propTypes = {
   isLoggedIn: PropTypes.bool.isRequired,
@@ -52,8 +53,7 @@ class RecipeDetails extends React.Component {
    * @returns {*} undefined
    */
   componentDidMount() {
-    $('.button-collapse').sideNav();
-    $('.dropdown-button').dropdown();
+    pluginsInit();
 
     let isRecipeAvailable = false;
 

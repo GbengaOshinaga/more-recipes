@@ -30,7 +30,8 @@ class HomePage extends React.Component {
         if (token) {
           this.setState({ isAuthenticated: true });
         }
-      });
+      })
+      .catch(() => {});
   }
 
   /**
@@ -49,10 +50,11 @@ class HomePage extends React.Component {
     if (this.state.isAuthenticated) {
       return (<Redirect to="/catalog" />);
     }
+
     return (
       <div className="index-body">
         <Header
-          links={
+          mainLinks={
             <React.Fragment>
               <li><Link to="/signin"> Sign In</Link></li>
               <li><Link to="/signup">Sign Up</Link></li>

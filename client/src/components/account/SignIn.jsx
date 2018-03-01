@@ -45,7 +45,6 @@ class SignIn extends React.Component {
     signIn(this.state.credentials)
       .then(response => response.json())
       .then((response) => {
-        console.log(response);
         if (response.status === 'success') {
           sessionService.saveSession(response.data.token);
           sessionService.saveUser(response.data.user);

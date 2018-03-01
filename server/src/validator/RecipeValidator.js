@@ -49,7 +49,10 @@ export default class RecipeValidator {
    */
   static validateReview(req, res, next) {
     const messages = [];
-    const review = req.body.review.trim();
+    let review;
+    if (req.body.review) {
+      review = req.body.review.trim();
+    }
 
     const isEmpty = (str) => {
       const regexp = /^[a-zA-Z0-9-',?.":; ]*$/;

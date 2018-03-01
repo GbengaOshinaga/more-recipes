@@ -22,7 +22,12 @@ function TextArea({
 }) {
   return (
     <div className="input-field col s12">
-      <textarea id={id} className="materialize-textarea" value={value} onChange={onChange} />
+      <textarea
+        id={id}
+        className="materialize-textarea"
+        value={value}
+        onChange={onChange}
+      />
       <label htmlFor={id}>{label}</label>
     </div>
   );

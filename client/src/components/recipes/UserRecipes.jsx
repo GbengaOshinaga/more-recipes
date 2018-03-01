@@ -7,6 +7,7 @@ import toastr from 'toastr';
 import Loader from 'react-loader';
 import Page from './UserRecipesPage';
 import * as userActions from '../../actions/userActions';
+import { pluginsInit } from '../../helpers/jqueryHelper';
 
 const propTypes = {
   isLoggedIn: PropTypes.bool.isRequired,
@@ -64,6 +65,8 @@ class UserRecipes extends React.Component {
     this.handleEditInputChange = this.handleEditInputChange.bind(this);
     this.handleChipAdd = this.handleChipAdd.bind(this);
     this.handleChipDelete = this.handleChipDelete.bind(this);
+    this.handleAddModalChipAdd = this.handleAddModalChipAdd.bind(this);
+    this.handleAddModalChipDelete = this.handleAddModalChipDelete.bind(this);
     toastr.options = {
       closeButton: true,
       positionClass: 'toast-top-right'
@@ -75,9 +78,7 @@ class UserRecipes extends React.Component {
    * @returns {null} null
    */
   componentDidMount() {
-    $('.button-collapse').sideNav();
-    $('.dropdown-button').dropdown();
-    $('.modal').modal();
+    pluginsInit();
 
     sessionService.loadSession()
       .then((token) => {
@@ -196,20 +197,23 @@ class UserRecipes extends React.Component {
     sessionService.loadSession()
       .then((token) => {
         this.props.actions.addRecipe(token, data)
-          .then(() => toastr.success('Recipe Added'))
+          .then(() => {
+            toastr.success('Recipe Added');
+            this.setState({
+              data: {
+                id: 0,
+                recipeName: '',
+                recipeDescription: '',
+                ingredients: [],
+                imageURL: ''
+              },
+              imageFile: {}
+            });
+            imageContext.clearRect(0, 0, 300, 200);
+          })
           .catch(errors => errors.map(error => toastr.error(error)));
-        this.setState({
-          data: {
-            id: 0,
-            recipeName: '',
-            recipeDescription: '',
-            ingredients: [],
-            imageURL: ''
-          },
-          imageFile: {}
-        });
-        imageContext.clearRect(0, 0, 300, 200);
-      });
+      })
+      .catch(() => {});
   }
 
   /**
@@ -220,20 +224,23 @@ class UserRecipes extends React.Component {
     sessionService.loadSession()
       .then((token) => {
         this.props.actions.editRecipe(token, this.state.edit.id, this.state.edit)
-          .then(() => toastr.success('Recipe modified successfully'))
+          .then(() => {
+            toastr.success('Recipe modified successfully');
+            this.setState({
+              edit: {
+                id: 0,
+                recipeName: '',
+                recipeDescription: '',
+                ingredients: [],
+                imageURL: ''
+              },
+              imageFile: {}
+            });
+            imageContext.clearRect(0, 0, 300, 200);
+          })
           .catch(error => toastr.error(error));
-        this.setState({
-          edit: {
-            id: 0,
-            recipeName: '',
-            recipeDescription: '',
-            ingredients: [],
-            imageURL: ''
-          },
-          imageFile: {}
-        });
-        imageContext.clearRect(0, 0, 300, 200);
-      });
+      })
+      .catch(() => {});
   }
 
 
@@ -302,6 +309,28 @@ class UserRecipes extends React.Component {
   }
 
   /**
+   * Handle adding of ingredient in edit mode
+   * @param {String} chip
+   * @returns {Object} new state
+   */
+  handleAddModalChipAdd(chip) {
+    const { data } = this.state;
+    data.ingredients = [...data.ingredients, chip];
+    this.setState({ data });
+  }
+
+  /**
+   * Handle deleting of ingredient in edit mode
+   * @param {String} chip
+   * @returns {Object} new state
+   */
+  handleAddModalChipDelete(chip) {
+    const { data } = this.state;
+    data.ingredients = data.ingredients.filter(ingredient => ingredient !== chip);
+    this.setState({ data });
+  }
+
+  /**
    * Handles input field value change
    * @param {Object} event
    * @returns {Object} new state
@@ -334,7 +363,6 @@ class UserRecipes extends React.Component {
           isLoggedIn={this.props.isLoggedIn}
           firstName={this.props.firstName}
           userRecipes={this.props.userRecipes}
-          onChipChange={chips => this.handleChipsChange(chips)}
           onInputChange={this.handleInputChange}
           onEditInputChange={this.handleEditInputChange}
           inputValue={this.state.data.recipeName}
@@ -351,6 +379,9 @@ class UserRecipes extends React.Component {
           onClickEdit={this.onClickEdit}
           handleChipAdd={this.handleChipAdd}
           handleChipDelete={this.handleChipDelete}
+          handleAddModalChipAdd={this.handleAddModalChipAdd}
+          handleAddModalChipDelete={this.handleAddModalChipDelete}
+          data={this.state.data}
         />
         <Loader
           loaded={this.state.loaded}

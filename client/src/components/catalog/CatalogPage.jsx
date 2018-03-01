@@ -2,8 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
 import Card from '../common/Card';
-import CatalogHeader from '../common/Header/CatalogHeader';
-import backgroundImage from '../../assets/img/bg-search.jpg';
+import { MainHeader } from '../common/Header';
 
 const propTypes = {
   isLoggedIn: PropTypes.bool.isRequired,
@@ -141,11 +140,14 @@ export default function CatalogPage({
   return (
     <div>
       <div className="parallax-container">
-        <CatalogHeader
+        <MainHeader
           isLoggedIn={isLoggedIn}
           firstName={firstName}
           onChange={onSearchChange}
           value={searchValue}
+          type="catalog"
+          navClassName="transparent z-depth-0"
+          catalogId="catalog-nav"
         />
         <div className="parallax"><img src="/assets/img/bg-search.jpg" alt="parallax" /></div>
         <div className="search-form">
