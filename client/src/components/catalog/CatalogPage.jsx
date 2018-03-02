@@ -1,8 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import _ from 'lodash';
-import Card from '../common/Card';
 import { MainHeader } from '../common/Header';
+import RecipesDisplay from '../common/RecipesDisplay';
 
 const propTypes = {
   isLoggedIn: PropTypes.bool.isRequired,
@@ -19,113 +18,10 @@ const propTypes = {
   favourites: PropTypes.arrayOf(PropTypes.object).isRequired
 };
 
-const cardActionPropTypes = {
-  id: PropTypes.number.isRequired,
-  onClickVote: PropTypes.func.isRequired,
-  isLoggedIn: PropTypes.bool.isRequired,
-  upvoteClassName: PropTypes.string.isRequired,
-  downvoteClassName: PropTypes.string.isRequired,
-  favouriteClassName: PropTypes.string.isRequired,
-  onClickFavourite: PropTypes.func.isRequired
-};
-
 const defaultProps = {
   firstName: '',
   userId: 0
 };
-
-/**
- * Updates recipe depending on if user has voted
- * @param {Object} recipe
- * @param {Integer} userId
- * @returns {Object} updated recipe
- */
-function updateRecipeVoteState(recipe, userId) {
-  let hasVoted;
-  recipe.upvotes.map((upvote) => {
-    if (upvote === userId) {
-      hasVoted = 'upvoted';
-    }
-  });
-  recipe.downvotes.map((downvote) => {
-    if (downvote === userId) {
-      hasVoted = 'downvoted';
-    }
-  });
-  return hasVoted;
-}
-
-/**
- * Updates recipe depending on if user has favourited
- * @param {Object} recipe
- * @param {Array} favourites
- * @returns {Object} updated recipe
- */
-function updateFavouriteState(recipe, favourites) {
-  let hasFavourited = false;
-  favourites.map((favourite) => {
-    if (recipe.id === favourite.Favourites.RecipeId) {
-      hasFavourited = true;
-    }
-  });
-  return hasFavourited;
-}
-
-/**
- * Displays recipes in cards
- * @param {Array} recipes
- * @param {func} onClickVote
- * @param {func} onClickFavourite
- * @param {bool} isLoggedIn
- * @param {Number} userId
- * @param {Array} favourites
- * @returns {*} jsx
- */
-function displayRecipes(recipes, onClickVote, onClickFavourite, isLoggedIn, userId, favourites) {
-  const chunkedRecipes = _.chunk(recipes, 3);
-  if (recipes === undefined || recipes.length === 0) {
-    return 'No Recipe Available';
-  }
-  return chunkedRecipes.map((chunk, index) => (
-    <div className="row" key={index}>
-      {chunk.map((recipe) => {
-        const voteStatus = updateRecipeVoteState(recipe, userId);
-        const favouriteStatus = updateFavouriteState(recipe, favourites);
-
-        let upvoteClassName = 'upvotes';
-        let downvoteClassName = 'downvotes';
-        let favouriteClassName = 'favourite';
-
-        if (voteStatus === 'upvoted') {
-          upvoteClassName = 'upvotes green-text';
-        } else if (voteStatus === 'downvoted') {
-          downvoteClassName = 'downvotes black-text';
-        }
-
-        if (favouriteStatus) {
-          favouriteClassName = 'favourite red-text';
-        }
-
-        return (<Card
-          key={recipe.id}
-          id={recipe.id}
-          image={recipe.image}
-          recipeName={recipe.name}
-          recipeDescription={recipe.description}
-          cardAction={<CardAction
-            id={recipe.id}
-            onClickVote={onClickVote}
-            isLoggedIn={isLoggedIn}
-            upvoteClassName={upvoteClassName}
-            downvoteClassName={downvoteClassName}
-            favouriteClassName={favouriteClassName}
-            onClickFavourite={onClickFavourite}
-          />}
-        />);
-      })}
-    </div>
-  ));
-}
 
 
 /**
@@ -190,39 +86,40 @@ export default function CatalogPage({
         {!hasSearchValue &&
         <div id="all">
           <div className="container">
-            {displayRecipes(
-              allRecipes,
-              onClickVote,
-              onClickFavourite,
-              isLoggedIn,
-              userId,
-              favourites
-              )}
+            <RecipesDisplay
+              recipes={allRecipes}
+              onClickVote={onClickVote}
+              onClickFavourite={onClickFavourite}
+              isLoggedIn={isLoggedIn}
+              userId={userId}
+              favourites={favourites}
+            />
           </div>
         </div>}
         {!hasSearchValue &&
         <div id="most-fav">
           <div className="container">
-            {displayRecipes(
-              mostFavouritedRecipes,
-              onClickVote,
-               onClickFavourite,
-               isLoggedIn,
-               userId,
-               favourites
-              )}
+            <RecipesDisplay
+              recipes={mostFavouritedRecipes}
+              onClickVote={onClickVote}
+              onClickFavourite={onClickFavourite}
+              isLoggedIn={isLoggedIn}
+              userId={userId}
+              favourites={favourites}
+            />
           </div>
         </div>}
         {hasSearchValue &&
         <div id="search-results">
           <div className="container">
-            {displayRecipes(
-              searchResults,
-              onClickVote,
-              onClickFavourite,
-              isLoggedIn, userId,
-              favourites
-              )}
+            <RecipesDisplay
+              recipes={searchResults}
+              onClickVote={onClickVote}
+              onClickFavourite={onClickFavourite}
+              isLoggedIn={isLoggedIn}
+              userId={userId}
+              favourites={favourites}
+            />
           </div>
         </div>}
       </div>
@@ -230,48 +127,5 @@ export default function CatalogPage({
   );
 }
 
-/**
- * Component for displaying card
- * @param {*} props
- * @returns {*} jsx
- */
-function CardAction({
-  onClickVote, isLoggedIn, upvoteClassName, downvoteClassName,
-  favouriteClassName, onClickFavourite, id
-}) {
-  return (
-    <div>
-      {isLoggedIn &&
-      <div className="card-action">
-        <div className="recipe-icons">
-          <a
-            href="#!"
-            className={upvoteClassName}
-            onClick={onClickVote}
-          >
-            <i id={id} className="material-icons">thumb_up</i>
-          </a>
-          <a
-            href="#!"
-            className={downvoteClassName}
-            onClick={onClickVote}
-          >
-            <i id={id} className="material-icons">thumb_down</i>
-          </a>
-          <a
-            href="#!"
-            className={favouriteClassName}
-            onClick={onClickFavourite}
-          >
-            <i id={id} className="material-icons">favorite</i>
-          </a>
-        </div>
-      </div>}
-    </div>
-  );
-}
-
 CatalogPage.propTypes = propTypes;
 CatalogPage.defaultProps = defaultProps;
-
-CardAction.propTypes = cardActionPropTypes;

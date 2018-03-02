@@ -3,8 +3,6 @@ import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { sessionService } from 'redux-react-session';
 import { connect } from 'react-redux';
-import $ from 'jquery';
-import '../../../../node_modules/materialize-css/dist/js/materialize';
 import Page from './FavouriteRecipesPage';
 import * as recipeActions from '../../actions/RecipeActions';
 import { pluginsInit } from '../../helpers/jqueryHelper';
@@ -12,7 +10,7 @@ import { pluginsInit } from '../../helpers/jqueryHelper';
 const propTypes = {
   isLoggedIn: PropTypes.bool.isRequired,
   firstName: PropTypes.string,
-  actions: PropTypes.object.isRequired,
+  actions: PropTypes.objectOf(PropTypes.func).isRequired,
   recipes: PropTypes.arrayOf(PropTypes.object).isRequired,
   userId: PropTypes.number.isRequired
 };

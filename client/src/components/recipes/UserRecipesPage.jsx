@@ -1,16 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
-import { Link } from 'react-router-dom';
 import { MainHeader } from '../common/Header';
 import Card from '../common/Card';
+import { UserCardAction } from '../common/CardAction';
 import { AddModal, DeleteModal, EditModal } from './Modal';
-
-const cardActionPropTypes = {
-  id: PropTypes.number.isRequired,
-  getId: PropTypes.func.isRequired,
-  getIdForEdit: PropTypes.func.isRequired
-};
 
 const pagePropTypes = {
   isLoggedIn: PropTypes.bool.isRequired,
@@ -61,7 +55,7 @@ function displayRecipes(recipes, getId, getIdForEdit) {
           image={recipe.image}
           recipeName={recipe.name}
           recipeDescription={recipe.description}
-          cardAction={<CardAction
+          cardAction={<UserCardAction
             id={recipe.id}
             getId={getId}
             getIdForEdit={getIdForEdit}
@@ -133,39 +127,6 @@ function Page({
     </div>
   );
 }
-
-/**
- * Component for displaying card actions
- * @param {Object} props
- * @returns {Node} jsx
- */
-function CardAction({
-  id, getId, getIdForEdit
-}) {
-  return (
-    <div className="card-action">
-      <Link to={`/recipe/${id}`} className="btn-floating waves-effect waves-light green">
-        <i id="desc" className="material-icons">description</i>
-      </Link>
-      <a
-        className="modal-trigger btn-floating waves-effect waves-light blue icons"
-        href="#edit-modal"
-        onClick={getIdForEdit}
-      >
-        <i id={id} className="material-icons">edit</i>
-      </a>
-      <a
-        className="modal-trigger btn-floating waves-effect waves-light red icons"
-        href="#confirm-modal"
-        onClick={getId}
-      >
-        <i id={id} className="material-icons">delete</i>
-      </a>
-    </div>
-  );
-}
-
-CardAction.propTypes = cardActionPropTypes;
 
 Page.propTypes = pagePropTypes;
 Page.defaultProps = pageDefaultProps;

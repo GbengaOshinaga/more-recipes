@@ -160,6 +160,7 @@ function MainHeader({
   return (
     <Header
       navClassName={navClassName}
+      catalogId={catalogId}
       mainLinks={
         <React.Fragment>
           <li><Link to="/catalog">Catalog</Link></li>

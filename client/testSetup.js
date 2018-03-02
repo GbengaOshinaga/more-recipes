@@ -6,7 +6,8 @@ global.$ = () => ({
   parallax: () => null,
   show: () => null,
   hide: () => null,
-  dropdown: () => null
+  dropdown: () => null,
+  scroll: () => null
 });
 
 global.jquery = global.$;

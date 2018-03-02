@@ -209,6 +209,7 @@ export function addFavourite(token, recipeId) {
     return RecipesApi.addFavourite(token, recipeId)
       .then(response => response.json())
       .then((response) => {
+        console.log(response);
         if (response.status === 'success') {
           UserApi.getFavourites(token)
             .then(favResponse => favResponse.json())
