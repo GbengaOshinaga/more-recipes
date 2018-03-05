@@ -9,7 +9,8 @@ import {
   GET_USER_FAVOURITES_SUCCESS,
   GET_USER_FAVOURITES_FAILURE,
   VOTE_SUCCESS,
-  GET_MOST_FAVOURITED_RECIPES_SUCCESS
+  GET_MOST_FAVOURITED_RECIPES_SUCCESS,
+  GET_PAGINATION_META
 } from './actions';
 
 /**
@@ -92,18 +93,31 @@ function updateVoteSuccess(response) {
   return { type: VOTE_SUCCESS, response };
 }
 
+/**
+ * Updates pagination meta reducer
+ * @param {Object} response
+ *
+ * @returns {Object} object
+ */
+function updatePaginationMeta(response) {
+  return { type: GET_PAGINATION_META, response };
+}
+
 
 /**
  * Action to get all recipes
+ * @param {String} next
+ *
  * @returns {func} dispatch
  */
-export function getAllRecipes() {
+export function getAllRecipes(next) {
   return function (dispatch) {
-    return RecipesApi.getAllRecipes()
+    return RecipesApi.getAllRecipes(next)
       .then(response => response.json())
       .then((response) => {
         if (response.status === 'success') {
           dispatch(updateGetRecipesSuccess(response.data.recipes));
+          dispatch(updatePaginationMeta(response.data.paginationMeta));
         }
       });
   };
@@ -209,7 +223,6 @@ export function addFavourite(token, recipeId) {
     return RecipesApi.addFavourite(token, recipeId)
       .then(response => response.json())
       .then((response) => {
-        console.log(response);
         if (response.status === 'success') {
           UserApi.getFavourites(token)
             .then(favResponse => favResponse.json())

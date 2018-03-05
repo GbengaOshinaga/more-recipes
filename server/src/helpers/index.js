@@ -31,7 +31,7 @@ async function getPaginationMeta(req, model, condition) {
     originUrl = req.originalUrl.slice(0, req.originalUrl.indexOf('?'));
   }
 
-  const url = `${req.protocol}://${req.get('host')}${originUrl}`;
+  const url = `https://${req.get('host')}${originUrl}`;
   const dbCount = await getCount(model, condition);
   const limit = Number(req.query.limit);
   const offset = Number(req.query.from);

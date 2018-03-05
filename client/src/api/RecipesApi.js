@@ -6,10 +6,18 @@ import 'cross-fetch/polyfill';
 export default class RecipesApi {
   /**
      * Method for getting all recipes
+     * @param {String} next
+     *
      * @returns {Promise} Promise
      */
-  static getAllRecipes() {
-    return fetch('/api/v1/recipes', {
+  static getAllRecipes(next) {
+    let url;
+    if (next) {
+      url = next;
+    } else {
+      url = '/api/v1/recipes';
+    }
+    return fetch(url, {
       method: 'get',
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',

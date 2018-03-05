@@ -16,7 +16,8 @@ const propTypes = {
   mostFavouritedRecipes: PropTypes.arrayOf(PropTypes.object).isRequired,
   searchResults: PropTypes.arrayOf(PropTypes.object).isRequired,
   userId: PropTypes.number,
-  favourites: PropTypes.arrayOf(PropTypes.object).isRequired
+  favourites: PropTypes.arrayOf(PropTypes.object).isRequired,
+  paginationMeta: PropTypes.objectOf(PropTypes.any).isRequired
 };
 
 const defaultProps = {
@@ -37,12 +38,14 @@ export class Catalog extends React.Component {
     super(props, context);
     this.state = {
       searchValue: '',
-      hasSearchValue: false
+      hasSearchValue: false,
+      hasMore: false
     };
 
     this.vote = this.vote.bind(this);
     this.onSearchChange = this.onSearchChange.bind(this);
     this.addFavourite = this.addFavourite.bind(this);
+    this.fetchNext = this.fetchNext.bind(this);
     toastr.options = {
       closeButton: true,
       positionClass: 'toast-top-right'
@@ -66,6 +69,29 @@ export class Catalog extends React.Component {
   }
 
   /**
+   * Called when component is receiving new props
+   * @param {Object} nextProps
+   *
+   * @returns {undefined}
+   */
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.paginationMeta.next) {
+      this.setState({ hasMore: true });
+    } else {
+      this.setState({ hasMore: false });
+    }
+  }
+
+
+  /**
+   * ComponentDidUpdate lifecycle method
+   * @returns {undefined}
+   */
+  componentDidUpdate() {
+    pluginsInit();
+  }
+
+  /**
    * onChange event on search bars
    * @param {Object} event
    * @returns {null} null
@@ -79,6 +105,17 @@ export class Catalog extends React.Component {
       this.setState({ hasSearchValue: false });
     } else {
       this.setState({ hasSearchValue: true });
+    }
+  }
+
+  /**
+   * Fetch next set of recipes for paginatino
+   * @returns {undefined}
+  */
+  fetchNext() {
+    const { next } = this.props.paginationMeta;
+    if (next) {
+      this.props.actions.getAllRecipes(next);
     }
   }
 
@@ -146,6 +183,8 @@ export class Catalog extends React.Component {
         userId={this.props.userId}
         onClickFavourite={this.addFavourite}
         favourites={this.props.favourites}
+        hasMore={this.state.hasMore}
+        fetchNext={this.fetchNext}
       />
     );
   }
@@ -164,7 +203,8 @@ function mapStateToProps(state) {
     allRecipes: state.recipes,
     searchResults: state.searchResults,
     favourites: state.userFavourites,
-    mostFavouritedRecipes: state.mostFavourited
+    mostFavouritedRecipes: state.mostFavourited,
+    paginationMeta: state.paginationMeta
   };
 }
 

@@ -50,7 +50,7 @@ class RecipeDetails extends React.Component {
 
   /**
    * Method when component has finished mounting
-   * @returns {*} undefined
+   * @returns {undefined}
    */
   componentDidMount() {
     pluginsInit();
@@ -72,7 +72,7 @@ class RecipeDetails extends React.Component {
   /**
    * Method called when component is receiving new props
    * @param {Object} nextProps
-   * @returns {*} null
+   * @returns {undefined}
    */
   componentWillReceiveProps(nextProps) {
     nextProps.recipes.map((recipe) => {
@@ -82,6 +82,15 @@ class RecipeDetails extends React.Component {
       }
     });
   }
+
+  /**
+   * ComponentDidUpdate lifecycle method
+   * @returns {undefined}
+   */
+  componentDidUpdate() {
+    pluginsInit();
+  }
+
 
   /**
    * Method to save review

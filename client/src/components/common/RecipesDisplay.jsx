@@ -1,7 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
+import InfiniteScroll from 'react-infinite-scroll-component';
 import Card from './Card';
+import Preloader from './Preloader';
 import { VoteCardAction, UserCardAction } from './CardAction';
 import updateClassName from '../../helpers/functionHelpers';
 
@@ -13,7 +15,9 @@ const propTypes = {
   userId: PropTypes.number,
   favourites: PropTypes.arrayOf(PropTypes.object),
   getId: PropTypes.func,
-  getIdForEdit: PropTypes.func
+  getIdForEdit: PropTypes.func,
+  next: PropTypes.func.isRequired,
+  hasMore: PropTypes.bool
 };
 
 const defaultProps = {
@@ -23,7 +27,8 @@ const defaultProps = {
   userId: 0,
   favourites: undefined,
   getId: undefined,
-  getIdForEdit: undefined
+  getIdForEdit: undefined,
+  hasMore: false
 };
 
 /**
@@ -71,21 +76,28 @@ function getCardAction(
 }
 
 /**
- * Component for displaying recipes
- * @param {Object} props
+ * Displays recipes
+ * @param {Array} recipes
+ * @param {func} onClickVote
+ * @param {func} onClickFavourite
+ * @param {bool} isLoggedIn
+ * @param {Number} userId
+ * @param {Array} favourites
+ * @param {func} getId
+ * @param {func} getIdForEdit
  *
  * @returns {Node} recipes
  */
-function RecipesDisplay({
+function displayRecipes(
   recipes, onClickVote, onClickFavourite, isLoggedIn,
   userId, favourites, getId, getIdForEdit
-}) {
+) {
   const chunkedRecipes = _.chunk(recipes, 3);
   if (recipes === undefined || recipes.length === 0) {
-    return <h3>No Recipe Available</h3>;
+    return <h4>No Recipe Available</h4>;
   }
-  return chunkedRecipes.map((chunk, index) => (
-    <div className="row" key={index}>
+  return chunkedRecipes.map(chunk => (
+    <div className="row" key={chunk[0].id}>
       {chunk.map(recipe => (<Card
         key={recipe.id}
         id={recipe.id}
@@ -93,12 +105,36 @@ function RecipesDisplay({
         recipeName={recipe.name}
         recipeDescription={recipe.description}
         cardAction={getCardAction(
-          recipe, onClickVote, onClickFavourite,
-          isLoggedIn, userId, favourites, getId, getIdForEdit
-          )}
+            recipe, onClickVote, onClickFavourite,
+            isLoggedIn, userId, favourites, getId, getIdForEdit
+            )}
       />))}
     </div>
   ));
+}
+
+/**
+ * Component for displaying recipes
+ * @param {Object} props
+ *
+ * @returns {Node} recipes
+ */
+function RecipesDisplay({
+  recipes, onClickVote, onClickFavourite, isLoggedIn,
+  userId, favourites, getId, getIdForEdit, next, hasMore
+}) {
+  return (
+    <InfiniteScroll
+      next={next}
+      hasMore={hasMore}
+      loader={<Preloader />}
+    >
+      {displayRecipes(
+        recipes, onClickVote, onClickFavourite, isLoggedIn,
+        userId, favourites, getId, getIdForEdit
+        )}
+    </InfiniteScroll>
+  );
 }
 
 RecipesDisplay.propTypes = propTypes;

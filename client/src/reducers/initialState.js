@@ -4,5 +4,6 @@ export default {
   userFavourites: [],
   recipes: [],
   searchResults: [],
-  mostFavourited: []
+  mostFavourited: [],
+  paginationMeta: {}
 };

@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import InfiniteScroll from 'react-infinite-scroll-component';
 import { MainHeader } from '../common/Header';
 import RecipesDisplay from '../common/RecipesDisplay';
 
@@ -16,7 +15,9 @@ const propTypes = {
   searchResults: PropTypes.arrayOf(PropTypes.object).isRequired,
   userId: PropTypes.number,
   onClickFavourite: PropTypes.func.isRequired,
-  favourites: PropTypes.arrayOf(PropTypes.object).isRequired
+  favourites: PropTypes.arrayOf(PropTypes.object).isRequired,
+  hasMore: PropTypes.bool.isRequired,
+  fetchNext: PropTypes.func.isRequired
 };
 
 const defaultProps = {
@@ -31,7 +32,7 @@ const defaultProps = {
  * @returns {*} jsx
  */
 export default function CatalogPage({
-  isLoggedIn, firstName, allRecipes, mostFavouritedRecipes, searchResults,
+  isLoggedIn, firstName, allRecipes, mostFavouritedRecipes, searchResults, hasMore, fetchNext,
   onClickVote, onSearchChange, searchValue, hasSearchValue, userId, onClickFavourite, favourites
 }) {
   return (
@@ -87,16 +88,16 @@ export default function CatalogPage({
         {!hasSearchValue &&
         <div id="all">
           <div className="container">
-            <InfiniteScroll>
-              <RecipesDisplay
-                recipes={allRecipes}
-                onClickVote={onClickVote}
-                onClickFavourite={onClickFavourite}
-                isLoggedIn={isLoggedIn}
-                userId={userId}
-                favourites={favourites}
-              />
-            </InfiniteScroll>
+            <RecipesDisplay
+              recipes={allRecipes}
+              onClickVote={onClickVote}
+              onClickFavourite={onClickFavourite}
+              isLoggedIn={isLoggedIn}
+              userId={userId}
+              favourites={favourites}
+              hasMore={hasMore}
+              next={fetchNext}
+            />
           </div>
         </div>}
         {!hasSearchValue &&
@@ -115,16 +116,14 @@ export default function CatalogPage({
         {hasSearchValue &&
         <div id="search-results">
           <div className="container">
-            <InfiniteScroll>
-              <RecipesDisplay
-                recipes={searchResults}
-                onClickVote={onClickVote}
-                onClickFavourite={onClickFavourite}
-                isLoggedIn={isLoggedIn}
-                userId={userId}
-                favourites={favourites}
-              />
-            </InfiniteScroll>
+            <RecipesDisplay
+              recipes={searchResults}
+              onClickVote={onClickVote}
+              onClickFavourite={onClickFavourite}
+              isLoggedIn={isLoggedIn}
+              userId={userId}
+              favourites={favourites}
+            />
           </div>
         </div>}
       </div>
