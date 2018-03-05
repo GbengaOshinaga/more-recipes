@@ -27,7 +27,10 @@ export default class UserController {
         profilePic: picture
       })
         .then((user) => {
-          const accessToken = jwt.sign({ userId: user.id, email: user.email }, process.env.JWT_SECRET);
+          const accessToken = jwt.sign({
+            userId: user.id,
+            email: user.email
+          }, process.env.JWT_SECRET);
           return res.status(201).jsend.success({
             user: {
               id: user.id,
@@ -65,7 +68,10 @@ export default class UserController {
             if (!result) {
               return res.status(400).jsend.fail({ message: 'Invalid Credentials' });
             }
-            const accessToken = jwt.sign({ userId: user.id, email: user.email }, process.env.JWT_SECRET);
+            const accessToken = jwt.sign({
+              userId: user.id,
+              email: user.email
+            }, process.env.JWT_SECRET);
             return res.status(200).jsend.success({
               user: {
                 id: user.id,

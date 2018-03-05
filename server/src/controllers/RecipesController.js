@@ -1,4 +1,5 @@
 import db from '../models/index';
+import getPaginationMeta from '../helpers/';
 
 /**
  * RecipesController
@@ -46,24 +47,29 @@ export default class RecipesController {
     if (req.query.sort && req.query.order) {
       db.Recipes.findAll({
         group: 'id',
-        order: db.sequelize.literal(`max(${req.query.sort}) ${req.query.order.toUpperCase()}`)
+        order: db.sequelize.literal(`max(${req.query.sort}) ${req.query.order.toUpperCase()}`),
+        offset: req.query.from,
+        limit: req.query.limit
       })
-        .then(recipes => res.status(200).jsend.success({ recipes }))
+        .then(recipes => getPaginationMeta(req, db.Recipes)
+          .then(paginationMeta => res.status(200).jsend.success({ recipes, paginationMeta })))
         .catch(error => res.status(400).jsend.error({ error }));
-    } else if (req.query.from && req.query.to) {
-      this.paginateRecipes(req.query.from, req.query.to, res);
     } else if (req.query.query) {
-      this.searchRecipes(req.query.query.trim(), res);
+      this.searchRecipes(req.query.query.trim(), req, res);
     } else {
       db.Recipes.findAll({
         include: [{
           model: db.Reviews,
           include: [{
-            model: db.User
+            model: db.User,
+            attributes: { exclude: ['password'] }
           }]
-        }]
+        }],
+        offset: req.query.from,
+        limit: req.query.limit
       })
-        .then(recipes => res.status(200).jsend.success({ recipes }))
+        .then(recipes => getPaginationMeta(req, db.Recipes)
+          .then(paginationMeta => res.status(200).jsend.success({ recipes, paginationMeta })))
         .catch(error => res.status(400).jsend.error(error));
     }
   }
@@ -211,10 +217,12 @@ export default class RecipesController {
   /**
    * Search for recipes
    * @param {String} query
+   * @param {Object} req
    * @param {Object} res
+   *
    * @returns {Array} res
    */
-  static searchRecipes(query, res) {
+  static searchRecipes(query, req, res) {
     const op = db.Sequelize.Op;
 
     db.Recipes.findAll({
@@ -230,27 +238,29 @@ export default class RecipesController {
             [op.contains]: [`${query}`]
           }
         }
-      }
+      },
+      offset: req.query.from,
+      limit: req.query.limit
     })
       .then((recipes) => {
         if (recipes.length === 0) {
           return res.status(404).jsend.fail({ message: 'No Results Found' });
         }
-        res.status(200).jsend.success({ recipes });
+        return getPaginationMeta(req, db.Recipes, {
+          [op.or]: {
+            name: {
+              [op.iLike]: `%${query}%`
+            },
+            description: {
+              [op.iLike]: `%${query}%`
+            },
+            ingredients: {
+              [op.contains]: [`${query}`]
+            }
+          }
+        })
+          .then(paginationMeta => res.status(200).jsend.success({ recipes, paginationMeta }));
       })
-      .catch(error => res.status(400).jsend.error(error));
-  }
-
-  /**
-   * Paginate recipes
-   * @param {Number} offset
-   * @param {Number} limit
-   * @param {Object} res
-   * @returns {Array} res
-   */
-  static paginateRecipes(offset, limit, res) {
-    db.Recipes.findAll({ offset, limit })
-      .then(recipes => res.status(200).jsend.success({ recipes }))
       .catch(error => res.status(400).jsend.error(error));
   }
 }

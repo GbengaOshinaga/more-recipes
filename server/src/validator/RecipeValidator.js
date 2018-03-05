@@ -105,29 +105,29 @@ export default class RecipeValidator {
     const messages = [];
 
     if (req.query.sort && !req.query.order) {
-      messages.push('order query is required if sort query is passed');
+      messages.push('order parameter is required if sort parameter is passed');
     }
     if (!req.query.sort && req.query.order) {
-      messages.push('sort query is required if order query is passed');
+      messages.push('sort parameter is required if order parameter is passed');
     }
     if (req.query.sort && req.query.order) {
       if (req.query.sort.toLowerCase() !== 'upvotes' && req.query.sort.toLowerCase() !== 'downvotes') {
-        messages.push('sort query must be either upvotes or downvotes');
+        messages.push('sort parameter must be either upvotes or downvotes');
       }
       if (req.query.order.toUpperCase() !== 'ASC' && req.query.order.toUpperCase() !== 'DESC') {
-        messages.push('order query must be asc or desc');
+        messages.push('order parameter must be asc or desc');
       }
     }
 
-    if (req.query.from && !req.query.to) {
-      messages.push('to query is required if from query is passed');
+    if (req.query.from && !req.query.limit) {
+      messages.push('limit parameter is required if from query is passed');
     }
-    if (!req.query.from && req.query.to) {
-      messages.push('from query is required if to query is passed');
+    if (!req.query.from && req.query.limit) {
+      messages.push('from parameter is required if limit parameter is passed');
     }
-    if (req.query.from && req.query.to) {
-      if (isNaN(req.query.from) && isNaN(req.query.to)) {
-        messages.push('from and to query must be numbers');
+    if (req.query.from && req.query.limit) {
+      if (isNaN(req.query.from) && isNaN(req.query.limit)) {
+        messages.push('from and limit query must be numbers');
       }
     }
 

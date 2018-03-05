@@ -44,7 +44,7 @@ function updateFavouriteState(recipe, favourites) {
  *
  * @returns {Object} className
  */
-export function updateVoteClassName(recipe, userId) {
+function updateVoteClassName(recipe, userId) {
   const voteStatus = updateRecipeVoteState(recipe, userId);
 
   let upvoteClassName = 'upvotes';
@@ -67,7 +67,7 @@ export function updateVoteClassName(recipe, userId) {
  *
  * @returns {String} class name
  */
-export function updateFavouriteClassName(recipe, favourites) {
+function updateFavouriteClassName(recipe, favourites) {
   const favouriteStatus = updateFavouriteState(recipe, favourites);
 
   let favouriteClassName = 'favourite';
@@ -77,5 +77,29 @@ export function updateFavouriteClassName(recipe, favourites) {
   }
 
   return favouriteClassName;
+}
+
+/**
+ * Updates class names for actions
+ * @param {*} recipe
+ * @param {*} userId
+ * @param {*} favourites
+ *
+ * @returns {Object} classnames
+ */
+export default function updateClassName(recipe, userId, favourites) {
+  const {
+    upvoteClassName,
+    downvoteClassName
+  } = updateVoteClassName(recipe, userId);
+
+  let favouriteClassName;
+  if (favourites) {
+    favouriteClassName = updateFavouriteClassName(recipe, favourites);
+  } else {
+    favouriteClassName = 'favourite red-text';
+  }
+
+  return { upvoteClassName, downvoteClassName, favouriteClassName };
 }
 

@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import InfiniteScroll from 'react-infinite-scroll-component';
 import { MainHeader } from '../common/Header';
 import RecipesDisplay from '../common/RecipesDisplay';
 
@@ -86,14 +87,16 @@ export default function CatalogPage({
         {!hasSearchValue &&
         <div id="all">
           <div className="container">
-            <RecipesDisplay
-              recipes={allRecipes}
-              onClickVote={onClickVote}
-              onClickFavourite={onClickFavourite}
-              isLoggedIn={isLoggedIn}
-              userId={userId}
-              favourites={favourites}
-            />
+            <InfiniteScroll>
+              <RecipesDisplay
+                recipes={allRecipes}
+                onClickVote={onClickVote}
+                onClickFavourite={onClickFavourite}
+                isLoggedIn={isLoggedIn}
+                userId={userId}
+                favourites={favourites}
+              />
+            </InfiniteScroll>
           </div>
         </div>}
         {!hasSearchValue &&
@@ -112,14 +115,16 @@ export default function CatalogPage({
         {hasSearchValue &&
         <div id="search-results">
           <div className="container">
-            <RecipesDisplay
-              recipes={searchResults}
-              onClickVote={onClickVote}
-              onClickFavourite={onClickFavourite}
-              isLoggedIn={isLoggedIn}
-              userId={userId}
-              favourites={favourites}
-            />
+            <InfiniteScroll>
+              <RecipesDisplay
+                recipes={searchResults}
+                onClickVote={onClickVote}
+                onClickFavourite={onClickFavourite}
+                isLoggedIn={isLoggedIn}
+                userId={userId}
+                favourites={favourites}
+              />
+            </InfiniteScroll>
           </div>
         </div>}
       </div>

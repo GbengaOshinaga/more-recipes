@@ -1,9 +1,10 @@
 import RecipeValidator from '../validator/RecipeValidator';
 import RecipesController from '../controllers/RecipesController';
 import AuthValidator from '../validator/AuthValidator';
+import Pagination from '../middlewares/pagination';
 
 export default (app) => {
-  app.get('/api/v1/recipes/', RecipeValidator.validateQueryParams, (req, res) => { RecipesController.getRecipes(req, res); });
+  app.get('/api/v1/recipes/', RecipeValidator.validateQueryParams, Pagination.paginate, (req, res) => { RecipesController.getRecipes(req, res); });
 
   app.get('/api/v1/recipes/:id', RecipeValidator.validateID, RecipesController.getRecipeById);
 

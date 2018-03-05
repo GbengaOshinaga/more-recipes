@@ -1,10 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import _ from 'lodash';
 import { MainHeader } from '../common/Header';
-import Card from '../common/Card';
-import { UserCardAction } from '../common/CardAction';
 import { AddModal, DeleteModal, EditModal } from './Modal';
+import RecipesDisplay from '../common/RecipesDisplay';
 
 const pagePropTypes = {
   isLoggedIn: PropTypes.bool.isRequired,
@@ -33,38 +31,6 @@ const pagePropTypes = {
 const pageDefaultProps = {
   firstName: ''
 };
-
-/**
- * Displays recipes in cards
- * @param {Array} recipes
- * @param {func} getId
- * @param {func} getIdForEdit
- * @returns {Node} Card component
- */
-function displayRecipes(recipes, getId, getIdForEdit) {
-  const chunkedRecipes = _.chunk(recipes, 3);
-  if (recipes === undefined || recipes.length === 0) {
-    return 'No Recipe Available';
-  }
-  return chunkedRecipes.map((chunk, index) => (
-    <div className="row" key={index}>
-      {chunk.map(recipe => (
-        <Card
-          key={recipe.id}
-          id={recipe.id}
-          image={recipe.image}
-          recipeName={recipe.name}
-          recipeDescription={recipe.description}
-          cardAction={<UserCardAction
-            id={recipe.id}
-            getId={getId}
-            getIdForEdit={getIdForEdit}
-          />}
-        />
-  ))}
-    </div>
-  ));
-}
 
 /**
  * Page component
@@ -121,7 +87,11 @@ function Page({
         <div className="favorited-recipes">
           <h4 className="center-align">My Recipes</h4>
           <hr />
-          {displayRecipes(userRecipes, getId, getIdForEdit)}
+          <RecipesDisplay
+            recipes={userRecipes}
+            getId={getId}
+            getIdForEdit={getIdForEdit}
+          />
         </div>
       </div>
     </div>

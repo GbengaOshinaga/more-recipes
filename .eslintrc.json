@@ -13,7 +13,8 @@
       "jest": false,
       "window": false,
       "document": false,
-      "$": false
+      "$": false,
+      "fetch": false
     },
     "rules": {
       "one-var": 0,

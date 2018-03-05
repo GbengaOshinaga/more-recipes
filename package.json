@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "engines": {
     "npm": "3.10.10",
-    "node": "6.11.0"
+    "node": "8.9.1"
   },
   "description": "server-side code for more-recipes app",
   "main": "index.js",
@@ -13,7 +13,7 @@
     "create:db": "NODE_ENV=test ./node_modules/.bin/sequelize db:create more_recipes_test",
     "migrate:db": "NODE_ENV=test ./node_modules/.bin/sequelize db:migrate",
     "migrate": "./node_modules/.bin/sequelize db:migrate",
-    "test:dev": "npm-run-all --sequential drop:db create:db migrate:db test",
+    "test:dev": "NODE_ENV=test npm-run-all --sequential drop:db create:db migrate:db test",
     "test:react": "jest ./client/src/test/**/**.spec.js",
     "babel-node": "babel-node ./server/src/index.js --presets=env",
     "startServer": "./node_modules/.bin/babel-watch server/src/app.js",
@@ -24,7 +24,7 @@
     "heroku-postbuild": "npm run build",
     "start": "node dist/src/app.js",
     "coveralls": "nyc npm run test:dev&& nyc report --reporter=text-lcov | coveralls",
-    "start:dev": "babel-node server/src/app.js"
+    "start:dev": "NODE_ENV=development babel-node server/src/app.js"
   },
   "author": "Gbenga Oshinaga",
   "license": "ISC",
