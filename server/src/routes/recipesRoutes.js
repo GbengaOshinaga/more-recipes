@@ -20,6 +20,9 @@ export default (app) => {
   // Add a review for a recipe
   app.post('/api/v1/recipes/:id/reviews', AuthValidator.authenticate, RecipeValidator.validateID, RecipeValidator.validateReview, RecipesController.addReview);
 
+  // Get reviews for a recipe
+  app.get('/api/v1/recipes/:id/reviews', RecipeValidator.validateID, Pagination.paginate, RecipesController.getRecipeReviews);
+
   // Edit a review
   app.put('/api/v1/recipes/reviews/:id', AuthValidator.authenticate, RecipeValidator.validateID, RecipesController.editReview);
 

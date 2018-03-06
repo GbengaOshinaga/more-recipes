@@ -20,7 +20,7 @@ const defaultProps = {
   firstName: ''
 };
 
-const defaultImage = 'http://res.cloudinary.com/king-more-recipes/image/upload/v1518028470/10546i3DAC5A5993C8BC8C_vtqogc.jpg';
+const defaultImage = 'https://res.cloudinary.com/king-more-recipes/image/upload/v1518028470/10546i3DAC5A5993C8BC8C_vtqogc.jpg';
 let imageContext;
 
 /**

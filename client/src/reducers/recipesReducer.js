@@ -1,5 +1,5 @@
 import initialState from './initialState';
-import { GET_RECIPES_SUCCESS, VOTE_SUCCESS, ADD_REVIEW_SUCCESS, GET_RECIPE_SUCCESS } from '../actions/actions';
+import { GET_RECIPES_SUCCESS, VOTE_SUCCESS, ADD_REVIEW_SUCCESS, GET_RECIPE_SUCCESS, GET_REVIEWS_SUCCESS, CLEAR_RECIPES } from '../actions/actions';
 
 /**
  * Recipes reducer
@@ -11,7 +11,7 @@ export default function recipesReducer(state = initialState.recipes, action) {
   const { response } = action;
   switch (action.type) {
     case GET_RECIPES_SUCCESS:
-      return state.concat(response);
+      return [...state.concat(response)];
 
     case GET_RECIPE_SUCCESS:
       return [...state, response];
@@ -31,6 +31,17 @@ export default function recipesReducer(state = initialState.recipes, action) {
         }
         return recipe;
       })];
+
+    case GET_REVIEWS_SUCCESS:
+      if (response.length === 0) {
+        return state;
+      }
+      return state.map((recipe) => {
+        if (recipe.id === response[0].RecipeId) {
+          return { ...recipe, Reviews: [...recipe.Reviews.concat(response)] };
+        }
+        return recipe;
+      });
 
     default:
       return state;

@@ -56,16 +56,6 @@ describe('Users can perform actions on recipe', () => {
       });
   });
 
-  it('should get all recipes', (done) => {
-    chai.request(app)
-      .get('/api/v1/recipes')
-      .end((err, res) => {
-        expect(res).to.have.status(200);
-        expect(res.body.data.recipes).to.be.an('array');
-        done();
-      });
-  });
-
   it('should get recipe by id', (done) => {
     chai.request(app)
       .get('/api/v1/recipes/1')
@@ -76,14 +66,60 @@ describe('Users can perform actions on recipe', () => {
       });
   });
 
-  it('should get recipes by sort order', (done) => {
-    chai.request(app)
-      .get('/api/v1/recipes?sort=upvotes&order=asc')
-      .end((err, res) => {
-        expect(res).to.have.status(200);
-        expect(res.body.data.recipes).to.be.an('array');
-        done();
-      });
+  describe('Sort Order', () => {
+    before(() => {
+      db.Recipes.bulkCreate([
+        {
+          name: faker.name.findName(),
+          description: faker.lorem.sentence(),
+          UserId: userId,
+          ingredients: ['ingredient1', 'ingredient2'],
+          upvotes: [1, 2, 3, 4, 5, 6]
+        },
+        {
+          name: faker.name.findName(),
+          description: faker.lorem.sentence(),
+          UserId: userId,
+          ingredients: ['ingredient3', 'ingredient4'],
+          upvotes: [1, 2, 3, 4, 5]
+        },
+        {
+          name: faker.name.findName(),
+          description: faker.lorem.sentence(),
+          UserId: userId,
+          ingredients: ['ingredient5', 'ingredient6'],
+          upvotes: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+        }, {
+          name: faker.name.findName(),
+          description: faker.lorem.sentence(),
+          UserId: userId,
+          ingredients: ['ingredient7', 'ingredient8'],
+          upvotes: [1, 2, 3]
+        }
+      ]);
+    });
+
+    it('should get recipes by sort order', (done) => {
+      chai.request(app)
+        .get('/api/v1/recipes?sort=upvotes&order=desc')
+        .end((err, res) => {
+          expect(res).to.have.status(200);
+          expect(res.body.data.recipes).to.be.an('array');
+          expect(res.body.data.recipes[0].upvotes.length).to.equal(10);
+          done();
+        });
+    });
+
+    it('should get all recipes', (done) => {
+      chai.request(app)
+        .get('/api/v1/recipes')
+        .end((err, res) => {
+          expect(res).to.have.status(200);
+          expect(res.body.data.recipes).to.be.an('array');
+          expect(res.body.data.recipes.length).to.be.greaterThan(3);
+          done();
+        });
+    });
   });
 
   it('should modify recipe', (done) => {
@@ -332,7 +368,7 @@ describe('Pagination', () => {
 
   it('should return only five recipes', (done) => {
     chai.request(app)
-      .get('/api/v1/recipes?from=0&to=5')
+      .get('/api/v1/recipes?from=0&limit=5')
       .end((err, res) => {
         expect(res).to.have.status(200);
         expect(res.body.data.recipes).to.be.an('array');

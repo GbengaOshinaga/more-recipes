@@ -16,7 +16,6 @@ export default class AuthValidator {
 
     try {
       const user = jwt.verify(accessToken, process.env.JWT_SECRET);
-
       if (user.email) {
         req.user = user;
         return next();

@@ -120,14 +120,14 @@ export default class RecipeValidator {
     }
 
     if (req.query.from && !req.query.limit) {
-      messages.push('limit parameter is required if from query is passed');
+      messages.push('limit parameter is required if from parameter is passed');
     }
     if (!req.query.from && req.query.limit) {
       messages.push('from parameter is required if limit parameter is passed');
     }
     if (req.query.from && req.query.limit) {
       if (isNaN(req.query.from) && isNaN(req.query.limit)) {
-        messages.push('from and limit query must be numbers');
+        messages.push('from and limit parameters must be numbers');
       }
     }
 

@@ -6,12 +6,14 @@ import recipes from './recipesReducer';
 import searchResults from './searchReducer';
 import mostFavourited from './mostFavouritedReducer';
 import paginationMeta from './paginationReducer';
+import reviewsPaginationMeta from './reviewsPaginationReducer';
 
 const rootReducer = combineReducers({
   userRecipes,
   userFavourites,
   recipes,
   paginationMeta,
+  reviewsPaginationMeta,
   searchResults,
   mostFavourited,
   session: sessionReducer

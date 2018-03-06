@@ -10,7 +10,10 @@ import {
   GET_USER_FAVOURITES_FAILURE,
   VOTE_SUCCESS,
   GET_MOST_FAVOURITED_RECIPES_SUCCESS,
-  GET_PAGINATION_META
+  GET_PAGINATION_META,
+  GET_REVIEWS_PAGINATION_META,
+  GET_REVIEWS_SUCCESS,
+  CLEAR_RECIPES
 } from './actions';
 
 /**
@@ -20,6 +23,15 @@ import {
  */
 function updateGetRecipesSuccess(response) {
   return { type: GET_RECIPES_SUCCESS, response };
+}
+
+/**
+ * Updates reducer if get reviews action is successful
+ * @param {Array} response
+ * @returns {Object} object
+ */
+function updateGetReviewsSuccess(response) {
+  return { type: GET_REVIEWS_SUCCESS, response };
 }
 
 /**
@@ -103,6 +115,25 @@ function updatePaginationMeta(response) {
   return { type: GET_PAGINATION_META, response };
 }
 
+/**
+ * Updates reviews pagination meta reducer
+ * @param {Object} response
+ *
+ * @returns {Object} object
+ */
+function updateReviewsPaginationMeta(response) {
+  return { type: GET_REVIEWS_PAGINATION_META, response };
+}
+
+/**
+ * Clear recipes
+ *
+ * @returns {Object} object
+*/
+function clearRecipesState() {
+  return { type: CLEAR_RECIPES };
+}
+
 
 /**
  * Action to get all recipes
@@ -116,8 +147,32 @@ export function getAllRecipes(next) {
       .then(response => response.json())
       .then((response) => {
         if (response.status === 'success') {
+          response.data.recipes.map((recipe) => {
+            recipe.Reviews = [];
+          });
+          dispatch(clearRecipesState());
           dispatch(updateGetRecipesSuccess(response.data.recipes));
           dispatch(updatePaginationMeta(response.data.paginationMeta));
+        }
+      });
+  };
+}
+
+/**
+   * Get recipe reviews
+   * @param {Number} id
+   * @param {String} next
+   *
+   * @returns {Promise} response
+   */
+export function getRecipeReviews(id, next) {
+  return function (dispatch) {
+    return RecipesApi.getRecipeReviews(id, next)
+      .then(response => response.json())
+      .then((response) => {
+        if (response.status === 'success') {
+          dispatch(updateGetReviewsSuccess(response.data.reviews));
+          dispatch(updateReviewsPaginationMeta(response.data.paginationMeta));
         }
       });
   };
@@ -134,6 +189,7 @@ export function getRecipe(id) {
       .then(response => response.json())
       .then((response) => {
         if (response.status === 'success') {
+          response.data.recipe.Reviews = [];
           dispatch(updateGetRecipeSuccess(response.data.recipe));
         }
       });

@@ -26,6 +26,29 @@ export default class RecipesApi {
   }
 
   /**
+   * Get recipe reviews
+   * @param {Number} id
+   * @param {String} next
+   *
+   * @returns {Promise} response
+   */
+  static getRecipeReviews(id, next) {
+    let url;
+    if (next) {
+      url = next;
+    } else {
+      url = `/api/v1/recipes/${id}/reviews`;
+    }
+
+    return fetch(url, {
+      method: 'get',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      }
+    });
+  }
+
+  /**
    * Method for getting a single recipe
    * @param {Number} id
    * @returns {Promise} Promise

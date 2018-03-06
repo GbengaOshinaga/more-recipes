@@ -5,5 +5,6 @@ export default {
   recipes: [],
   searchResults: [],
   mostFavourited: [],
-  paginationMeta: {}
+  paginationMeta: {},
+  reviewsPaginationMeta: {}
 };

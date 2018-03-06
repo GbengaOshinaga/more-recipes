@@ -20,3 +20,8 @@
 	padding: 10px;
 	background-color: $body-color;
 }
+
+.card.horizontal .card-image {
+    max-width: 50%;
+    width: 90px;
+}

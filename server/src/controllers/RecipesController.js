@@ -58,13 +58,6 @@ export default class RecipesController {
       this.searchRecipes(req.query.query.trim(), req, res);
     } else {
       db.Recipes.findAll({
-        include: [{
-          model: db.Reviews,
-          include: [{
-            model: db.User,
-            attributes: { exclude: ['password'] }
-          }]
-        }],
         offset: req.query.from,
         limit: req.query.limit
       })
@@ -81,19 +74,12 @@ export default class RecipesController {
    * @returns {Object} res
    */
   static getRecipeById(req, res) {
-    db.Recipes.findById(req.params.id, {
-      include: [{
-        model: db.Reviews,
-        include: [{
-          model: db.User
-        }]
-      }]
-    })
+    db.Recipes.findById(req.params.id)
       .then((recipe) => {
         if (!recipe) {
           return res.status(404).jsend.fail({ message: `Recipe with Id of ${req.params.id} does not exist` });
         }
-        recipe.getFavouriteUsers()
+        return recipe.getFavouriteUsers()
           .then(userFavourites =>
             res.status(200).jsend.success({ recipe, favourites: userFavourites }));
       })
@@ -171,6 +157,26 @@ export default class RecipesController {
   }
 
   /**
+   * Get reviews for a recipe
+   * @param {Object} req
+   * @param {Object} res
+   *
+   * @returns {Object} res
+   */
+  static getRecipeReviews(req, res) {
+    const condition = { RecipeId: req.params.id };
+    db.Reviews.findAll({
+      where: condition,
+      include: [{ model: db.User }],
+      offset: req.query.from,
+      limit: req.query.limit
+    })
+      .then(reviews => getPaginationMeta(req, db.Reviews, condition)
+        .then(paginationMeta => res.status(200).jsend.success({ reviews, paginationMeta })))
+      .catch(error => res.status(400).jsend.error(error));
+  }
+
+  /**
    * Edits a review
    * @param {Object} req
    * @param {Object} res
@@ -224,21 +230,22 @@ export default class RecipesController {
    */
   static searchRecipes(query, req, res) {
     const op = db.Sequelize.Op;
+    const condition = {
+      [op.or]: {
+        name: {
+          [op.iLike]: `%${query}%`
+        },
+        description: {
+          [op.iLike]: `%${query}%`
+        },
+        ingredients: {
+          [op.contains]: [`${query}`]
+        }
+      }
+    };
 
     db.Recipes.findAll({
-      where: {
-        [op.or]: {
-          name: {
-            [op.iLike]: `%${query}%`
-          },
-          description: {
-            [op.iLike]: `%${query}%`
-          },
-          ingredients: {
-            [op.contains]: [`${query}`]
-          }
-        }
-      },
+      where: condition,
       offset: req.query.from,
       limit: req.query.limit
     })
@@ -246,19 +253,7 @@ export default class RecipesController {
         if (recipes.length === 0) {
           return res.status(404).jsend.fail({ message: 'No Results Found' });
         }
-        return getPaginationMeta(req, db.Recipes, {
-          [op.or]: {
-            name: {
-              [op.iLike]: `%${query}%`
-            },
-            description: {
-              [op.iLike]: `%${query}%`
-            },
-            ingredients: {
-              [op.contains]: [`${query}`]
-            }
-          }
-        })
+        return getPaginationMeta(req, db.Recipes, condition)
           .then(paginationMeta => res.status(200).jsend.success({ recipes, paginationMeta }));
       })
       .catch(error => res.status(400).jsend.error(error));

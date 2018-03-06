@@ -16,7 +16,8 @@ const propTypes = {
   profilePic: PropTypes.string.isRequired,
   recipes: PropTypes.arrayOf(PropTypes.object).isRequired,
   userId: PropTypes.number.isRequired,
-  userFavourites: PropTypes.arrayOf(PropTypes.object).isRequired
+  userFavourites: PropTypes.arrayOf(PropTypes.object).isRequired,
+  reviewsPaginationMeta: PropTypes.objectOf(PropTypes.any).isRequired
 };
 
 const defaultProps = {
@@ -39,13 +40,16 @@ class RecipeDetails extends React.Component {
       recipe: {},
       upvoteClassName: 'thumb-up',
       downvoteClassName: 'thumb-down',
-      favouriteClassName: 'favourite'
+      favouriteClassName: 'favourite',
+      hasMoreReviews: true,
+      isLoadingReviews: false
     };
 
     this.onAddReviewChange = this.onAddReviewChange.bind(this);
     this.onClickSaveReview = this.onClickSaveReview.bind(this);
     this.vote = this.vote.bind(this);
     this.addFavourite = this.addFavourite.bind(this);
+    this.fetchReviews = this.fetchReviews.bind(this);
   }
 
   /**
@@ -67,6 +71,9 @@ class RecipeDetails extends React.Component {
     if (!isRecipeAvailable) {
       this.props.actions.getRecipe(this.props.match.params.id);
     }
+    if (!this.props.reviewsPaginationMeta.total) {
+      this.props.actions.getRecipeReviews(this.props.match.params.id);
+    }
   }
 
   /**
@@ -81,6 +88,12 @@ class RecipeDetails extends React.Component {
         this.setState({ recipe });
       }
     });
+
+    if (nextProps.reviewsPaginationMeta.next) {
+      this.setState({ hasMoreReviews: true });
+    } else {
+      this.setState({ hasMoreReviews: false });
+    }
   }
 
   /**
@@ -149,6 +162,25 @@ class RecipeDetails extends React.Component {
     });
   }
 
+  /**
+   * Fetch paginated reviews
+   * @param {Object} event
+   *
+   * @returns {undefined}
+  */
+  fetchReviews(event) {
+    this.setState({ isLoadingReviews: true });
+    event.preventDefault();
+    const { id } = this.props.match.params;
+    const { reviewsPaginationMeta } = this.props;
+    if (reviewsPaginationMeta.next) {
+      this.props.actions.getRecipeReviews(id, reviewsPaginationMeta.next)
+        .then(() => this.setState({ isLoadingReviews: false }));
+    } else {
+      this.props.actions.getRecipeReviews(id)
+        .then(() => this.setState({ isLoadingReviews: false }));
+    }
+  }
 
   /**
    * votes recipe
@@ -211,6 +243,9 @@ class RecipeDetails extends React.Component {
         upvoteClassName={this.state.upvoteClassName}
         downvoteClassName={this.state.downvoteClassName}
         favouriteClassName={this.state.favouriteClassName}
+        hasMoreReviews={this.state.hasMoreReviews}
+        fetchReviews={this.fetchReviews}
+        isLoadingReviews={this.state.isLoadingReviews}
       />
     );
   }
@@ -232,7 +267,8 @@ function mapStateToProps(state) {
     userId: state.session.user.id,
     recipe: state.recipe,
     recipes: state.recipes,
-    userFavourites: state.userFavourites
+    userFavourites: state.userFavourites,
+    reviewsPaginationMeta: state.reviewsPaginationMeta
   };
 }
 

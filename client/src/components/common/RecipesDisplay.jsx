@@ -16,7 +16,7 @@ const propTypes = {
   favourites: PropTypes.arrayOf(PropTypes.object),
   getId: PropTypes.func,
   getIdForEdit: PropTypes.func,
-  next: PropTypes.func.isRequired,
+  next: PropTypes.func,
   hasMore: PropTypes.bool
 };
 
@@ -28,6 +28,7 @@ const defaultProps = {
   favourites: undefined,
   getId: undefined,
   getIdForEdit: undefined,
+  next: undefined,
   hasMore: false
 };
 

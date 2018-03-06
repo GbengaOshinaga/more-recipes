@@ -59,8 +59,12 @@ export class Catalog extends React.Component {
   componentDidMount() {
     pluginsInit();
     transformNavBar();
-    this.props.actions.getAllRecipes();
-    this.props.actions.getMostFavouritedRecipes();
+    if (!this.props.paginationMeta.total) {
+      this.props.actions.getAllRecipes();
+    }
+    if (this.props.mostFavouritedRecipes.length === 0) {
+      this.props.actions.getMostFavouritedRecipes();
+    }
     sessionService.loadSession()
       .then((token) => {
         this.props.actions.getFavourites(token);
