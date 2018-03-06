@@ -36,7 +36,13 @@ async function getPaginationMeta(req, model, condition) {
   const limit = Number(req.query.limit);
   const offset = Number(req.query.from);
 
-  const paginationMeta = { from: offset, limit, total: dbCount };
+  let recipeId;
+  if (req.params.id) {
+    recipeId = req.params.id;
+  }
+  const paginationMeta = {
+    recipeId, from: offset, limit, total: dbCount
+  };
 
   const nextOffset = offset + limit;
   if (nextOffset < dbCount) {

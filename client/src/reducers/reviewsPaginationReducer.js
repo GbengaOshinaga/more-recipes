@@ -1,5 +1,5 @@
 import initialState from './initialState';
-import { GET_REVIEWS_PAGINATION_META } from '../actions/actions';
+import * as types from '../actions/actions';
 
 /**
  * Pagination meta reducer
@@ -11,8 +11,9 @@ import { GET_REVIEWS_PAGINATION_META } from '../actions/actions';
 export default function paginationReducer(state = initialState.reviewsPaginationMeta, action) {
   const { response } = action;
   switch (action.type) {
-    case GET_REVIEWS_PAGINATION_META:
+    case types.GET_REVIEWS_PAGINATION_META:
       return { ...response };
+
     default:
       return state;
   }

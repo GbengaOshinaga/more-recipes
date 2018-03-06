@@ -1,12 +1,6 @@
 import { sessionService } from 'redux-react-session';
 import UserApi from '../api/UserApi';
-import {
-  ADD_RECIPE_SUCCESS,
-  DELETE_RECIPE_SUCCESS,
-  EDIT_RECIPE_SUCCESS,
-  GET_USERS_RECIPES_SUCCESS,
-  GET_USER_VOTES
-} from './actions';
+import * as types from './actions';
 
 /**
  * Updates reducer if add recipe action is successful
@@ -14,7 +8,7 @@ import {
  * @returns {Object} object
  */
 function updateAddRecipeSuccess(response) {
-  return { type: ADD_RECIPE_SUCCESS, response };
+  return { type: types.ADD_RECIPE_SUCCESS, response };
 }
 
 /**
@@ -23,7 +17,7 @@ function updateAddRecipeSuccess(response) {
  * @returns {Object} object
  */
 function updateGetUserRecipesSuccess(response) {
-  return { type: GET_USERS_RECIPES_SUCCESS, response };
+  return { type: types.GET_USERS_RECIPES_SUCCESS, response };
 }
 
 /**
@@ -32,7 +26,7 @@ function updateGetUserRecipesSuccess(response) {
  * @returns {Object} object
  */
 function updateDeleteRecipeSuccess(id) {
-  return { type: DELETE_RECIPE_SUCCESS, id };
+  return { type: types.DELETE_RECIPE_SUCCESS, id };
 }
 
 /**
@@ -41,7 +35,7 @@ function updateDeleteRecipeSuccess(id) {
  * @returns {Object} object
  */
 function updateEditRecipeSuccess(response) {
-  return { type: EDIT_RECIPE_SUCCESS, response };
+  return { type: types.EDIT_RECIPE_SUCCESS, response };
 }
 
 /**
@@ -50,7 +44,7 @@ function updateEditRecipeSuccess(response) {
  * @returns {Object} object
  */
 function updateGetUserVotes(response) {
-  return { type: GET_USER_VOTES, response };
+  return { type: types.GET_USER_VOTES, response };
 }
 
 /**
@@ -67,7 +61,6 @@ export function addRecipe(token, data) {
         if (response.status === 'success') {
           dispatch(updateAddRecipeSuccess(response.data.recipe));
         } else {
-          console.log(response);
           throw (response.data.errors);
         }
       });
@@ -169,7 +162,6 @@ export function getUserVotes(token) {
     return UserApi.getUserVotes(token)
       .then(response => response.json())
       .then((response) => {
-        console.log(response);
         if (response.status === 'success') {
           dispatch(updateGetUserVotes(response.data.votes));
         }

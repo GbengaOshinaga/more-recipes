@@ -1,20 +1,6 @@
 import RecipesApi from '../api/RecipesApi';
 import UserApi from '../api/UserApi';
-import {
-  GET_RECIPES_SUCCESS,
-  GET_RECIPE_SUCCESS,
-  ADD_REVIEW_SUCCESS,
-  GET_SEARCH_RESULTS,
-  GET_SEARCH_RESULTS_FAILURE,
-  GET_USER_FAVOURITES_SUCCESS,
-  GET_USER_FAVOURITES_FAILURE,
-  VOTE_SUCCESS,
-  GET_MOST_FAVOURITED_RECIPES_SUCCESS,
-  GET_PAGINATION_META,
-  GET_REVIEWS_PAGINATION_META,
-  GET_REVIEWS_SUCCESS,
-  CLEAR_RECIPES
-} from './actions';
+import * as types from './actions';
 
 /**
  * Updates reducer if get recipes action is successful
@@ -22,7 +8,7 @@ import {
  * @returns {Object} object
  */
 function updateGetRecipesSuccess(response) {
-  return { type: GET_RECIPES_SUCCESS, response };
+  return { type: types.GET_RECIPES_SUCCESS, response };
 }
 
 /**
@@ -31,7 +17,7 @@ function updateGetRecipesSuccess(response) {
  * @returns {Object} object
  */
 function updateGetReviewsSuccess(response) {
-  return { type: GET_REVIEWS_SUCCESS, response };
+  return { type: types.GET_REVIEWS_SUCCESS, response };
 }
 
 /**
@@ -40,7 +26,7 @@ function updateGetReviewsSuccess(response) {
  * @returns {Object} object
  */
 function updateGetRecipeSuccess(response) {
-  return { type: GET_RECIPE_SUCCESS, response };
+  return { type: types.GET_RECIPE_SUCCESS, response };
 }
 
 /**
@@ -49,7 +35,7 @@ function updateGetRecipeSuccess(response) {
  * @returns {Object} object
  */
 function updateAddReviewSuccess(response) {
-  return { type: ADD_REVIEW_SUCCESS, response };
+  return { type: types.ADD_REVIEW_SUCCESS, response };
 }
 
 /**
@@ -58,7 +44,7 @@ function updateAddReviewSuccess(response) {
  * @returns {Object} object
  */
 function updateSearchResultsSuccess(response) {
-  return { type: GET_SEARCH_RESULTS, response };
+  return { type: types.GET_SEARCH_RESULTS, response };
 }
 
 /**
@@ -66,7 +52,7 @@ function updateSearchResultsSuccess(response) {
  * @returns {Object} object
  */
 function updateSearchResultsFailure() {
-  return { type: GET_SEARCH_RESULTS_FAILURE };
+  return { type: types.GET_SEARCH_RESULTS_FAILURE };
 }
 
 /**
@@ -75,7 +61,7 @@ function updateSearchResultsFailure() {
  * @returns {Object} object
  */
 function updateUserFavouritesSuccess(response) {
-  return { type: GET_USER_FAVOURITES_SUCCESS, response };
+  return { type: types.GET_USER_FAVOURITES_SUCCESS, response };
 }
 
 
@@ -84,7 +70,7 @@ function updateUserFavouritesSuccess(response) {
  * @returns {Object} object
  */
 function updateUserFavouritesFailure() {
-  return { type: GET_USER_FAVOURITES_FAILURE };
+  return { type: types.GET_USER_FAVOURITES_FAILURE };
 }
 
 /**
@@ -93,7 +79,7 @@ function updateUserFavouritesFailure() {
  * @returns {Object} object
  */
 function updateGetMostFavouritedSuccess(response) {
-  return { type: GET_MOST_FAVOURITED_RECIPES_SUCCESS, response };
+  return { type: types.GET_MOST_FAVOURITED_RECIPES_SUCCESS, response };
 }
 
 /**
@@ -102,7 +88,7 @@ function updateGetMostFavouritedSuccess(response) {
  * @returns {Object} object
  */
 function updateVoteSuccess(response) {
-  return { type: VOTE_SUCCESS, response };
+  return { type: types.VOTE_SUCCESS, response };
 }
 
 /**
@@ -112,7 +98,7 @@ function updateVoteSuccess(response) {
  * @returns {Object} object
  */
 function updatePaginationMeta(response) {
-  return { type: GET_PAGINATION_META, response };
+  return { type: types.GET_PAGINATION_META, response };
 }
 
 /**
@@ -122,7 +108,7 @@ function updatePaginationMeta(response) {
  * @returns {Object} object
  */
 function updateReviewsPaginationMeta(response) {
-  return { type: GET_REVIEWS_PAGINATION_META, response };
+  return { type: types.GET_REVIEWS_PAGINATION_META, response };
 }
 
 /**
@@ -131,7 +117,16 @@ function updateReviewsPaginationMeta(response) {
  * @returns {Object} object
 */
 function clearRecipesState() {
-  return { type: CLEAR_RECIPES };
+  return { type: types.CLEAR_RECIPES };
+}
+
+/**
+ * Clear pagination data
+ *
+ * @returns {Object} object
+ */
+function clearPagination() {
+  return { type: types.CLEAR_PAGINATION };
 }
 
 
@@ -150,7 +145,10 @@ export function getAllRecipes(next) {
           response.data.recipes.map((recipe) => {
             recipe.Reviews = [];
           });
-          dispatch(clearRecipesState());
+          if (!response.data.paginationMeta.previous) {
+            dispatch(clearRecipesState());
+            dispatch(clearPagination());
+          }
           dispatch(updateGetRecipesSuccess(response.data.recipes));
           dispatch(updatePaginationMeta(response.data.paginationMeta));
         }

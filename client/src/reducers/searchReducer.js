@@ -1,5 +1,5 @@
 import initialState from './initialState';
-import { GET_SEARCH_RESULTS, GET_SEARCH_RESULTS_FAILURE } from '../actions/actions';
+import * as types from '../actions/actions';
 
 /**
  * Search Results reducer
@@ -10,9 +10,9 @@ import { GET_SEARCH_RESULTS, GET_SEARCH_RESULTS_FAILURE } from '../actions/actio
 export default function searchReducer(state = initialState.searchResults, action) {
   const { response } = action;
   switch (action.type) {
-    case GET_SEARCH_RESULTS:
+    case types.GET_SEARCH_RESULTS:
       return [...response];
-    case GET_SEARCH_RESULTS_FAILURE:
+    case types.GET_SEARCH_RESULTS_FAILURE:
       return [];
     default:
       return state;

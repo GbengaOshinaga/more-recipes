@@ -41,7 +41,7 @@ class RecipeDetails extends React.Component {
       upvoteClassName: 'thumb-up',
       downvoteClassName: 'thumb-down',
       favouriteClassName: 'favourite',
-      hasMoreReviews: true,
+      hasMoreReviews: false,
       isLoadingReviews: false
     };
 
@@ -60,19 +60,25 @@ class RecipeDetails extends React.Component {
     pluginsInit();
 
     let isRecipeAvailable = false;
+    const { id } = this.props.match.params;
+    const { reviewsPaginationMeta } = this.props;
+    let foundRecipe;
 
     this.props.recipes.map((recipe) => {
-      if (recipe.id === Number(this.props.match.params.id)) {
+      if (recipe.id === Number(id)) {
         isRecipeAvailable = true;
         this.upvoteVoteStatus(recipe, this.props.userId, this.props.userFavourites);
+        foundRecipe = recipe;
         this.setState({ recipe });
       }
     });
     if (!isRecipeAvailable) {
-      this.props.actions.getRecipe(this.props.match.params.id);
+      this.props.actions.getRecipe(id);
     }
-    if (!this.props.reviewsPaginationMeta.total) {
-      this.props.actions.getRecipeReviews(this.props.match.params.id);
+    if (Object.keys(reviewsPaginationMeta).length === 0 ||
+        Number(reviewsPaginationMeta.recipeId) !== Number(id) ||
+        (reviewsPaginationMeta.recipeId === id && foundRecipe.Reviews.length === 0)) {
+      this.props.actions.getRecipeReviews(id);
     }
   }
 
