@@ -1,1 +1,8 @@
 /node_modules
+.nyc_output
+.DS_Store
+.env
+.nyc_output/
+coverage/
+server/.DS_Store
+template/.DS_Store
