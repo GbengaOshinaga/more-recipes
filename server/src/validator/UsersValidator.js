@@ -94,6 +94,12 @@ export default class UsersValidator {
     if (Object.keys(req.body).length === 0) {
       return res.status(400).jsend.fail({ error: 'You did not provide any value for updating' });
     }
+    const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+
+    if (req.body.email && !emailRegex.test(req.body.email)) {
+      return res.status(400).jsend.fail({ error: 'Email Address is not valid' });
+    }
+
     if (!req.body.firstName && !req.body.lastName && !req.body.email
       && !req.body.password && !req.body.profilePic && !req.body.about) {
       if (Object.keys(req.body).length !== 0) {

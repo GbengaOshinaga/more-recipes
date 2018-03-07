@@ -34,6 +34,20 @@ describe('RecipeValidator validates recipe inputs', () => {
       });
   });
 
+  it('should require review', (done) => {
+    chai.request(app)
+      .post('/api/v1/recipes/1/reviews')
+      .set('Access-Token', token)
+      .send({
+        review: ''
+      })
+      .end((err, res) => {
+        expect(res).to.have.status(400);
+        expect(res.body.data.errors).to.be.an('array');
+        done();
+      });
+  });
+
   it('should require that parameter is an integer', (done) => {
     chai.request(app)
       .get('/api/v1/recipes/nan')
@@ -64,7 +78,7 @@ describe('RecipeValidator validates recipe inputs', () => {
       .end((err, res) => {
         expect(res).to.have.status(400);
         expect(res.body.data.errors).to.be.an('array');
-        expect(res.body.data.errors[0]).to.equal('order query is required if sort query is passed');
+        expect(res.body.data.errors[0]).to.equal('order parameter is required if sort parameter is passed');
         done();
       });
   });
@@ -75,7 +89,7 @@ describe('RecipeValidator validates recipe inputs', () => {
       .end((err, res) => {
         expect(res).to.have.status(400);
         expect(res.body.data.errors).to.be.an('array');
-        expect(res.body.data.errors[0]).to.equal('sort query is required if order query is passed');
+        expect(res.body.data.errors[0]).to.equal('sort parameter is required if order parameter is passed');
         done();
       });
   });
@@ -86,29 +100,29 @@ describe('RecipeValidator validates recipe inputs', () => {
       .end((err, res) => {
         expect(res).to.have.status(400);
         expect(res.body.data.errors).to.be.an('array');
-        expect(res.body.data.errors[0]).to.equal('to query is required if from query is passed');
+        expect(res.body.data.errors[0]).to.equal('limit parameter is required if from parameter is passed');
         done();
       });
   });
 
   it('should require from parameter', (done) => {
     chai.request(app)
-      .get('/api/v1/recipes?to=asc')
+      .get('/api/v1/recipes?limit=asc')
       .end((err, res) => {
         expect(res).to.have.status(400);
         expect(res.body.data.errors).to.be.an('array');
-        expect(res.body.data.errors[0]).to.equal('from query is required if to query is passed');
+        expect(res.body.data.errors[0]).to.equal('from parameter is required if limit parameter is passed');
         done();
       });
   });
 
   it('should return error if params are not numbers', (done) => {
     chai.request(app)
-      .get('/api/v1/recipes?from=nan&to=nan')
+      .get('/api/v1/recipes?from=nan&limit=nan')
       .end((err, res) => {
         expect(res).to.have.status(400);
         expect(res.body.data.errors).to.be.an('array');
-        expect(res.body.data.errors[0]).to.equal('from and to query must be numbers');
+        expect(res.body.data.errors[0]).to.equal('from and limit parameters must be numbers');
         done();
       });
   });
@@ -119,7 +133,7 @@ describe('RecipeValidator validates recipe inputs', () => {
       .end((err, res) => {
         expect(res).to.have.status(400);
         expect(res.body.data.errors).to.be.an('array');
-        expect(res.body.data.errors[0]).to.equal('sort query must be either upvotes or downvotes');
+        expect(res.body.data.errors[0]).to.equal('sort parameter must be either upvotes or downvotes');
         done();
       });
   });
@@ -130,7 +144,7 @@ describe('RecipeValidator validates recipe inputs', () => {
       .end((err, res) => {
         expect(res).to.have.status(400);
         expect(res.body.data.errors).to.be.an('array');
-        expect(res.body.data.errors[0]).to.equal('order query must be asc or desc');
+        expect(res.body.data.errors[0]).to.equal('order parameter must be asc or desc');
         done();
       });
   });

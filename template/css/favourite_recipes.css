@@ -1,0 +1,19 @@
+body, html {
+  height: 100%;
+  margin: 0;
+  font-family: Open Sans; }
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: Montserrat; }
+
+@media (max-width: 480px) {
+  nav .brand-logo {
+    font-size: 1.5rem; } }
+
+.dropdown-content {
+  min-width: 200px; }
+
+.favourite-recipes {
+  background-color: #FAFAFA; }
+
+/*# sourceMappingURL=favourite_recipes.css.map */

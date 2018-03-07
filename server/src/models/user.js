@@ -18,19 +18,19 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
     },
     profilePic: {
-      type: DataTypes.BLOB,
+      type: DataTypes.STRING,
       allowNull: true,
     },
     about: {
       type: DataTypes.STRING,
       allowNull: true,
+      defaultValue: ''
     }
   });
 
   User.associate = (models) => {
     User.hasMany(models.Votes);
     User.hasMany(models.Recipes);
-    User.hasOne(models.NotificationsPreferences);
     User.belongsToMany(models.Recipes, { as: 'favouriteRecipes', through: 'Favourites' });
   };
   return User;

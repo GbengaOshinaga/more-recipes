@@ -1,4 +1,5 @@
 import db from '../models/index';
+import getPaginationMeta from '../helpers/';
 
 /**
  * RecipesController
@@ -6,11 +7,11 @@ import db from '../models/index';
 export default class RecipesController {
   /**
    * Adds a recipe
-   * @param {*} req
-   * @param {*} res
-   * @returns {Recipes} all recipes
+   * @param {Object} req
+   * @param {Object} res
+   * @returns {Array} all recipes
    */
-  addRecipe(req, res) {
+  static addRecipe(req, res) {
     const ingredientsArray = req.body.ingredients.split(',');
 
     db.Recipes.findOne({
@@ -31,64 +32,67 @@ export default class RecipesController {
           ingredients: ingredientsArray
         })
           .then(recipe => res.status(201).jsend.success({ recipe }))
-          .catch(() => res.status(400).jsend.error('An error occured'));
+          .catch(error => res.status(400).jsend.error(error));
       })
       .catch(error => res.status(400).jsend.error(error));
   }
 
   /**
    * Gets Recipes
-   * @param {*} req
-   * @param {*} res
-   * @returns {Recipes} all recipes
+   * @param {Object} req
+   * @param {Object} res
+   * @returns {Array} all recipes
    */
-  getRecipes(req, res) {
+  static getRecipes(req, res) {
     if (req.query.sort && req.query.order) {
       db.Recipes.findAll({
         group: 'id',
-        order: db.sequelize.literal(`max(${req.query.sort}) ${req.query.order.toUpperCase()}`)
+        order: db.sequelize.literal(`max(${req.query.sort}) ${req.query.order.toUpperCase()}`),
+        offset: req.query.from,
+        limit: req.query.limit
       })
-        .then(recipes => res.status(200).jsend.success({ recipes }))
+        .then(recipes => getPaginationMeta(req, db.Recipes)
+          .then(paginationMeta => res.status(200).jsend.success({ recipes, paginationMeta })))
         .catch(error => res.status(400).jsend.error({ error }));
-    } else if (req.query.from && req.query.to) {
-      this.paginateRecipes(req.query.from, req.query.to, res);
     } else if (req.query.query) {
-      this.searchRecipes(req.query.query, res);
+      this.searchRecipes(req.query.query.trim(), req, res);
     } else {
       db.Recipes.findAll({
-        include: [{
-          model: db.Reviews,
-        }]
+        offset: req.query.from,
+        limit: req.query.limit
       })
-        .then(recipes => res.status(200).jsend.success({ recipes }))
+        .then(recipes => getPaginationMeta(req, db.Recipes)
+          .then(paginationMeta => res.status(200).jsend.success({ recipes, paginationMeta })))
         .catch(error => res.status(400).jsend.error(error));
     }
   }
 
   /**
    * Gets recipe with specified id
-   * @param {*} req
-   * @param {*} res
-   * @returns {*} res
+   * @param {Object} req
+   * @param {Object} res
+   * @returns {Object} res
    */
-  getRecipeById(req, res) {
-    db.Recipes.findById(req.params.id, { include: [{ model: db.Reviews }] })
+  static getRecipeById(req, res) {
+    db.Recipes.findById(req.params.id)
       .then((recipe) => {
         if (!recipe) {
           return res.status(404).jsend.fail({ message: `Recipe with Id of ${req.params.id} does not exist` });
         }
-        res.status(200).jsend.success({ recipe });
+        return recipe.getFavouriteUsers()
+          .then(userFavourites =>
+            res.status(200).jsend.success({ recipe, favourites: userFavourites }));
       })
       .catch(() => res.status(400).jsend.error('An error occured'));
   }
 
   /**
    * Modifies a recipe
-   * @param {*} req
-   * @param {*} res
-   * @returns {Recipes} Modified recipe
+   * @param {Object} req
+   * @param {Object} res
+   * @returns {Object} Modified recipe
    */
-  modifyRecipe(req, res) {
+  static modifyRecipe(req, res) {
     let ingredientsArray;
     if (req.body.ingredients) {
       ingredientsArray = req.body.ingredients.split(',');
@@ -115,11 +119,11 @@ export default class RecipesController {
 
   /**
    * Deletes specified recipe
-   * @param {*} req
-   * @param {*} res
-   * @returns {*} message
+   * @param {Object} req
+   * @param {Object} res
+   * @returns {String} message
    */
-  deleteRecipe(req, res) {
+  static deleteRecipe(req, res) {
     db.Recipes.findById(req.params.id)
       .then((recipe) => {
         if (!recipe) {
@@ -137,27 +141,48 @@ export default class RecipesController {
 
   /**
    * Add review to recipe
-   * @param {*} req
-   * @param {*} res
-   * @returns {Recipes} recipe object
+   * @param {Object} req
+   * @param {Object} res
+   * @returns {Object} recipe object
    */
-  addReview(req, res) {
+  static addReview(req, res) {
     db.Reviews.create({
       review: req.body.review,
       UserId: req.user.userId,
       RecipeId: req.params.id
     })
-      .then(review => res.status(201).jsend.success({ review }))
+      .then(review => db.Reviews.findById(review.id, { include: [{ model: db.User }] }))
+      .then(userReviews => res.status(201).jsend.success({ review: userReviews }))
+      .catch(error => res.status(400).jsend.error(error));
+  }
+
+  /**
+   * Get reviews for a recipe
+   * @param {Object} req
+   * @param {Object} res
+   *
+   * @returns {Object} res
+   */
+  static getRecipeReviews(req, res) {
+    const condition = { RecipeId: req.params.id };
+    db.Reviews.findAll({
+      where: condition,
+      include: [{ model: db.User }],
+      offset: req.query.from,
+      limit: req.query.limit
+    })
+      .then(reviews => getPaginationMeta(req, db.Reviews, condition)
+        .then(paginationMeta => res.status(200).jsend.success({ reviews, paginationMeta })))
       .catch(error => res.status(400).jsend.error(error));
   }
 
   /**
    * Edits a review
-   * @param {*} req
-   * @param {*} res
-   * @returns {*} res
+   * @param {Object} req
+   * @param {Object} res
+   * @returns {Object} res
    */
-  editReview(req, res) {
+  static editReview(req, res) {
     db.Reviews.findById(req.params.id)
       .then((review) => {
         if (!review) {
@@ -176,11 +201,11 @@ export default class RecipesController {
 
   /**
    * Deletes a review
-   * @param {*} req
-   * @param {*} res
-   * @returns {*} res
+   * @param {Object} req
+   * @param {Object} res
+   * @returns {String} res
    */
-  deleteReview(req, res) {
+  static deleteReview(req, res) {
     db.Reviews.findById(req.params.id)
       .then((review) => {
         if (!review) {
@@ -197,47 +222,40 @@ export default class RecipesController {
 
   /**
    * Search for recipes
-   * @param {*} query
-   * @param {*} res
-   * @returns {*} res
+   * @param {String} query
+   * @param {Object} req
+   * @param {Object} res
+   *
+   * @returns {Array} res
    */
-  searchRecipes(query, res) {
+  static searchRecipes(query, req, res) {
     const op = db.Sequelize.Op;
-
-    db.Recipes.findAll({
-      where: {
-        [op.or]: {
-          name: {
-            [op.iLike]: `%${query}%`
-          },
-          description: {
-            [op.iLike]: `%${query}%`
-          },
-          ingredients: {
-            [op.contains]: [`${query}`]
-          }
+    const condition = {
+      [op.or]: {
+        name: {
+          [op.iLike]: `%${query}%`
+        },
+        description: {
+          [op.iLike]: `%${query}%`
+        },
+        ingredients: {
+          [op.contains]: [`${query}`]
         }
       }
+    };
+
+    db.Recipes.findAll({
+      where: condition,
+      offset: req.query.from,
+      limit: req.query.limit
     })
       .then((recipes) => {
         if (recipes.length === 0) {
           return res.status(404).jsend.fail({ message: 'No Results Found' });
         }
-        res.status(200).jsend.success({ recipes });
+        return getPaginationMeta(req, db.Recipes, condition)
+          .then(paginationMeta => res.status(200).jsend.success({ recipes, paginationMeta }));
       })
-      .catch(error => res.status(400).jsend.error(error));
-  }
-
-  /**
-   * Paginalte recipes
-   * @param {*} offset
-   * @param {*} limit
-   * @param {*} res
-   * @returns {*} res
-   */
-  paginateRecipes(offset, limit, res) {
-    db.Recipes.findAll({ offset, limit })
-      .then(recipes => res.status(200).jsend.success({ recipes }))
       .catch(error => res.status(400).jsend.error(error));
   }
 }

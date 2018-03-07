@@ -1,11 +1,34 @@
 import Express from 'express';
 import logger from 'morgan';
 import bodyParser from 'body-parser';
+import cors from 'cors';
+import path from 'path';
+import webpack from 'webpack';
+import dotenv from 'dotenv';
+import config from '../../webpack.config.dev';
 import routes from './routes/index';
 import db from './models/index';
 
+dotenv.config();
+
 // Set up the express app
 const app = new Express();
+
+app.use('/', Express.static(path.join(__dirname, '../../dist')));
+
+if (process.env.NODE_ENV === 'development') {
+  const compiler = webpack(config);
+
+  app.use(require('webpack-dev-middleware')(compiler, {
+    noInfo: true,
+    publicPath: config.output.publicPath
+  }));
+
+  app.use(require('webpack-hot-middleware')(compiler));
+}
+
+app.use(cors());
+app.options('*', cors());
 
 // Log requests to the console.
 app.use(logger('dev'));
@@ -17,10 +40,9 @@ app.use(bodyParser.urlencoded({ extended: false }));
 // Setup a default catch-all route that sends back a welcome message in JSON format.
 routes(app);
 
-
-app.get('*', (req, res) => res.status(200).send({
-  message: 'Welcome to the More-Recipes API Home.',
-}));
+app.get('/*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'index.html'));
+});
 
 const port = process.env.PORT || 8000;
 

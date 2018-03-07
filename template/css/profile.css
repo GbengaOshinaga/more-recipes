@@ -10,13 +10,24 @@ h1, h2, h3, h4, h5, h6 {
   nav .brand-logo {
     font-size: 1.5rem; } }
 
-.favorited-reviews {
+.dropdown-content {
+  min-width: 200px; }
+
+.box {
   margin-top: 50px; }
+
+footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%; }
 
 textarea.materialize-textarea {
   padding: 0; }
 
 input[value], textarea {
   font-family: Montserrat; }
+
+.card .card-action {
+  border-top: none; }
 
 /*# sourceMappingURL=profile.css.map */

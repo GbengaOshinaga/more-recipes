@@ -5,7 +5,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
     },
     description: {
-      type: DataTypes.STRING,
+      type: DataTypes.TEXT,
       allowNull: false,
     },
     ingredients: {
@@ -14,19 +14,19 @@ module.exports = (sequelize, DataTypes) => {
     },
     image: {
       type: DataTypes.STRING,
-      allowNull: true
+      allowNull: true,
     },
     views: {
       type: DataTypes.INTEGER,
       defaultValue: 0
     },
     upvotes: {
-      type: DataTypes.INTEGER,
-      defaultValue: 0
+      type: DataTypes.ARRAY(DataTypes.INTEGER),
+      defaultValue: []
     },
     downvotes: {
-      type: DataTypes.INTEGER,
-      defaultValue: 0
+      type: DataTypes.ARRAY(DataTypes.INTEGER),
+      defaultValue: []
     }
   });
 

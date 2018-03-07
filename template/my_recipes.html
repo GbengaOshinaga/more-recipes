@@ -5,7 +5,7 @@
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
 	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat">
-	<link rel="stylesheet" href="css/my_recipes.css">
+	<link rel="stylesheet" href="css/favourite_recipes.css">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 	<meta name="google-signin-client_id" content="827684783940-iisct8ub0eifot2ebb4fod5f3nrnk7ij.apps.googleusercontent.com">
 </head>
@@ -13,16 +13,18 @@
 	<header>
 		<ul id="dropdown1" class="dropdown-content">
 		  <li><a href="profile.html">Profile</a></li>
-		  <li><a href="#!">My Recipes</a></li>
+			<li><a href="#!">My Recipes</a></li>
+			<li><a href="favourite_recipes.html">Favourite Recipes</a></li>
 		  <li><a href="#!">Logout</a></li>
 		</ul>
 		<ul id="dropdown2" class="dropdown-content">
 		  <li><a href="profile.html">Profile</a></li>
-		  <li><a href="#!">My Recipes</a></li>
+			<li><a href="#!">My Recipes</a></li>
+			<li><a href="favourite_recipes.html">Favourite Recipes</a></li>
 		  <li><a href="#!">Logout</a></li>
 		</ul>
 		<div class="navbar-fixed">
-			<nav class="red darken-2">
+			<nav class="grey darken-2">
 		    	<div class="container">
 		    		<div class="nav-wrapper">
 				      <a href="catalog.html" class="brand-logo">More-Recipes</a>
@@ -30,7 +32,6 @@
 				      	<i class="material-icons">menu</i></a>
 				      <ul class="right hide-on-med-and-down">
 				        <li><a href="catalog.html">Catalog</a></li>
-				        <li><a href="#">API</a></li>
 				        <li><a class="dropdown-button" href="#!" data-activates="dropdown1">John<i class="material-icons right">arrow_drop_down</i></a></li>
 				      </ul>
 				      </div>
@@ -40,35 +41,20 @@
 		</div>
 		<ul class="side-nav" id="mobile">
 			<li><a href="catalog.html">Catalog</a></li>
-			<li><a href="#">API</a></li>
 			<li><a class="dropdown-button" href="#!" data-activates="dropdown2">John<i class="material-icons right">arrow_drop_down</i></a></li>
 		</ul>
 				    
 	</header>
 	
 	<div class="container">
-		<div class="row add-recipe-button">
-			
-			<a class="btn-floating btn-large waves-effect waves-light teal lighten-1 left modal-trigger" href="#add-modal"><i class="material-icons">add</i></a><h5 class="left">Add Recipe</h5>	
-			
-		</div>
-
+			<a class="btn-floating btn-large waves-effect waves-light teal lighten-1 right modal-trigger pulse" href="#add-modal"><i class="material-icons">add</i></a>
 		<!-- Add Recipe Modal -->
 		<div id="add-modal" class="modal">
 			<div class="modal-content">
 				<h5 class="center">Add Recipe</h5>
 				<hr/>
-				<div class="container">
+				
 					<form action="#">
-				    <div class="file-field input-field">
-				      <div class="btn">
-				        <span>UPLOAD IMAGE</span>
-				        <input type="file">
-				      </div>
-				      <div class="file-path-wrapper">
-				        <input class="file-path validate" type="text">
-				      </div>
-				    </div>
 				    <div class="row">
 	  	  				<div class="input-field col s12">
 	  	  					<input id="recipe-name" type="text" class="validate">
@@ -80,9 +66,24 @@
   	  						<textarea id="recipe-details-textarea" class="materialize-textarea"></textarea>
   	  						<label for="recipe-details-textarea">Recipe Details</label>
   	  					</div>
-  	  				</div>
+							</div>
+							<div class="row">
+								<div class="input-field col s12">
+									<textarea id="ingredients-textarea" class="materialize-textarea"></textarea>
+									<label for="ingredients-textarea" class="materialize-textarea">Ingredients</label>
+								</div>
+							</div>
+							<div class="file-field input-field">
+									<div class="btn">
+										<span>UPLOAD IMAGE</span>
+										<input type="file">
+									</div>
+									<div class="file-path-wrapper">
+										<input class="file-path validate" type="text">
+									</div>
+								</div>
 				  </form>
-				</div>								        
+										        
 			</div>
 			<div class="modal-footer">
 				<div class="container">
@@ -97,17 +98,8 @@
 			<div class="modal-content">
 				<h5 class="center">Edit Recipe</h5>
 				<hr/>
-				<div class="container">
+				
 					<form action="#">
-				    <div class="file-field input-field">
-				      <div class="btn">
-				        <span>UPLOAD NEW IMAGE</span>
-				        <input type="file">
-				      </div>
-				      <div class="file-path-wrapper">
-				        <input class="file-path validate" type="text">
-				      </div>
-				    </div>
 				    <div class="row">
 	  	  				<div class="input-field col s12">
 	  	  					<input id="recipe-name" value="Recipe Name" type="text" class="validate">
@@ -119,9 +111,24 @@
   	  						<textarea id="recipe-details-textarea" class="materialize-textarea">This is a recipe that i have been working on for a while.</textarea>
   	  						<label for="recipe-details-textarea">Recipe Details</label>
   	  					</div>
-  	  				</div>
+							</div>
+							<div class="row">
+									<div class="input-field col s12">
+										<textarea id="ingredients-textarea" class="materialize-textarea"></textarea>
+										<label for="ingredients-textarea" class="materialize-textarea">Ingredients</label>
+									</div>
+								</div>
+							<div class="file-field input-field">
+									<div class="btn">
+										<span>UPLOAD NEW IMAGE</span>
+										<input type="file">
+									</div>
+									<div class="file-path-wrapper">
+										<input class="file-path validate" type="text">
+									</div>
+								</div>
 				  </form>
-				</div>								        
+											        
 			</div>
 			<div class="modal-footer">
 				<div class="container">
@@ -144,10 +151,11 @@
 		  </div>
 
 		<div class="favorited-recipes">
-			<h4>My Recipes</h4>
+			<h4 class="center-align">My Recipes</h4>
 			<hr/>
 			<div class="row">
-  				<div class="card horizontal">
+				<div class="col s12 m4 l4">
+  				<div class="card">
 			      <div class="card-image">
 			        <img src="https://lorempixel.com/200/190/food/7">
 			      </div>
@@ -156,16 +164,16 @@
 			        	<span class="card-title">Another Recipe</span>
 			          <p>This is a recipe that i have been working on for a while.</p>
 			        </div>
-			        <div class="card-action teal lighten-1">
-			          <a href="recipe_details.html" class="white-text">VIEW DETAILS</a>
-			          <a class="modal-trigger white-text" href="#edit-modal">EDIT</a>
-			          <a class="modal-trigger white-text" href="#confirm-modal">DELETE</a>
-			        </div>
+			        <div class="card-action">
+								<a class="btn-floating waves-effect waves-light green" href="recipe_details.html"><i class="material-icons">description</i></a>
+									<a class="modal-trigger btn-floating waves-effect waves-light blue" href="#edit-modal"><i class="material-icons">edit</i></a>
+									<a class="modal-trigger btn-floating waves-effect waves-light red" href="#confirm-modal"><i class="material-icons">delete</i></a>
+								</div>
 			      </div>
-			    </div>
-  			</div>
-  			<div class="row">
-  				<div class="card horizontal">
+					</div>
+					</div>
+					<div class="col s12 m4 l4">
+					<div class="card">
 			      <div class="card-image">
 			        <img src="https://lorempixel.com/200/190/food/8">
 			      </div>
@@ -174,34 +182,37 @@
 			        	<span class="card-title">Last Recipe</span>
 			          <p>This is a recipe that i have been working on for a while.</p>
 			        </div>
-			        <div class="card-action teal lighten-1">
-			          <a href="recipe_details.html" class="white-text">VIEW DETAILS</a>
-			          <a class="modal-trigger white-text" href="#edit-modal">EDIT</a>
-			          <a class="modal-trigger white-text" href="#confirm-modal">DELETE</a>
-			        </div>
+			        <div class="card-action">
+								<a class="btn-floating waves-effect waves-light green" href="recipe_details.html"><i class="material-icons">description</i></a>
+									<a class="modal-trigger btn-floating waves-effect waves-light blue" href="#edit-modal"><i class="material-icons">edit</i></a>
+									<a class="modal-trigger btn-floating waves-effect waves-light red" href="#confirm-modal"><i class="material-icons">delete</i></a>
+								</div>
 			      </div>
-			    </div>
+					</div>
+					</div>
+					<div class="col s12 m4 l4">
+							<div class="card">
+									<div class="card-image">
+										<img src="https://lorempixel.com/200/190/food/7">
+									</div>
+									<div class="card-stacked">
+										<div class="card-content">
+											<span class="card-title">Another Recipe</span>
+											<p>This is a recipe that i have been working on for a while.</p>
+										</div>
+										<div class="card-action">
+											<a class="btn-floating waves-effect waves-light green" href="recipe_details.html"><i class="material-icons">description</i></a>
+												<a class="modal-trigger btn-floating waves-effect waves-light blue" href="#edit-modal"><i class="material-icons">edit</i></a>
+												<a class="modal-trigger btn-floating waves-effect waves-light red" href="#confirm-modal"><i class="material-icons">delete</i></a>
+											</div>
+									</div>
+								</div>
+					</div>
   			</div>
+  			
   			<div class="row">
-  				<div class="card horizontal">
-			      <div class="card-image">
-			        <img src="https://lorempixel.com/200/190/food/7">
-			      </div>
-			      <div class="card-stacked">
-			        <div class="card-content">
-			        	<span class="card-title">Another Recipe</span>
-			          <p>This is a recipe that i have been working on for a while.</p>
-			        </div>
-			        <div class="card-action teal lighten-1">
-			          <a href="recipe_details.html" class="white-text">VIEW DETAILS</a>
-			          <a class="modal-trigger white-text" href="#edit-modal">EDIT</a>
-			          <a class="modal-trigger white-text" href="#confirm-modal">DELETE</a>
-			        </div>
-			      </div>
-			    </div>
-  			</div>
-  			<div class="row">
-  				<div class="card horizontal">
+					<div class="col s12 m4 l4">
+  				<div class="card">
 			      <div class="card-image">
 			        <img src="https://lorempixel.com/200/190/food/8">
 			      </div>
@@ -210,20 +221,26 @@
 			        	<span class="card-title">Last Recipe</span>
 			          <p>This is a recipe that i have been working on for a while.</p>
 			        </div>
-			        <div class="card-action teal lighten-1">
-			          <a href="recipe_details.html" class="white-text">VIEW DETAILS</a>
-			          <a class="modal-trigger white-text" href="#edit-modal">EDIT</a>
-			          <a class="modal-trigger white-text" href="#confirm-modal">DELETE</a>
-			        </div>
+			        <div class="card-action">
+								<a class="btn-floating waves-effect waves-light green" href="recipe_details.html"><i class="material-icons">description</i></a>
+									<a class="modal-trigger btn-floating waves-effect waves-light blue" href="#edit-modal"><i class="material-icons">edit</i></a>
+									<a class="modal-trigger btn-floating waves-effect waves-light red" href="#confirm-modal"><i class="material-icons">delete</i></a>
+								</div>
 			      </div>
-			    </div>
+					</div>
+					</div>
   			</div>
 		</div>
 	</div>
 
-	<footer class="page-footer red darken-2">
+	<footer class="page-footer grey darken-2">
   	<div class="footer-copyright">
-  		<div class="container">&copy; More-Recipes</div>
+  		<div class="container">
+					<div class="center-align">
+							&copy; More-Recipes<br/>
+							By <a href="https://github.com/GbengaOshinaga/more-recipes/">Gbenga Oshinaga</a>
+						</div>
+			</div>
   	</div>
   </footer>
   <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>

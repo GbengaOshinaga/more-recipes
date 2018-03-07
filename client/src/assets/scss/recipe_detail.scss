@@ -1,0 +1,27 @@
+@import 'partials/variables';
+@import 'partials/global';
+
+.details{
+	background-color: $body-color;
+	font-family: $body-font;
+}
+.details-box{
+	height: 100%;
+	margin-top: 40px;
+	background-color: $white;
+}
+
+.review{
+	margin-top: 50px;
+}
+
+.review-container{
+	height: 100px;
+	padding: 10px;
+	background-color: $body-color;
+}
+
+.card.horizontal .card-image {
+    max-width: 50%;
+    width: 90px;
+}

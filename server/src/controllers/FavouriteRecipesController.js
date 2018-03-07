@@ -10,7 +10,7 @@ export default class FavouriteRecipesController {
      * @param {*} res
      * @returns {*} res
      */
-  addFavourite(req, res) {
+  static addFavourite(req, res) {
     let foundRecipe;
     db.Recipes.findById(req.params.id)
       .then((recipe) => {
@@ -30,7 +30,7 @@ export default class FavouriteRecipesController {
      * @param {*} res
      * @returns {*} res
      */
-  getFavourites(req, res) {
+  static getFavourites(req, res) {
     db.User.findById(req.user.userId)
       .then((user) => {
         user.getFavouriteRecipes()
@@ -50,9 +50,25 @@ export default class FavouriteRecipesController {
    * @param {*} res
    * @returns {*} res
    */
-  deleteFavourites(req, res) {
+  static deleteFavourites(req, res) {
     db.sequelize.query(`DELETE FROM "Favourites" WHERE "UserId" = ${req.user.userId} AND "RecipeId" IN (${req.params.id})`)
       .spread(() => res.status(200).jsend.success({ message: 'Favourite deleted' }))
       .catch(error => res.status(400).jsend.fail(error));
+  }
+
+  /**
+   * Get recipes by most favourited
+   * @param {*} req
+   * @param {*} res
+   * @returns {*} res
+   */
+  static getMostFavourited(req, res) {
+    db.sequelize.query(`SELECT "Recipes"."id", "Recipes"."name", "Recipes"."description",
+    "Recipes"."ingredients", "Recipes"."image", "Recipes"."upvotes",
+    "Recipes"."downvotes", "Recipes"."UserId", count(*) FROM "Favourites"
+    LEFT OUTER JOIN "Recipes" ON "Favourites"."RecipeId" = "Recipes"."id"
+    GROUP BY "Recipes"."name", "Recipes"."id"
+    ORDER BY count(*) DESC`)
+      .spread(results => res.status(200).jsend.success({ recipes: results }));
   }
 }
