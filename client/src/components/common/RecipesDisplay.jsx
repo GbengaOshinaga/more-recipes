@@ -84,6 +84,7 @@ function getCardAction(
  * @param {bool} isLoggedIn
  * @param {Number} userId
  * @param {Array} favourites
+ * @param {bool} hasSearchValue
  * @param {func} getId
  * @param {func} getIdForEdit
  *
@@ -91,11 +92,14 @@ function getCardAction(
  */
 function displayRecipes(
   recipes, onClickVote, onClickFavourite, isLoggedIn,
-  userId, favourites, getId, getIdForEdit
+  userId, favourites, hasSearchValue, getId, getIdForEdit
 ) {
   const chunkedRecipes = _.chunk(recipes, 3);
+  if (hasSearchValue && recipes.length === 0) {
+    return <h5>No Result(s) Found</h5>;
+  }
   if (recipes === undefined || recipes.length === 0) {
-    return <Preloader />;
+    return <div style={{ marginTop: '50px' }}><Preloader /></div>;
   }
   return chunkedRecipes.map(chunk => (
     <div className="row" key={chunk[0].id}>
@@ -122,7 +126,7 @@ function displayRecipes(
  */
 function RecipesDisplay({
   recipes, onClickVote, onClickFavourite, isLoggedIn,
-  userId, favourites, getId, getIdForEdit, next, hasMore
+  userId, favourites, hasSearchValue, getId, getIdForEdit, next, hasMore
 }) {
   return (
     <InfiniteScroll
@@ -132,7 +136,7 @@ function RecipesDisplay({
     >
       {displayRecipes(
         recipes, onClickVote, onClickFavourite, isLoggedIn,
-        userId, favourites, getId, getIdForEdit
+        userId, favourites, hasSearchValue, getId, getIdForEdit
         )}
     </InfiniteScroll>
   );

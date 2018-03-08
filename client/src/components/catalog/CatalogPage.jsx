@@ -123,6 +123,7 @@ export default function CatalogPage({
               isLoggedIn={isLoggedIn}
               userId={userId}
               favourites={favourites}
+              hasSearchValue={hasSearchValue}
             />
           </div>
         </div>}
