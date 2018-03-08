@@ -38,12 +38,6 @@ class Profile extends React.Component {
       editPhotoButtonClass: 'btn-floating btn-large waves-effect waves-light teal lighten-1 hide',
       loaded: true
     };
-
-    this.onEditClick = this.onEditClick.bind(this);
-    this.handleInputChange = this.handleInputChange.bind(this);
-    this.onClickSave = this.onClickSave.bind(this);
-    this.onClickCancel = this.onClickCancel.bind(this);
-    this.onFileChange = this.onFileChange.bind(this);
     toastr.options = {
       closeButton: true,
       positionClass: 'toast-top-right'
@@ -76,7 +70,7 @@ class Profile extends React.Component {
    * @param {*} event
    * @returns {*} new state
    */
-  onEditClick(event) {
+  onEditClick = (event) => {
     event.preventDefault();
     this.setState({
       isDisabled: false,
@@ -90,7 +84,7 @@ class Profile extends React.Component {
    * @param {*} event
    * @returns {*} null
    */
-  onClickSave(event) {
+  onClickSave = (event) => {
     event.preventDefault();
     sessionService.loadSession()
       .then((token) => {
@@ -118,7 +112,7 @@ class Profile extends React.Component {
    * @param {*} event
    * @returns {*} null
    */
-  onClickCancel(event) {
+  onClickCancel = (event) => {
     event.preventDefault();
     this.setState({
       isDisabled: true,
@@ -144,7 +138,7 @@ class Profile extends React.Component {
    * @param {*} event
    * @returns {*} null
    */
-  onFileChange(event) {
+  onFileChange = (event) => {
     this.setState({ loaded: false });
     const file = event.target.files[0];
     if (file) {
@@ -163,7 +157,7 @@ class Profile extends React.Component {
    * @param {*} event
    * @returns {*} new state
    */
-  handleInputChange(event) {
+  handleInputChange = (event) => {
     const name = this.state.data;
     name[event.target.id] = event.target.value;
     this.setState({ data: name });

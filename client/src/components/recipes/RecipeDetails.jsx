@@ -44,12 +44,6 @@ class RecipeDetails extends React.Component {
       hasMoreReviews: false,
       isLoadingReviews: false
     };
-
-    this.onAddReviewChange = this.onAddReviewChange.bind(this);
-    this.onClickSaveReview = this.onClickSaveReview.bind(this);
-    this.vote = this.vote.bind(this);
-    this.addFavourite = this.addFavourite.bind(this);
-    this.fetchReviews = this.fetchReviews.bind(this);
   }
 
   /**
@@ -116,7 +110,7 @@ class RecipeDetails extends React.Component {
    * @param {Object} event
    * @returns {*} null
    */
-  onClickSaveReview(event) {
+  onClickSaveReview = (event) => {
     event.preventDefault();
     const { id } = this.props.match.params;
     sessionService.loadSession()
@@ -131,7 +125,7 @@ class RecipeDetails extends React.Component {
    * @param {Object} event
    * @returns {Object} new state
    */
-  onAddReviewChange(event) {
+  onAddReviewChange = (event) => {
     const { value } = event.target;
     this.setState({ newReview: value });
   }
@@ -143,7 +137,7 @@ class RecipeDetails extends React.Component {
    * @param {Array} userFavourites
    * @returns {Object} new state
    */
-  upvoteVoteStatus(recipe, userId, userFavourites) {
+  upvoteVoteStatus = (recipe, userId, userFavourites) => {
     recipe.upvotes.map((upvote) => {
       if (upvote === userId) {
         this.setState({ upvoteClassName: 'thumb-up green-text' });
@@ -174,7 +168,7 @@ class RecipeDetails extends React.Component {
    *
    * @returns {undefined}
   */
-  fetchReviews(event) {
+  fetchReviews = (event) => {
     this.setState({ isLoadingReviews: true });
     event.preventDefault();
     const { id } = this.props.match.params;
@@ -193,7 +187,7 @@ class RecipeDetails extends React.Component {
    * @param {Object} event
    * @returns {*} null
    */
-  vote(event) {
+  vote = (event) => {
     event.persist();
     event.preventDefault();
     const { currentTarget } = event;
@@ -214,7 +208,7 @@ class RecipeDetails extends React.Component {
    * @param {Object} event
    * @returns {*} null
    */
-  addFavourite(event) {
+  addFavourite = (event) => {
     event.persist();
     event.preventDefault();
     const { currentTarget } = event;

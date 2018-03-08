@@ -39,15 +39,6 @@ function updateEditRecipeSuccess(response) {
 }
 
 /**
- * Updates reducer if get user votes is successful
- * @param {Object} response
- * @returns {Object} object
- */
-function updateGetUserVotes(response) {
-  return { type: types.GET_USER_VOTES, response };
-}
-
-/**
  * Action to add recipe
  * @param {String} token access token
  * @param {Object} data
@@ -152,19 +143,3 @@ export function uploadImage(imageFile) {
   return UserApi.uploadImage(imageFile);
 }
 
-/**
- * Get user votes
- * @param {*} token
- * @returns {*} Promise
- */
-export function getUserVotes(token) {
-  return function (dispatch) {
-    return UserApi.getUserVotes(token)
-      .then(response => response.json())
-      .then((response) => {
-        if (response.status === 'success') {
-          dispatch(updateGetUserVotes(response.data.votes));
-        }
-      });
-  };
-}

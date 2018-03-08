@@ -3,7 +3,7 @@ import Enzyme, { mount } from 'enzyme';
 import expect from 'expect';
 import Adapter from 'enzyme-adapter-react-16';
 import configureStore from 'redux-mock-store';
-import { MemoryRouter } from 'react-router-dom';
+import { BrowserRouter } from 'react-router-dom';
 import { Catalog } from '../../components/catalog/Catalog';
 
 const mockStore = configureStore({});
@@ -26,7 +26,8 @@ function setup() {
     },
     mostFavouritedRecipes: [],
     searchResults: [],
-    favourites: []
+    favourites: [],
+    paginationMeta: {}
   };
 
   const store = mockStore({
@@ -43,7 +44,7 @@ function setup() {
   });
 
 
-  const enzymeWrapper = mount(<MemoryRouter><Catalog store={store} {...props} /></MemoryRouter>);
+  const enzymeWrapper = mount(<BrowserRouter><Catalog store={store} {...props} /></BrowserRouter>);
 
   return {
     props, enzymeWrapper
@@ -53,7 +54,6 @@ function setup() {
 describe('Catalog', () => {
   it('should render self and components', () => {
     const { enzymeWrapper } = setup();
-
     const catalogProps = enzymeWrapper.find('Catalog').props();
     expect(catalogProps.firstName).toEqual('');
     expect(catalogProps.isLoggedIn).toEqual(true);

@@ -31,8 +31,6 @@ class FavouriteRecipes extends React.Component {
   constructor(props, context) {
     super(props, context);
     this.state = {};
-    this.vote = this.vote.bind(this);
-    this.removeFavourite = this.removeFavourite.bind(this);
   }
 
   /**
@@ -55,7 +53,7 @@ class FavouriteRecipes extends React.Component {
    * @param {*} event
    * @returns {*} null
    */
-  vote(event) {
+  vote = (event) => {
     event.persist();
     event.preventDefault();
     const { currentTarget } = event;
@@ -76,7 +74,7 @@ class FavouriteRecipes extends React.Component {
    * @param {*} event
    * @returns {*} null
    */
-  removeFavourite(event) {
+  removeFavourite = (event) => {
     event.persist();
     event.preventDefault();
     sessionService.loadSession()
@@ -110,7 +108,7 @@ class FavouriteRecipes extends React.Component {
  * @param {*} ownProps
  * @returns {object} object
  */
-function mapStateToProps(state, ownProps) {
+function mapStateToProps(state) {
   return {
     isLoggedIn: state.session.authenticated,
     firstName: state.session.user.firstName,

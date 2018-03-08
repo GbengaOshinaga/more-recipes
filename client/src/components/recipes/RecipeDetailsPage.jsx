@@ -88,7 +88,17 @@ function RecipeDetailsPage({
   upvoteClassName, downvoteClassName, favouriteClassName, hasMoreReviews, fetchReviews
 }) {
   if (recipe === undefined || Object.keys(recipe).length === 0) {
-    return 'Waiting for recipe...';
+    return (
+      <div>
+        <MainHeader
+          isLoggedIn={isLoggedIn}
+          firstName={firstName}
+        />
+        <div className="container">
+          <h5>Waiting for recipe...</h5>
+        </div>
+      </div>
+    );
   }
   return (
     <div>

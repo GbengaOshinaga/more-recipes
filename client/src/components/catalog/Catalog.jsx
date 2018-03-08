@@ -42,10 +42,6 @@ export class Catalog extends React.Component {
       hasMore: false
     };
 
-    this.vote = this.vote.bind(this);
-    this.onSearchChange = this.onSearchChange.bind(this);
-    this.addFavourite = this.addFavourite.bind(this);
-    this.fetchNext = this.fetchNext.bind(this);
     toastr.options = {
       closeButton: true,
       positionClass: 'toast-top-right'
@@ -100,7 +96,7 @@ export class Catalog extends React.Component {
    * @param {Object} event
    * @returns {null} null
    */
-  onSearchChange(event) {
+  onSearchChange = (event) => {
     const { value } = event.target;
     this.setState({ searchValue: value, hasSearchValue: true }, () => {
       this.props.actions.search(this.state.searchValue);
@@ -116,7 +112,7 @@ export class Catalog extends React.Component {
    * Fetch next set of recipes for paginatino
    * @returns {undefined}
   */
-  fetchNext() {
+  fetchNext = () => {
     const { next } = this.props.paginationMeta;
     if (next) {
       this.props.actions.getAllRecipes(next);
@@ -129,7 +125,7 @@ export class Catalog extends React.Component {
    * @param {Object} event
    * @returns {null} null
    */
-  vote(event) {
+  vote = (event) => {
     event.persist();
     event.preventDefault();
     const { currentTarget } = event;
@@ -150,7 +146,7 @@ export class Catalog extends React.Component {
    * @param {Object} event
    * @returns {null} null
    */
-  addFavourite(event) {
+  addFavourite = (event) => {
     event.persist();
     event.preventDefault();
     const { currentTarget } = event;

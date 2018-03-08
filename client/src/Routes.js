@@ -10,6 +10,7 @@ import Catalog from './components/catalog/Catalog';
 import RecipeDetails from './components/recipes/RecipeDetails';
 import FavouriteRecipes from './components/recipes/FavouriteRecipes';
 import PrivateRoute from './PrivateRoute';
+import NotFound from './components/404Page';
 
 
 const Routes = () => (
@@ -24,6 +25,7 @@ const Routes = () => (
     <PrivateRoute path="/favourites" component={FavouriteRecipes} />
     <Route path="/recipe/:id" component={RecipeDetails} />
     <Route path="/logout" component={SignOut} />
+    <Route path="/*" component={NotFound} />
   </Switch>
 );
 
