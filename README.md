@@ -1,31 +1,23 @@
 [![Build Status](https://travis-ci.org/GbengaOshinaga/more-recipes.svg?branch=development)](https://travis-ci.org/GbengaOshinaga/more-recipes)[![Maintainability](https://api.codeclimate.com/v1/badges/65b81f8376a6f0d3eaf8/maintainability)](https://codeclimate.com/github/GbengaOshinaga/more-recipes/maintainability)
 [![Coverage Status](https://coveralls.io/repos/github/GbengaOshinaga/more-recipes/badge.svg?branch=development)](https://coveralls.io/github/GbengaOshinaga/more-recipes?branch=development)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
 
 # More-Recipes
 
-Platform for users to share the awesome and exciting recipe ideas they have invented or learnt.
+More-Recipes is an open-source web application for users to discover recipes. Users can create, vote for and favourite recipes that they love.
 
-### Built With
+## Getting Started
 
-#### Back-End
- - Node JS
- - Express
- - Postgresql Database
- - Sequelize ORM
+This project was written in react and redux for the client, and express for the server. This section explains how to get started
 
- #### Front-End
- - Materialize CSS
- - SASS
+### Prerequisites
 
-### Test Framework
- - Mocha
- - Chai
- 
-### Template URL
+Node JS is required for this project. Install it here: https://nodejs.org/en/
+Add a .env file with the property `JWT_SECRET='your secret'` to the root of the application for your authentication
 
-https://gbengaoshinaga.github.io/more-recipes/template/
+### Installing
 
-### Getting Started With the API
  - Clone the repository
   ```
   git clone https://github.com/GbengaOshinaga/more-recipes
@@ -39,93 +31,91 @@ https://gbengaoshinaga.github.io/more-recipes/template/
   npm install
   ```
  - Setup a postgresql database and name it 'more_recipes'
+ - Migrate to the database
+  ```
+  ./node_modules/.bin/sequelize db:migrate
+  ```
+ - Start the application
+  ```
+  npm run start:dev
+  ```
 
- - Run the server
-  ```
-  npm run start
-  ```
-  - Run tests
-  ```
-  npm run test
-  ```
+## Running the tests
+```
+ npm run test
+```
+## Deployment
 
-  ## API Routes
+Run `npm run build` to build the application for production
+
+### Built With
+
+#### Server
+ - Node JS
+ - Express
+ - Postgresql Database
+ - Sequelize ORM
+
+ #### Client
+ - React
+ - Redux
+ - Materialize CSS
+ - SASS
+
+### Test Framework
+ - Mocha
+ - Chai
+ - Jest
+ 
+### Template URL
+
+https://gbengaoshinaga.github.io/more-recipes/template/
+
+### Application URL
+
+https://more-recipe-gbenga.herokuapp.com/
+## API Routes
   
-  #### Signs Up a user - ```POST /api/v1/users/signup```
-+ firstName (string) - User's first name
-+ lastName (string) - User's last name
-+ email (string) - User's email
-+ password (string) - Password for user, length must be greater than 6
-+ confirmPassword (string) - Confirm password for validation
+Signs Up a user - ```POST /api/v1/users/signup```
 
-#### Signs in a user - ```POST /api/v1/users/signin```
-+ email (string) - User's email
-+ password (string) - User's password
+Signs in a user - ```POST /api/v1/users/signin```
 
-#### Edits a user - ```POST /api/v1/users/edit```
- Requires authentication
-+ firstName (string) - User's first name
-+ lastName (string) - User's last name
-+ email (string) - User's email
-+ profilePic (string) - URL to user's profile picture
-+ about (string) - User's about
+Edits a user - ```POST /api/v1/users/edit```
 
-#### Get user by id - ```GET /api/v1/user/{user_id}```
+Get user by id - ```GET /api/v1/user/{user_id}```
 
-#### Delete a user - ```DELETE /api/v1/user/{user_id}```
- Requires authentication
+Delete a user - ```DELETE /api/v1/user/{user_id}```
 
-#### Gets recipes created by user - ```GET /api/v1/users/recipes```
- Requires authentication
+Gets recipes created by user - ```GET /api/v1/users/recipes```
 
-#### Adds favourite recipe for a user - ```POST /api/v1/users/recipes/{recipe_id}/favourites```
- Requires authentication
+Adds favourite recipe for a user - ```POST /api/v1/users/recipes/{recipe_id}/favourites```
 
-#### Deletes favourite recipe for a user - ```DELETE /api/v1/users/recipes/{recipe_id}/favourites```
- Requires authentication
+Deletes favourite recipe for a user - ```DELETE /api/v1/users/recipes/{recipe_id}/favourites```
 
-#### Gets all favourite recipes for a user - ```GET /api/v1/users/recipes/favourites```
- Requires authentication
+Gets all favourite recipes for a user - ```GET /api/v1/users/recipes/favourites```
 
-#### Adds a recipe - ```POST /api/v1/recipes```
- Requires authentication
-+ name (string) - Name of the recipe
-+ description (string) - Description of the recipe
-+ ingredients (string) - Ingredients for the recipe, it should be a comma-separated string of ingredients, e.g 'pepper,salt,sauce'
+Adds a recipe - ```POST /api/v1/recipes```
 
-#### Gets all recipes - ```GET /api/v1/recipes```
+Gets paginated recipes - ```GET /api/v1/recipes```
 
-#### Gets all recipes and sorts them by votes - ```GET /api/v1/recipes?sort=upvotes&order=asc```
+Gets paginated recipes and sorts them by votes - ```GET /api/v1/recipes?sort=upvotes&order=asc```
 
-#### Searches for a recipe with query - ```GET /api/v1/recipes?query=search```
+Searches for recipes with query - ```GET /api/v1/recipes?query=search```
 
-#### Paginates recipe - ```GET /api/v1/recipes?from=0&to=5```
+Paginates recipe - ```GET /api/v1/recipes?from=0&to=5```
 
-#### Gets recipe by id - ```GET /api/v1/recipes/{recipe_id}```
- Get recipe with the specified id in the url
+Gets recipe by id - ```GET /api/v1/recipes/{recipe_id}```
 
-#### Edits recipe - ```PUT /api/v1/recipes/{recipe_id}```
- Requires authentication. User can only edit a recipe they created.
- Edits recipe with the specified id in the url. Any one of the parameters below can be passed
-+ name (string) - Name of the recipe
-+ description (string) - Description of the recipe
-+ ingredients (string) - Ingredients for the recipe, it should be a comma-separated string of ingredients, e.g 'pepper,salt,sauce'
+Edits recipe - ```PUT /api/v1/recipes/{recipe_id}```
 
-#### Deletes recipe - ```DELETE /api/v1/recipes/{recipe_id}```
- Requires authentication. User can only delete a recipe they created
+Deletes recipe - ```DELETE /api/v1/recipes/{recipe_id}```
 
-#### Add review for a recipe - ```POST /api/v1/recipes/{recipe_id}/reviews```
- Requires authentication
-+ review (string) - Review
+Add review for a recipe - ```POST /api/v1/recipes/{recipe_id}/reviews```
 
-#### Edit review - ```PUT /api/v1/recipes/reviews/{review_id}```
- Requires authentication
+Edit review - ```PUT /api/v1/recipes/reviews/{review_id}```
 
-#### Delete review - ```DELETE /api/v1/recipes/reviews/{review_id}```
- Requires authentication
+Delete review - ```DELETE /api/v1/recipes/reviews/{review_id}```
 
-#### Upvote a recipe - ```POST /api/v1/recipes/upvote/{recipe_id}```
- Requires authentication
+Upvote a recipe - ```POST /api/v1/recipes/upvote/{recipe_id}```
 
-#### Downvote a recipe - ```POST /api/v1/recipes/downvote/{recipe_id}```
- Requires authentication
+Downvote a recipe - ```POST /api/v1/recipes/downvote/{recipe_id}```

@@ -59,7 +59,7 @@ export default class RecipesController {
     } else {
       db.Recipes.findAll({
         group: 'id',
-        order: db.sequelize.literal('max(id) ASC'),
+        order: db.sequelize.literal('max(id) DESC'),
         offset: req.query.from,
         limit: req.query.limit
       })
