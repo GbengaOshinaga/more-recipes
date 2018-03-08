@@ -95,7 +95,7 @@ function displayRecipes(
 ) {
   const chunkedRecipes = _.chunk(recipes, 3);
   if (recipes === undefined || recipes.length === 0) {
-    return <h4>No Recipe Available</h4>;
+    return <Preloader />;
   }
   return chunkedRecipes.map(chunk => (
     <div className="row" key={chunk[0].id}>

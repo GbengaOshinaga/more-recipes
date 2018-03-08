@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { sessionService } from 'redux-react-session';
 import { connect } from 'react-redux';
+import { Redirect } from 'react-router-dom';
 import * as recipeActions from '../../actions/RecipeActions';
 import Page from './RecipeDetailsPage';
 import { pluginsInit } from '../../helpers/jqueryHelper';
@@ -42,7 +43,8 @@ class RecipeDetails extends React.Component {
       downvoteClassName: 'thumb-down',
       favouriteClassName: 'favourite',
       hasMoreReviews: false,
-      isLoadingReviews: false
+      isLoadingReviews: false,
+      notFound: false
     };
   }
 
@@ -67,7 +69,8 @@ class RecipeDetails extends React.Component {
       }
     });
     if (!isRecipeAvailable) {
-      this.props.actions.getRecipe(id);
+      this.props.actions.getRecipe(id)
+        .catch(() => this.setState({ notFound: true }));
     }
     if (Object.keys(reviewsPaginationMeta).length === 0 ||
         Number(reviewsPaginationMeta.recipeId) !== Number(id) ||
@@ -228,6 +231,9 @@ class RecipeDetails extends React.Component {
    * @returns {Node} jsx
    */
   render() {
+    if (this.state.notFound) {
+      return <Redirect to="/not-found" />;
+    }
     return (
       <Page
         isLoggedIn={this.props.isLoggedIn}

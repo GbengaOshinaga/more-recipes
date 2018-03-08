@@ -40,6 +40,15 @@ app.use(bodyParser.urlencoded({ extended: false }));
 // Setup a default catch-all route that sends back a welcome message in JSON format.
 routes(app);
 
+app.all('/api/v1/*', (req, res) => {
+  res.send({
+    status: 'fail',
+    data: {
+      message: 'This API route does not exist'
+    }
+  });
+});
+
 app.get('/*', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));
 });

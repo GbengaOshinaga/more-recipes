@@ -184,7 +184,12 @@ export function getRecipeReviews(id, next) {
 export function getRecipe(id) {
   return function (dispatch) {
     return RecipesApi.getRecipe(id)
-      .then(response => response.json())
+      .then((response) => {
+        if (!response.ok) {
+          throw Error('Recipe Not Found');
+        }
+        return response.json();
+      })
       .then((response) => {
         if (response.status === 'success') {
           response.data.recipe.Reviews = [];

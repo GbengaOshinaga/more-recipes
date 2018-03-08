@@ -48,6 +48,7 @@ const addReviewDefaultProps = {
 };
 
 const defaultUserAvatar = 'http://res.cloudinary.com/king-more-recipes/image/upload/v1518031651/Expert-tutor-placeholder_cg9wet.jpg';
+let calls = 0;
 
 /**
  * Function to display reviews
@@ -87,6 +88,9 @@ function RecipeDetailsPage({
   newReview, location, profilePic, onClickVote, onClickFavourite, isLoadingReviews,
   upvoteClassName, downvoteClassName, favouriteClassName, hasMoreReviews, fetchReviews
 }) {
+  calls += 1;
+  console.log(calls);
+  console.log(recipe);
   if (recipe === undefined || Object.keys(recipe).length === 0) {
     return (
       <div>
@@ -94,8 +98,8 @@ function RecipeDetailsPage({
           isLoggedIn={isLoggedIn}
           firstName={firstName}
         />
-        <div className="container">
-          <h5>Waiting for recipe...</h5>
+        <div style={{ marginTop: '20%' }} className="container">
+          <Preloader />
         </div>
       </div>
     );
