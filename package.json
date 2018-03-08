@@ -19,7 +19,7 @@
     "startServer": "./node_modules/.bin/babel-watch server/src/app.js",
     "startReact": "babel-node ./client/app.js",
     "buildReact": "webpack --config ./webpack.config.prod.js",
-    "buildServer": "babel -d dist/src server/src -s && cp server/src/index.html dist/src && cp -r client/src/assets dist",
+    "buildServer": "babel -d dist/src server/src -s && cp server/src/index.html dist/src && cp -r client/src/assets dist && cp server/src/converted.json dist/src",
     "build": "npm-run-all --sequential buildReact buildServer migrate",
     "heroku-postbuild": "npm run build",
     "start": "node dist/src/app.js",
@@ -102,6 +102,7 @@
     "sequelize": "^4.20.1",
     "sequelize-cli": "^3.0.0",
     "style-loader": "^0.19.1",
+    "swagger-ui-express": "^2.0.15",
     "toastr": "^2.1.2",
     "webpack": "^3.10.0"
   },

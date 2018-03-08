@@ -5,6 +5,7 @@ import cors from 'cors';
 import path from 'path';
 import webpack from 'webpack';
 import dotenv from 'dotenv';
+import swaggerUI from 'swagger-ui-express';
 import config from '../../webpack.config.dev';
 import routes from './routes/index';
 import db from './models/index';
@@ -40,8 +41,12 @@ app.use(bodyParser.urlencoded({ extended: false }));
 // Setup a default catch-all route that sends back a welcome message in JSON format.
 routes(app);
 
+const doc = require('./converted.json');
+
+app.use('/api/v1/docs', swaggerUI.serve, swaggerUI.setup(doc));
+
 app.all('/api/v1/*', (req, res) => {
-  res.send({
+  res.status(400).send({
     status: 'fail',
     data: {
       message: 'This API route does not exist'
