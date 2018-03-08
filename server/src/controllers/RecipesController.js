@@ -12,7 +12,12 @@ export default class RecipesController {
    * @returns {Array} all recipes
    */
   static addRecipe(req, res) {
-    const ingredientsArray = req.body.ingredients.split(',');
+    let ingredientsArray;
+    if (!Array.isArray(req.body.ingredients)) {
+      ingredientsArray = req.body.ingredients.split(',');
+    } else {
+      ingredientsArray = req.body.ingredients;
+    }
 
     db.Recipes.findOne({
       where: {
@@ -95,7 +100,11 @@ export default class RecipesController {
   static modifyRecipe(req, res) {
     let ingredientsArray;
     if (req.body.ingredients) {
-      ingredientsArray = req.body.ingredients.split(',');
+      if (!Array.isArray(req.body.ingredients)) {
+        ingredientsArray = req.body.ingredients.split(',');
+      } else {
+        ingredientsArray = req.body.ingredients;
+      }
     }
 
     db.Recipes.findById(req.params.id)

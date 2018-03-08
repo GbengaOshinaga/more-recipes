@@ -1,4 +1,4 @@
-import AccountsApi from '../api/AccountsApi';
+import api from './Fetch';
 
 /**
  * Signs in
@@ -6,7 +6,7 @@ import AccountsApi from '../api/AccountsApi';
  * @returns {object} response
  */
 export function signIn(credentials) {
-  return AccountsApi.signIn(credentials);
+  return api.post('/api/v1/users/signin', credentials);
 }
 
 /**
@@ -15,5 +15,5 @@ export function signIn(credentials) {
  * @returns {function} function
  */
 export function signUp(data) {
-  return AccountsApi.signUp(data);
+  return api.post('/api/v1/users/signup', data);
 }

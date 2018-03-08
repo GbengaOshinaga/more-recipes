@@ -37,18 +37,18 @@ class UserRecipes extends React.Component {
     this.state = {
       data: {
         id: 0,
-        recipeName: '',
-        recipeDescription: '',
+        name: '',
+        description: '',
         ingredients: [],
-        imageURL: ''
+        image: ''
       },
       deleteId: 0,
       edit: {
         id: 0,
-        recipeName: '',
-        recipeDescription: '',
+        name: '',
+        description: '',
         ingredients: [],
-        imageURL: ''
+        image: ''
       },
       imageFile: {},
       loaded: true
@@ -82,17 +82,16 @@ class UserRecipes extends React.Component {
     this.setState({ loaded: false });
     if (!(this.state.imageFile instanceof File)) {
       const { data } = this.state;
-      data.imageURL = defaultImage;
+      data.image = defaultImage;
       this.setState({ data }, () => {
         this.saveRecipe(this.state.data);
       });
       this.setState({ loaded: true });
     } else {
       userActions.uploadImage(this.state.imageFile)
-        .then(response => response.json())
         .then((response) => {
           const { data } = this.state;
-          data.imageURL = response.secure_url;
+          data.image = response.secure_url;
           this.setState({ data }, () => {
             this.saveRecipe(this.state.data);
           });
@@ -114,10 +113,9 @@ class UserRecipes extends React.Component {
       this.setState({ loaded: true });
     } else {
       userActions.uploadImage(this.state.imageFile)
-        .then(response => response.json())
         .then((response) => {
           const { edit } = this.state;
-          edit.imageURL = response.secure_url;
+          edit.image = response.secure_url;
           this.setState({ edit }, () => {
             this.editRecipe();
           });
@@ -162,10 +160,10 @@ class UserRecipes extends React.Component {
     this.setState({
       edit: {
         id: recipeForEdit[0].id,
-        recipeName: recipeForEdit[0].name,
-        recipeDescription: recipeForEdit[0].description,
+        name: recipeForEdit[0].name,
+        description: recipeForEdit[0].description,
         ingredients: [...recipeForEdit[0].ingredients],
-        imageURL: recipeForEdit[0].image
+        image: recipeForEdit[0].image
       }
     });
     const img = new Image(300, 200);
@@ -188,14 +186,16 @@ class UserRecipes extends React.Component {
             this.setState({
               data: {
                 id: 0,
-                recipeName: '',
-                recipeDescription: '',
+                name: '',
+                description: '',
                 ingredients: [],
-                imageURL: ''
+                image: ''
               },
               imageFile: {}
             });
-            imageContext.clearRect(0, 0, 300, 200);
+            if (imageContext) {
+              imageContext.clearRect(0, 0, 300, 200);
+            }
           })
           .catch(errors => errors.map(error => toastr.error(error)));
       })
@@ -215,10 +215,10 @@ class UserRecipes extends React.Component {
             this.setState({
               edit: {
                 id: 0,
-                recipeName: '',
-                recipeDescription: '',
+                name: '',
+                description: '',
                 ingredients: [],
-                imageURL: ''
+                image: ''
               },
               imageFile: {}
             });
@@ -351,8 +351,8 @@ class UserRecipes extends React.Component {
           userRecipes={this.props.userRecipes}
           onInputChange={this.handleInputChange}
           onEditInputChange={this.handleEditInputChange}
-          inputValue={this.state.data.recipeName}
-          descValue={this.state.data.recipeDescription}
+          inputValue={this.state.data.name}
+          descValue={this.state.data.description}
           editData={this.state.edit}
           onClickSave={this.onClickSave}
           onFileChange={this.loadImage}

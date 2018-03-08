@@ -43,7 +43,6 @@ class SignUp extends React.Component {
    */
   onClickSave() {
     signUp(this.state.data)
-      .then(response => response.json())
       .then((response) => {
         if (response.status === 'success') {
           sessionService.saveSession(response.data.token);
@@ -74,7 +73,6 @@ class SignUp extends React.Component {
       profilePic: response.profileObj.imageUrl
     };
     signUp(credentials)
-      .then(serverResponse => serverResponse.json())
       .then((serverResponse) => {
         if (serverResponse.status === 'success') {
           sessionService.saveSession(serverResponse.data.token);

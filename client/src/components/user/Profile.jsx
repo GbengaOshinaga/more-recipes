@@ -143,7 +143,6 @@ class Profile extends React.Component {
     const file = event.target.files[0];
     if (file) {
       userActions.uploadImage(file)
-        .then(response => response.json())
         .then((response) => {
           const { data } = this.state;
           data.profilePic = response.secure_url;

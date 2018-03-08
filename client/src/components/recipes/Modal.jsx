@@ -49,7 +49,7 @@ export function AddModal({
 
         <form action="#">
           <InputField
-            id="recipeName"
+            id="name"
             type="text"
             onChange={onInputChange}
             value={inputValue}
@@ -58,7 +58,7 @@ export function AddModal({
           />
           <div className="row">
             <TextArea
-              id="recipeDescription"
+              id="description"
               value={descValue}
               onChange={onInputChange}
               label="Recipe Details"
@@ -115,16 +115,16 @@ export function EditModal({
 
         <form action="#">
           <InputField
-            id="recipeName"
+            id="name"
             type="text"
             onChange={onInputChange}
-            value={editData.recipeName}
+            value={editData.name}
             dataError="Recipe Name is required"
           />
           <div className="row">
             <TextArea
-              id="recipeDescription"
-              value={editData.recipeDescription}
+              id="description"
+              value={editData.description}
               onChange={onInputChange}
             />
           </div>

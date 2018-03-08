@@ -43,7 +43,6 @@ class SignIn extends React.Component {
    */
   onClickSave() {
     signIn(this.state.credentials)
-      .then(response => response.json())
       .then((response) => {
         if (response.status === 'success') {
           sessionService.saveSession(response.data.token);
@@ -64,7 +63,6 @@ class SignIn extends React.Component {
   onGoogleLoginSuccess(response) {
     this.setState({ credentials: { email: response.profileObj.email, password: 'google-login' } });
     signIn(this.state.credentials)
-      .then(serverResponse => serverResponse.json())
       .then((serverResponse) => {
         if (serverResponse.status === 'success') {
           sessionService.saveSession(serverResponse.data.token);

@@ -37,7 +37,7 @@ class RecipeDetails extends React.Component {
   constructor(props, context) {
     super(props, context);
     this.state = {
-      newReview: '',
+      review: '',
       recipe: {},
       upvoteClassName: 'thumb-up',
       downvoteClassName: 'thumb-down',
@@ -118,8 +118,8 @@ class RecipeDetails extends React.Component {
     const { id } = this.props.match.params;
     sessionService.loadSession()
       .then((token) => {
-        this.props.actions.addReview(id, token, this.state.newReview);
-        this.setState({ newReview: '' });
+        this.props.actions.addReview(id, token, this.state.review);
+        this.setState({ review: '' });
       });
   }
 
@@ -130,7 +130,7 @@ class RecipeDetails extends React.Component {
    */
   onAddReviewChange = (event) => {
     const { value } = event.target;
-    this.setState({ newReview: value });
+    this.setState({ review: value });
   }
 
   /**
@@ -241,7 +241,7 @@ class RecipeDetails extends React.Component {
         recipe={this.state.recipe}
         onClickSaveReview={this.onClickSaveReview}
         onAddReviewChange={this.onAddReviewChange}
-        newReview={this.state.newReview}
+        newReview={this.state.review}
         location={this.props.location.pathname}
         profilePic={this.props.profilePic}
         onClickVote={this.vote}

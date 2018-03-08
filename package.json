@@ -141,6 +141,9 @@
     "collectCoverage": true,
     "setupFiles": [
       "<rootDir>/client/testSetup.js"
+    ],
+    "coveragePathIgnorePatterns": [
+      "<rootDir>/client/src/test/"
     ]
   },
   "repository": {

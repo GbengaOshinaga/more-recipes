@@ -30,21 +30,21 @@ function setup() {
     paginationMeta: {}
   };
 
-  const store = mockStore({
-    recipes: [],
-    mostFavourited: [],
-    searchResults: [],
-    userFavourites: [],
-    session: {
-      authenticated: true,
-      checked: true,
-      user:
-        { firstName: '' }
-    }
-  });
+  // const store = mockStore({
+  //   recipes: [],
+  //   mostFavourited: [],
+  //   searchResults: [],
+  //   userFavourites: [],
+  //   session: {
+  //     authenticated: true,
+  //     checked: true,
+  //     user:
+  //       { firstName: '' }
+  //   }
+  // });
 
 
-  const enzymeWrapper = mount(<BrowserRouter><Catalog store={store} {...props} /></BrowserRouter>);
+  const enzymeWrapper = mount(<BrowserRouter><Catalog {...props} /></BrowserRouter>);
 
   return {
     props, enzymeWrapper
