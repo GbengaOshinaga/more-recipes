@@ -19,7 +19,10 @@ export default class FavouriteRecipesController {
     db.User.findById(req.user.userId)
       .then((user) => {
         user.addFavouriteRecipe(foundRecipe);
-        return res.status(200).jsend.success({ message: 'Favourite added' });
+        return res.status(200).jsend.success({
+          recipe: foundRecipe,
+          message: 'Favourite added'
+        });
       })
       .catch(error => res.status(400).jsend.error(error));
   }

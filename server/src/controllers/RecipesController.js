@@ -81,9 +81,7 @@ export default class RecipesController {
         if (!recipe) {
           return res.status(404).jsend.fail({ message: `Recipe with Id of ${req.params.id} does not exist` });
         }
-        return recipe.getFavouriteUsers()
-          .then(userFavourites =>
-            res.status(200).jsend.success({ recipe, favourites: userFavourites }));
+        return res.status(200).jsend.success({ recipe });
       })
       .catch(() => res.status(400).jsend.error('An error occured'));
   }
@@ -153,7 +151,12 @@ export default class RecipesController {
       UserId: req.user.userId,
       RecipeId: req.params.id
     })
-      .then(review => db.Reviews.findById(review.id, { include: [{ model: db.User }] }))
+      .then(review => db.Reviews.findById(review.id, {
+        include: [{
+          model: db.User,
+          attributes: { exclude: ['password'] }
+        }]
+      }))
       .then(userReviews => res.status(201).jsend.success({ review: userReviews }))
       .catch(error => res.status(400).jsend.error(error));
   }
@@ -169,7 +172,7 @@ export default class RecipesController {
     const condition = { RecipeId: req.params.id };
     db.Reviews.findAll({
       where: condition,
-      include: [{ model: db.User }],
+      include: [{ model: db.User, attributes: { exclude: ['password'] } }],
       offset: req.query.from,
       limit: req.query.limit
     })

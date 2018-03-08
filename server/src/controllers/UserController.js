@@ -136,7 +136,18 @@ export default class UserController {
         if (!user) {
           return res.status(404).jsend.fail({ message: `User with Id of ${req.params.id} does not exist` });
         }
-        res.status(200).jsend.success({ user });
+        res.status(200).jsend.success({
+          user: {
+            id: user.id,
+            firstName: user.firstName,
+            lastName: user.lastName,
+            email: user.email,
+            updatedAt: user.updatedAt,
+            createdAt: user.createdAt,
+            profilePic: user.profilePic,
+            about: user.about
+          }
+        });
       })
       .catch(error => res.status(400).jsend.error(error));
   }
