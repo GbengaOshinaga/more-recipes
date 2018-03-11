@@ -10,11 +10,11 @@ import querystring from 'querystring';
 async function getCount(model, condition) {
   let dbCount;
   if (!condition) {
-    dbCount = await model.findAndCountAll();
+    dbCount = await model.count();
   } else {
-    dbCount = await model.findAndCountAll({ where: condition });
+    dbCount = await model.count({ where: condition });
   }
-  return dbCount.count;
+  return dbCount;
 }
 
 /**
@@ -25,7 +25,7 @@ async function getCount(model, condition) {
  *
  * @returns {Promise} pagination meta
  */
-async function getPaginationMeta(req, model, condition) {
+export async function getPaginationMeta(req, model, condition) {
   let originUrl = req.originalUrl;
   if (req.originalUrl.indexOf('?') !== -1) {
     originUrl = req.originalUrl.slice(0, req.originalUrl.indexOf('?'));
@@ -58,4 +58,20 @@ async function getPaginationMeta(req, model, condition) {
   return paginationMeta;
 }
 
-export default getPaginationMeta;
+/**
+ * Check authorization and existence
+ * @param {Object} obj
+ * @param {Object} req
+ * @param {Object} res
+ * @param {String} message
+ *
+ * @returns {Object} res
+ */
+export function check(obj, req, res, message) {
+  if (!obj) {
+    return res.status(404).jsend.fail({ message: `The ${message} does not exist` });
+  }
+  if (obj.UserId !== req.user.userId) {
+    return res.status(401).jsend.fail({ message: `You are not authorized to edit this ${message}` });
+  }
+}

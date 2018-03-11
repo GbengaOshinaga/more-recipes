@@ -101,6 +101,7 @@
     "sass-loader": "^6.0.6",
     "sequelize": "^4.20.1",
     "sequelize-cli": "^3.0.0",
+    "sinon": "^4.4.2",
     "style-loader": "^0.19.1",
     "swagger-ui-express": "^2.0.15",
     "toastr": "^2.1.2",
@@ -117,6 +118,7 @@
     "faker": "^4.1.0",
     "fetch-mock": "^6.0.0",
     "jest": "^22.2.2",
+    "js-cookie": "^2.2.0",
     "jsdom": "^11.6.2",
     "redux-immutable-state-invariant": "^2.1.0",
     "redux-logger": "^3.0.6",
@@ -135,15 +137,15 @@
     "moduleNameMapper": {
       "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/client/src/test/mocks/fileMock.js"
     },
+    "coveragePathIgnorePatterns": [
+      "<rootDir>/client/src/test"
+    ],
     "transform": {
       ".*": "<rootDir>/node_modules/babel-jest"
     },
     "collectCoverage": true,
     "setupFiles": [
       "<rootDir>/client/testSetup.js"
-    ],
-    "coveragePathIgnorePatterns": [
-      "<rootDir>/client/src/test/"
     ]
   },
   "repository": {

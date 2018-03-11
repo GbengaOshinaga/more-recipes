@@ -1,5 +1,5 @@
 import db from '../models/index';
-import getPaginationMeta from '../helpers/';
+import { getPaginationMeta, check } from '../helpers/';
 
 /**
  * RecipesController
@@ -9,6 +9,7 @@ export default class RecipesController {
    * Adds a recipe
    * @param {Object} req
    * @param {Object} res
+   *
    * @returns {Array} all recipes
    */
   static addRecipe(req, res) {
@@ -46,6 +47,7 @@ export default class RecipesController {
    * Gets Recipes
    * @param {Object} req
    * @param {Object} res
+   *
    * @returns {Array} all recipes
    */
   static getRecipes(req, res) {
@@ -78,6 +80,7 @@ export default class RecipesController {
    * Gets recipe with specified id
    * @param {Object} req
    * @param {Object} res
+   *
    * @returns {Object} res
    */
   static getRecipeById(req, res) {
@@ -95,6 +98,7 @@ export default class RecipesController {
    * Modifies a recipe
    * @param {Object} req
    * @param {Object} res
+   *
    * @returns {Object} Modified recipe
    */
   static modifyRecipe(req, res) {
@@ -109,12 +113,7 @@ export default class RecipesController {
 
     db.Recipes.findById(req.params.id)
       .then((recipe) => {
-        if (!recipe) {
-          return res.status(404).jsend.fail({ message: 'The Recipe does not exist' });
-        }
-        if (recipe.UserId !== req.user.userId) {
-          return res.status(401).jsend.fail({ message: 'You are not authorized to edit this recipe' });
-        }
+        check(recipe, req, res, 'recipe');
         recipe.update({
           name: req.body.name || recipe.name,
           description: req.body.description || recipe.description,
@@ -130,17 +129,13 @@ export default class RecipesController {
    * Deletes specified recipe
    * @param {Object} req
    * @param {Object} res
+   *
    * @returns {String} message
    */
   static deleteRecipe(req, res) {
     db.Recipes.findById(req.params.id)
       .then((recipe) => {
-        if (!recipe) {
-          return res.status(404).jsend.fail({ message: 'The Recipe does not exist' });
-        }
-        if (recipe.UserId !== req.user.userId) {
-          return res.status(401).jsend.fail({ message: 'You are not authorized to delete this recipe' });
-        }
+        check(recipe, req, res, 'recipe');
         recipe.destroy({ force: true })
           .then(() => res.status(200).jsend.success({ message: 'Recipe has been successfully deleted' }))
           .catch(error => res.status(400).jsend.error(error));
@@ -152,6 +147,7 @@ export default class RecipesController {
    * Add review to recipe
    * @param {Object} req
    * @param {Object} res
+   *
    * @returns {Object} recipe object
    */
   static addReview(req, res) {
@@ -194,17 +190,13 @@ export default class RecipesController {
    * Edits a review
    * @param {Object} req
    * @param {Object} res
+   *
    * @returns {Object} res
    */
   static editReview(req, res) {
     db.Reviews.findById(req.params.id)
       .then((review) => {
-        if (!review) {
-          return res.status(404).jsend.fail({ message: 'The Review does not exist' });
-        }
-        if (review.UserId !== req.user.userId) {
-          return res.status(401).jsend.fail({ message: 'You are not authorized to edit this review' });
-        }
+        check(review, req, res, 'review');
         review.update({
           review: req.body.review || review.review
         })
@@ -217,17 +209,13 @@ export default class RecipesController {
    * Deletes a review
    * @param {Object} req
    * @param {Object} res
+   *
    * @returns {String} res
    */
   static deleteReview(req, res) {
     db.Reviews.findById(req.params.id)
       .then((review) => {
-        if (!review) {
-          return res.status(404).jsend.fail({ message: 'The Review does not exist' });
-        }
-        if (review.UserId !== req.user.userId) {
-          return res.status(401).jsend.fail({ message: 'You are not authorized to delete this review' });
-        }
+        check(review, req, res, 'review');
         review.destroy()
           .then(() => res.status(200).jsend.success({ message: 'Review has been successfully deleted' }))
           .catch(error => res.status(400).jsend.error(error));

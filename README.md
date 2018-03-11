@@ -119,3 +119,6 @@ Delete review - ```DELETE /api/v1/recipes/reviews/{review_id}```
 Upvote a recipe - ```POST /api/v1/recipes/upvote/{recipe_id}```
 
 Downvote a recipe - ```POST /api/v1/recipes/downvote/{recipe_id}```
+
+### Documentation
+API Documentation can be found [here](https://more-recipe-gbenga.herokuapp.com/api/v1/docs/)

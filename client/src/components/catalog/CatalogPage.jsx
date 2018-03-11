@@ -56,7 +56,7 @@ export default function CatalogPage({
                 <input
                   placeholder="Search Catalog"
                   id="autocomplete-input"
-                  className="autocomplete white-text"
+                  className="autocomplete white-text search"
                   onChange={onSearchChange}
                   value={searchValue}
                 />

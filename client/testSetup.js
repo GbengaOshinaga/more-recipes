@@ -1,3 +1,5 @@
+import Cookies from 'js-cookie';
+
 global.$ = () => ({
   tabs: () => null,
   attr: () => null,
@@ -19,5 +21,6 @@ global.e = {
   }
 };
 
-
-global.swal = () => Promise.resolve(true);
+Object.defineProperty(document, 'cookie', {
+  value: Cookies.set('USER-SESSION', 'session', { expires: 360 })
+});

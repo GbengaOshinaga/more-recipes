@@ -93,7 +93,7 @@ class UserRecipes extends React.Component {
           const { data } = this.state;
           data.image = response.secure_url;
           this.setState({ data }, () => {
-            this.saveRecipe(this.state.data);
+            this.saveRecipe();
           });
           this.setState({ loaded: true });
         });
@@ -177,10 +177,10 @@ class UserRecipes extends React.Component {
    * @param {Object} data
    * @returns {null} null
    */
-  saveRecipe = (data) => {
+  saveRecipe = () => {
     sessionService.loadSession()
       .then((token) => {
-        this.props.actions.addRecipe(token, data)
+        this.props.actions.addRecipe(token, this.state.data)
           .then(() => {
             toastr.success('Recipe Added');
             this.setState({
@@ -256,20 +256,6 @@ class UserRecipes extends React.Component {
     } catch (error) {
       throw error;
     }
-  }
-
-  /**
- * Handle chip change
- * @param {Array} chips
- * @returns {Object} new state
- */
-  handleChipsChange = (chips) => {
-    if (chips[0] === 'Enter Ingredients') {
-      chips.shift();
-    }
-    const { data } = this.state;
-    data.ingredients = chips;
-    this.setState({ data });
   }
 
   /**

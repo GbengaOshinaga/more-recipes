@@ -98,9 +98,11 @@ export class Catalog extends React.Component {
    */
   onSearchChange = (event) => {
     const { value } = event.target;
-    this.setState({ searchValue: value, hasSearchValue: true }, () => {
-      this.props.actions.search(this.state.searchValue);
-    });
+    if (value !== '') {
+      this.setState({ searchValue: value, hasSearchValue: true }, () => {
+        this.props.actions.search(this.state.searchValue);
+      });
+    }
     if (value === '') {
       this.setState({ hasSearchValue: false });
     } else {
