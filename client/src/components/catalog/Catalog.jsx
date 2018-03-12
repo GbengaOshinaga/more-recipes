@@ -127,20 +127,20 @@ export class Catalog extends React.Component {
    * @param {Object} event
    * @returns {null} null
    */
-  vote = (event) => {
+  vote = async (event) => {
     event.persist();
     event.preventDefault();
     const { currentTarget } = event;
-    sessionService.loadSession()
-      .then((token) => {
-        if (event.target.firstChild.nodeValue === 'thumb_up') {
-          this.props.actions.upvoteRecipe(event.target.id, token);
-          currentTarget.classList.toggle('green-text');
-        } else {
-          this.props.actions.downvoteRecipe(event.target.id, token);
-          currentTarget.classList.toggle('black-text');
-        }
-      });
+    const token = await sessionService.loadSession();
+    if (token) {
+      if (event.target.firstChild.nodeValue === 'thumb_up') {
+        this.props.actions.upvoteRecipe(event.target.id, token);
+        currentTarget.classList.toggle('green-text');
+      } else {
+        this.props.actions.downvoteRecipe(event.target.id, token);
+        currentTarget.classList.toggle('black-text');
+      }
+    }
   }
 
   /**
@@ -148,22 +148,22 @@ export class Catalog extends React.Component {
    * @param {Object} event
    * @returns {null} null
    */
-  addFavourite = (event) => {
+  addFavourite = async (event) => {
     event.persist();
     event.preventDefault();
     const { currentTarget } = event;
-    sessionService.loadSession()
-      .then((token) => {
-        if (currentTarget.classList.value === 'favourite') {
-          this.props.actions.addFavourite(token, event.target.id)
-            .then(() => toastr.success('Added to favourites'));
-        } else {
-          this.props.actions.deleteFavourite(token, event.target.id)
-            .then(() => toastr.success('Removed from favourites'));
-        }
+    const token = await sessionService.loadSession();
+    if (token) {
+      if (currentTarget.classList.value === 'favourite') {
+        this.props.actions.addFavourite(token, event.target.id)
+          .then(() => toastr.success('Added to favourites'));
+      } else {
+        this.props.actions.deleteFavourite(token, event.target.id)
+          .then(() => toastr.success('Removed from favourites'));
+      }
 
-        currentTarget.classList.toggle('red-text');
-      });
+      currentTarget.classList.toggle('red-text');
+    }
   }
 
   /**

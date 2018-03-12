@@ -103,6 +103,7 @@ describe('Users can perform actions on recipe', () => {
       chai.request(app)
         .get('/api/v1/recipes?sort=upvotes&order=desc')
         .end((err, res) => {
+          console.log(res.body);
           expect(res).to.have.status(200);
           expect(res.body.data.recipes).to.be.an('array');
           expect(res.body.data.recipes[0].upvotes.length).to.equal(10);
@@ -147,7 +148,7 @@ describe('Users can perform actions on recipe', () => {
       })
       .end((err, res) => {
         expect(res).to.have.status(404);
-        expect(res.body.data.message).to.equal('The Recipe does not exist');
+        expect(res.body.data.message).to.equal('The recipe does not exist');
         done();
       });
   });
@@ -223,7 +224,7 @@ describe('Users can perform actions on recipe', () => {
       })
       .end((err, res) => {
         expect(res).to.have.status(404);
-        expect(res.body.data.message).to.equal('The Review does not exist');
+        expect(res.body.data.message).to.equal('The review does not exist');
         done();
       });
   });
@@ -245,7 +246,7 @@ describe('Users can perform actions on recipe', () => {
       .set('Access-Token', token)
       .end((err, res) => {
         expect(res).to.have.status(404);
-        expect(res.body.data.message).to.equal('The Review does not exist');
+        expect(res.body.data.message).to.equal('The review does not exist');
         done();
       });
   });
@@ -301,7 +302,7 @@ describe('Users can perform actions on recipe', () => {
       .set('Access-Token', token)
       .end((err, res) => {
         expect(res).to.have.status(404);
-        expect(res.body.data.message).to.equal('The Recipe does not exist');
+        expect(res.body.data.message).to.equal('The recipe does not exist');
         done();
       });
   });

@@ -25,7 +25,13 @@ function setup() {
     profilePic: '',
     userId: 1,
     recipe: {},
-    recipes: [{ id: 1, upvotes: [1], downvotes: [1] }],
+    recipes: [{
+      id: 1,
+      upvotes: [1],
+      downvotes: [1],
+      ingredients: ['ing'],
+      Reviews: [{ id: 1, review: 'cool', User: { profilePic: '' } }]
+    }],
     userFavourites: [{ Favourites: { RecipeId: 1 } }],
     reviewsPaginationMeta: {},
     location: { pathname: '' },

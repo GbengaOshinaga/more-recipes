@@ -24,14 +24,11 @@ class HomePage extends React.Component {
    * Componentwillmount
    * @returns {null} null
    */
-  componentWillMount() {
-    sessionService.loadSession()
-      .then((token) => {
-        if (token) {
-          this.setState({ isAuthenticated: true });
-        }
-      })
-      .catch(() => {});
+  async componentWillMount() {
+    const token = await sessionService.loadSession();
+    if (token) {
+      this.setState({ isAuthenticated: true });
+    }
   }
 
   /**

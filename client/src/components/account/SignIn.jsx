@@ -28,9 +28,6 @@ class SignIn extends React.Component {
       }
     };
 
-    this.onClickSave = this.onClickSave.bind(this);
-    this.handleChange = this.handleChange.bind(this);
-    this.onGoogleLoginSuccess = this.onGoogleLoginSuccess.bind(this);
     toastr.options = {
       closeButton: true,
       positionClass: 'toast-top-right'
@@ -41,7 +38,7 @@ class SignIn extends React.Component {
    * Saves input
    * @returns {*} nothing
    */
-  onClickSave() {
+  onClickSave = () => {
     signIn(this.state.credentials)
       .then((response) => {
         if (response.status === 'success') {
@@ -60,7 +57,7 @@ class SignIn extends React.Component {
    * @param {*} response
    * @returns {*} null
    */
-  onGoogleLoginSuccess(response) {
+  onGoogleLoginSuccess = (response) => {
     this.setState({ credentials: { email: response.profileObj.email, password: 'google-login' } });
     signIn(this.state.credentials)
       .then((serverResponse) => {
@@ -79,7 +76,7 @@ class SignIn extends React.Component {
    * Method to handle on google login failure
    * @returns {*} null
    */
-  onGoogleLoginFailure() {
+  onGoogleLoginFailure = () => {
     toastr.error('An error occured');
   }
 
@@ -87,7 +84,7 @@ class SignIn extends React.Component {
    * Redirects to catalog page after successfully signing in
    * @returns {*} null
    */
-  redirect() {
+  redirect = () => {
     if (this.props.location.state) {
       const { from } = this.props.location.state;
       this.context.router.history.push(from);
@@ -101,7 +98,7 @@ class SignIn extends React.Component {
    * @param {*} event
    * @returns {*} new state
    */
-  handleChange(event) {
+  handleChange = (event) => {
     const data = this.state.credentials;
     data[event.target.type] = event.target.value;
     this.setState({ credentials: data });

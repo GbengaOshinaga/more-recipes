@@ -22,7 +22,7 @@ const defaultProps = {
 /**
  * Container component for favourite recipes
  */
-class FavouriteRecipes extends React.Component {
+export class FavouriteRecipes extends React.Component {
   /**
      * Component constructor
      * @param {*} props
@@ -37,14 +37,14 @@ class FavouriteRecipes extends React.Component {
    * Method when component has finished mounting
    * @returns {*} undefined
    */
-  componentDidMount() {
+  async componentDidMount() {
     pluginsInit();
 
     if (this.props.recipes.length === 0) {
-      sessionService.loadSession()
-        .then((token) => {
-          this.props.actions.getFavourites(token);
-        });
+      const token = await sessionService.loadSession();
+      if (token) {
+        this.props.actions.getFavourites(token);
+      }
     }
   }
 
@@ -53,20 +53,20 @@ class FavouriteRecipes extends React.Component {
    * @param {*} event
    * @returns {*} null
    */
-  vote = (event) => {
+  vote = async (event) => {
     event.persist();
     event.preventDefault();
     const { currentTarget } = event;
-    sessionService.loadSession()
-      .then((token) => {
-        if (event.target.firstChild.nodeValue === 'thumb_up') {
-          this.props.actions.upvoteRecipe(event.target.id, token);
-          currentTarget.classList.toggle('green-text');
-        } else {
-          this.props.actions.downvoteRecipe(event.target.id, token);
-          currentTarget.classList.toggle('black-text');
-        }
-      });
+    const token = await sessionService.loadSession();
+    if (token) {
+      if (event.target.firstChild.nodeValue === 'thumb_up') {
+        this.props.actions.upvoteRecipe(event.target.id, token);
+        currentTarget.classList.toggle('green-text');
+      } else {
+        this.props.actions.downvoteRecipe(event.target.id, token);
+        currentTarget.classList.toggle('black-text');
+      }
+    }
   }
 
   /**
@@ -74,13 +74,13 @@ class FavouriteRecipes extends React.Component {
    * @param {*} event
    * @returns {*} null
    */
-  removeFavourite = (event) => {
+  removeFavourite = async (event) => {
     event.persist();
     event.preventDefault();
-    sessionService.loadSession()
-      .then((token) => {
-        this.props.actions.deleteFavourite(token, event.target.id);
-      });
+    const token = await sessionService.loadSession();
+    if (token) {
+      this.props.actions.deleteFavourite(token, event.target.id);
+    }
   }
 
 

@@ -15,7 +15,7 @@ export default class RecipeValidator {
     const messages = [];
 
     const isEmpty = (str) => {
-      const regexp = /^[a-zA-Z0-9-',?.":; ]*$/;
+      const regexp = /([^\s]*)/;
       return (regexp.test(str) || !str.length);
     };
 
@@ -55,7 +55,7 @@ export default class RecipeValidator {
     }
 
     const isEmpty = (str) => {
-      const regexp = /^[a-zA-Z0-9-',?.":; ]*$/;
+      const regexp = /([^\s]*)/;
       return (regexp.test(str) || !str.length);
     };
 

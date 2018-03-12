@@ -28,9 +28,6 @@ class SignUp extends React.Component {
         profilePic: defaultUserAvatar
       }
     };
-    this.onClickSave = this.onClickSave.bind(this);
-    this.handleChange = this.handleChange.bind(this);
-    this.onGoogleLoginSuccess = this.onGoogleLoginSuccess.bind(this);
     toastr.options = {
       closeButton: true,
       positionClass: 'toast-top-right'
@@ -41,7 +38,7 @@ class SignUp extends React.Component {
    * Saves input
    * @returns {func} redirect
    */
-  onClickSave() {
+  onClickSave = () => {
     signUp(this.state.data)
       .then((response) => {
         if (response.status === 'success') {
@@ -63,7 +60,7 @@ class SignUp extends React.Component {
    * @param {Object} response
    * @returns {*} null
    */
-  onGoogleLoginSuccess(response) {
+  onGoogleLoginSuccess = (response) => {
     const credentials = {
       firstName: response.profileObj.givenName,
       lastName: response.profileObj.familyName,
@@ -89,7 +86,7 @@ class SignUp extends React.Component {
    * Method to handle on google login failure
    * @returns {*} null
    */
-  onGoogleLoginFailure() {
+  onGoogleLoginFailure = () => {
     toastr.error('An error occured');
   }
 
@@ -98,7 +95,7 @@ class SignUp extends React.Component {
    * Redirects to catalog page after successfully signing in
    * @returns {null} null
    */
-  redirect() {
+  redirect = () => {
     this.context.router.history.push('/catalog');
   }
 
@@ -108,7 +105,7 @@ class SignUp extends React.Component {
    * @param {Object} event
    * @returns {Object} new state
    */
-  handleChange(event) {
+  handleChange = (event) => {
     const entries = this.state.data;
     entries[event.target.id] = event.target.value;
     this.setState({ data: entries });
