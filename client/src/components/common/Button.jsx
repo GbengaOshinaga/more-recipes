@@ -17,8 +17,9 @@ const defaultProps = {
 
 /**
  * Functional component for button
- * @param {*} props
- * @returns {*} jsx
+ * @param {Object} props
+ *
+ * @returns {Node} jsx
  */
 function Button({
   onClick, type, name, materialIcon, className, buttonText

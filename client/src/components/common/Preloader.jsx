@@ -2,7 +2,7 @@ import React from 'react';
 
 /**
  * Individual loader
- * @param {*} color
+ * @param {String} color
  *
  * @returns {Node} loader
  */
@@ -24,6 +24,7 @@ function loader(color) {
 
 /**
  * Preloader component
+ *
  * @returns {Node} preloader
  */
 export default function Preloader() {

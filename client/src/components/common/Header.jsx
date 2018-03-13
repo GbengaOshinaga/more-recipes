@@ -97,7 +97,8 @@ function loggedInLinks(activates, firstName, onChange, value, type) {
 
 /**
  * Functional component for header for the sign up and sign in pages
- * @returns {*} jsx
+ *
+ * @returns {Node} jsx
  */
 function Header({
   mainLinks, sideLinks, navClassName, catalogId
@@ -130,6 +131,7 @@ function Header({
 /**
  * MainHeader component
  * @param {Object} props
+ *
  * @returns {Node} jsx
  */
 function MainHeader({

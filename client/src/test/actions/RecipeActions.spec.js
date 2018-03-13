@@ -168,30 +168,6 @@ describe('Recipe async actions', () => {
     });
   });
 
-  it.skip('creates GET_USER_FAVOURITES_SUCCESS', () => {
-    fetchMock.postOnce('/api/v1/users/recipes/1/favourites', {
-      body: {
-        status: 'success',
-        data: { message: 'Favourite Added' }
-      }
-    });
-    fetchMock.get('/api/v1/users/recipes/favourites', {
-      body: {
-        status: 'success',
-        data: { favourites: [{ name: 'recipe' }] }
-      }
-    });
-
-    const expectedActions = [
-      { type: types.GET_USER_FAVOURITES_SUCCESS, response: [{ name: 'recipe' }] }
-    ];
-    const store = mockStore({ userFavourites: [] });
-
-    return store.dispatch(recipeActions.addFavourite('token', 1)).then(() => {
-      expect(store.getActions()).toEqual(expectedActions);
-    });
-  });
-
   it('creates GET_USER_FAVOURITES_SUCCESS when getting user favourites is done', () => {
     fetchMock.getOnce('/api/v1/users/recipes/favourites', {
       body: {

@@ -25,7 +25,8 @@ const pagePropTypes = {
   handleChipAdd: PropTypes.func.isRequired,
   handleChipDelete: PropTypes.func.isRequired,
   handleAddModalChipAdd: PropTypes.func.isRequired,
-  handleAddModalChipDelete: PropTypes.func.isRequired
+  handleAddModalChipDelete: PropTypes.func.isRequired,
+  isFound: PropTypes.bool.isRequired
 };
 
 const pageDefaultProps = {
@@ -35,6 +36,7 @@ const pageDefaultProps = {
 /**
  * Page component
  * @param {Object} props
+ *
  * @returns {Node} jsx
  */
 function Page({
@@ -42,7 +44,7 @@ function Page({
   descValue, onClickSave, onFileChange, inputRef, editInputRef,
   userRecipes, onConfirmDelete, getId, handleChipAdd, handleChipDelete,
   getIdForEdit, editData, onClickEdit, onEditInputChange,
-  handleAddModalChipAdd, handleAddModalChipDelete
+  handleAddModalChipAdd, handleAddModalChipDelete, isFound
 }) {
   return (
     <div>
@@ -91,6 +93,7 @@ function Page({
             recipes={userRecipes}
             getId={getId}
             getIdForEdit={getIdForEdit}
+            isFound={isFound}
           />
         </div>
       </div>

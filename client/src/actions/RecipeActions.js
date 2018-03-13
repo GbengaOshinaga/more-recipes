@@ -307,6 +307,7 @@ export function getFavourites(token) {
           dispatch(updateUserFavouritesSuccess(response.data.favourites));
         } else {
           dispatch(updateUserFavouritesFailure());
+          throw new Error('Not Found');
         }
       });
   };

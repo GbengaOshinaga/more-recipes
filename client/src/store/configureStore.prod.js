@@ -4,8 +4,9 @@ import rootReducer from '../reducers/index';
 
 /**
  * Function to configure redux store
- * @param {*} initialState
- * @returns {*} store
+ * @param {any} initialState
+ *
+ * @returns {Object} store
  */
 export default function configureStore(initialState) {
   return createStore(

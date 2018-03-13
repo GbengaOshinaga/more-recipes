@@ -1,4 +1,5 @@
-
+/* eslint-disable no-restricted-globals */
+import validator from 'validator';
 
 /**
  * Class for validating inputs
@@ -6,30 +7,20 @@
 export default class RecipeValidator {
   /**
    * Validates recipe passed
-   * @param {*} req
-   * @param {*} res
-   * @param {*} next
-   * @returns {*} response
+   * @param {Object} req
+   * @param {Object} res
+   * @param {Object} next
+   *
+   * @returns {Object} res
    */
   static validateRecipe(req, res, next) {
     const messages = [];
 
-    const isEmpty = (str) => {
-      const regexp = /([^\s]*)/;
-      return (regexp.test(str) || !str.length);
-    };
-
-    if (!req.body.name) {
+    if (!req.body.name || validator.isEmpty(req.body.name.trim())) {
       messages.push('Recipe Name is required');
     }
-    if (!req.body.name || !isEmpty(req.body.name)) {
-      messages.push('Recipe Name cannot be empty or contain illegal characters');
-    }
-    if (!req.body.description) {
+    if (!req.body.description || validator.isEmpty(req.body.description.trim())) {
       messages.push('Recipe description is required');
-    }
-    if (!req.body.description || !isEmpty(req.body.description)) {
-      messages.push('Recipe description cannot be empty or contain illegal characters');
     }
     if (!req.body.ingredients) {
       messages.push('Ingredients are required');
@@ -42,10 +33,11 @@ export default class RecipeValidator {
 
   /**
    * Validates review
-   * @param {*} req
-   * @param {*} res
-   * @param {*} next
-   * @returns {*} response
+   * @param {Object} req
+   * @param {Object} res
+   * @param {Object} next
+   *
+   * @returns {Object} res
    */
   static validateReview(req, res, next) {
     const messages = [];
@@ -54,16 +46,8 @@ export default class RecipeValidator {
       review = req.body.review.trim();
     }
 
-    const isEmpty = (str) => {
-      const regexp = /([^\s]*)/;
-      return (regexp.test(str) || !str.length);
-    };
-
-    if (!review) {
+    if (!review || validator.isEmpty(review)) {
       messages.push('Review is required');
-    }
-    if (!review || !isEmpty(review)) {
-      messages.push('Review cannot be empty or contain illegal characters');
     }
 
     if (messages.length > 0) {
@@ -74,10 +58,11 @@ export default class RecipeValidator {
 
   /**
    * Validates id
-   * @param {*} req
-   * @param {*} res
-   * @param {*} next
-   * @returns {*} res
+   * @param {Object} req
+   * @param {Object} res
+   * @param {Object} next
+   *
+   * @returns {Object} res
    */
   static validateID(req, res, next) {
     const messages = [];
@@ -96,10 +81,11 @@ export default class RecipeValidator {
 
   /**
    * Validates query params
-   * @param {*} req
-   * @param {*} res
-   * @param {*} next
-   * @returns {*} res
+   * @param {Object} req
+   * @param {Object} res
+   * @param {Object} next
+   *
+   * @returns {Object} res
    */
   static validateQueryParams(req, res, next) {
     const messages = [];

@@ -50,6 +50,7 @@ export class RecipeDetails extends React.Component {
 
   /**
    * Method when component has finished mounting
+   *
    * @returns {undefined}
    */
   componentDidMount() {
@@ -82,6 +83,7 @@ export class RecipeDetails extends React.Component {
   /**
    * Method called when component is receiving new props
    * @param {Object} nextProps
+   *
    * @returns {undefined}
    */
   componentWillReceiveProps(nextProps) {
@@ -101,6 +103,7 @@ export class RecipeDetails extends React.Component {
 
   /**
    * ComponentDidUpdate lifecycle method
+   *
    * @returns {undefined}
    */
   componentDidUpdate() {
@@ -111,7 +114,8 @@ export class RecipeDetails extends React.Component {
   /**
    * Method to save review
    * @param {Object} event
-   * @returns {*} null
+   *
+   * @returns {undefined}
    */
   onClickSaveReview = async (event) => {
     event.preventDefault();
@@ -126,6 +130,7 @@ export class RecipeDetails extends React.Component {
   /**
    * onChange method for adding review
    * @param {Object} event
+   *
    * @returns {Object} new state
    */
   onAddReviewChange = (event) => {
@@ -138,6 +143,7 @@ export class RecipeDetails extends React.Component {
    * @param {Object} recipe
    * @param {Object} userId
    * @param {Array} userFavourites
+   *
    * @returns {Object} new state
    */
   upvoteVoteStatus = (recipe, userId, userFavourites) => {
@@ -188,7 +194,8 @@ export class RecipeDetails extends React.Component {
   /**
    * votes recipe
    * @param {Object} event
-   * @returns {*} null
+   *
+   * @returns {undefined}
    */
   vote = async (event) => {
     event.persist();
@@ -209,7 +216,8 @@ export class RecipeDetails extends React.Component {
   /**
    * Add recipe to favourite
    * @param {Object} event
-   * @returns {*} null
+   *
+   * @returns {undefined}
    */
   addFavourite = async (event) => {
     event.persist();
@@ -228,6 +236,7 @@ export class RecipeDetails extends React.Component {
 
   /**
    * Component render method
+   *
    * @returns {Node} jsx
    */
   render() {
@@ -263,6 +272,7 @@ RecipeDetails.defaultProps = defaultProps;
 /**
  * Maps state to component properties
  * @param {Object} state
+ *
  * @returns {object} object
  */
 function mapStateToProps(state) {
@@ -280,8 +290,9 @@ function mapStateToProps(state) {
 
 /**
    * Maps actions to component properties
-   * @param {*} dispatch
-   * @returns {*} actions
+   * @param {func} dispatch
+   *
+   * @returns {Object} actions
    */
 function mapDispatchToProps(dispatch) {
   return {

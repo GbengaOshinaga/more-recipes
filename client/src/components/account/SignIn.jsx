@@ -35,8 +35,9 @@ class SignIn extends React.Component {
   }
 
   /**
-   * Saves input
-   * @returns {*} nothing
+   * Signs in
+   *
+   * @returns {undefined}
    */
   onClickSave = () => {
     signIn(this.state.credentials)
@@ -54,8 +55,9 @@ class SignIn extends React.Component {
 
   /**
    * Method to handle on google login success
-   * @param {*} response
-   * @returns {*} null
+   * @param {Object} response
+   *
+   * @returns {undefined}
    */
   onGoogleLoginSuccess = (response) => {
     this.setState({ credentials: { email: response.profileObj.email, password: 'google-login' } });
@@ -74,15 +76,16 @@ class SignIn extends React.Component {
 
   /**
    * Method to handle on google login failure
-   * @returns {*} null
+   *
+   * @returns {undefined}
    */
   onGoogleLoginFailure = () => {
-    toastr.error('An error occured');
   }
 
   /**
    * Redirects to catalog page after successfully signing in
-   * @returns {*} null
+   *
+   * @returns {undefined}
    */
   redirect = () => {
     if (this.props.location.state) {
@@ -95,8 +98,9 @@ class SignIn extends React.Component {
 
   /**
    * Handles input field value change
-   * @param {*} event
-   * @returns {*} new state
+   * @param {Object} event
+   *
+   * @returns {undefined}
    */
   handleChange = (event) => {
     const data = this.state.credentials;
@@ -106,7 +110,8 @@ class SignIn extends React.Component {
 
   /**
    * component render method
-   * @returns {jsx} markup
+   *
+   * @returns {Node} jsx
    */
   render() {
     return (
@@ -131,8 +136,9 @@ SignIn.contextTypes = {
 
 /**
  * mapStateToProps
- * @param {*} state
- * @param {*} ownProps
+ * @param {Object} state
+ * @param {Object} ownProps
+ *
  * @returns {object} object
  */
 function mapStateToProps(state, ownProps) {

@@ -1,3 +1,4 @@
+/* eslint-disable global-require */
 import Express from 'express';
 import logger from 'morgan';
 import bodyParser from 'body-parser';
@@ -62,7 +63,6 @@ const port = process.env.PORT || 8000;
 
 db.sequelize.sync().then(() => {
   app.listen(port, () => {
-    console.log(`listening to port ${port}`);
   });
 });
 

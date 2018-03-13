@@ -8,9 +8,10 @@ import db from '../models/index';
 export default class UserController {
   /**
      * Signs up a user
-     * @param {*} req
-     * @param {*} res
-     * @returns {User} created user
+     * @param {Object} req
+     * @param {Object} res
+     *
+     * @returns {Object} res
      */
   static signup(req, res) {
     let picture = '';
@@ -51,10 +52,11 @@ export default class UserController {
 
   /**
    * Signs in a user
-   * @param {*} req
-   * @param {*} res
-   * @returns {res} response
-   */
+     * @param {Object} req
+     * @param {Object} res
+     *
+     * @returns {Object} res
+     */
   static signin(req, res) {
     const { email, password } = req.body;
 
@@ -93,10 +95,11 @@ export default class UserController {
 
   /**
    * Edits user information
-   * @param {*} req
-   * @param {*} res
-   * @returns {*} res
-   */
+     * @param {Object} req
+     * @param {Object} res
+     *
+     * @returns {Object} res
+     */
   static modifyUser(req, res) {
     db.User.findById(req.user.userId)
       .then((user) => {
@@ -126,10 +129,11 @@ export default class UserController {
 
   /**
    * Get specific user by id
-   * @param {*} req
-   * @param {*} res
-   * @returns {*} res
-   */
+     * @param {Object} req
+     * @param {Object} res
+     *
+     * @returns {Object} res
+     */
   static getUserById(req, res) {
     db.User.findById(req.params.id)
       .then((user) => {
@@ -154,10 +158,11 @@ export default class UserController {
 
   /**
    * Deletes user by id
-   * @param {*} req
-   * @param {*} res
-   * @returns {*} res
-   */
+     * @param {Object} req
+     * @param {Object} res
+     *
+     * @returns {Object} res
+     */
   static deleteUser(req, res) {
     db.User.findById(req.params.id)
       .then((user) => {
@@ -176,15 +181,21 @@ export default class UserController {
 
   /**
    * Gets all recipes created by user
-   * @param {*} req
-   * @param {*} res
-   * @returns {*} res
-   */
+     * @param {Object} req
+     * @param {Object} res
+     *
+     * @returns {Object} res
+     */
   static getUsersRecipes(req, res) {
     db.User.findById(req.user.userId)
       .then((user) => {
         user.getRecipes()
-          .then(recipes => res.status(200).jsend.success({ recipes }))
+          .then((recipes) => {
+            if (recipes.length === 0) {
+              return res.status(404).jsend.fail({ message: 'No Recipe Found' });
+            }
+            return res.status(200).jsend.success({ recipes });
+          })
           .catch(error => res.status(400).jsend.fail(error));
       })
       .catch(error => res.status(400).jsend.fail(error));

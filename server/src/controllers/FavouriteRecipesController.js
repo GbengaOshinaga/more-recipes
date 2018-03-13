@@ -6,9 +6,10 @@ import db from '../models/index';
 export default class FavouriteRecipesController {
   /**
      * Adds a favourite for a user
-     * @param {*} req
-     * @param {*} res
-     * @returns {*} res
+     * @param {Object} req
+     * @param {Object} res
+     *
+     * @returns {Object} res
      */
   static addFavourite(req, res) {
     let foundRecipe;
@@ -29,9 +30,10 @@ export default class FavouriteRecipesController {
 
   /**
      * Method gets the favourite recipes for a user
-     * @param {*} req
-     * @param {*} res
-     * @returns {*} res
+     * @param {Object} req
+     * @param {Object} res
+     *
+     * @returns {Object} res
      */
   static getFavourites(req, res) {
     db.User.findById(req.user.userId)
@@ -49,10 +51,11 @@ export default class FavouriteRecipesController {
 
   /**
    * Deletes a user favourite
-   * @param {*} req
-   * @param {*} res
-   * @returns {*} res
-   */
+     * @param {Object} req
+     * @param {Object} res
+     *
+     * @returns {Object} res
+     */
   static deleteFavourites(req, res) {
     db.sequelize.query(`DELETE FROM "Favourites" WHERE "UserId" = ${req.user.userId} AND "RecipeId" IN (${req.params.id})`)
       .spread(() => res.status(200).jsend.success({ message: 'Favourite deleted' }))
@@ -61,10 +64,11 @@ export default class FavouriteRecipesController {
 
   /**
    * Get recipes by most favourited
-   * @param {*} req
-   * @param {*} res
-   * @returns {*} res
-   */
+     * @param {Object} req
+     * @param {Object} res
+     *
+     * @returns {Object} res
+     */
   static getMostFavourited(req, res) {
     db.sequelize.query(`SELECT "Recipes"."id", "Recipes"."name", "Recipes"."description",
     "Recipes"."ingredients", "Recipes"."image", "Recipes"."upvotes",

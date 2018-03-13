@@ -3,9 +3,10 @@ import * as types from '../actions/actions';
 
 /**
  * Most favourited recipes reducer
- * @param {*} state
- * @param {*} action
- * @returns {*} new state
+ * @param {Array} state
+ * @param {Object} action
+ *
+ * @returns {Object} new state
  */
 export default function mostFavouritedReducer(state = initialState.mostFavourited, action) {
   const { response } = action;

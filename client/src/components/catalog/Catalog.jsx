@@ -50,7 +50,8 @@ export class Catalog extends React.Component {
 
   /**
    * Method when component has finished mounting
-   * @returns {*} null
+   *
+   * @returns {undefined}
    */
   componentDidMount() {
     pluginsInit();
@@ -63,7 +64,8 @@ export class Catalog extends React.Component {
     }
     sessionService.loadSession()
       .then((token) => {
-        this.props.actions.getFavourites(token);
+        this.props.actions.getFavourites(token)
+          .catch(() => {});
       })
       .catch(() => {});
   }
@@ -85,6 +87,7 @@ export class Catalog extends React.Component {
 
   /**
    * ComponentDidUpdate lifecycle method
+   *
    * @returns {undefined}
    */
   componentDidUpdate() {
@@ -94,7 +97,8 @@ export class Catalog extends React.Component {
   /**
    * onChange event on search bars
    * @param {Object} event
-   * @returns {null} null
+   *
+   * @returns {undefined}
    */
   onSearchChange = (event) => {
     const { value } = event.target;
@@ -111,7 +115,8 @@ export class Catalog extends React.Component {
   }
 
   /**
-   * Fetch next set of recipes for paginatino
+   * Fetch next set of recipes for pagination
+   *
    * @returns {undefined}
   */
   fetchNext = () => {
@@ -125,7 +130,8 @@ export class Catalog extends React.Component {
   /**
    * votes recipe
    * @param {Object} event
-   * @returns {null} null
+   *
+   * @returns {undefined}
    */
   vote = async (event) => {
     event.persist();
@@ -146,7 +152,8 @@ export class Catalog extends React.Component {
   /**
    * Add recipe to favourite
    * @param {Object} event
-   * @returns {null} null
+   *
+   * @returns {undefined}
    */
   addFavourite = async (event) => {
     event.persist();
@@ -168,6 +175,7 @@ export class Catalog extends React.Component {
 
   /**
    * Component render function
+   *
    * @returns {Node} jsx
    */
   render() {
@@ -195,6 +203,7 @@ export class Catalog extends React.Component {
 /**
  * Maps state to component properties
  * @param {Object} state
+ *
  * @returns {object} object
  */
 function mapStateToProps(state) {
@@ -213,6 +222,7 @@ function mapStateToProps(state) {
 /**
  * Maps actions to component properties
  * @param {*} dispatch
+ *
  * @returns {Object} actions
  */
 function mapDispatchToProps(dispatch) {

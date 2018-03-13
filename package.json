@@ -24,7 +24,8 @@
     "heroku-postbuild": "npm run build",
     "start": "node dist/src/app.js",
     "coveralls": "nyc npm run test:dev&& nyc report --reporter=text-lcov | coveralls",
-    "start:dev": "NODE_ENV=development babel-node server/src/app.js"
+    "start:dev": "NODE_ENV=development babel-node server/src/app.js",
+    "start:test": "NODE_ENV=test node dist/src/app.js"
   },
   "author": "Gbenga Oshinaga",
   "license": "ISC",
@@ -105,6 +106,7 @@
     "style-loader": "^0.19.1",
     "swagger-ui-express": "^2.0.15",
     "toastr": "^2.1.2",
+    "validator": "^9.4.1",
     "webpack": "^3.10.0"
   },
   "devDependencies": {
@@ -112,6 +114,7 @@
     "babel-jest": "^22.2.2",
     "babel-plugin-transform-class-properties": "^6.24.1",
     "babel-preset-react-hmre": "^1.1.1",
+    "chromedriver": "^2.36.0",
     "enzyme": "^3.3.0",
     "enzyme-adapter-react-16": "^1.1.1",
     "eslint-plugin-react": "^7.5.1",

@@ -85,6 +85,8 @@ export function getUserRecipes(token) {
       .then((response) => {
         if (response.status === 'success') {
           dispatch(updateGetUserRecipesSuccess(response.data.recipes));
+        } else {
+          throw new Error('Not Found');
         }
       });
   };
@@ -97,6 +99,7 @@ export function getUserRecipes(token) {
  * @returns {func} dispatch
  */
 export function modifyUser(token, data) {
+  // eslint-disable-next-line
   return function (dispatch) {
     return api.post('/api/v1/users/edit', data, { 'Access-Token': token })
       .then((response) => {

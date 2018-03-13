@@ -13,8 +13,8 @@ const defaultUserAvatar = 'http://res.cloudinary.com/king-more-recipes/image/upl
 class SignUp extends React.Component {
 /**
  * constructor method
- * @param {*} props
- * @param {*} context
+ * @param {Object} props
+ * @param {Object} context
  */
   constructor(props, context) {
     super(props, context);
@@ -35,8 +35,9 @@ class SignUp extends React.Component {
   }
 
   /**
-   * Saves input
-   * @returns {func} redirect
+   * Signs up a user
+   *
+   * @returns {error | undefined} error if any
    */
   onClickSave = () => {
     signUp(this.state.data)
@@ -58,7 +59,8 @@ class SignUp extends React.Component {
   /**
    * Method to handle on google login success
    * @param {Object} response
-   * @returns {*} null
+   *
+   * @returns {undefined}
    */
   onGoogleLoginSuccess = (response) => {
     const credentials = {
@@ -84,16 +86,17 @@ class SignUp extends React.Component {
 
   /**
    * Method to handle on google login failure
-   * @returns {*} null
+   *
+   * @returns {undefined}
    */
   onGoogleLoginFailure = () => {
-    toastr.error('An error occured');
   }
 
 
   /**
    * Redirects to catalog page after successfully signing in
-   * @returns {null} null
+   *
+   * @returns {undefined}
    */
   redirect = () => {
     this.context.router.history.push('/catalog');
@@ -103,7 +106,8 @@ class SignUp extends React.Component {
   /**
    * Handles input field value change
    * @param {Object} event
-   * @returns {Object} new state
+   *
+   * @returns {undefined}
    */
   handleChange = (event) => {
     const entries = this.state.data;
@@ -113,7 +117,8 @@ class SignUp extends React.Component {
 
   /**
    * component render method
-   * @returns {jsx} markup
+   *
+   * @returns {Node} jsx
    */
   render() {
     return (

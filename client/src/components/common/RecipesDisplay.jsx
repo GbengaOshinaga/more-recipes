@@ -18,7 +18,8 @@ const propTypes = {
   getId: PropTypes.func,
   getIdForEdit: PropTypes.func,
   next: PropTypes.func,
-  hasMore: PropTypes.bool
+  hasMore: PropTypes.bool,
+  isFound: PropTypes.bool
 };
 
 const defaultProps = {
@@ -31,7 +32,8 @@ const defaultProps = {
   getId: undefined,
   getIdForEdit: undefined,
   next: undefined,
-  hasMore: false
+  hasMore: false,
+  isFound: true
 };
 
 /**
@@ -84,6 +86,7 @@ function getCardAction(
  * @param {func} onClickVote
  * @param {func} onClickFavourite
  * @param {bool} isLoggedIn
+ * @param {bool} isFound
  * @param {Number} userId
  * @param {Array} favourites
  * @param {bool} hasSearchValue
@@ -93,12 +96,15 @@ function getCardAction(
  * @returns {Node} recipes
  */
 function displayRecipes(
-  recipes, onClickVote, onClickFavourite, isLoggedIn,
+  recipes, onClickVote, onClickFavourite, isLoggedIn, isFound,
   userId, favourites, hasSearchValue, getId, getIdForEdit
 ) {
   const chunkedRecipes = _.chunk(recipes, 3);
   if (hasSearchValue && recipes.length === 0) {
     return <h5>No Result(s) Found</h5>;
+  }
+  if (!isFound && recipes.length === 0) {
+    return <h5>No Recipe Available</h5>;
   }
   if (recipes === undefined || recipes.length === 0) {
     return <div style={{ marginTop: '50px' }}><Preloader /></div>;
@@ -127,7 +133,7 @@ function displayRecipes(
  * @returns {Node} recipes
  */
 function RecipesDisplay({
-  recipes, onClickVote, onClickFavourite, isLoggedIn,
+  recipes, onClickVote, onClickFavourite, isLoggedIn, isFound,
   userId, favourites, hasSearchValue, getId, getIdForEdit, next, hasMore
 }) {
   return (
@@ -137,7 +143,7 @@ function RecipesDisplay({
       loader={<Preloader />}
     >
       {displayRecipes(
-        recipes, onClickVote, onClickFavourite, isLoggedIn,
+        recipes, onClickVote, onClickFavourite, isLoggedIn, isFound,
         userId, favourites, hasSearchValue, getId, getIdForEdit
         )}
     </InfiniteScroll>

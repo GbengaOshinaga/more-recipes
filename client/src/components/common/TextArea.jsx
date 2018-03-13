@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import React from 'react';
 import PropTypes from 'prop-types';
 
@@ -14,8 +16,9 @@ const defaultProps = {
 
 /**
  * Functional component for textarea
- * @param {*} props
- * @returns {*} jsx
+ * @param {Object} props
+ *
+ * @returns {Node} jsx
  */
 function TextArea({
   id, label, onChange, value

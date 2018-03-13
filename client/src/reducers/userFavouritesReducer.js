@@ -3,9 +3,10 @@ import * as types from '../actions/actions';
 
 /**
  * userRecipes reducer
- * @param {*} state
- * @param {*} action
- * @returns {object} new state
+ * @param {Array} state
+ * @param {Object} action
+ *
+ * @returns {Array} new state
  */
 export default function userRecipesReducer(state = initialState.userFavourites, action) {
   const { response } = action;

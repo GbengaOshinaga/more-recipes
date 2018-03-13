@@ -34,8 +34,9 @@ const canvasStyle = { border: '1px solid #000000', marginLeft: '10px' };
 
 /**
  * Functional component for add modal
- * @param {*} props
- * @returns {*} jsx
+ * @param {Object} props
+ *
+ * @returns {Node} jsx
  */
 export function AddModal({
   onInputChange, inputValue, descValue, onClickSave, onFileChange, inputRef,
@@ -101,7 +102,8 @@ export function AddModal({
 
 /**
  * Functional component for edit modal
- * @returns {*} jsx
+ *
+ * @returns {Node} jsx
  */
 export function EditModal({
   onInputChange, handleChipAdd, handleChipDelete,
@@ -164,8 +166,9 @@ export function EditModal({
 
 /**
  * Functional component for delete modal
- * @param {*} props
- * @returns {*} jsx
+ * @param {Object} props
+ *
+ * @returns {Node} jsx
  */
 export function DeleteModal({ onConfirm }) {
   return (

@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import _ from 'lodash';
 import { MainHeader } from '../common/Header';
 import RecipesDisplay from '../common/RecipesDisplay';
 
@@ -10,7 +9,8 @@ const propTypes = {
   recipes: PropTypes.arrayOf(PropTypes.object).isRequired,
   userId: PropTypes.number.isRequired,
   onClickVote: PropTypes.func.isRequired,
-  onClickFavourite: PropTypes.func.isRequired
+  onClickFavourite: PropTypes.func.isRequired,
+  isFound: PropTypes.bool.isRequired
 };
 
 const defaultProps = {
@@ -20,10 +20,11 @@ const defaultProps = {
 /**
  * Functional component for favourite recipes page
  * @param {Object} props
+ *
  * @returns {Node} jsx
  */
 function FavouriteRecipesPage({
-  isLoggedIn, firstName, recipes, userId, onClickVote, onClickFavourite
+  isLoggedIn, firstName, recipes, userId, onClickVote, onClickFavourite, isFound
 }) {
   return (
     <div>
@@ -41,6 +42,7 @@ function FavouriteRecipesPage({
             onClickVote={onClickVote}
             onClickFavourite={onClickFavourite}
             isLoggedIn={isLoggedIn}
+            isFound={isFound}
           />
         </div>
       </div>

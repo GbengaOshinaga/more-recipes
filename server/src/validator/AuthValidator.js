@@ -6,10 +6,11 @@ import jwt from 'jsonwebtoken';
 export default class AuthValidator {
   /**
      * Authenticates user through access token
-     * @param {*} req
-     * @param {*} res
-     * @param {*} next
-     * @returns {*} res
+     * @param {Object} req
+     * @param {Object} res
+     * @param {func} next
+     *
+     * @returns {Object} res
      */
   static authenticate(req, res, next) {
     const accessToken = req.body.accessToken || req.get('Access-Token');

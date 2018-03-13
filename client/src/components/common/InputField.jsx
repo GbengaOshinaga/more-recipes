@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React from 'react';
 import PropTypes from 'prop-types';
 
@@ -17,8 +18,9 @@ const defaultProps = {
 
 /**
  * Functional component for inputfield
- * @param {*} props
- * @returns {*} jsx
+ * @param {Object} props
+ *
+ * @returns {Node} jsx
  */
 function InputField({
   id, type, onChange, value, label, dataError

@@ -15,8 +15,9 @@ const propTypes = {
 
 /**
  * Functional component for social login buttons
- * @param {*} props
- * @returns {*} jsx
+ * @param {Object} props
+ *
+ * @returns {Node} jsx
  */
 function SocialLoginButtons({
   isAMemberText, href, hrefText, onSuccess, onFailure, buttonText

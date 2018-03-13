@@ -6,9 +6,9 @@ import SignUp from './components/account/SignUp';
 import SignOut from './components/account/SignOut';
 import UserRecipes from './components/recipes/UserRecipes';
 import Profile from './components/user/Profile';
-import Catalog from './components/catalog/Catalog';
-import RecipeDetails from './components/recipes/RecipeDetails';
-import FavouriteRecipes from './components/recipes/FavouriteRecipes';
+import CatalogComp from './components/catalog/Catalog';
+import RecipeDetailsComp from './components/recipes/RecipeDetails';
+import FavouriteRecipesComp from './components/recipes/FavouriteRecipes';
 import PrivateRoute from './PrivateRoute';
 import NotFound from './components/404Page';
 
@@ -21,9 +21,9 @@ const Routes = () => (
     <Route path="/index" component={HomePage} />
     <PrivateRoute path="/my_recipes" component={UserRecipes} />
     <PrivateRoute path="/profile" component={Profile} />
-    <Route path="/catalog" component={Catalog} />
-    <PrivateRoute path="/favourites" component={FavouriteRecipes} />
-    <Route path="/recipe/:id" component={RecipeDetails} />
+    <Route path="/catalog" component={CatalogComp} />
+    <PrivateRoute path="/favourites" component={FavouriteRecipesComp} />
+    <Route path="/recipe/:id" component={RecipeDetailsComp} />
     <Route path="/logout" component={SignOut} />
     <Route path="/*" component={NotFound} />
   </Switch>

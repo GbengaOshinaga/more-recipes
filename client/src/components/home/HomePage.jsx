@@ -1,3 +1,4 @@
+/* eslint-disable no-empty */
 import React from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import { sessionService } from 'redux-react-session';
@@ -10,8 +11,8 @@ import { Header } from '../common/Header';
 class HomePage extends React.Component {
   /**
    * Component constructor
-   * @param {*} props
-   * @param {*} context
+   * @param {Object} props
+   * @param {Object} context
    */
   constructor(props, context) {
     super(props, context);
@@ -22,18 +23,22 @@ class HomePage extends React.Component {
 
   /**
    * Componentwillmount
-   * @returns {null} null
+   *
+   * @returns {undefined}
    */
   async componentWillMount() {
-    const token = await sessionService.loadSession();
-    if (token) {
-      this.setState({ isAuthenticated: true });
-    }
+    try {
+      const token = await sessionService.loadSession();
+      if (token) {
+        this.setState({ isAuthenticated: true });
+      }
+    } catch (error) {}
   }
 
   /**
    * ComponentDidMount
-   * @returns {null} null
+   *
+   * @returns {undefined}
    */
   componentDidMount() {
     $('.button-collapse').sideNav();
@@ -41,6 +46,7 @@ class HomePage extends React.Component {
 
   /**
    * Component render method
+   *
    * @returns {Node} jsx
   */
   render() {

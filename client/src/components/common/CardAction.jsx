@@ -21,8 +21,8 @@ const userCardActionPropTypes = {
 
 /**
  * Component for displaying card
- * @param {*} props
- * @returns {*} jsx
+ * @param {Object} props
+ * @returns {Node} jsx
  */
 export function VoteCardAction({
   onClickVote, isLoggedIn, upvoteClassName, downvoteClassName,
@@ -66,6 +66,7 @@ export function VoteCardAction({
 /**
  * Component for displaying card actions
  * @param {Object} props
+ *
  * @returns {Node} jsx
  */
 export function UserCardAction({

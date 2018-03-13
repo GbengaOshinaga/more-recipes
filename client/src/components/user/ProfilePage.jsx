@@ -30,8 +30,9 @@ const buttonStyle = { margin: '10px' };
 
 /**
  * Page for profile component
- * @param {*} props
- * @returns {*} jsx
+ * @param {Object} props
+ *
+ * @returns {Node} jsx
  */
 export default function ProfilePage({
   profilePic, lastName, email, about, isLoggedIn, firstName, isDisabled,

@@ -25,17 +25,20 @@ const defaultProps = {
 export class FavouriteRecipes extends React.Component {
   /**
      * Component constructor
-     * @param {*} props
-     * @param {*} context
+     * @param {Object} props
+     * @param {Object} context
      */
   constructor(props, context) {
     super(props, context);
-    this.state = {};
+    this.state = {
+      isFound: true
+    };
   }
 
   /**
    * Method when component has finished mounting
-   * @returns {*} undefined
+   *
+   * @returns {undefined}
    */
   async componentDidMount() {
     pluginsInit();
@@ -43,15 +46,31 @@ export class FavouriteRecipes extends React.Component {
     if (this.props.recipes.length === 0) {
       const token = await sessionService.loadSession();
       if (token) {
-        this.props.actions.getFavourites(token);
+        this.props.actions.getFavourites(token)
+          .catch(() => {
+            this.setState({ isFound: false });
+          });
       }
     }
   }
 
   /**
+   * Method called when component is receiving props
+   * @param {Object} nextProps
+   *
+   * @return {undefined}
+   */
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.recipes.length === 0) {
+      this.setState({ isFound: false });
+    }
+  }
+
+  /**
    * votes recipe
-   * @param {*} event
-   * @returns {*} null
+   * @param {Object} event
+   *
+   * @returns {undefined}
    */
   vote = async (event) => {
     event.persist();
@@ -71,8 +90,9 @@ export class FavouriteRecipes extends React.Component {
 
   /**
    * Remove favourite
-   * @param {*} event
-   * @returns {*} null
+   * @param {Object} event
+   *
+   * @returns {undefined}
    */
   removeFavourite = async (event) => {
     event.persist();
@@ -86,7 +106,8 @@ export class FavouriteRecipes extends React.Component {
 
   /**
    * Component render function
-   * @returns {*} jsx
+   *
+   * @returns {Node} jsx
    */
   render() {
     return (
@@ -97,6 +118,7 @@ export class FavouriteRecipes extends React.Component {
         userId={this.props.userId}
         onClickVote={this.vote}
         onClickFavourite={this.removeFavourite}
+        isFound={this.state.isFound}
       />
     );
   }
@@ -104,8 +126,8 @@ export class FavouriteRecipes extends React.Component {
 
 /**
  * Maps state to component properties
- * @param {*} state
- * @param {*} ownProps
+ * @param {Object} state
+ *
  * @returns {object} object
  */
 function mapStateToProps(state) {
@@ -119,8 +141,9 @@ function mapStateToProps(state) {
 
 /**
      * Maps actions to component properties
-     * @param {*} dispatch
-     * @returns {*} actions
+     * @param {func} dispatch
+     *
+     * @returns {Object} actions
      */
 function mapDispatchToProps(dispatch) {
   return {

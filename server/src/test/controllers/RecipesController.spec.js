@@ -67,8 +67,9 @@ describe('Users can perform actions on recipe', () => {
   });
 
   describe('Sort Order', () => {
-    before(() => {
-      db.Recipes.bulkCreate([
+    before(async () => {
+      // eslint-disable-next-line
+      const recipes = await db.Recipes.bulkCreate([
         {
           name: faker.name.findName(),
           description: faker.lorem.sentence(),
@@ -103,7 +104,6 @@ describe('Users can perform actions on recipe', () => {
       chai.request(app)
         .get('/api/v1/recipes?sort=upvotes&order=desc')
         .end((err, res) => {
-          console.log(res.body);
           expect(res).to.have.status(200);
           expect(res.body.data.recipes).to.be.an('array');
           expect(res.body.data.recipes[0].upvotes.length).to.equal(10);

@@ -3,6 +3,7 @@
  * Updates recipe depending on if user has voted
  * @param {Object} recipe
  * @param {Integer} userId
+ *
  * @returns {Object} updated recipe
  */
 function updateRecipeVoteState(recipe, userId) {
@@ -24,6 +25,7 @@ function updateRecipeVoteState(recipe, userId) {
  * Updates recipe depending on if user has favourited
  * @param {Object} recipe
  * @param {Array} favourites
+ *
  * @returns {Object} updated recipe
  */
 function updateFavouriteState(recipe, favourites) {
@@ -62,8 +64,8 @@ function updateVoteClassName(recipe, userId) {
 
 /**
  * Updates favourite class name
- * @param {*} recipe
- * @param {*} favourites
+ * @param {Object} recipe
+ * @param {Array} favourites
  *
  * @returns {String} class name
  */
@@ -81,9 +83,9 @@ function updateFavouriteClassName(recipe, favourites) {
 
 /**
  * Updates class names for actions
- * @param {*} recipe
- * @param {*} userId
- * @param {*} favourites
+ * @param {Object} recipe
+ * @param {Number} userId
+ * @param {Array} favourites
  *
  * @returns {Object} classnames
  */

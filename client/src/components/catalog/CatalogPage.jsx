@@ -29,7 +29,8 @@ const defaultProps = {
 /**
  * Functional component for catalog page
  * @param {*} props
- * @returns {*} jsx
+ *
+ * @returns {Node} jsx
  */
 export default function CatalogPage({
   isLoggedIn, firstName, allRecipes, mostFavouritedRecipes, searchResults, hasMore, fetchNext,

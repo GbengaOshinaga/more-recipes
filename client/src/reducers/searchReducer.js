@@ -3,9 +3,10 @@ import * as types from '../actions/actions';
 
 /**
  * Search Results reducer
- * @param {*} state
- * @param {*} action
- * @returns {*} new state
+ * @param {Array} state
+ * @param {Object} action
+ *
+ * @returns {Array} new state
  */
 export default function searchReducer(state = initialState.searchResults, action) {
   const { response } = action;

@@ -20,8 +20,8 @@ const propTypes = {
 class Profile extends React.Component {
   /**
      * Component constructor
-     * @param {*} props
-     * @param {*} context
+     * @param {Object} props
+     * @param {Object} context
      */
   constructor(props, context) {
     super(props, context);
@@ -46,7 +46,8 @@ class Profile extends React.Component {
 
   /**
    * Method when component has finished mounting
-   * @returns {*} undefined
+   *
+   * @returns {undefined}
    */
   componentDidMount() {
     pluginsInit();
@@ -67,8 +68,9 @@ class Profile extends React.Component {
 
   /**
    * Method for when edit button is clicked
-   * @param {*} event
-   * @returns {*} new state
+   * @param {Object} event
+   *
+   * @returns {undefined}
    */
   onEditClick = (event) => {
     event.preventDefault();
@@ -81,8 +83,9 @@ class Profile extends React.Component {
 
   /**
    * Method for when save button is clicked
-   * @param {*} event
-   * @returns {*} null
+   * @param {Object} event
+   *
+   * @returns {undefined}
    */
   onClickSave = (event) => {
     event.preventDefault();
@@ -109,8 +112,9 @@ class Profile extends React.Component {
 
   /**
    * Method for when cancel button is clicked
-   * @param {*} event
-   * @returns {*} null
+   * @param {Object} event
+   *
+   * @returns {undefined}
    */
   onClickCancel = (event) => {
     event.preventDefault();
@@ -135,8 +139,9 @@ class Profile extends React.Component {
 
   /**
    * Method for when file loads
-   * @param {*} event
-   * @returns {*} null
+   * @param {Object} event
+   *
+   * @returns {undefined}
    */
   onFileChange = (event) => {
     this.setState({ loaded: false });
@@ -153,8 +158,9 @@ class Profile extends React.Component {
 
   /**
    * Handles input field value change
-   * @param {*} event
-   * @returns {*} new state
+   * @param {object} event
+   *
+   * @returns {undefined}
    */
   handleInputChange = (event) => {
     const name = this.state.data;
@@ -164,7 +170,8 @@ class Profile extends React.Component {
 
   /**
    * Component render function
-   * @returns {*} jsx
+   *
+   * @returns {Node} jsx
    */
   render() {
     return (
