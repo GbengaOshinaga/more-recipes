@@ -39,7 +39,9 @@ export class Catalog extends React.Component {
     this.state = {
       searchValue: '',
       hasSearchValue: false,
-      hasMore: false
+      hasMore: false,
+      isAllRecipesFound: true,
+      isMostFavouritedFound: true
     };
 
     toastr.options = {
@@ -57,10 +59,12 @@ export class Catalog extends React.Component {
     pluginsInit();
     transformNavBar();
     if (!this.props.paginationMeta.total) {
-      this.props.actions.getAllRecipes();
+      this.props.actions.getAllRecipes()
+        .catch(() => this.setState({ isAllRecipesFound: false }));
     }
     if (this.props.mostFavouritedRecipes.length === 0) {
-      this.props.actions.getMostFavouritedRecipes();
+      this.props.actions.getMostFavouritedRecipes()
+        .catch(() => this.setState({ isMostFavouritedFound: false }));
     }
     sessionService.loadSession()
       .then((token) => {
@@ -122,7 +126,8 @@ export class Catalog extends React.Component {
   fetchNext = () => {
     const { next } = this.props.paginationMeta;
     if (next) {
-      this.props.actions.getAllRecipes(next);
+      this.props.actions.getAllRecipes(next)
+        .catch(() => {});
     }
   }
 
@@ -195,6 +200,8 @@ export class Catalog extends React.Component {
         favourites={this.props.favourites}
         hasMore={this.state.hasMore}
         fetchNext={this.fetchNext}
+        isAllRecipesFound={this.state.isAllRecipesFound}
+        isMostFavouritedFound={this.state.isMostFavouritedFound}
       />
     );
   }

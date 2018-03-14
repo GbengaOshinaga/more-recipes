@@ -25,7 +25,10 @@
     "start": "node dist/src/app.js",
     "coveralls": "nyc npm run test:dev&& nyc report --reporter=text-lcov | coveralls",
     "start:dev": "NODE_ENV=development babel-node server/src/app.js",
-    "start:test": "NODE_ENV=test node dist/src/app.js"
+    "start:test": "NODE_ENV=test node dist/src/app.js",
+    "reset-db": "NODE_ENV=test npm-run-all --sequential drop:db create:db migrate:db",
+    "test:e2e": "NODE_ENV=test npm-run-all --sequential reset-db nightwatch",
+    "nightwatch": "nightwatch"
   },
   "author": "Gbenga Oshinaga",
   "license": "ISC",

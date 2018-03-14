@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites errors="0"
+            failures="0"
+            tests="3">
+
+  <testsuite name="recipeActions"
+    errors="0" failures="0" hostname="" id="" package="recipeActions" skipped="0"
+    tests="3" time="35.70" timestamp="Wed, 14 Mar 2018 11:53:11 GMT">
+  
+    <testcase name="Sign up user" classname="recipeActions" time="14.15" assertions="4">
+
+    
+
+    
+
+    
+
+    
+    </testcase>
+  
+    <testcase name="Add recipe" classname="recipeActions" time="8.067" assertions="2">
+
+    
+
+    
+    </testcase>
+  
+    <testcase name="view and delete recipe" classname="recipeActions" time="13.49" assertions="9">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    </testcase>
+  
+
+  
+
+  
+  </testsuite>
+</testsuites>

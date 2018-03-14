@@ -146,6 +146,9 @@ export function getAllRecipes(next) {
     return api.get(url)
       .then((response) => {
         if (response.status === 'success') {
+          if (response.data.recipes.length === 0) {
+            throw new Error('No Recipe Available');
+          }
           response.data.recipes.map((recipe) => {
             recipe.Reviews = [];
           });
@@ -346,6 +349,9 @@ export function getMostFavouritedRecipes() {
     return api.get('/api/v1/recipes/most_favourited')
       .then((response) => {
         if (response.status === 'success') {
+          if (response.data.recipes.length === 0) {
+            throw new Error('No Recipe Available');
+          }
           dispatch(updateGetMostFavouritedSuccess(response.data.recipes));
         }
       });

@@ -67,6 +67,7 @@ export function AddModal({
           </div>
           <div className="row">
             <ChipInput
+              id="ingredients-chip"
               value={[...data.ingredients]}
               onRequestAdd={chip => handleAddModalChipAdd(chip)}
               onRequestDelete={chip => handleAddModalChipDelete(chip)}
@@ -87,6 +88,7 @@ export function AddModal({
       <div className="modal-footer">
         <div className="container">
           <a
+            id="submit"
             href="#!"
             onClick={onClickSave}
             className="modal-action modal-close waves-effect waves-green btn"
@@ -117,7 +119,7 @@ export function EditModal({
 
         <form action="#">
           <InputField
-            id="name"
+            id="edit-name"
             type="text"
             onChange={onInputChange}
             value={editData.name}
@@ -125,7 +127,7 @@ export function EditModal({
           />
           <div className="row">
             <TextArea
-              id="description"
+              id="edit-description"
               value={editData.description}
               onChange={onInputChange}
             />
@@ -151,6 +153,7 @@ export function EditModal({
       <div className="modal-footer">
         <div className="container">
           <a
+            id="edit-submit"
             href="#!"
             onClick={onClickEdit}
             className="modal-action modal-close waves-effect waves-green btn"
@@ -180,6 +183,7 @@ export function DeleteModal({ onConfirm }) {
       </div>
       <div className="modal-footer">
         <a
+          id="confirm-delete"
           href="#!"
           onClick={onConfirm}
           className="modal-action modal-close waves-effect waves-green btn-flat"

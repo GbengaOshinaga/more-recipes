@@ -1,15 +1,42 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <testsuites errors="0"
             failures="0"
-            tests="1">
+            tests="6">
 
   <testsuite name="auth"
     errors="0" failures="0" hostname="" id="" package="auth" skipped="0"
-    tests="1" time="3.230" timestamp="Tue, 13 Mar 2018 13:37:27 GMT">
+    tests="6" time="27.72" timestamp="Tue, 13 Mar 2018 22:17:02 GMT">
   
-    <testcase name="Register user" classname="auth" time="3.230" assertions="1">
+    <testcase name="Launch app" classname="auth" time="4.109" assertions="2">
 
     
+
+    
+    </testcase>
+  
+    <testcase name="Check errors for sign up" classname="auth" time="1.580" assertions="1">
+
+    
+    </testcase>
+  
+    <testcase name="Register user" classname="auth" time="10.73" assertions="2">
+
+    
+
+    
+    </testcase>
+  
+    <testcase name="Sign In a user" classname="auth" time="7.441" assertions="1">
+
+    
+    </testcase>
+  
+    <testcase name="Check errors for sign in" classname="auth" time="2.792" assertions="1">
+
+    
+    </testcase>
+  
+    <testcase name="end" classname="auth" time="1.065" assertions="0">
     </testcase>
   
 

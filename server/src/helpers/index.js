@@ -61,18 +61,17 @@ export async function getPaginationMeta(req, model, condition) {
 /**
  * Check authorization and existence
  * @param {Object} obj
- * @param {Object} req
- * @param {Object} res
+ * @param {Number} userId
  * @param {String} message
  * @param {String} type
  *
  * @returns {Object} res
  */
-export function check(obj, req, res, message, type) {
+export function check(obj, userId, message, type) {
   if (!obj) {
-    return res.status(404).jsend.fail({ message: `The ${message} does not exist` });
+    return { message: `The ${message} does not exist`, status: 404 };
   }
-  if (obj.UserId !== req.user.userId) {
-    return res.status(401).jsend.fail({ message: `You are not authorized to ${type} this ${message}` });
+  if (obj.UserId !== userId) {
+    return { message: `You are not authorized to ${type} this ${message}`, status: 401 };
   }
 }

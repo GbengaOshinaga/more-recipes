@@ -59,8 +59,8 @@ class HomePage extends React.Component {
         <Header
           mainLinks={
             <React.Fragment>
-              <li><Link to="/signin"> Sign In</Link></li>
-              <li><Link to="/signup">Sign Up</Link></li>
+              <li><Link id="sign-in" to="/signin"> Sign In</Link></li>
+              <li><Link id="sign-up" to="/signup">Sign Up</Link></li>
             </React.Fragment>}
         />
         <div className="container">

@@ -87,7 +87,7 @@ function Page({
           handleChipDelete={handleChipDelete}
         />
         <div className="favorited-recipes">
-          <h4 className="center-align">My Recipes</h4>
+          <h4 id="my-recipes-text" className="center-align">My Recipes</h4>
           <hr />
           <RecipesDisplay
             recipes={userRecipes}

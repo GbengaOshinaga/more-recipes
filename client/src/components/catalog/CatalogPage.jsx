@@ -17,7 +17,9 @@ const propTypes = {
   onClickFavourite: PropTypes.func.isRequired,
   favourites: PropTypes.arrayOf(PropTypes.object).isRequired,
   hasMore: PropTypes.bool.isRequired,
-  fetchNext: PropTypes.func.isRequired
+  fetchNext: PropTypes.func.isRequired,
+  isAllRecipesFound: PropTypes.bool.isRequired,
+  isMostFavouritedFound: PropTypes.bool.isRequired
 };
 
 const defaultProps = {
@@ -34,7 +36,8 @@ const defaultProps = {
  */
 export default function CatalogPage({
   isLoggedIn, firstName, allRecipes, mostFavouritedRecipes, searchResults, hasMore, fetchNext,
-  onClickVote, onSearchChange, searchValue, hasSearchValue, userId, onClickFavourite, favourites
+  onClickVote, onSearchChange, searchValue, hasSearchValue, userId, onClickFavourite, favourites,
+  isAllRecipesFound, isMostFavouritedFound
 }) {
   return (
     <div>
@@ -75,12 +78,12 @@ export default function CatalogPage({
               <div className="container">
                 {hasSearchValue &&
                 <li className="tab col s12">
-                  <a href="#search-results" className="active">Search Results</a>
+                  <a id="search-results-link" href="#search-results" className="active">Search Results</a>
                 </li>}
                 {!hasSearchValue &&
                 <div>
-                  <li className="tab col s6"><a href="#all">All</a></li>
-                  <li className="tab col s6"><a href="#most-fav">Most Favorited</a></li>
+                  <li className="tab col s6"><a id="all-link" href="#all">All</a></li>
+                  <li className="tab col s6"><a id="most-fav-link" href="#most-fav">Most Favorited</a></li>
                 </div>}
               </div>
             </ul>
@@ -98,6 +101,7 @@ export default function CatalogPage({
               favourites={favourites}
               hasMore={hasMore}
               next={fetchNext}
+              isFound={isAllRecipesFound}
             />
           </div>
         </div>}
@@ -111,6 +115,7 @@ export default function CatalogPage({
               isLoggedIn={isLoggedIn}
               userId={userId}
               favourites={favourites}
+              isFound={isMostFavouritedFound}
             />
           </div>
         </div>}

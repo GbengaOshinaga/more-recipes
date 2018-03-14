@@ -151,7 +151,6 @@ function RecipeDetailsPage({
                     >
                       <i className="small material-icons">favorite</i>
                     </a>
-                    <span id="favorites">0</span>
                   </div>}
                 </div>
                 <div className="review">

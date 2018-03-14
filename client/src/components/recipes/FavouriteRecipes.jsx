@@ -31,7 +31,7 @@ export class FavouriteRecipes extends React.Component {
   constructor(props, context) {
     super(props, context);
     this.state = {
-      isFound: true
+      isFound: false
     };
   }
 
@@ -47,6 +47,7 @@ export class FavouriteRecipes extends React.Component {
       const token = await sessionService.loadSession();
       if (token) {
         this.props.actions.getFavourites(token)
+          .then(() => this.setState({ isFound: true }))
           .catch(() => {
             this.setState({ isFound: false });
           });

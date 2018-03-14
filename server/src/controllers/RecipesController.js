@@ -1,5 +1,5 @@
 import db from '../models/index';
-import { getPaginationMeta } from '../helpers/';
+import { getPaginationMeta, check } from '../helpers/';
 
 /**
  * RecipesController
@@ -38,9 +38,9 @@ export default class RecipesController {
           ingredients: ingredientsArray
         })
           .then(recipe => res.status(201).jsend.success({ recipe }))
-          .catch(error => res.status(400).jsend.error(error));
+          .catch(error => res.status(500).jsend.error(error));
       })
-      .catch(error => res.status(400).jsend.error(error));
+      .catch(error => res.status(500).jsend.error(error));
   }
 
   /**
@@ -72,7 +72,7 @@ export default class RecipesController {
       })
         .then(recipes => getPaginationMeta(req, db.Recipes)
           .then(paginationMeta => res.status(200).jsend.success({ recipes, paginationMeta })))
-        .catch(error => res.status(400).jsend.error(error));
+        .catch(error => res.status(500).jsend.error(error));
     }
   }
 
@@ -91,7 +91,7 @@ export default class RecipesController {
         }
         return res.status(200).jsend.success({ recipe });
       })
-      .catch(() => res.status(400).jsend.error('An error occured'));
+      .catch(() => res.status(500).jsend.error('An error occured'));
   }
 
   /**
@@ -113,11 +113,9 @@ export default class RecipesController {
 
     db.Recipes.findById(req.params.id)
       .then((recipe) => {
-        if (!recipe) {
-          return res.status(404).jsend.fail({ message: 'The recipe does not exist' });
-        }
-        if (recipe.UserId !== req.user.userId) {
-          return res.status(401).jsend.fail({ message: 'You are not authorized to edit this recipe' });
+        const result = check(recipe, req.user.userId, 'recipe', 'edit');
+        if (result) {
+          return res.status(result.status).jsend.fail({ message: result.message });
         }
         recipe.update({
           name: req.body.name || recipe.name,
@@ -127,7 +125,7 @@ export default class RecipesController {
           ingredients: ingredientsArray || recipe.ingredients
         }).then(updatedRecipe => res.status(200).jsend.success({ updatedRecipe }));
       })
-      .catch(error => res.jsend.error(error));
+      .catch(error => res.status(500).jsend.error(error));
   }
 
   /**
@@ -140,17 +138,15 @@ export default class RecipesController {
   static deleteRecipe(req, res) {
     db.Recipes.findById(req.params.id)
       .then((recipe) => {
-        if (!recipe) {
-          return res.status(404).jsend.fail({ message: 'The recipe does not exist' });
-        }
-        if (recipe.UserId !== req.user.userId) {
-          return res.status(401).jsend.fail({ message: 'You are not authorized to delete this recipe' });
+        const result = check(recipe, req.user.userId, 'recipe', 'delete');
+        if (result) {
+          return res.status(result.status).jsend.fail({ message: result.message });
         }
         recipe.destroy({ force: true })
           .then(() => res.status(200).jsend.success({ message: 'Recipe has been successfully deleted' }))
-          .catch(error => res.status(400).jsend.error(error));
+          .catch(error => res.status(500).jsend.error(error));
       })
-      .catch(error => res.status(400).jsend.error(error));
+      .catch(error => res.status(500).jsend.error(error));
   }
 
   /**
@@ -173,7 +169,7 @@ export default class RecipesController {
         }]
       }))
       .then(userReviews => res.status(201).jsend.success({ review: userReviews }))
-      .catch(error => res.status(400).jsend.error(error));
+      .catch(error => res.status(500).jsend.error(error));
   }
 
   /**
@@ -193,7 +189,7 @@ export default class RecipesController {
     })
       .then(reviews => getPaginationMeta(req, db.Reviews, condition)
         .then(paginationMeta => res.status(200).jsend.success({ reviews, paginationMeta })))
-      .catch(error => res.status(400).jsend.error(error));
+      .catch(error => res.status(500).jsend.error(error));
   }
 
   /**
@@ -206,17 +202,15 @@ export default class RecipesController {
   static editReview(req, res) {
     db.Reviews.findById(req.params.id)
       .then((review) => {
-        if (!review) {
-          return res.status(404).jsend.fail({ message: 'The review does not exist' });
-        }
-        if (review.UserId !== req.user.userId) {
-          return res.status(401).jsend.fail({ message: 'You are not authorized to edit this review' });
+        const result = check(review, req.user.userId, 'review', 'edit');
+        if (result) {
+          return res.status(result.status).jsend.fail({ message: result.message });
         }
         review.update({
           review: req.body.review || review.review
         })
           .then(updatedReview => res.status(200).jsend.success({ updatedReview }))
-          .catch(error => res.status(400).jsend.error(error));
+          .catch(error => res.status(500).jsend.error(error));
       });
   }
 
@@ -230,15 +224,13 @@ export default class RecipesController {
   static deleteReview(req, res) {
     db.Reviews.findById(req.params.id)
       .then((review) => {
-        if (!review) {
-          return res.status(404).jsend.fail({ message: 'The review does not exist' });
-        }
-        if (review.UserId !== req.user.userId) {
-          return res.status(401).jsend.fail({ message: 'You are not authorized to delete this review' });
+        const result = check(review, req.user.userId, 'review', 'delete');
+        if (result) {
+          return res.status(result.status).jsend.fail({ message: result.message });
         }
         review.destroy()
           .then(() => res.status(200).jsend.success({ message: 'Review has been successfully deleted' }))
-          .catch(error => res.status(400).jsend.error(error));
+          .catch(error => res.status(500).jsend.error(error));
       });
   }
 
@@ -280,6 +272,6 @@ export default class RecipesController {
         return getPaginationMeta(req, db.Recipes, condition)
           .then(paginationMeta => res.status(200).jsend.success({ recipes, paginationMeta }));
       })
-      .catch(error => res.status(400).jsend.error(error));
+      .catch(error => res.status(500).jsend.error(error));
   }
 }

@@ -38,7 +38,7 @@ export default class VotesController {
   static update(recipe, message, res, condition) {
     return recipe.update(condition)
       .then(() => res.status(200).jsend.success({ recipe, message: `Recipe ${message}` }))
-      .catch(error => res.status(400).jsend.error(error));
+      .catch(error => res.status(500).jsend.error(error));
   }
 
   /**
@@ -83,7 +83,7 @@ export default class VotesController {
                   message: `Your ${typeOfVote.slice(0, typeOfVote.length - 1)} has been cancelled`
                 });
               }))
-            .catch(error => res.status(400).jsend.fail(error));
+            .catch(error => res.status(500).jsend.fail(error));
         } else if (vote && vote.vote !== valueOfVote) {
           // If vote is different from previous vote, delete previous vote, and create present one
           vote.destroy();
@@ -112,7 +112,7 @@ export default class VotesController {
                   }));
               }
             })
-            .catch(error => res.status(400).jsend.error(error));
+            .catch(error => res.status(500).jsend.error(error));
         } else {
           // If user has not voted at all, then create the vote
           db.Votes.create({
@@ -133,9 +133,9 @@ export default class VotesController {
                   });
                 });
             })
-            .catch(error => res.status(400).jsend.error(error));
+            .catch(error => res.status(500).jsend.error(error));
         }
       })
-      .catch(error => res.status(400).jsend.error(error));
+      .catch(error => res.status(500).jsend.error(error));
   }
 }

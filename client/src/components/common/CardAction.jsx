@@ -78,6 +78,7 @@ export function UserCardAction({
         <i id="desc" className="material-icons">description</i>
       </Link>
       <a
+        id="edit"
         className="modal-trigger btn-floating waves-effect waves-light blue icons"
         href="#edit-modal"
         onClick={getIdForEdit}
@@ -85,6 +86,7 @@ export function UserCardAction({
         <i id={id} className="material-icons">edit</i>
       </a>
       <a
+        id="delete"
         className="modal-trigger btn-floating waves-effect waves-light red icons"
         href="#confirm-modal"
         onClick={getId}

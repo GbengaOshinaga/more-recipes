@@ -29,7 +29,7 @@ describe('RecipeValidator validates recipe inputs', () => {
       .end((err, res) => {
         expect(res).to.have.status(400);
         expect(res.body.data.errors).to.be.an('array');
-        expect(res.body.data.errors.length).to.equal(5);
+        expect(res.body.data.errors.length).to.equal(3);
         done();
       });
   });

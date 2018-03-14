@@ -90,7 +90,7 @@ export default class UserController {
           })
           .catch(error => res.status(400).jsend.error(error));
       })
-      .catch(error => res.status(400).jsend.error(error));
+      .catch(error => res.status(500).jsend.error(error));
   }
 
   /**
@@ -124,7 +124,7 @@ export default class UserController {
           }))
           .catch(error => res.status(400).jsend.fail(error));
       })
-      .catch(error => res.status(400).jsend.fail(error));
+      .catch(error => res.status(500).jsend.fail(error));
   }
 
   /**
@@ -153,7 +153,7 @@ export default class UserController {
           }
         });
       })
-      .catch(error => res.status(400).jsend.error(error));
+      .catch(error => res.status(500).jsend.error(error));
   }
 
   /**
@@ -176,7 +176,7 @@ export default class UserController {
           .then(() => res.status(200).jsend.success({ message: 'User account deleted' }))
           .catch(error => res.status(400).jsend.error(error));
       })
-      .catch(error => res.status(400).jsend.error(error));
+      .catch(error => res.status(500).jsend.error(error));
   }
 
   /**
@@ -196,8 +196,8 @@ export default class UserController {
             }
             return res.status(200).jsend.success({ recipes });
           })
-          .catch(error => res.status(400).jsend.fail(error));
+          .catch(error => res.status(500).jsend.fail(error));
       })
-      .catch(error => res.status(400).jsend.fail(error));
+      .catch(error => res.status(500).jsend.fail(error));
   }
 }
