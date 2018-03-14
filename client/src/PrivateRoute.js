@@ -14,7 +14,7 @@ const propTypes = {
 class PrivateRoute extends React.Component {
   /**
    * Component constructor
-   * @param {*} props
+   * @param {Object} props
    */
   constructor(props) {
     super(props);
@@ -26,7 +26,8 @@ class PrivateRoute extends React.Component {
 
   /**
    * Check auth before component mounts
-   * @returns {*} null
+   *
+   * @returns {undefined}
    */
   async componentWillMount() {
     try {
@@ -44,7 +45,8 @@ class PrivateRoute extends React.Component {
 
   /**
    * Component render method
-   * @returns {*} jsx
+   *
+   * @returns {Node} jsx
    */
   render() {
     let componentToMount;

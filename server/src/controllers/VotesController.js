@@ -8,6 +8,7 @@ export default class VotesController {
      * Adds an upvote to a recipe
      * @param {Object} req
      * @param {Object} res
+     *
      * @returns {Object} res
      */
   static addUpvote(req, res) {
@@ -18,10 +19,26 @@ export default class VotesController {
    * Adds a downvote to a recipe
    * @param {Object} req
    * @param {Object} res
+   *
    * @returns {Object} res
    */
   static addDownvote(req, res) {
     this.addVote(0, 'downvotes', 'upvotes', 'downvoted', req, res);
+  }
+
+  /**
+   * Update
+   * @param {Object} recipe
+   * @param {String} message
+   * @param {Object} res
+   * @param {Object} condition
+   *
+   * @returns {Object} res
+   */
+  static update(recipe, message, res, condition) {
+    return recipe.update(condition)
+      .then(() => res.status(200).jsend.success({ recipe, message: `Recipe ${message}` }))
+      .catch(error => res.status(500).jsend.error(error));
   }
 
   /**
@@ -35,6 +52,7 @@ export default class VotesController {
    * @param {String} message
    * @param {Object} req
    * @param {Object} res
+   *
    * @returns {Object} res
    */
   static addVote(valueOfVote, typeOfVote, otherTypeOfVote, message, req, res) {
@@ -48,24 +66,24 @@ export default class VotesController {
         // If user has voted already and the value of the vote
         // is the same as the requested one, remove the vote
         if (vote && vote.vote === valueOfVote) {
-          vote.destroy()
-            .then(() => {
-              db.Recipes.findById(req.params.id)
-                .then((recipe) => {
-                  if (typeOfVote === 'upvotes') {
-                    const newUpvotesArray = [...recipe.upvotes.filter(id => id !== req.user.userId)];
-                    recipe.update({
-                      upvotes: newUpvotesArray
-                    });
-                  } else {
-                    recipe.update({
-                      downvotes: [...recipe.downvotes.filter(id => id !== req.user.userId)]
-                    });
-                  }
-                  return res.status(200).jsend.success({ recipe, message: `Your ${typeOfVote.slice(0, typeOfVote.length - 1)} has been cancelled` });
+          return vote.destroy()
+            .then(() => db.Recipes.findById(req.params.id)
+              .then((recipe) => {
+                if (typeOfVote === 'upvotes') {
+                  recipe.update({
+                    upvotes: [...recipe.upvotes.filter(id => id !== req.user.userId)]
+                  });
+                } else {
+                  recipe.update({
+                    downvotes: [...recipe.downvotes.filter(id => id !== req.user.userId)]
+                  });
+                }
+                return res.status(200).jsend.success({
+                  recipe,
+                  message: `Your ${typeOfVote.slice(0, typeOfVote.length - 1)} has been cancelled`
                 });
-            })
-            .catch(error => res.status(400).jsend.fail(error));
+              }))
+            .catch(error => res.status(500).jsend.fail(error));
         } else if (vote && vote.vote !== valueOfVote) {
           // If vote is different from previous vote, delete previous vote, and create present one
           vote.destroy();
@@ -82,27 +100,19 @@ export default class VotesController {
                 recipe.update({
                   upvotes: [...recipe.upvotes, req.user.userId]
                 })
-                  .then(() => {
-                    recipe.update({
-                      downvotes: [...recipe.downvotes.filter(id => id !== req.user.userId)]
-                    })
-                      .then(() => res.status(200).jsend.success({ recipe, message: `Recipe ${message}` }))
-                      .catch(error => res.status(400).jsend.error(error));
-                  });
+                  .then(() => this.update(recipe, message, res, {
+                    downvotes: [...recipe.downvotes.filter(id => id !== req.user.userId)]
+                  }));
               } else {
                 recipe.update({
                   downvotes: [...recipe.downvotes, req.user.userId]
                 })
-                  .then(() => {
-                    recipe.update({
-                      upvotes: [...recipe.upvotes.filter(id => id !== req.user.userId)]
-                    })
-                      .then(() => res.status(200).jsend.success({ recipe, message: `Recipe ${message}` }))
-                      .catch(error => res.status(400).jsend.error(error));
-                  });
+                  .then(() => this.update(recipe, message, res, {
+                    upvotes: [...recipe.upvotes.filter(id => id !== req.user.userId)]
+                  }));
               }
             })
-            .catch(error => res.status(400).jsend.error(error));
+            .catch(error => res.status(500).jsend.error(error));
         } else {
           // If user has not voted at all, then create the vote
           db.Votes.create({
@@ -114,23 +124,18 @@ export default class VotesController {
               db.Recipes.findById(req.params.id)
                 .then((recipe) => {
                   if (typeOfVote === 'upvotes') {
-                    recipe.update({
+                    return this.update(recipe, message, res, {
                       upvotes: [...recipe.upvotes, req.user.userId]
-                    })
-                      .then(res.status(200).jsend.success({ recipe, message: `Recipe ${message}` }))
-                      .catch(error => res.status(400).jsend.error(error));
-                  } else {
-                    recipe.update({
-                      downvotes: [...recipe.downvotes, req.user.userId]
-                    })
-                      .then(res.status(200).jsend.success({ recipe, message: `Recipe ${message}` }))
-                      .catch(error => res.status(400).jsend.error(error));
+                    });
                   }
+                  return this.update(recipe, message, res, {
+                    downvotes: [...recipe.downvotes, req.user.userId]
+                  });
                 });
             })
-            .catch(error => res.status(400).jsend.error(error));
+            .catch(error => res.status(500).jsend.error(error));
         }
       })
-      .catch(error => res.status(400).jsend.error(error));
+      .catch(error => res.status(500).jsend.error(error));
   }
 }

@@ -11,6 +11,11 @@
 	background-color: $white;
 }
 
+.details-img {
+	width: 500px;
+	height: 500px;
+}
+
 .review{
 	margin-top: 50px;
 }
@@ -21,7 +26,7 @@
 	background-color: $body-color;
 }
 
-.card.horizontal .card-image {
+.review-card .card-image {
     max-width: 50%;
     width: 90px;
 }

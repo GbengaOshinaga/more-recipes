@@ -8,8 +8,8 @@ import { Redirect } from 'react-router-dom';
 class SignOut extends React.Component {
   /**
      * Component constructor
-     * @param {*} props
-     * @param {*} context
+     * @param {Object} props
+     * @param {Object} context
      */
   constructor(props, context) {
     super(props, context);
@@ -20,7 +20,8 @@ class SignOut extends React.Component {
 
   /**
      * Component render method
-     * @returns {*} jsx
+     *
+     * @returns {Node} jsx
      */
   render() {
     sessionService.deleteSession();

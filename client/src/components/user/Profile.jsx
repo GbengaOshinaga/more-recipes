@@ -20,8 +20,8 @@ const propTypes = {
 class Profile extends React.Component {
   /**
      * Component constructor
-     * @param {*} props
-     * @param {*} context
+     * @param {Object} props
+     * @param {Object} context
      */
   constructor(props, context) {
     super(props, context);
@@ -38,12 +38,6 @@ class Profile extends React.Component {
       editPhotoButtonClass: 'btn-floating btn-large waves-effect waves-light teal lighten-1 hide',
       loaded: true
     };
-
-    this.onEditClick = this.onEditClick.bind(this);
-    this.handleInputChange = this.handleInputChange.bind(this);
-    this.onClickSave = this.onClickSave.bind(this);
-    this.onClickCancel = this.onClickCancel.bind(this);
-    this.onFileChange = this.onFileChange.bind(this);
     toastr.options = {
       closeButton: true,
       positionClass: 'toast-top-right'
@@ -52,7 +46,8 @@ class Profile extends React.Component {
 
   /**
    * Method when component has finished mounting
-   * @returns {*} undefined
+   *
+   * @returns {undefined}
    */
   componentDidMount() {
     pluginsInit();
@@ -73,10 +68,11 @@ class Profile extends React.Component {
 
   /**
    * Method for when edit button is clicked
-   * @param {*} event
-   * @returns {*} new state
+   * @param {Object} event
+   *
+   * @returns {undefined}
    */
-  onEditClick(event) {
+  onEditClick = (event) => {
     event.preventDefault();
     this.setState({
       isDisabled: false,
@@ -87,10 +83,11 @@ class Profile extends React.Component {
 
   /**
    * Method for when save button is clicked
-   * @param {*} event
-   * @returns {*} null
+   * @param {Object} event
+   *
+   * @returns {undefined}
    */
-  onClickSave(event) {
+  onClickSave = (event) => {
     event.preventDefault();
     sessionService.loadSession()
       .then((token) => {
@@ -115,10 +112,11 @@ class Profile extends React.Component {
 
   /**
    * Method for when cancel button is clicked
-   * @param {*} event
-   * @returns {*} null
+   * @param {Object} event
+   *
+   * @returns {undefined}
    */
-  onClickCancel(event) {
+  onClickCancel = (event) => {
     event.preventDefault();
     this.setState({
       isDisabled: true,
@@ -141,15 +139,15 @@ class Profile extends React.Component {
 
   /**
    * Method for when file loads
-   * @param {*} event
-   * @returns {*} null
+   * @param {Object} event
+   *
+   * @returns {undefined}
    */
-  onFileChange(event) {
+  onFileChange = (event) => {
     this.setState({ loaded: false });
     const file = event.target.files[0];
     if (file) {
       userActions.uploadImage(file)
-        .then(response => response.json())
         .then((response) => {
           const { data } = this.state;
           data.profilePic = response.secure_url;
@@ -160,10 +158,11 @@ class Profile extends React.Component {
 
   /**
    * Handles input field value change
-   * @param {*} event
-   * @returns {*} new state
+   * @param {object} event
+   *
+   * @returns {undefined}
    */
-  handleInputChange(event) {
+  handleInputChange = (event) => {
     const name = this.state.data;
     name[event.target.id] = event.target.value;
     this.setState({ data: name });
@@ -171,7 +170,8 @@ class Profile extends React.Component {
 
   /**
    * Component render function
-   * @returns {*} jsx
+   *
+   * @returns {Node} jsx
    */
   render() {
     return (

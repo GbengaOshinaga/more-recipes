@@ -19,19 +19,22 @@
     "startServer": "./node_modules/.bin/babel-watch server/src/app.js",
     "startReact": "babel-node ./client/app.js",
     "buildReact": "webpack --config ./webpack.config.prod.js",
-    "buildServer": "babel -d dist/src server/src -s && cp server/src/index.html dist/src && cp -r client/src/assets dist",
+    "buildServer": "babel -d dist/src server/src -s && cp server/src/index.html dist/src && cp -r client/src/assets dist && cp server/src/converted.json dist/src",
     "build": "npm-run-all --sequential buildReact buildServer migrate",
     "heroku-postbuild": "npm run build",
     "start": "node dist/src/app.js",
     "coveralls": "nyc npm run test:dev&& nyc report --reporter=text-lcov | coveralls",
-    "start:dev": "NODE_ENV=development babel-node server/src/app.js"
+    "start:dev": "NODE_ENV=development babel-node server/src/app.js",
+    "start:test": "NODE_ENV=test node dist/src/app.js",
+    "reset-db": "NODE_ENV=test npm-run-all --sequential drop:db create:db migrate:db",
+    "test:e2e": "NODE_ENV=test npm-run-all --sequential reset-db nightwatch",
+    "nightwatch": "nightwatch"
   },
   "author": "Gbenga Oshinaga",
   "license": "ISC",
   "dependencies": {
     "babel-cli": "^6.26.0",
     "babel-core": "^6.26.0",
-    "babel-eslint": "^8.0.1",
     "babel-loader": "^7.1.2",
     "babel-plugin-transform-es2015-destructuring": "^6.23.0",
     "babel-plugin-transform-object-rest-spread": "^6.26.0",
@@ -102,19 +105,26 @@
     "sass-loader": "^6.0.6",
     "sequelize": "^4.20.1",
     "sequelize-cli": "^3.0.0",
+    "sinon": "^4.4.2",
     "style-loader": "^0.19.1",
+    "swagger-ui-express": "^2.0.15",
     "toastr": "^2.1.2",
+    "validator": "^9.4.1",
     "webpack": "^3.10.0"
   },
   "devDependencies": {
+    "babel-eslint": "^8.2.2",
     "babel-jest": "^22.2.2",
+    "babel-plugin-transform-class-properties": "^6.24.1",
     "babel-preset-react-hmre": "^1.1.1",
+    "chromedriver": "^2.36.0",
     "enzyme": "^3.3.0",
     "enzyme-adapter-react-16": "^1.1.1",
     "eslint-plugin-react": "^7.5.1",
     "faker": "^4.1.0",
     "fetch-mock": "^6.0.0",
     "jest": "^22.2.2",
+    "js-cookie": "^2.2.0",
     "jsdom": "^11.6.2",
     "redux-immutable-state-invariant": "^2.1.0",
     "redux-logger": "^3.0.6",
@@ -133,6 +143,10 @@
     "moduleNameMapper": {
       "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/client/src/test/mocks/fileMock.js"
     },
+    "coveragePathIgnorePatterns": [
+      "./client/src/test/",
+      "<rootDir>/client/src/helpers/jqueryHelper.js"
+    ],
     "transform": {
       ".*": "<rootDir>/node_modules/babel-jest"
     },

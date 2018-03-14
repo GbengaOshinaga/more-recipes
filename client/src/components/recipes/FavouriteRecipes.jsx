@@ -22,73 +22,93 @@ const defaultProps = {
 /**
  * Container component for favourite recipes
  */
-class FavouriteRecipes extends React.Component {
+export class FavouriteRecipes extends React.Component {
   /**
      * Component constructor
-     * @param {*} props
-     * @param {*} context
+     * @param {Object} props
+     * @param {Object} context
      */
   constructor(props, context) {
     super(props, context);
-    this.state = {};
-    this.vote = this.vote.bind(this);
-    this.removeFavourite = this.removeFavourite.bind(this);
+    this.state = {
+      isFound: false
+    };
   }
 
   /**
    * Method when component has finished mounting
-   * @returns {*} undefined
+   *
+   * @returns {undefined}
    */
-  componentDidMount() {
+  async componentDidMount() {
     pluginsInit();
 
     if (this.props.recipes.length === 0) {
-      sessionService.loadSession()
-        .then((token) => {
-          this.props.actions.getFavourites(token);
-        });
+      const token = await sessionService.loadSession();
+      if (token) {
+        this.props.actions.getFavourites(token)
+          .then(() => this.setState({ isFound: true }))
+          .catch(() => {
+            this.setState({ isFound: false });
+          });
+      }
+    }
+  }
+
+  /**
+   * Method called when component is receiving props
+   * @param {Object} nextProps
+   *
+   * @return {undefined}
+   */
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.recipes.length === 0) {
+      this.setState({ isFound: false });
     }
   }
 
   /**
    * votes recipe
-   * @param {*} event
-   * @returns {*} null
+   * @param {Object} event
+   *
+   * @returns {undefined}
    */
-  vote(event) {
+  vote = async (event) => {
     event.persist();
     event.preventDefault();
     const { currentTarget } = event;
-    sessionService.loadSession()
-      .then((token) => {
-        if (event.target.firstChild.nodeValue === 'thumb_up') {
-          this.props.actions.upvoteRecipe(event.target.id, token);
-          currentTarget.classList.toggle('green-text');
-        } else {
-          this.props.actions.downvoteRecipe(event.target.id, token);
-          currentTarget.classList.toggle('black-text');
-        }
-      });
+    const token = await sessionService.loadSession();
+    if (token) {
+      if (event.target.firstChild.nodeValue === 'thumb_up') {
+        this.props.actions.upvoteRecipe(event.target.id, token);
+        currentTarget.classList.toggle('green-text');
+      } else {
+        this.props.actions.downvoteRecipe(event.target.id, token);
+        currentTarget.classList.toggle('black-text');
+      }
+    }
   }
 
   /**
    * Remove favourite
-   * @param {*} event
-   * @returns {*} null
+   * @param {Object} event
+   *
+   * @returns {undefined}
    */
-  removeFavourite(event) {
+  removeFavourite = async (event) => {
     event.persist();
     event.preventDefault();
-    sessionService.loadSession()
-      .then((token) => {
-        this.props.actions.deleteFavourite(token, event.target.id);
-      });
+    const token = await sessionService.loadSession();
+    if (token) {
+      this.props.actions.deleteFavourite(token, event.target.id);
+    }
   }
 
 
   /**
    * Component render function
-   * @returns {*} jsx
+   *
+   * @returns {Node} jsx
    */
   render() {
     return (
@@ -99,6 +119,7 @@ class FavouriteRecipes extends React.Component {
         userId={this.props.userId}
         onClickVote={this.vote}
         onClickFavourite={this.removeFavourite}
+        isFound={this.state.isFound}
       />
     );
   }
@@ -106,11 +127,11 @@ class FavouriteRecipes extends React.Component {
 
 /**
  * Maps state to component properties
- * @param {*} state
- * @param {*} ownProps
+ * @param {Object} state
+ *
  * @returns {object} object
  */
-function mapStateToProps(state, ownProps) {
+function mapStateToProps(state) {
   return {
     isLoggedIn: state.session.authenticated,
     firstName: state.session.user.firstName,
@@ -121,8 +142,9 @@ function mapStateToProps(state, ownProps) {
 
 /**
      * Maps actions to component properties
-     * @param {*} dispatch
-     * @returns {*} actions
+     * @param {func} dispatch
+     *
+     * @returns {Object} actions
      */
 function mapDispatchToProps(dispatch) {
   return {

@@ -3,8 +3,8 @@ import * as types from '../actions/actions';
 
 /**
  * Pagination meta reducer
- * @param {*} state
- * @param {*} action
+ * @param {Object} state
+ * @param {Object} action
  *
  * @returns {Object} new state
  */

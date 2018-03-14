@@ -39,13 +39,11 @@ export class Catalog extends React.Component {
     this.state = {
       searchValue: '',
       hasSearchValue: false,
-      hasMore: false
+      hasMore: false,
+      isAllRecipesFound: true,
+      isMostFavouritedFound: true
     };
 
-    this.vote = this.vote.bind(this);
-    this.onSearchChange = this.onSearchChange.bind(this);
-    this.addFavourite = this.addFavourite.bind(this);
-    this.fetchNext = this.fetchNext.bind(this);
     toastr.options = {
       closeButton: true,
       positionClass: 'toast-top-right'
@@ -54,20 +52,24 @@ export class Catalog extends React.Component {
 
   /**
    * Method when component has finished mounting
-   * @returns {*} null
+   *
+   * @returns {undefined}
    */
   componentDidMount() {
     pluginsInit();
     transformNavBar();
     if (!this.props.paginationMeta.total) {
-      this.props.actions.getAllRecipes();
+      this.props.actions.getAllRecipes()
+        .catch(() => this.setState({ isAllRecipesFound: false }));
     }
     if (this.props.mostFavouritedRecipes.length === 0) {
-      this.props.actions.getMostFavouritedRecipes();
+      this.props.actions.getMostFavouritedRecipes()
+        .catch(() => this.setState({ isMostFavouritedFound: false }));
     }
     sessionService.loadSession()
       .then((token) => {
-        this.props.actions.getFavourites(token);
+        this.props.actions.getFavourites(token)
+          .catch(() => {});
       })
       .catch(() => {});
   }
@@ -89,6 +91,7 @@ export class Catalog extends React.Component {
 
   /**
    * ComponentDidUpdate lifecycle method
+   *
    * @returns {undefined}
    */
   componentDidUpdate() {
@@ -98,13 +101,16 @@ export class Catalog extends React.Component {
   /**
    * onChange event on search bars
    * @param {Object} event
-   * @returns {null} null
+   *
+   * @returns {undefined}
    */
-  onSearchChange(event) {
+  onSearchChange = (event) => {
     const { value } = event.target;
-    this.setState({ searchValue: value, hasSearchValue: true }, () => {
-      this.props.actions.search(this.state.searchValue);
-    });
+    if (value !== '') {
+      this.setState({ searchValue: value, hasSearchValue: true }, () => {
+        this.props.actions.search(this.state.searchValue);
+      });
+    }
     if (value === '') {
       this.setState({ hasSearchValue: false });
     } else {
@@ -113,13 +119,15 @@ export class Catalog extends React.Component {
   }
 
   /**
-   * Fetch next set of recipes for paginatino
+   * Fetch next set of recipes for pagination
+   *
    * @returns {undefined}
   */
-  fetchNext() {
+  fetchNext = () => {
     const { next } = this.props.paginationMeta;
     if (next) {
-      this.props.actions.getAllRecipes(next);
+      this.props.actions.getAllRecipes(next)
+        .catch(() => {});
     }
   }
 
@@ -127,49 +135,52 @@ export class Catalog extends React.Component {
   /**
    * votes recipe
    * @param {Object} event
-   * @returns {null} null
+   *
+   * @returns {undefined}
    */
-  vote(event) {
+  vote = async (event) => {
     event.persist();
     event.preventDefault();
     const { currentTarget } = event;
-    sessionService.loadSession()
-      .then((token) => {
-        if (event.target.firstChild.nodeValue === 'thumb_up') {
-          this.props.actions.upvoteRecipe(event.target.id, token);
-          currentTarget.classList.toggle('green-text');
-        } else {
-          this.props.actions.downvoteRecipe(event.target.id, token);
-          currentTarget.classList.toggle('black-text');
-        }
-      });
+    const token = await sessionService.loadSession();
+    if (token) {
+      if (event.target.firstChild.nodeValue === 'thumb_up') {
+        this.props.actions.upvoteRecipe(event.target.id, token);
+        currentTarget.classList.toggle('green-text');
+      } else {
+        this.props.actions.downvoteRecipe(event.target.id, token);
+        currentTarget.classList.toggle('black-text');
+      }
+    }
   }
 
   /**
    * Add recipe to favourite
    * @param {Object} event
-   * @returns {null} null
+   *
+   * @returns {undefined}
    */
-  addFavourite(event) {
+  addFavourite = async (event) => {
     event.persist();
     event.preventDefault();
     const { currentTarget } = event;
-    sessionService.loadSession()
-      .then((token) => {
-        if (currentTarget.classList.value === 'favourite') {
-          this.props.actions.addFavourite(token, event.target.id)
-            .then(() => toastr.success('Added to favourites'));
-        } else {
-          this.props.actions.deleteFavourite(token, event.target.id)
-            .then(() => toastr.success('Removed from favourites'));
-        }
+    const token = await sessionService.loadSession();
+    if (token) {
+      if (currentTarget.classList.value === 'favourite') {
+        this.props.actions.addFavourite(token, event.target.id)
+          .then(() => toastr.success('Added to favourites'));
+      } else {
+        this.props.actions.deleteFavourite(token, event.target.id)
+          .then(() => toastr.success('Removed from favourites'));
+      }
 
-        currentTarget.classList.toggle('red-text');
-      });
+      currentTarget.classList.toggle('red-text');
+    }
   }
 
   /**
    * Component render function
+   *
    * @returns {Node} jsx
    */
   render() {
@@ -189,6 +200,8 @@ export class Catalog extends React.Component {
         favourites={this.props.favourites}
         hasMore={this.state.hasMore}
         fetchNext={this.fetchNext}
+        isAllRecipesFound={this.state.isAllRecipesFound}
+        isMostFavouritedFound={this.state.isMostFavouritedFound}
       />
     );
   }
@@ -197,6 +210,7 @@ export class Catalog extends React.Component {
 /**
  * Maps state to component properties
  * @param {Object} state
+ *
  * @returns {object} object
  */
 function mapStateToProps(state) {
@@ -215,6 +229,7 @@ function mapStateToProps(state) {
 /**
  * Maps actions to component properties
  * @param {*} dispatch
+ *
  * @returns {Object} actions
  */
 function mapDispatchToProps(dispatch) {

@@ -37,36 +37,23 @@ class UserRecipes extends React.Component {
     this.state = {
       data: {
         id: 0,
-        recipeName: '',
-        recipeDescription: '',
+        name: '',
+        description: '',
         ingredients: [],
-        imageURL: ''
+        image: ''
       },
       deleteId: 0,
       edit: {
         id: 0,
-        recipeName: '',
-        recipeDescription: '',
+        name: '',
+        description: '',
         ingredients: [],
-        imageURL: ''
+        image: ''
       },
       imageFile: {},
-      loaded: true
+      loaded: true,
+      isFound: true
     };
-
-    this.handleChipsChange = this.handleChipsChange.bind(this);
-    this.handleInputChange = this.handleInputChange.bind(this);
-    this.onClickSave = this.onClickSave.bind(this);
-    this.loadImage = this.loadImage.bind(this);
-    this.onConfirmDelete = this.onConfirmDelete.bind(this);
-    this.getId = this.getId.bind(this);
-    this.getIdForEdit = this.getIdForEdit.bind(this);
-    this.onClickEdit = this.onClickEdit.bind(this);
-    this.handleEditInputChange = this.handleEditInputChange.bind(this);
-    this.handleChipAdd = this.handleChipAdd.bind(this);
-    this.handleChipDelete = this.handleChipDelete.bind(this);
-    this.handleAddModalChipAdd = this.handleAddModalChipAdd.bind(this);
-    this.handleAddModalChipDelete = this.handleAddModalChipDelete.bind(this);
     toastr.options = {
       closeButton: true,
       positionClass: 'toast-top-right'
@@ -75,42 +62,46 @@ class UserRecipes extends React.Component {
 
   /**
    * Method when component has finished mounting
-   * @returns {null} null
+   *
+   * @returns {undefined}
    */
   componentDidMount() {
     pluginsInit();
 
     sessionService.loadSession()
       .then((token) => {
-        this.props.actions.getUserRecipes(token);
+        this.props.actions.getUserRecipes(token)
+          .catch(() => {
+            this.setState({ isFound: false });
+          });
       });
   }
 
   /**
    * Handle save event
    * @param {Object} event
-   * @returns {null} null
+   *
+   * @returns {undefined}
    */
-  onClickSave(event) {
+  onClickSave = (event) => {
     event.preventDefault();
     this.setState({ loaded: false });
     if (!(this.state.imageFile instanceof File)) {
       const { data } = this.state;
-      data.imageURL = defaultImage;
+      data.image = defaultImage;
       this.setState({ data }, () => {
         this.saveRecipe(this.state.data);
       });
       this.setState({ loaded: true });
     } else {
       userActions.uploadImage(this.state.imageFile)
-        .then(response => response.json())
         .then((response) => {
           const { data } = this.state;
-          data.imageURL = response.secure_url;
+          data.image = response.secure_url;
           this.setState({ data }, () => {
-            this.saveRecipe(this.state.data);
+            this.saveRecipe();
           });
-          this.setState({ loaded: true });
+          this.setState({ loaded: true, isFound: true });
         });
     }
   }
@@ -118,9 +109,10 @@ class UserRecipes extends React.Component {
   /**
    * Handle edit
    * @param {Object} event
-   * @returns {null} null
+   *
+   * @returns {undefined}
    */
-  onClickEdit(event) {
+  onClickEdit = (event) => {
     event.preventDefault();
     this.setState({ loaded: false });
     if (!(this.state.imageFile instanceof File)) {
@@ -128,10 +120,9 @@ class UserRecipes extends React.Component {
       this.setState({ loaded: true });
     } else {
       userActions.uploadImage(this.state.imageFile)
-        .then(response => response.json())
         .then((response) => {
           const { edit } = this.state;
-          edit.imageURL = response.secure_url;
+          edit.image = response.secure_url;
           this.setState({ edit }, () => {
             this.editRecipe();
           });
@@ -143,9 +134,10 @@ class UserRecipes extends React.Component {
   /**
    * Method to delete recipe
    * @param {Object} event
-   * @returns {null} null
+   *
+   * @returns {undefined}
    */
-  onConfirmDelete(event) {
+  onConfirmDelete = (event) => {
     event.preventDefault();
     sessionService.loadSession()
       .then((token) => {
@@ -157,9 +149,10 @@ class UserRecipes extends React.Component {
   /**
    * Get id of recipe
    * @param {Object} event
-   * @returns {null} null
+   *
+   * @returns {undefined}
    */
-  getId(event) {
+  getId = (event) => {
     event.preventDefault();
     this.setState({ deleteId: event.target.id });
   }
@@ -167,19 +160,20 @@ class UserRecipes extends React.Component {
   /**
    * Get id of recipe for edit
    * @param {Object} event
-   * @returns {null} null
+   *
+   * @returns {undefined}
    */
-  getIdForEdit(event) {
+  getIdForEdit = (event) => {
     const recipeForEdit = [
       ...this.props.userRecipes.filter(recipe => recipe.id === Number(event.target.id))
     ];
     this.setState({
       edit: {
         id: recipeForEdit[0].id,
-        recipeName: recipeForEdit[0].name,
-        recipeDescription: recipeForEdit[0].description,
+        name: recipeForEdit[0].name,
+        description: recipeForEdit[0].description,
         ingredients: [...recipeForEdit[0].ingredients],
-        imageURL: recipeForEdit[0].image
+        image: recipeForEdit[0].image
       }
     });
     const img = new Image(300, 200);
@@ -191,36 +185,46 @@ class UserRecipes extends React.Component {
   /**
    * Save recipe
    * @param {Object} data
-   * @returns {null} null
+   *
+   * @returns {undefined}
    */
-  saveRecipe(data) {
+  saveRecipe = () => {
     sessionService.loadSession()
       .then((token) => {
-        this.props.actions.addRecipe(token, data)
+        this.props.actions.addRecipe(token, this.state.data)
           .then(() => {
             toastr.success('Recipe Added');
             this.setState({
               data: {
                 id: 0,
-                recipeName: '',
-                recipeDescription: '',
+                name: '',
+                description: '',
                 ingredients: [],
-                imageURL: ''
+                image: ''
               },
               imageFile: {}
             });
-            imageContext.clearRect(0, 0, 300, 200);
+            if (imageContext) {
+              imageContext.clearRect(0, 0, 300, 200);
+            }
           })
-          .catch(errors => errors.map(error => toastr.error(error)));
+          .catch((errors) => {
+            if (Array.isArray(errors)) {
+              errors.map(error => toastr.error(error));
+            } else {
+              toastr.error(errors);
+            }
+          });
       })
       .catch(() => {});
   }
 
   /**
    * Edits recipe
-   * @returns {null} null
+   *
+   * @returns {undefined}
    */
-  editRecipe() {
+  editRecipe = () => {
     sessionService.loadSession()
       .then((token) => {
         this.props.actions.editRecipe(token, this.state.edit.id, this.state.edit)
@@ -229,10 +233,10 @@ class UserRecipes extends React.Component {
             this.setState({
               edit: {
                 id: 0,
-                recipeName: '',
-                recipeDescription: '',
+                name: '',
+                description: '',
                 ingredients: [],
-                imageURL: ''
+                image: ''
               },
               imageFile: {}
             });
@@ -247,9 +251,10 @@ class UserRecipes extends React.Component {
   /**
    * Loads image to canvas
    * @param {Object} event
-   * @returns {null} null
+   *
+   * @returns {undefined}
    */
-  loadImage(event) {
+  loadImage = (event) => {
     if (event.target.id === 'fileUpload') {
       imageContext = this.inputElement.getContext('2d');
     } else {
@@ -273,25 +278,12 @@ class UserRecipes extends React.Component {
   }
 
   /**
- * Handle chip change
- * @param {Array} chips
- * @returns {Object} new state
- */
-  handleChipsChange(chips) {
-    if (chips[0] === 'Enter Ingredients') {
-      chips.shift();
-    }
-    const { data } = this.state;
-    data.ingredients = chips;
-    this.setState({ data });
-  }
-
-  /**
    * Handle adding of ingredient in edit mode
    * @param {String} chip
-   * @returns {Object} new state
+   *
+   * @returns {undefined}
    */
-  handleChipAdd(chip) {
+  handleChipAdd = (chip) => {
     const { edit } = this.state;
     edit.ingredients = [...edit.ingredients, chip];
     this.setState({ edit });
@@ -300,31 +292,34 @@ class UserRecipes extends React.Component {
   /**
    * Handle deleting of ingredient in edit mode
    * @param {String} chip
-   * @returns {Object} new state
+   *
+   * @returns {undefined}
    */
-  handleChipDelete(chip) {
+  handleChipDelete = (chip) => {
     const { edit } = this.state;
     edit.ingredients = edit.ingredients.filter(ingredient => ingredient !== chip);
     this.setState({ edit });
   }
 
   /**
-   * Handle adding of ingredient in edit mode
+   * Handle adding of ingredient in add mode
    * @param {String} chip
-   * @returns {Object} new state
+   *
+   * @returns {undefined}
    */
-  handleAddModalChipAdd(chip) {
+  handleAddModalChipAdd = (chip) => {
     const { data } = this.state;
     data.ingredients = [...data.ingredients, chip];
     this.setState({ data });
   }
 
   /**
-   * Handle deleting of ingredient in edit mode
+   * Handle deleting of ingredient in add mode
    * @param {String} chip
-   * @returns {Object} new state
+   *
+   * @returns {undefined}
    */
-  handleAddModalChipDelete(chip) {
+  handleAddModalChipDelete = (chip) => {
     const { data } = this.state;
     data.ingredients = data.ingredients.filter(ingredient => ingredient !== chip);
     this.setState({ data });
@@ -333,9 +328,10 @@ class UserRecipes extends React.Component {
   /**
    * Handles input field value change
    * @param {Object} event
-   * @returns {Object} new state
+   *
+   * @returns {undefined}
    */
-  handleInputChange(event) {
+  handleInputChange = (event) => {
     const name = this.state.data;
     name[event.target.id] = event.target.value;
     this.setState({ data: name });
@@ -344,9 +340,10 @@ class UserRecipes extends React.Component {
   /**
    * Handles input field value change
    * @param {Object} event
-   * @returns {Object} new state
+   *
+   * @returns {undefined}
    */
-  handleEditInputChange(event) {
+  handleEditInputChange = (event) => {
     const name = this.state.edit;
     name[event.target.id] = event.target.value;
     this.setState({ edit: name });
@@ -354,6 +351,7 @@ class UserRecipes extends React.Component {
 
   /**
    * Component render method
+   *
    * @returns {Node} Page component
    */
   render() {
@@ -365,8 +363,8 @@ class UserRecipes extends React.Component {
           userRecipes={this.props.userRecipes}
           onInputChange={this.handleInputChange}
           onEditInputChange={this.handleEditInputChange}
-          inputValue={this.state.data.recipeName}
-          descValue={this.state.data.recipeDescription}
+          inputValue={this.state.data.name}
+          descValue={this.state.data.description}
           editData={this.state.edit}
           onClickSave={this.onClickSave}
           onFileChange={this.loadImage}
@@ -382,6 +380,7 @@ class UserRecipes extends React.Component {
           handleAddModalChipAdd={this.handleAddModalChipAdd}
           handleAddModalChipDelete={this.handleAddModalChipDelete}
           data={this.state.data}
+          isFound={this.state.isFound}
         />
         <Loader
           loaded={this.state.loaded}
@@ -415,7 +414,8 @@ UserRecipes.defaultProps = defaultProps;
 /**
  * Maps state to component properties
  * @param {Object} state
- * @returns {object} object
+ *
+ * @returns {object} props
  */
 function mapStateToProps(state) {
   return {

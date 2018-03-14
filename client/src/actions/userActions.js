@@ -1,6 +1,6 @@
 import { sessionService } from 'redux-react-session';
-import UserApi from '../api/UserApi';
 import * as types from './actions';
+import api from './Fetch';
 
 /**
  * Updates reducer if add recipe action is successful
@@ -39,15 +39,6 @@ function updateEditRecipeSuccess(response) {
 }
 
 /**
- * Updates reducer if get user votes is successful
- * @param {Object} response
- * @returns {Object} object
- */
-function updateGetUserVotes(response) {
-  return { type: types.GET_USER_VOTES, response };
-}
-
-/**
  * Action to add recipe
  * @param {String} token access token
  * @param {Object} data
@@ -55,8 +46,7 @@ function updateGetUserVotes(response) {
  */
 export function addRecipe(token, data) {
   return function (dispatch) {
-    return UserApi.addRecipe(token, data)
-      .then(response => response.json())
+    return api.post('/api/v1/recipes', data, { 'Access-Token': token })
       .then((response) => {
         if (response.status === 'success') {
           dispatch(updateAddRecipeSuccess(response.data.recipe));
@@ -75,8 +65,7 @@ export function addRecipe(token, data) {
  */
 export function deleteRecipe(token, id) {
   return function (dispatch) {
-    return UserApi.deleteRecipe(token, id)
-      .then(response => response.json())
+    return api.del(`/api/v1/recipes/${id}`, { 'Access-Token': token })
       .then((response) => {
         if (response.status === 'success') {
           dispatch(updateDeleteRecipeSuccess(id));
@@ -92,11 +81,12 @@ export function deleteRecipe(token, id) {
  */
 export function getUserRecipes(token) {
   return function (dispatch) {
-    return UserApi.getUserRecipes(token)
-      .then(response => response.json())
+    return api.get('/api/v1/users/recipes', { 'Access-Token': token })
       .then((response) => {
         if (response.status === 'success') {
           dispatch(updateGetUserRecipesSuccess(response.data.recipes));
+        } else {
+          throw new Error('Not Found');
         }
       });
   };
@@ -109,9 +99,9 @@ export function getUserRecipes(token) {
  * @returns {func} dispatch
  */
 export function modifyUser(token, data) {
+  // eslint-disable-next-line
   return function (dispatch) {
-    return UserApi.modifyUser(token, data)
-      .then(response => response.json())
+    return api.post('/api/v1/users/edit', data, { 'Access-Token': token })
       .then((response) => {
         if (response.status === 'success') {
           sessionService.saveUser(response.data.user);
@@ -131,8 +121,7 @@ export function modifyUser(token, data) {
  */
 export function editRecipe(token, id, data) {
   return function (dispatch) {
-    return UserApi.editRecipe(token, id, data)
-      .then(response => response.json())
+    return api.put(`/api/v1/recipes/${id}`, data, { 'Access-Token': token })
       .then((response) => {
         if (response.status === 'success') {
           dispatch(updateEditRecipeSuccess(response.data.updatedRecipe));
@@ -149,22 +138,10 @@ export function editRecipe(token, id, data) {
  * @returns {Promise} Promise
  */
 export function uploadImage(imageFile) {
-  return UserApi.uploadImage(imageFile);
+  const formData = new FormData();
+  formData.append('file', imageFile);
+  formData.append('upload_preset', 'tyut3vgq');
+
+  return api.post('https://api.cloudinary.com/v1_1/king-more-recipes/image/upload', formData);
 }
 
-/**
- * Get user votes
- * @param {*} token
- * @returns {*} Promise
- */
-export function getUserVotes(token) {
-  return function (dispatch) {
-    return UserApi.getUserVotes(token)
-      .then(response => response.json())
-      .then((response) => {
-        if (response.status === 'success') {
-          dispatch(updateGetUserVotes(response.data.votes));
-        }
-      });
-  };
-}

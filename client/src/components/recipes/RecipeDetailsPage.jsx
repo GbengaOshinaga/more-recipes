@@ -51,8 +51,9 @@ const defaultUserAvatar = 'http://res.cloudinary.com/king-more-recipes/image/upl
 
 /**
  * Function to display reviews
- * @param {*} reviews
- * @returns {*} jsx
+ * @param {Array} reviews
+ *
+ * @returns {Node} jsx
  */
 function displayReviews(reviews) {
   if (reviews === undefined || reviews.length === 0) {
@@ -68,8 +69,9 @@ function displayReviews(reviews) {
 
 /**
  * Function to display ingredients
- * @param {*} ingredients
- * @returns {*} jsx
+ * @param {Array} ingredients
+ *
+ * @returns {Node} jsx
  */
 function displayIngredients(ingredients) {
   if (ingredients === undefined || ingredients.length === 0) {
@@ -80,7 +82,8 @@ function displayIngredients(ingredients) {
 
 /**
  * Functional component for recipe details page
- * @returns {*} jsx
+ *
+ * @returns {Node} jsx
  */
 function RecipeDetailsPage({
   recipe, isLoggedIn, firstName, onClickSaveReview, onAddReviewChange,
@@ -88,10 +91,20 @@ function RecipeDetailsPage({
   upvoteClassName, downvoteClassName, favouriteClassName, hasMoreReviews, fetchReviews
 }) {
   if (recipe === undefined || Object.keys(recipe).length === 0) {
-    return 'Waiting for recipe...';
+    return (
+      <div>
+        <MainHeader
+          isLoggedIn={isLoggedIn}
+          firstName={firstName}
+        />
+        <div style={{ marginTop: '20%' }} className="container">
+          <Preloader />
+        </div>
+      </div>
+    );
   }
   return (
-    <div>
+    <div className="details">
       <MainHeader
         isLoggedIn={isLoggedIn}
         firstName={firstName}
@@ -100,7 +113,7 @@ function RecipeDetailsPage({
         <div className="details-box">
           <div className="row">
             <div className="col s12 center-align">
-              <img className="responsive-img" src={recipe.image} alt="recipe" />
+              <img className="responsive-img details-img" src={recipe.image} alt="recipe" />
             </div>
           </div>
           <div className="row">
@@ -138,7 +151,6 @@ function RecipeDetailsPage({
                     >
                       <i className="small material-icons">favorite</i>
                     </a>
-                    <span id="favorites">0</span>
                   </div>}
                 </div>
                 <div className="review">
@@ -178,15 +190,16 @@ function RecipeDetailsPage({
 
 /**
  * Functional component for review
- * @param {*} props
- * @returns {*} jsx
+ * @param {Object} props
+ *
+ * @returns {Node} jsx
  */
 function Review({ review, profilePic }) {
   let profilePicture;
   profilePic === '' ? profilePicture = defaultUserAvatar : profilePicture = profilePic;
   return (
     <div className="row">
-      <div className="card horizontal">
+      <div className="card horizontal review-card">
         <div className="card-image">
           <img alt="profile" src={profilePicture} />
         </div>
@@ -202,15 +215,16 @@ function Review({ review, profilePic }) {
 
 /**
  * Add review component
- * @param {*} props
- * @returns {*} jsx
+ * @param {Object} props
+ *
+ * @returns {Node} jsx
  */
 function AddReview({
   profilePic, onClickSaveReview, onAddReviewChange, newReview
 }) {
   return (
     <div className="row">
-      <div className="card horizontal">
+      <div className="card horizontal review-card">
         <div className="card-image">
           <img alt="profile" src={profilePic} />
         </div>

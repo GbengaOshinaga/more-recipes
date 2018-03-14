@@ -20,8 +20,9 @@ const propTypes = {
 
 /**
  * Functional component for sign up form
- * @param {*} props
- * @returns {*} jsx
+ * @param {Object} props
+ *
+ * @returns {Node} jsx
  */
 function SignUpForm({
   onChange, onClickSave, firstName, lastName, email,

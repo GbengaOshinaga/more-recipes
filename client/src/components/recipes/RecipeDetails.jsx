@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { sessionService } from 'redux-react-session';
 import { connect } from 'react-redux';
+import { Redirect } from 'react-router-dom';
 import * as recipeActions from '../../actions/RecipeActions';
 import Page from './RecipeDetailsPage';
 import { pluginsInit } from '../../helpers/jqueryHelper';
@@ -27,7 +28,7 @@ const defaultProps = {
 /**
  * Container component for recipe details
  */
-class RecipeDetails extends React.Component {
+export class RecipeDetails extends React.Component {
   /**
      * Component constructor
      * @param {*} props
@@ -36,24 +37,20 @@ class RecipeDetails extends React.Component {
   constructor(props, context) {
     super(props, context);
     this.state = {
-      newReview: '',
+      review: '',
       recipe: {},
       upvoteClassName: 'thumb-up',
       downvoteClassName: 'thumb-down',
       favouriteClassName: 'favourite',
       hasMoreReviews: false,
-      isLoadingReviews: false
+      isLoadingReviews: false,
+      notFound: false
     };
-
-    this.onAddReviewChange = this.onAddReviewChange.bind(this);
-    this.onClickSaveReview = this.onClickSaveReview.bind(this);
-    this.vote = this.vote.bind(this);
-    this.addFavourite = this.addFavourite.bind(this);
-    this.fetchReviews = this.fetchReviews.bind(this);
   }
 
   /**
    * Method when component has finished mounting
+   *
    * @returns {undefined}
    */
   componentDidMount() {
@@ -73,7 +70,8 @@ class RecipeDetails extends React.Component {
       }
     });
     if (!isRecipeAvailable) {
-      this.props.actions.getRecipe(id);
+      this.props.actions.getRecipe(id)
+        .catch(() => this.setState({ notFound: true }));
     }
     if (Object.keys(reviewsPaginationMeta).length === 0 ||
         Number(reviewsPaginationMeta.recipeId) !== Number(id) ||
@@ -85,6 +83,7 @@ class RecipeDetails extends React.Component {
   /**
    * Method called when component is receiving new props
    * @param {Object} nextProps
+   *
    * @returns {undefined}
    */
   componentWillReceiveProps(nextProps) {
@@ -104,6 +103,7 @@ class RecipeDetails extends React.Component {
 
   /**
    * ComponentDidUpdate lifecycle method
+   *
    * @returns {undefined}
    */
   componentDidUpdate() {
@@ -114,26 +114,28 @@ class RecipeDetails extends React.Component {
   /**
    * Method to save review
    * @param {Object} event
-   * @returns {*} null
+   *
+   * @returns {undefined}
    */
-  onClickSaveReview(event) {
+  onClickSaveReview = async (event) => {
     event.preventDefault();
     const { id } = this.props.match.params;
-    sessionService.loadSession()
-      .then((token) => {
-        this.props.actions.addReview(id, token, this.state.newReview);
-        this.setState({ newReview: '' });
-      });
+    const token = await sessionService.loadSession();
+    if (token) {
+      this.props.actions.addReview(id, token, this.state.review);
+      this.setState({ review: '' });
+    }
   }
 
   /**
    * onChange method for adding review
    * @param {Object} event
+   *
    * @returns {Object} new state
    */
-  onAddReviewChange(event) {
+  onAddReviewChange = (event) => {
     const { value } = event.target;
-    this.setState({ newReview: value });
+    this.setState({ review: value });
   }
 
   /**
@@ -141,9 +143,10 @@ class RecipeDetails extends React.Component {
    * @param {Object} recipe
    * @param {Object} userId
    * @param {Array} userFavourites
+   *
    * @returns {Object} new state
    */
-  upvoteVoteStatus(recipe, userId, userFavourites) {
+  upvoteVoteStatus = (recipe, userId, userFavourites) => {
     recipe.upvotes.map((upvote) => {
       if (upvote === userId) {
         this.setState({ upvoteClassName: 'thumb-up green-text' });
@@ -174,7 +177,7 @@ class RecipeDetails extends React.Component {
    *
    * @returns {undefined}
   */
-  fetchReviews(event) {
+  fetchReviews = (event) => {
     this.setState({ isLoadingReviews: true });
     event.preventDefault();
     const { id } = this.props.match.params;
@@ -191,49 +194,55 @@ class RecipeDetails extends React.Component {
   /**
    * votes recipe
    * @param {Object} event
-   * @returns {*} null
+   *
+   * @returns {undefined}
    */
-  vote(event) {
+  vote = async (event) => {
     event.persist();
     event.preventDefault();
     const { currentTarget } = event;
-    sessionService.loadSession()
-      .then((token) => {
-        if (event.target.firstChild.nodeValue === 'thumb_up') {
-          this.props.actions.upvoteRecipe(this.props.match.params.id, token);
-          currentTarget.classList.toggle('green-text');
-        } else {
-          this.props.actions.downvoteRecipe(this.props.match.params.id, token);
-          currentTarget.classList.toggle('black-text');
-        }
-      });
+    const token = await sessionService.loadSession();
+    if (token) {
+      if (event.target.firstChild.nodeValue === 'thumb_up') {
+        this.props.actions.upvoteRecipe(this.props.match.params.id, token);
+        currentTarget.classList.toggle('green-text');
+      } else {
+        this.props.actions.downvoteRecipe(this.props.match.params.id, token);
+        currentTarget.classList.toggle('black-text');
+      }
+    }
   }
 
   /**
    * Add recipe to favourite
    * @param {Object} event
-   * @returns {*} null
+   *
+   * @returns {undefined}
    */
-  addFavourite(event) {
+  addFavourite = async (event) => {
     event.persist();
     event.preventDefault();
     const { currentTarget } = event;
-    sessionService.loadSession()
-      .then((token) => {
-        currentTarget.classList.value === 'favourite' ?
-          this.props.actions.addFavourite(token, this.props.match.params.id) :
-          this.props.actions.deleteFavourite(token, this.props.match.params.id);
+    const token = await sessionService.loadSession();
+    if (token) {
+      currentTarget.classList.value === 'favourite' ?
+        this.props.actions.addFavourite(token, this.props.match.params.id) :
+        this.props.actions.deleteFavourite(token, this.props.match.params.id);
 
-        currentTarget.classList.toggle('red-text');
-      });
+      currentTarget.classList.toggle('red-text');
+    }
   }
 
 
   /**
    * Component render method
+   *
    * @returns {Node} jsx
    */
   render() {
+    if (this.state.notFound) {
+      return <Redirect to="/not-found" />;
+    }
     return (
       <Page
         isLoggedIn={this.props.isLoggedIn}
@@ -241,7 +250,7 @@ class RecipeDetails extends React.Component {
         recipe={this.state.recipe}
         onClickSaveReview={this.onClickSaveReview}
         onAddReviewChange={this.onAddReviewChange}
-        newReview={this.state.newReview}
+        newReview={this.state.review}
         location={this.props.location.pathname}
         profilePic={this.props.profilePic}
         onClickVote={this.vote}
@@ -263,6 +272,7 @@ RecipeDetails.defaultProps = defaultProps;
 /**
  * Maps state to component properties
  * @param {Object} state
+ *
  * @returns {object} object
  */
 function mapStateToProps(state) {
@@ -280,8 +290,9 @@ function mapStateToProps(state) {
 
 /**
    * Maps actions to component properties
-   * @param {*} dispatch
-   * @returns {*} actions
+   * @param {func} dispatch
+   *
+   * @returns {Object} actions
    */
 function mapDispatchToProps(dispatch) {
   return {

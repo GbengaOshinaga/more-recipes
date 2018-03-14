@@ -14,10 +14,12 @@ const propTypes = {
   isLoggedIn: PropTypes.bool,
   userId: PropTypes.number,
   favourites: PropTypes.arrayOf(PropTypes.object),
+  hasSearchValue: PropTypes.bool,
   getId: PropTypes.func,
   getIdForEdit: PropTypes.func,
   next: PropTypes.func,
-  hasMore: PropTypes.bool
+  hasMore: PropTypes.bool,
+  isFound: PropTypes.bool
 };
 
 const defaultProps = {
@@ -26,10 +28,12 @@ const defaultProps = {
   isLoggedIn: true,
   userId: 0,
   favourites: undefined,
+  hasSearchValue: false,
   getId: undefined,
   getIdForEdit: undefined,
   next: undefined,
-  hasMore: false
+  hasMore: false,
+  isFound: true
 };
 
 /**
@@ -82,20 +86,28 @@ function getCardAction(
  * @param {func} onClickVote
  * @param {func} onClickFavourite
  * @param {bool} isLoggedIn
+ * @param {bool} isFound
  * @param {Number} userId
  * @param {Array} favourites
+ * @param {bool} hasSearchValue
  * @param {func} getId
  * @param {func} getIdForEdit
  *
  * @returns {Node} recipes
  */
 function displayRecipes(
-  recipes, onClickVote, onClickFavourite, isLoggedIn,
-  userId, favourites, getId, getIdForEdit
+  recipes, onClickVote, onClickFavourite, isLoggedIn, isFound,
+  userId, favourites, hasSearchValue, getId, getIdForEdit
 ) {
   const chunkedRecipes = _.chunk(recipes, 3);
+  if (hasSearchValue && recipes.length === 0) {
+    return <h5>No Result(s) Found</h5>;
+  }
+  if (!isFound && recipes.length === 0) {
+    return <h5>No Recipe Available</h5>;
+  }
   if (recipes === undefined || recipes.length === 0) {
-    return <h4>No Recipe Available</h4>;
+    return <div style={{ marginTop: '50px' }}><Preloader /></div>;
   }
   return chunkedRecipes.map(chunk => (
     <div className="row" key={chunk[0].id}>
@@ -121,8 +133,8 @@ function displayRecipes(
  * @returns {Node} recipes
  */
 function RecipesDisplay({
-  recipes, onClickVote, onClickFavourite, isLoggedIn,
-  userId, favourites, getId, getIdForEdit, next, hasMore
+  recipes, onClickVote, onClickFavourite, isLoggedIn, isFound,
+  userId, favourites, hasSearchValue, getId, getIdForEdit, next, hasMore
 }) {
   return (
     <InfiniteScroll
@@ -131,8 +143,8 @@ function RecipesDisplay({
       loader={<Preloader />}
     >
       {displayRecipes(
-        recipes, onClickVote, onClickFavourite, isLoggedIn,
-        userId, favourites, getId, getIdForEdit
+        recipes, onClickVote, onClickFavourite, isLoggedIn, isFound,
+        userId, favourites, hasSearchValue, getId, getIdForEdit
         )}
     </InfiniteScroll>
   );

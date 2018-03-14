@@ -34,8 +34,9 @@ const canvasStyle = { border: '1px solid #000000', marginLeft: '10px' };
 
 /**
  * Functional component for add modal
- * @param {*} props
- * @returns {*} jsx
+ * @param {Object} props
+ *
+ * @returns {Node} jsx
  */
 export function AddModal({
   onInputChange, inputValue, descValue, onClickSave, onFileChange, inputRef,
@@ -49,7 +50,7 @@ export function AddModal({
 
         <form action="#">
           <InputField
-            id="recipeName"
+            id="name"
             type="text"
             onChange={onInputChange}
             value={inputValue}
@@ -58,7 +59,7 @@ export function AddModal({
           />
           <div className="row">
             <TextArea
-              id="recipeDescription"
+              id="description"
               value={descValue}
               onChange={onInputChange}
               label="Recipe Details"
@@ -66,6 +67,7 @@ export function AddModal({
           </div>
           <div className="row">
             <ChipInput
+              id="ingredients-chip"
               value={[...data.ingredients]}
               onRequestAdd={chip => handleAddModalChipAdd(chip)}
               onRequestDelete={chip => handleAddModalChipDelete(chip)}
@@ -86,6 +88,7 @@ export function AddModal({
       <div className="modal-footer">
         <div className="container">
           <a
+            id="submit"
             href="#!"
             onClick={onClickSave}
             className="modal-action modal-close waves-effect waves-green btn"
@@ -101,7 +104,8 @@ export function AddModal({
 
 /**
  * Functional component for edit modal
- * @returns {*} jsx
+ *
+ * @returns {Node} jsx
  */
 export function EditModal({
   onInputChange, handleChipAdd, handleChipDelete,
@@ -115,16 +119,16 @@ export function EditModal({
 
         <form action="#">
           <InputField
-            id="recipeName"
+            id="edit-name"
             type="text"
             onChange={onInputChange}
-            value={editData.recipeName}
+            value={editData.name}
             dataError="Recipe Name is required"
           />
           <div className="row">
             <TextArea
-              id="recipeDescription"
-              value={editData.recipeDescription}
+              id="edit-description"
+              value={editData.description}
               onChange={onInputChange}
             />
           </div>
@@ -149,6 +153,7 @@ export function EditModal({
       <div className="modal-footer">
         <div className="container">
           <a
+            id="edit-submit"
             href="#!"
             onClick={onClickEdit}
             className="modal-action modal-close waves-effect waves-green btn"
@@ -164,8 +169,9 @@ export function EditModal({
 
 /**
  * Functional component for delete modal
- * @param {*} props
- * @returns {*} jsx
+ * @param {Object} props
+ *
+ * @returns {Node} jsx
  */
 export function DeleteModal({ onConfirm }) {
   return (
@@ -177,6 +183,7 @@ export function DeleteModal({ onConfirm }) {
       </div>
       <div className="modal-footer">
         <a
+          id="confirm-delete"
           href="#!"
           onClick={onConfirm}
           className="modal-action modal-close waves-effect waves-green btn-flat"

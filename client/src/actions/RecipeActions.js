@@ -1,6 +1,5 @@
-import RecipesApi from '../api/RecipesApi';
-import UserApi from '../api/UserApi';
 import * as types from './actions';
+import api from './Fetch';
 
 /**
  * Updates reducer if get recipes action is successful
@@ -138,10 +137,18 @@ function clearPagination() {
  */
 export function getAllRecipes(next) {
   return function (dispatch) {
-    return RecipesApi.getAllRecipes(next)
-      .then(response => response.json())
+    let url;
+    if (next) {
+      url = next;
+    } else {
+      url = '/api/v1/recipes';
+    }
+    return api.get(url)
       .then((response) => {
         if (response.status === 'success') {
+          if (response.data.recipes.length === 0) {
+            throw new Error('No Recipe Available');
+          }
           response.data.recipes.map((recipe) => {
             recipe.Reviews = [];
           });
@@ -165,8 +172,13 @@ export function getAllRecipes(next) {
    */
 export function getRecipeReviews(id, next) {
   return function (dispatch) {
-    return RecipesApi.getRecipeReviews(id, next)
-      .then(response => response.json())
+    let url;
+    if (next) {
+      url = next;
+    } else {
+      url = `/api/v1/recipes/${id}/reviews`;
+    }
+    return api.get(url)
       .then((response) => {
         if (response.status === 'success') {
           dispatch(updateGetReviewsSuccess(response.data.reviews));
@@ -183,12 +195,13 @@ export function getRecipeReviews(id, next) {
  */
 export function getRecipe(id) {
   return function (dispatch) {
-    return RecipesApi.getRecipe(id)
-      .then(response => response.json())
+    return api.get(`/api/v1/recipes/${id}`)
       .then((response) => {
         if (response.status === 'success') {
           response.data.recipe.Reviews = [];
           dispatch(updateGetRecipeSuccess(response.data.recipe));
+        } else {
+          throw Error('Recipe Not Found');
         }
       });
   };
@@ -203,8 +216,7 @@ export function getRecipe(id) {
  */
 export function addReview(id, token, review) {
   return function (dispatch) {
-    return RecipesApi.addReview(id, token, review)
-      .then(response => response.json())
+    return api.post(`/api/v1/recipes/${id}/reviews`, { review }, { 'Access-Token': token })
       .then((response) => {
         dispatch(updateAddReviewSuccess(response.data.review));
       });
@@ -219,8 +231,7 @@ export function addReview(id, token, review) {
  */
 export function upvoteRecipe(id, token) {
   return function (dispatch) {
-    return RecipesApi.upvoteRecipe(id, token)
-      .then(response => response.json())
+    return api.post(`/api/v1/recipes/upvote/${id}`, null, { 'Access-Token': token })
       .then((response) => {
         if (response.status === 'success') {
           dispatch(updateVoteSuccess(response.data.recipe));
@@ -237,8 +248,7 @@ export function upvoteRecipe(id, token) {
  */
 export function downvoteRecipe(id, token) {
   return function (dispatch) {
-    return RecipesApi.downvoteRecipe(id, token)
-      .then(response => response.json())
+    return api.post(`/api/v1/recipes/downvote/${id}`, null, { 'Access-Token': token })
       .then((response) => {
         if (response.status === 'success') {
           dispatch(updateVoteSuccess(response.data.recipe));
@@ -254,8 +264,7 @@ export function downvoteRecipe(id, token) {
  */
 export function search(query) {
   return function (dispatch) {
-    return RecipesApi.search(query)
-      .then(response => response.json())
+    return api.get(`/api/v1/recipes?query=${query}`)
       .then((response) => {
         if (response.status === 'success') {
           dispatch(updateSearchResultsSuccess(response.data.recipes));
@@ -274,12 +283,10 @@ export function search(query) {
  */
 export function addFavourite(token, recipeId) {
   return function (dispatch) {
-    return RecipesApi.addFavourite(token, recipeId)
-      .then(response => response.json())
+    return api.post(`/api/v1/users/recipes/${recipeId}/favourites`, null, { 'Access-Token': token })
       .then((response) => {
         if (response.status === 'success') {
-          UserApi.getFavourites(token)
-            .then(favResponse => favResponse.json())
+          api.get('/api/v1/users/recipes/favourites', { 'Access-Token': token })
             .then((favResponse) => {
               if (favResponse.status === 'success') {
                 dispatch(updateUserFavouritesSuccess(favResponse.data.favourites));
@@ -297,13 +304,13 @@ export function addFavourite(token, recipeId) {
  */
 export function getFavourites(token) {
   return function (dispatch) {
-    return UserApi.getFavourites(token)
-      .then(response => response.json())
+    return api.get('/api/v1/users/recipes/favourites', { 'Access-Token': token })
       .then((response) => {
         if (response.status === 'success') {
           dispatch(updateUserFavouritesSuccess(response.data.favourites));
         } else {
           dispatch(updateUserFavouritesFailure());
+          throw new Error('Not Found');
         }
       });
   };
@@ -317,12 +324,10 @@ export function getFavourites(token) {
  */
 export function deleteFavourite(token, recipeId) {
   return function (dispatch) {
-    return RecipesApi.deleteFavourite(token, recipeId)
-      .then(response => response.json())
+    return api.del(`/api/v1/users/recipes/${recipeId}/favourites`, { 'Access-Token': token })
       .then((response) => {
         if (response.status === 'success') {
-          UserApi.getFavourites(token)
-            .then(favResponse => favResponse.json())
+          api.get('/api/v1/users/recipes/favourites', { 'Access-Token': token })
             .then((favResponse) => {
               if (favResponse.status === 'success') {
                 dispatch(updateUserFavouritesSuccess(favResponse.data.favourites));
@@ -341,10 +346,12 @@ export function deleteFavourite(token, recipeId) {
  */
 export function getMostFavouritedRecipes() {
   return function (dispatch) {
-    return RecipesApi.getMostFavourited()
-      .then(response => response.json())
+    return api.get('/api/v1/recipes/most_favourited')
       .then((response) => {
         if (response.status === 'success') {
+          if (response.data.recipes.length === 0) {
+            throw new Error('No Recipe Available');
+          }
           dispatch(updateGetMostFavouritedSuccess(response.data.recipes));
         }
       });

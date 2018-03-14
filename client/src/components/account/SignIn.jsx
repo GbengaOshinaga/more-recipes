@@ -28,9 +28,6 @@ class SignIn extends React.Component {
       }
     };
 
-    this.onClickSave = this.onClickSave.bind(this);
-    this.handleChange = this.handleChange.bind(this);
-    this.onGoogleLoginSuccess = this.onGoogleLoginSuccess.bind(this);
     toastr.options = {
       closeButton: true,
       positionClass: 'toast-top-right'
@@ -38,12 +35,12 @@ class SignIn extends React.Component {
   }
 
   /**
-   * Saves input
-   * @returns {*} nothing
+   * Signs in
+   *
+   * @returns {undefined}
    */
-  onClickSave() {
+  onClickSave = () => {
     signIn(this.state.credentials)
-      .then(response => response.json())
       .then((response) => {
         if (response.status === 'success') {
           sessionService.saveSession(response.data.token);
@@ -58,13 +55,13 @@ class SignIn extends React.Component {
 
   /**
    * Method to handle on google login success
-   * @param {*} response
-   * @returns {*} null
+   * @param {Object} response
+   *
+   * @returns {undefined}
    */
-  onGoogleLoginSuccess(response) {
+  onGoogleLoginSuccess = (response) => {
     this.setState({ credentials: { email: response.profileObj.email, password: 'google-login' } });
     signIn(this.state.credentials)
-      .then(serverResponse => serverResponse.json())
       .then((serverResponse) => {
         if (serverResponse.status === 'success') {
           sessionService.saveSession(serverResponse.data.token);
@@ -79,17 +76,18 @@ class SignIn extends React.Component {
 
   /**
    * Method to handle on google login failure
-   * @returns {*} null
+   *
+   * @returns {undefined}
    */
-  onGoogleLoginFailure() {
-    toastr.error('An error occured');
+  onGoogleLoginFailure = () => {
   }
 
   /**
    * Redirects to catalog page after successfully signing in
-   * @returns {*} null
+   *
+   * @returns {undefined}
    */
-  redirect() {
+  redirect = () => {
     if (this.props.location.state) {
       const { from } = this.props.location.state;
       this.context.router.history.push(from);
@@ -100,10 +98,11 @@ class SignIn extends React.Component {
 
   /**
    * Handles input field value change
-   * @param {*} event
-   * @returns {*} new state
+   * @param {Object} event
+   *
+   * @returns {undefined}
    */
-  handleChange(event) {
+  handleChange = (event) => {
     const data = this.state.credentials;
     data[event.target.type] = event.target.value;
     this.setState({ credentials: data });
@@ -111,7 +110,8 @@ class SignIn extends React.Component {
 
   /**
    * component render method
-   * @returns {jsx} markup
+   *
+   * @returns {Node} jsx
    */
   render() {
     return (
@@ -136,8 +136,9 @@ SignIn.contextTypes = {
 
 /**
  * mapStateToProps
- * @param {*} state
- * @param {*} ownProps
+ * @param {Object} state
+ * @param {Object} ownProps
+ *
  * @returns {object} object
  */
 function mapStateToProps(state, ownProps) {

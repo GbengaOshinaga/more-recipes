@@ -1,3 +1,4 @@
+/* eslint-disable no-empty */
 import React from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import { sessionService } from 'redux-react-session';
@@ -10,8 +11,8 @@ import { Header } from '../common/Header';
 class HomePage extends React.Component {
   /**
    * Component constructor
-   * @param {*} props
-   * @param {*} context
+   * @param {Object} props
+   * @param {Object} context
    */
   constructor(props, context) {
     super(props, context);
@@ -22,21 +23,22 @@ class HomePage extends React.Component {
 
   /**
    * Componentwillmount
-   * @returns {null} null
+   *
+   * @returns {undefined}
    */
-  componentWillMount() {
-    sessionService.loadSession()
-      .then((token) => {
-        if (token) {
-          this.setState({ isAuthenticated: true });
-        }
-      })
-      .catch(() => {});
+  async componentWillMount() {
+    try {
+      const token = await sessionService.loadSession();
+      if (token) {
+        this.setState({ isAuthenticated: true });
+      }
+    } catch (error) {}
   }
 
   /**
    * ComponentDidMount
-   * @returns {null} null
+   *
+   * @returns {undefined}
    */
   componentDidMount() {
     $('.button-collapse').sideNav();
@@ -44,6 +46,7 @@ class HomePage extends React.Component {
 
   /**
    * Component render method
+   *
    * @returns {Node} jsx
   */
   render() {
@@ -56,8 +59,8 @@ class HomePage extends React.Component {
         <Header
           mainLinks={
             <React.Fragment>
-              <li><Link to="/signin"> Sign In</Link></li>
-              <li><Link to="/signup">Sign Up</Link></li>
+              <li><Link id="sign-in" to="/signin"> Sign In</Link></li>
+              <li><Link id="sign-up" to="/signup">Sign Up</Link></li>
             </React.Fragment>}
         />
         <div className="container">

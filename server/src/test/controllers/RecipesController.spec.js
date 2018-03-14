@@ -67,8 +67,9 @@ describe('Users can perform actions on recipe', () => {
   });
 
   describe('Sort Order', () => {
-    before(() => {
-      db.Recipes.bulkCreate([
+    before(async () => {
+      // eslint-disable-next-line
+      const recipes = await db.Recipes.bulkCreate([
         {
           name: faker.name.findName(),
           description: faker.lorem.sentence(),
@@ -147,7 +148,7 @@ describe('Users can perform actions on recipe', () => {
       })
       .end((err, res) => {
         expect(res).to.have.status(404);
-        expect(res.body.data.message).to.equal('The Recipe does not exist');
+        expect(res.body.data.message).to.equal('The recipe does not exist');
         done();
       });
   });
@@ -223,7 +224,7 @@ describe('Users can perform actions on recipe', () => {
       })
       .end((err, res) => {
         expect(res).to.have.status(404);
-        expect(res.body.data.message).to.equal('The Review does not exist');
+        expect(res.body.data.message).to.equal('The review does not exist');
         done();
       });
   });
@@ -245,7 +246,7 @@ describe('Users can perform actions on recipe', () => {
       .set('Access-Token', token)
       .end((err, res) => {
         expect(res).to.have.status(404);
-        expect(res.body.data.message).to.equal('The Review does not exist');
+        expect(res.body.data.message).to.equal('The review does not exist');
         done();
       });
   });
@@ -301,7 +302,7 @@ describe('Users can perform actions on recipe', () => {
       .set('Access-Token', token)
       .end((err, res) => {
         expect(res).to.have.status(404);
-        expect(res.body.data.message).to.equal('The Recipe does not exist');
+        expect(res.body.data.message).to.equal('The recipe does not exist');
         done();
       });
   });

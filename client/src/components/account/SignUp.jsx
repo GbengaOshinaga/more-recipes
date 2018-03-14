@@ -13,8 +13,8 @@ const defaultUserAvatar = 'http://res.cloudinary.com/king-more-recipes/image/upl
 class SignUp extends React.Component {
 /**
  * constructor method
- * @param {*} props
- * @param {*} context
+ * @param {Object} props
+ * @param {Object} context
  */
   constructor(props, context) {
     super(props, context);
@@ -28,9 +28,6 @@ class SignUp extends React.Component {
         profilePic: defaultUserAvatar
       }
     };
-    this.onClickSave = this.onClickSave.bind(this);
-    this.handleChange = this.handleChange.bind(this);
-    this.onGoogleLoginSuccess = this.onGoogleLoginSuccess.bind(this);
     toastr.options = {
       closeButton: true,
       positionClass: 'toast-top-right'
@@ -38,12 +35,12 @@ class SignUp extends React.Component {
   }
 
   /**
-   * Saves input
-   * @returns {func} redirect
+   * Signs up a user
+   *
+   * @returns {error | undefined} error if any
    */
-  onClickSave() {
+  onClickSave = () => {
     signUp(this.state.data)
-      .then(response => response.json())
       .then((response) => {
         if (response.status === 'success') {
           sessionService.saveSession(response.data.token);
@@ -62,9 +59,10 @@ class SignUp extends React.Component {
   /**
    * Method to handle on google login success
    * @param {Object} response
-   * @returns {*} null
+   *
+   * @returns {undefined}
    */
-  onGoogleLoginSuccess(response) {
+  onGoogleLoginSuccess = (response) => {
     const credentials = {
       firstName: response.profileObj.givenName,
       lastName: response.profileObj.familyName,
@@ -74,7 +72,6 @@ class SignUp extends React.Component {
       profilePic: response.profileObj.imageUrl
     };
     signUp(credentials)
-      .then(serverResponse => serverResponse.json())
       .then((serverResponse) => {
         if (serverResponse.status === 'success') {
           sessionService.saveSession(serverResponse.data.token);
@@ -89,18 +86,19 @@ class SignUp extends React.Component {
 
   /**
    * Method to handle on google login failure
-   * @returns {*} null
+   *
+   * @returns {undefined}
    */
-  onGoogleLoginFailure() {
-    toastr.error('An error occured');
+  onGoogleLoginFailure = () => {
   }
 
 
   /**
    * Redirects to catalog page after successfully signing in
-   * @returns {null} null
+   *
+   * @returns {undefined}
    */
-  redirect() {
+  redirect = () => {
     this.context.router.history.push('/catalog');
   }
 
@@ -108,9 +106,10 @@ class SignUp extends React.Component {
   /**
    * Handles input field value change
    * @param {Object} event
-   * @returns {Object} new state
+   *
+   * @returns {undefined}
    */
-  handleChange(event) {
+  handleChange = (event) => {
     const entries = this.state.data;
     entries[event.target.id] = event.target.value;
     this.setState({ data: entries });
@@ -118,7 +117,8 @@ class SignUp extends React.Component {
 
   /**
    * component render method
-   * @returns {jsx} markup
+   *
+   * @returns {Node} jsx
    */
   render() {
     return (

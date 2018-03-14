@@ -36,10 +36,10 @@ const mainHeaderDefaultProps = {
 
 const dropdownLinks = (
   <React.Fragment>
-    <li><Link to="/profile">Profile</Link></li>
-    <li><Link to="/my_recipes">My Recipes</Link></li>
-    <li><Link to="/favourites">Favourite Recipes</Link></li>
-    <li><Link to="/logout">Logout</Link></li>
+    <li><Link id="profile" to="/profile">Profile</Link></li>
+    <li><Link id="my-recipes" to="/my_recipes">My Recipes</Link></li>
+    <li><Link id="favourites" to="/favourites">Favourite Recipes</Link></li>
+    <li><Link id="logout" to="/logout">Logout</Link></li>
   </React.Fragment>);
 
 /**
@@ -55,7 +55,7 @@ const dropdownLinks = (
 function loggedInLinks(activates, firstName, onChange, value, type) {
   const commonLinks = (
     <React.Fragment>
-      <li><Link to="/catalog">Catalog</Link></li>
+      <li><Link id="catalog-link" to="/catalog">Catalog</Link></li>
       <li>
         <a className="dropdown-button" href="#!" data-activates={activates}>
           {firstName}<i className="material-icons right">arrow_drop_down</i>
@@ -97,7 +97,8 @@ function loggedInLinks(activates, firstName, onChange, value, type) {
 
 /**
  * Functional component for header for the sign up and sign in pages
- * @returns {*} jsx
+ *
+ * @returns {Node} jsx
  */
 function Header({
   mainLinks, sideLinks, navClassName, catalogId
@@ -130,6 +131,7 @@ function Header({
 /**
  * MainHeader component
  * @param {Object} props
+ *
  * @returns {Node} jsx
  */
 function MainHeader({

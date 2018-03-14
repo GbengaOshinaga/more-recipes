@@ -4,11 +4,12 @@
 export default class UsersValidator {
   /**
      * Validates input for sign up
-     * @param {*} req
-     * @param {*} res
-     * @param {*} next
-     * @returns {*} res
-     */
+   * @param {Object} req
+   * @param {Object} res
+   * @param {Object} next
+   *
+   * @returns {Object} res
+   */
   static validateSignUp(req, res, next) {
     const messages = [];
 
@@ -57,10 +58,11 @@ export default class UsersValidator {
 
   /**
    * Validates sign in
-   * @param {*} req
-   * @param {*} res
-   * @param {*} next
-   * @returns {Array} errors if any
+   * @param {Object} req
+   * @param {Object} res
+   * @param {Object} next
+   *
+   * @returns {Object} res
    */
   static validateSignIn(req, res, next) {
     const messages = [];
@@ -85,10 +87,11 @@ export default class UsersValidator {
 
   /**
    * Checks if any value is provided for edit
-   * @param {*} req
-   * @param {*} res
-   * @param {*} next
-   * @returns {*} res
+   * @param {Object} req
+   * @param {Object} res
+   * @param {Object} next
+   *
+   * @returns {Object} res
    */
   static validateInput(req, res, next) {
     if (Object.keys(req.body).length === 0) {

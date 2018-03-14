@@ -17,6 +17,7 @@ const defaultProps = {
 /**
  * Formats recipe description based on length
  * @param {String} content
+ *
  * @returns {String} formatted content
  */
 function formatContent(content) {
@@ -30,6 +31,7 @@ function formatContent(content) {
 /**
  * Card component
  * @param {Object} props
+ *
  * @returns {Node} jsx
  */
 function Card({

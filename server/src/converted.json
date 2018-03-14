@@ -1,0 +1,5114 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "heroku-more-recipes",
+    "description": "TODO: Add Description",
+    "version": "1.0"
+  },
+  "servers": [
+    {
+      "url": "https://more-recipe-gbenga.herokuapp.com/api/v1",
+      "variables": {}
+    },
+    {
+      "url": "http://more-recipe-gbenga.herokuapp.com/api/v1/recipes",
+      "variables": {}
+    }
+  ],
+  "paths": {
+    "/users/signup": {
+      "post": {
+        "tags": [
+          "Misc"
+        ],
+        "summary": "Sign up a user",
+        "description": "sign up a user",
+        "operationId": "SignUpAUser",
+        "parameters": [
+          {
+            "name": "Content-Type",
+            "in": "header",
+            "description": "",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string",
+              "example": "application/x-www-form-urlencoded"
+            },
+            "example": "application/x-www-form-urlencoded"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "required": [
+                  "firstName",
+                  "lastName",
+                  "email",
+                  "password"
+                ],
+                "type": "object",
+                "properties": {
+                  "firstName": {
+                    "type": "string",
+                    "example": "charles"
+                  },
+                  "lastName": {
+                    "type": "string",
+                    "example": "carnegie"
+                  },
+                  "email": {
+                    "type": "string",
+                    "example": "carnegie@gmail.com"
+                  },
+                  "password": {
+                    "type": "string",
+                    "example": "carnegie"
+                  }
+                }
+              }
+            }
+          },
+          "required": false
+        },
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "example": {
+                    "status": "success",
+                    "data": {
+                      "user": {
+                        "id": 9,
+                        "firstName": "charles",
+                        "lastName": "carnegie",
+                        "email": "carnegie@aol.com",
+                        "updatedAt": "2018-03-08T15:39:59.35Z",
+                        "createdAt": "2018-03-08T15:39:59.35Z",
+                        "profilePic": "",
+                        "about": ""
+                      },
+                      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjksImVtYWlsIjoiY2FybmVnaWVAYW9sLmNvbSIsImlhdCI6MTUyMDUyMzU5OX0.bobWDZHs9cpWOGlCsfmPDX_DSDaEePYz4HWo6bt9IsY"
+                    }
+                  },
+                  "$ref": "#/components/schemas/SignUpAUser"
+                },
+                "example": {
+                  "status": "success",
+                  "data": {
+                    "user": {
+                      "id": 9,
+                      "firstName": "charles",
+                      "lastName": "carnegie",
+                      "email": "carnegie@aol.com",
+                      "updatedAt": "2018-03-08T15:39:59.35Z",
+                      "createdAt": "2018-03-08T15:39:59.35Z",
+                      "profilePic": "",
+                      "about": ""
+                    },
+                    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjksImVtYWlsIjoiY2FybmVnaWVAYW9sLmNvbSIsImlhdCI6MTUyMDUyMzU5OX0.bobWDZHs9cpWOGlCsfmPDX_DSDaEePYz4HWo6bt9IsY"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false,
+        "security": [],
+        "servers": [
+          {
+            "url": "https://more-recipe-gbenga.herokuapp.com/api/v1",
+            "variables": {}
+          }
+        ],
+        "x-operation-settings": {
+          "CollectParameters": false,
+          "AllowDynamicQueryParameters": false,
+          "AllowDynamicFormParameters": false,
+          "IsMultiContentStreaming": false
+        }
+      }
+    },
+    "/recipes": {
+      "get": {
+        "tags": [
+          "Misc"
+        ],
+        "summary": "Get all recipes",
+        "description": "",
+        "operationId": "GetAllRecipes",
+        "parameters": [
+          {
+            "name": "Content-Type",
+            "in": "header",
+            "description": "",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string",
+              "example": "application/x-www-form-urlencoded"
+            },
+            "example": "application/x-www-form-urlencoded"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetAllRecipes"
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false,
+        "security": [],
+        "servers": [
+          {
+            "url": "https://more-recipe-gbenga.herokuapp.com/api/v1",
+            "variables": {}
+          }
+        ],
+        "x-operation-settings": {
+          "CollectParameters": false,
+          "AllowDynamicQueryParameters": false,
+          "AllowDynamicFormParameters": false,
+          "IsMultiContentStreaming": false
+        }
+      },
+      "post": {
+        "tags": [
+          "Misc"
+        ],
+        "summary": "Add a recipe",
+        "description": "",
+        "operationId": "AddARecipe",
+        "parameters": [
+          {
+            "name": "Access-Token",
+            "in": "header",
+            "description": "",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string",
+              "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImVtYWlsIjoiY2FybmVnaWVAZ21haWwuY29tIiwiaWF0IjoxNTEzMTA1ODQyfQ.5lPRavc-YghjPvDiB-hCfTCvD0_yIbeq-6hUAna503Y"
+            },
+            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImVtYWlsIjoiY2FybmVnaWVAZ21haWwuY29tIiwiaWF0IjoxNTEzMTA1ODQyfQ.5lPRavc-YghjPvDiB-hCfTCvD0_yIbeq-6hUAna503Y"
+          },
+          {
+            "name": "Content-Type",
+            "in": "header",
+            "description": "",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string",
+              "example": "application/x-www-form-urlencoded"
+            },
+            "example": "application/x-www-form-urlencoded"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "required": [
+                  "name",
+                  "description",
+                  "ingredients"
+                ],
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "example": "Fish sauce"
+                  },
+                  "description": {
+                    "type": "string",
+                    "example": "It is fish sauce"
+                  },
+                  "ingredients": {
+                    "type": "string",
+                    "example": "fish,milk"
+                  }
+                }
+              }
+            }
+          },
+          "required": false
+        },
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "example": {
+                    "status": "success",
+                    "data": {
+                      "recipe": {
+                        "views": 0,
+                        "upvotes": [],
+                        "downvotes": [],
+                        "id": 11,
+                        "name": "Fish sauce",
+                        "description": "It is fish sauce",
+                        "UserId": 9,
+                        "image": "",
+                        "ingredients": [
+                          "fish",
+                          "milk"
+                        ],
+                        "updatedAt": "2018-03-08T15:42:43.237Z",
+                        "createdAt": "2018-03-08T15:42:43.237Z"
+                      }
+                    }
+                  },
+                  "$ref": "#/components/schemas/AddARecipe"
+                },
+                "example": {
+                  "status": "success",
+                  "data": {
+                    "recipe": {
+                      "views": 0,
+                      "upvotes": [],
+                      "downvotes": [],
+                      "id": 11,
+                      "name": "Fish sauce",
+                      "description": "It is fish sauce",
+                      "UserId": 9,
+                      "image": "",
+                      "ingredients": [
+                        "fish",
+                        "milk"
+                      ],
+                      "updatedAt": "2018-03-08T15:42:43.237Z",
+                      "createdAt": "2018-03-08T15:42:43.237Z"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false,
+        "security": [],
+        "servers": [
+          {
+            "url": "https://more-recipe-gbenga.herokuapp.com/api/v1",
+            "variables": {}
+          }
+        ],
+        "x-operation-settings": {
+          "CollectParameters": false,
+          "AllowDynamicQueryParameters": false,
+          "AllowDynamicFormParameters": false,
+          "IsMultiContentStreaming": false
+        }
+      }
+    },
+    "/users/signin": {
+      "post": {
+        "tags": [
+          "Misc"
+        ],
+        "summary": "Sign In a user",
+        "description": "",
+        "operationId": "SignInAUser",
+        "parameters": [
+          {
+            "name": "Access-Token",
+            "in": "header",
+            "description": "",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string",
+              "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImVtYWlsIjoiY2FybmVnaWVAZ21haWwuY29tIiwiaWF0IjoxNTEzMTA1ODQyfQ.5lPRavc-YghjPvDiB-hCfTCvD0_yIbeq-6hUAna503Y"
+            },
+            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImVtYWlsIjoiY2FybmVnaWVAZ21haWwuY29tIiwiaWF0IjoxNTEzMTA1ODQyfQ.5lPRavc-YghjPvDiB-hCfTCvD0_yIbeq-6hUAna503Y"
+          },
+          {
+            "name": "Content-Type",
+            "in": "header",
+            "description": "",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string",
+              "example": "application/x-www-form-urlencoded"
+            },
+            "example": "application/x-www-form-urlencoded"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "required": [
+                  "email",
+                  "password"
+                ],
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "example": "carnegie@aol.com"
+                  },
+                  "password": {
+                    "type": "string",
+                    "example": "carnegie"
+                  }
+                }
+              }
+            }
+          },
+          "required": false
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "example": {
+                    "status": "success",
+                    "data": {
+                      "user": {
+                        "id": 9,
+                        "firstName": "charles",
+                        "lastName": "carnegie",
+                        "email": "carnegie@aol.com",
+                        "updatedAt": "2018-03-08T15:39:59.35Z",
+                        "createdAt": "2018-03-08T15:39:59.35Z",
+                        "profilePic": "",
+                        "about": ""
+                      },
+                      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjksImVtYWlsIjoiY2FybmVnaWVAYW9sLmNvbSIsImlhdCI6MTUyMDUyMzcyNn0._TsGWanrfeBIgHM_c4WMlkIlw99Wg7EzMfovw9OyBWs"
+                    }
+                  },
+                  "$ref": "#/components/schemas/SignInAUser"
+                },
+                "example": {
+                  "status": "success",
+                  "data": {
+                    "user": {
+                      "id": 9,
+                      "firstName": "charles",
+                      "lastName": "carnegie",
+                      "email": "carnegie@aol.com",
+                      "updatedAt": "2018-03-08T15:39:59.35Z",
+                      "createdAt": "2018-03-08T15:39:59.35Z",
+                      "profilePic": "",
+                      "about": ""
+                    },
+                    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjksImVtYWlsIjoiY2FybmVnaWVAYW9sLmNvbSIsImlhdCI6MTUyMDUyMzcyNn0._TsGWanrfeBIgHM_c4WMlkIlw99Wg7EzMfovw9OyBWs"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false,
+        "security": [],
+        "servers": [
+          {
+            "url": "https://more-recipe-gbenga.herokuapp.com/api/v1",
+            "variables": {}
+          }
+        ],
+        "x-operation-settings": {
+          "CollectParameters": false,
+          "AllowDynamicQueryParameters": false,
+          "AllowDynamicFormParameters": false,
+          "IsMultiContentStreaming": false
+        }
+      }
+    },
+    "/1": {
+      "get": {
+        "tags": [
+          "Misc"
+        ],
+        "summary": "Get recipe by id",
+        "description": "",
+        "operationId": "GetRecipeById",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "example": {
+                    "status": "success",
+                    "data": {
+                      "recipe": {
+                        "id": 5,
+                        "name": "Another one",
+                        "description": "another one",
+                        "ingredients": [
+                          "one"
+                        ],
+                        "image": "http://res.cloudinary.com/king-more-recipes/image/upload/v1518028470/10546i3DAC5A5993C8BC8C_vtqogc.jpg",
+                        "views": 0,
+                        "upvotes": [
+                          1
+                        ],
+                        "downvotes": [],
+                        "createdAt": "2018-02-28T09:15:44.305Z",
+                        "updatedAt": "2018-03-03T10:17:32.132Z",
+                        "UserId": 2
+                      }
+                    }
+                  },
+                  "$ref": "#/components/schemas/GetRecipeById"
+                },
+                "example": {
+                  "status": "success",
+                  "data": {
+                    "recipe": {
+                      "id": 5,
+                      "name": "Another one",
+                      "description": "another one",
+                      "ingredients": [
+                        "one"
+                      ],
+                      "image": "http://res.cloudinary.com/king-more-recipes/image/upload/v1518028470/10546i3DAC5A5993C8BC8C_vtqogc.jpg",
+                      "views": 0,
+                      "upvotes": [
+                        1
+                      ],
+                      "downvotes": [],
+                      "createdAt": "2018-02-28T09:15:44.305Z",
+                      "updatedAt": "2018-03-03T10:17:32.132Z",
+                      "UserId": 2
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false,
+        "security": [],
+        "servers": [
+          {
+            "url": "http://more-recipe-gbenga.herokuapp.com/api/v1/recipes",
+            "variables": {}
+          }
+        ],
+        "x-operation-settings": {
+          "CollectParameters": false,
+          "AllowDynamicQueryParameters": false,
+          "AllowDynamicFormParameters": false,
+          "IsMultiContentStreaming": false
+        }
+      },
+      "put": {
+        "tags": [
+          "Misc"
+        ],
+        "summary": "Edit recipe",
+        "description": "",
+        "operationId": "EditRecipe",
+        "parameters": [
+          {
+            "name": "Content-Type",
+            "in": "header",
+            "description": "",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string",
+              "example": "application/x-www-form-urlencoded"
+            },
+            "example": "application/x-www-form-urlencoded"
+          },
+          {
+            "name": "Access-Token",
+            "in": "header",
+            "description": "",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string",
+              "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImVtYWlsIjoiY2FybmVnaWVAZ21haWwuY29tIiwiaWF0IjoxNTEzMjU5MTIyfQ.61NKwVuihiiw4AW4o4U3sEbqA5LAkPKQksMEl5gujHM"
+            },
+            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImVtYWlsIjoiY2FybmVnaWVAZ21haWwuY29tIiwiaWF0IjoxNTEzMjU5MTIyfQ.61NKwVuihiiw4AW4o4U3sEbqA5LAkPKQksMEl5gujHM"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "required": [
+                  "name"
+                ],
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "example": "Goat sauce"
+                  }
+                }
+              }
+            }
+          },
+          "required": false
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "example": {
+                    "status": "success",
+                    "data": {
+                      "updatedRecipe": {
+                        "id": 11,
+                        "name": "Goat sauce",
+                        "description": "It is fish sauce",
+                        "ingredients": [
+                          "fish",
+                          "milk"
+                        ],
+                        "image": "",
+                        "views": 0,
+                        "upvotes": [],
+                        "downvotes": [],
+                        "createdAt": "2018-03-08T15:42:43.237Z",
+                        "updatedAt": "2018-03-08T15:44:23.301Z",
+                        "UserId": 9
+                      }
+                    }
+                  },
+                  "$ref": "#/components/schemas/EditRecipe"
+                },
+                "example": {
+                  "status": "success",
+                  "data": {
+                    "updatedRecipe": {
+                      "id": 11,
+                      "name": "Goat sauce",
+                      "description": "It is fish sauce",
+                      "ingredients": [
+                        "fish",
+                        "milk"
+                      ],
+                      "image": "",
+                      "views": 0,
+                      "upvotes": [],
+                      "downvotes": [],
+                      "createdAt": "2018-03-08T15:42:43.237Z",
+                      "updatedAt": "2018-03-08T15:44:23.301Z",
+                      "UserId": 9
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false,
+        "security": [],
+        "servers": [
+          {
+            "url": "http://more-recipe-gbenga.herokuapp.com/api/v1/recipes",
+            "variables": {}
+          }
+        ],
+        "x-operation-settings": {
+          "CollectParameters": false,
+          "AllowDynamicQueryParameters": false,
+          "AllowDynamicFormParameters": false,
+          "IsMultiContentStreaming": false
+        }
+      },
+      "delete": {
+        "tags": [
+          "Misc"
+        ],
+        "summary": "Delete recipe",
+        "description": "",
+        "operationId": "DeleteRecipe",
+        "parameters": [
+          {
+            "name": "Content-Type",
+            "in": "header",
+            "description": "",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string",
+              "example": "application/x-www-form-urlencoded"
+            },
+            "example": "application/x-www-form-urlencoded"
+          },
+          {
+            "name": "Access-Token",
+            "in": "header",
+            "description": "",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string",
+              "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImVtYWlsIjoiY2FybmVnaWVAZ21haWwuY29tIiwiaWF0IjoxNTEzMjU5MTIyfQ.61NKwVuihiiw4AW4o4U3sEbqA5LAkPKQksMEl5gujHM"
+            },
+            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImVtYWlsIjoiY2FybmVnaWVAZ21haWwuY29tIiwiaWF0IjoxNTEzMjU5MTIyfQ.61NKwVuihiiw4AW4o4U3sEbqA5LAkPKQksMEl5gujHM"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "required": [
+                  "name"
+                ],
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "example": "Goat sauce"
+                  }
+                }
+              }
+            }
+          },
+          "required": false
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "example": {
+                    "status": "success",
+                    "data": {
+                      "message": "Recipe has been successfully deleted"
+                    }
+                  },
+                  "$ref": "#/components/schemas/DeleteRecipe"
+                },
+                "example": {
+                  "status": "success",
+                  "data": {
+                    "message": "Recipe has been successfully deleted"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false,
+        "security": [],
+        "servers": [
+          {
+            "url": "http://more-recipe-gbenga.herokuapp.com/api/v1/recipes",
+            "variables": {}
+          }
+        ],
+        "x-operation-settings": {
+          "CollectParameters": false,
+          "AllowDynamicQueryParameters": false,
+          "AllowDynamicFormParameters": false,
+          "IsMultiContentStreaming": false
+        }
+      }
+    },
+    "/recipes/2/reviews": {
+      "post": {
+        "tags": [
+          "Misc"
+        ],
+        "summary": "Add review to recipe",
+        "description": "",
+        "operationId": "AddReviewToRecipe",
+        "parameters": [
+          {
+            "name": "Access-Token",
+            "in": "header",
+            "description": "",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string",
+              "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImVtYWlsIjoiY2FybmVnaWVAZ21haWwuY29tIiwiaWF0IjoxNTEzMTA1ODQyfQ.5lPRavc-YghjPvDiB-hCfTCvD0_yIbeq-6hUAna503Y"
+            },
+            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImVtYWlsIjoiY2FybmVnaWVAZ21haWwuY29tIiwiaWF0IjoxNTEzMTA1ODQyfQ.5lPRavc-YghjPvDiB-hCfTCvD0_yIbeq-6hUAna503Y"
+          },
+          {
+            "name": "Content-Type",
+            "in": "header",
+            "description": "",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string",
+              "example": "application/x-www-form-urlencoded"
+            },
+            "example": "application/x-www-form-urlencoded"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "required": [
+                  "review"
+                ],
+                "type": "object",
+                "properties": {
+                  "review": {
+                    "type": "string",
+                    "example": "I love this recipe"
+                  }
+                }
+              }
+            }
+          },
+          "required": false
+        },
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "example": {
+                    "status": "success",
+                    "data": {
+                      "review": {
+                        "id": 12,
+                        "review": "cool one",
+                        "createdAt": "2018-03-08T16:02:07.873Z",
+                        "updatedAt": "2018-03-08T16:02:07.873Z",
+                        "RecipeId": 11,
+                        "UserId": 9,
+                        "User": {
+                          "id": 9,
+                          "firstName": "Andrew",
+                          "lastName": "carnegie",
+                          "email": "carnegie@aol.com",
+                          "profilePic": "",
+                          "about": "",
+                          "createdAt": "2018-03-08T15:39:59.35Z",
+                          "updatedAt": "2018-03-08T15:50:26.827Z"
+                        }
+                      }
+                    }
+                  },
+                  "$ref": "#/components/schemas/AddReviewToRecipe"
+                },
+                "example": {
+                  "status": "success",
+                  "data": {
+                    "review": {
+                      "id": 12,
+                      "review": "cool one",
+                      "createdAt": "2018-03-08T16:02:07.873Z",
+                      "updatedAt": "2018-03-08T16:02:07.873Z",
+                      "RecipeId": 11,
+                      "UserId": 9,
+                      "User": {
+                        "id": 9,
+                        "firstName": "Andrew",
+                        "lastName": "carnegie",
+                        "email": "carnegie@aol.com",
+                        "profilePic": "",
+                        "about": "",
+                        "createdAt": "2018-03-08T15:39:59.35Z",
+                        "updatedAt": "2018-03-08T15:50:26.827Z"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false,
+        "security": [],
+        "servers": [
+          {
+            "url": "https://more-recipe-gbenga.herokuapp.com/api/v1",
+            "variables": {}
+          }
+        ],
+        "x-operation-settings": {
+          "CollectParameters": false,
+          "AllowDynamicQueryParameters": false,
+          "AllowDynamicFormParameters": false,
+          "IsMultiContentStreaming": false
+        }
+      }
+    },
+    "/users/edit": {
+      "post": {
+        "tags": [
+          "Misc"
+        ],
+        "summary": "Edit user",
+        "description": "",
+        "operationId": "EditUser",
+        "parameters": [
+          {
+            "name": "Access-Token",
+            "in": "header",
+            "description": "",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string",
+              "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImVtYWlsIjoiY2FybmVnaWVAZ21haWwuY29tIiwiaWF0IjoxNTEzMTA1ODQyfQ.5lPRavc-YghjPvDiB-hCfTCvD0_yIbeq-6hUAna503Y"
+            },
+            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImVtYWlsIjoiY2FybmVnaWVAZ21haWwuY29tIiwiaWF0IjoxNTEzMTA1ODQyfQ.5lPRavc-YghjPvDiB-hCfTCvD0_yIbeq-6hUAna503Y"
+          },
+          {
+            "name": "Content-Type",
+            "in": "header",
+            "description": "",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string",
+              "example": "application/x-www-form-urlencoded"
+            },
+            "example": "application/x-www-form-urlencoded"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "required": [
+                  "firstName"
+                ],
+                "type": "object",
+                "properties": {
+                  "firstName": {
+                    "type": "string",
+                    "example": "Andrew"
+                  }
+                }
+              }
+            }
+          },
+          "required": false
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "example": {
+                    "status": "success",
+                    "data": {
+                      "user": {
+                        "id": 9,
+                        "firstName": "Andrew",
+                        "lastName": "carnegie",
+                        "email": "carnegie@aol.com",
+                        "updatedAt": "2018-03-08T15:50:26.827Z",
+                        "createdAt": "2018-03-08T15:39:59.35Z",
+                        "profilePic": "",
+                        "about": ""
+                      }
+                    }
+                  },
+                  "$ref": "#/components/schemas/EditUser"
+                },
+                "example": {
+                  "status": "success",
+                  "data": {
+                    "user": {
+                      "id": 9,
+                      "firstName": "Andrew",
+                      "lastName": "carnegie",
+                      "email": "carnegie@aol.com",
+                      "updatedAt": "2018-03-08T15:50:26.827Z",
+                      "createdAt": "2018-03-08T15:39:59.35Z",
+                      "profilePic": "",
+                      "about": ""
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false,
+        "security": [],
+        "servers": [
+          {
+            "url": "https://more-recipe-gbenga.herokuapp.com/api/v1",
+            "variables": {}
+          }
+        ],
+        "x-operation-settings": {
+          "CollectParameters": false,
+          "AllowDynamicQueryParameters": false,
+          "AllowDynamicFormParameters": false,
+          "IsMultiContentStreaming": false
+        }
+      }
+    },
+    "/users/recipes/2/favourites": {
+      "post": {
+        "tags": [
+          "Misc"
+        ],
+        "summary": "Add favourite",
+        "description": "",
+        "operationId": "AddFavourite",
+        "parameters": [
+          {
+            "name": "Access-Token",
+            "in": "header",
+            "description": "",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string",
+              "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImVtYWlsIjoiY2FybmVnaWVAZ21haWwuY29tIiwiaWF0IjoxNTEzMTA1ODQyfQ.5lPRavc-YghjPvDiB-hCfTCvD0_yIbeq-6hUAna503Y"
+            },
+            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImVtYWlsIjoiY2FybmVnaWVAZ21haWwuY29tIiwiaWF0IjoxNTEzMTA1ODQyfQ.5lPRavc-YghjPvDiB-hCfTCvD0_yIbeq-6hUAna503Y"
+          },
+          {
+            "name": "Content-Type",
+            "in": "header",
+            "description": "",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string",
+              "example": "application/x-www-form-urlencoded"
+            },
+            "example": "application/x-www-form-urlencoded"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "example": {
+                    "status": "success",
+                    "data": {
+                      "recipe": {
+                        "id": 5,
+                        "name": "Another one",
+                        "description": "another one",
+                        "ingredients": [
+                          "one"
+                        ],
+                        "image": "http://res.cloudinary.com/king-more-recipes/image/upload/v1518028470/10546i3DAC5A5993C8BC8C_vtqogc.jpg",
+                        "views": 0,
+                        "upvotes": [
+                          1
+                        ],
+                        "downvotes": [],
+                        "createdAt": "2018-02-28T09:15:44.305Z",
+                        "updatedAt": "2018-03-03T10:17:32.132Z",
+                        "UserId": 2
+                      },
+                      "message": "Favourite added"
+                    }
+                  },
+                  "$ref": "#/components/schemas/AddFavourite"
+                },
+                "example": {
+                  "status": "success",
+                  "data": {
+                    "recipe": {
+                      "id": 5,
+                      "name": "Another one",
+                      "description": "another one",
+                      "ingredients": [
+                        "one"
+                      ],
+                      "image": "http://res.cloudinary.com/king-more-recipes/image/upload/v1518028470/10546i3DAC5A5993C8BC8C_vtqogc.jpg",
+                      "views": 0,
+                      "upvotes": [
+                        1
+                      ],
+                      "downvotes": [],
+                      "createdAt": "2018-02-28T09:15:44.305Z",
+                      "updatedAt": "2018-03-03T10:17:32.132Z",
+                      "UserId": 2
+                    },
+                    "message": "Favourite added"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false,
+        "security": [],
+        "servers": [
+          {
+            "url": "https://more-recipe-gbenga.herokuapp.com/api/v1",
+            "variables": {}
+          }
+        ],
+        "x-operation-settings": {
+          "CollectParameters": false,
+          "AllowDynamicQueryParameters": false,
+          "AllowDynamicFormParameters": false,
+          "IsMultiContentStreaming": false
+        }
+      },
+      "delete": {
+        "tags": [
+          "Misc"
+        ],
+        "summary": "Delete favourite recipe",
+        "description": "",
+        "operationId": "DeleteFavouriteRecipe",
+        "parameters": [
+          {
+            "name": "Access-Token",
+            "in": "header",
+            "description": "",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string",
+              "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImVtYWlsIjoiY2FybmVnaWVAZ21haWwuY29tIiwiaWF0IjoxNTEzMTA1ODQyfQ.5lPRavc-YghjPvDiB-hCfTCvD0_yIbeq-6hUAna503Y"
+            },
+            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImVtYWlsIjoiY2FybmVnaWVAZ21haWwuY29tIiwiaWF0IjoxNTEzMTA1ODQyfQ.5lPRavc-YghjPvDiB-hCfTCvD0_yIbeq-6hUAna503Y"
+          },
+          {
+            "name": "Content-Type",
+            "in": "header",
+            "description": "",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string",
+              "example": "application/x-www-form-urlencoded"
+            },
+            "example": "application/x-www-form-urlencoded"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "example": {
+                    "status": "success",
+                    "data": {
+                      "message": "Favourite deleted"
+                    }
+                  },
+                  "$ref": "#/components/schemas/DeleteFavouriteRecipe"
+                },
+                "example": {
+                  "status": "success",
+                  "data": {
+                    "message": "Favourite deleted"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false,
+        "security": [],
+        "servers": [
+          {
+            "url": "https://more-recipe-gbenga.herokuapp.com/api/v1",
+            "variables": {}
+          }
+        ],
+        "x-operation-settings": {
+          "CollectParameters": false,
+          "AllowDynamicQueryParameters": false,
+          "AllowDynamicFormParameters": false,
+          "IsMultiContentStreaming": false
+        }
+      }
+    },
+    "/users/recipes/favourites": {
+      "get": {
+        "tags": [
+          "Misc"
+        ],
+        "summary": "Get all favourites for user",
+        "description": "",
+        "operationId": "GetAllFavouritesForUser",
+        "parameters": [
+          {
+            "name": "Access-Token",
+            "in": "header",
+            "description": "",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string",
+              "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImVtYWlsIjoiY2FybmVnaWVAZ21haWwuY29tIiwiaWF0IjoxNTEzMTA1ODQyfQ.5lPRavc-YghjPvDiB-hCfTCvD0_yIbeq-6hUAna503Y"
+            },
+            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImVtYWlsIjoiY2FybmVnaWVAZ21haWwuY29tIiwiaWF0IjoxNTEzMTA1ODQyfQ.5lPRavc-YghjPvDiB-hCfTCvD0_yIbeq-6hUAna503Y"
+          },
+          {
+            "name": "Content-Type",
+            "in": "header",
+            "description": "",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string",
+              "example": "application/x-www-form-urlencoded"
+            },
+            "example": "application/x-www-form-urlencoded"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "example": {
+                    "status": "success",
+                    "data": {
+                      "favourites": [
+                        {
+                          "id": 5,
+                          "name": "Another one",
+                          "description": "another one",
+                          "ingredients": [
+                            "one"
+                          ],
+                          "image": "http://res.cloudinary.com/king-more-recipes/image/upload/v1518028470/10546i3DAC5A5993C8BC8C_vtqogc.jpg",
+                          "views": 0,
+                          "upvotes": [
+                            1
+                          ],
+                          "downvotes": [],
+                          "createdAt": "2018-02-28T09:15:44.305Z",
+                          "updatedAt": "2018-03-03T10:17:32.132Z",
+                          "UserId": 2,
+                          "Favourites": {
+                            "createdAt": "2018-03-08T15:51:00.502Z",
+                            "updatedAt": "2018-03-08T15:51:00.502Z",
+                            "RecipeId": 5,
+                            "UserId": 9
+                          }
+                        }
+                      ]
+                    }
+                  },
+                  "$ref": "#/components/schemas/GetAllFavouritesForUser"
+                },
+                "example": {
+                  "status": "success",
+                  "data": {
+                    "favourites": [
+                      {
+                        "id": 5,
+                        "name": "Another one",
+                        "description": "another one",
+                        "ingredients": [
+                          "one"
+                        ],
+                        "image": "http://res.cloudinary.com/king-more-recipes/image/upload/v1518028470/10546i3DAC5A5993C8BC8C_vtqogc.jpg",
+                        "views": 0,
+                        "upvotes": [
+                          1
+                        ],
+                        "downvotes": [],
+                        "createdAt": "2018-02-28T09:15:44.305Z",
+                        "updatedAt": "2018-03-03T10:17:32.132Z",
+                        "UserId": 2,
+                        "Favourites": {
+                          "createdAt": "2018-03-08T15:51:00.502Z",
+                          "updatedAt": "2018-03-08T15:51:00.502Z",
+                          "RecipeId": 5,
+                          "UserId": 9
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false,
+        "security": [],
+        "servers": [
+          {
+            "url": "https://more-recipe-gbenga.herokuapp.com/api/v1",
+            "variables": {}
+          }
+        ],
+        "x-operation-settings": {
+          "CollectParameters": false,
+          "AllowDynamicQueryParameters": false,
+          "AllowDynamicFormParameters": false,
+          "IsMultiContentStreaming": false
+        }
+      }
+    },
+    "/users/recipes": {
+      "get": {
+        "tags": [
+          "Misc"
+        ],
+        "summary": "Get all recipes created by user",
+        "description": "",
+        "operationId": "GetAllRecipesCreatedByUser",
+        "parameters": [
+          {
+            "name": "Access-Token",
+            "in": "header",
+            "description": "",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string",
+              "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImVtYWlsIjoiY2FybmVnaWVAZ21haWwuY29tIiwiaWF0IjoxNTEzMTA1ODQyfQ.5lPRavc-YghjPvDiB-hCfTCvD0_yIbeq-6hUAna503Y"
+            },
+            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImVtYWlsIjoiY2FybmVnaWVAZ21haWwuY29tIiwiaWF0IjoxNTEzMTA1ODQyfQ.5lPRavc-YghjPvDiB-hCfTCvD0_yIbeq-6hUAna503Y"
+          },
+          {
+            "name": "Content-Type",
+            "in": "header",
+            "description": "",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string",
+              "example": "application/x-www-form-urlencoded"
+            },
+            "example": "application/x-www-form-urlencoded"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "example": {
+                    "status": "success",
+                    "data": {
+                      "recipes": [
+                        {
+                          "id": 11,
+                          "name": "Goat sauce",
+                          "description": "It is fish sauce",
+                          "ingredients": [
+                            "fish",
+                            "milk"
+                          ],
+                          "image": "",
+                          "views": 0,
+                          "upvotes": [],
+                          "downvotes": [],
+                          "createdAt": "2018-03-08T15:42:43.237Z",
+                          "updatedAt": "2018-03-08T15:44:23.301Z",
+                          "UserId": 9
+                        }
+                      ]
+                    }
+                  },
+                  "$ref": "#/components/schemas/GetAllRecipesCreatedByUser"
+                },
+                "example": {
+                  "status": "success",
+                  "data": {
+                    "recipes": [
+                      {
+                        "id": 11,
+                        "name": "Goat sauce",
+                        "description": "It is fish sauce",
+                        "ingredients": [
+                          "fish",
+                          "milk"
+                        ],
+                        "image": "",
+                        "views": 0,
+                        "upvotes": [],
+                        "downvotes": [],
+                        "createdAt": "2018-03-08T15:42:43.237Z",
+                        "updatedAt": "2018-03-08T15:44:23.301Z",
+                        "UserId": 9
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false,
+        "security": [],
+        "servers": [
+          {
+            "url": "https://more-recipe-gbenga.herokuapp.com/api/v1",
+            "variables": {}
+          }
+        ],
+        "x-operation-settings": {
+          "CollectParameters": false,
+          "AllowDynamicQueryParameters": false,
+          "AllowDynamicFormParameters": false,
+          "IsMultiContentStreaming": false
+        }
+      }
+    },
+    "/recipes/upvote/2": {
+      "post": {
+        "tags": [
+          "Misc"
+        ],
+        "summary": "Upvote recipe",
+        "description": "",
+        "operationId": "UpvoteRecipe",
+        "parameters": [
+          {
+            "name": "Access-Token",
+            "in": "header",
+            "description": "",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string",
+              "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImVtYWlsIjoiY2FybmVnaWVAZ21haWwuY29tIiwiaWF0IjoxNTEzMTA1ODQyfQ.5lPRavc-YghjPvDiB-hCfTCvD0_yIbeq-6hUAna503Y"
+            },
+            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImVtYWlsIjoiY2FybmVnaWVAZ21haWwuY29tIiwiaWF0IjoxNTEzMTA1ODQyfQ.5lPRavc-YghjPvDiB-hCfTCvD0_yIbeq-6hUAna503Y"
+          },
+          {
+            "name": "Content-Type",
+            "in": "header",
+            "description": "",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string",
+              "example": "application/x-www-form-urlencoded"
+            },
+            "example": "application/x-www-form-urlencoded"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "example": {
+                    "status": "success",
+                    "data": {
+                      "recipe": {
+                        "id": 8,
+                        "name": "Fish sauce new",
+                        "description": "It is fish sauce",
+                        "ingredients": [
+                          "fish",
+                          "milk"
+                        ],
+                        "image": "https://res.cloudinary.com/king-more-recipes/image/upload/v1519865015/jhljrognqm4cha38ucxh.jpg",
+                        "views": 0,
+                        "upvotes": [
+                          2,
+                          1,
+                          9
+                        ],
+                        "downvotes": [],
+                        "createdAt": "2018-02-28T09:51:17.828Z",
+                        "updatedAt": "2018-03-08T15:52:18.502Z",
+                        "UserId": 1
+                      },
+                      "message": "Recipe upvoted"
+                    }
+                  },
+                  "$ref": "#/components/schemas/UpvoteRecipe"
+                },
+                "example": {
+                  "status": "success",
+                  "data": {
+                    "recipe": {
+                      "id": 8,
+                      "name": "Fish sauce new",
+                      "description": "It is fish sauce",
+                      "ingredients": [
+                        "fish",
+                        "milk"
+                      ],
+                      "image": "https://res.cloudinary.com/king-more-recipes/image/upload/v1519865015/jhljrognqm4cha38ucxh.jpg",
+                      "views": 0,
+                      "upvotes": [
+                        2,
+                        1,
+                        9
+                      ],
+                      "downvotes": [],
+                      "createdAt": "2018-02-28T09:51:17.828Z",
+                      "updatedAt": "2018-03-08T15:52:18.502Z",
+                      "UserId": 1
+                    },
+                    "message": "Recipe upvoted"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false,
+        "security": [],
+        "servers": [
+          {
+            "url": "https://more-recipe-gbenga.herokuapp.com/api/v1",
+            "variables": {}
+          }
+        ],
+        "x-operation-settings": {
+          "CollectParameters": false,
+          "AllowDynamicQueryParameters": false,
+          "AllowDynamicFormParameters": false,
+          "IsMultiContentStreaming": false
+        }
+      }
+    },
+    "/recipes/downvote/2": {
+      "post": {
+        "tags": [
+          "Misc"
+        ],
+        "summary": "Downvote recipe",
+        "description": "",
+        "operationId": "DownvoteRecipe",
+        "parameters": [
+          {
+            "name": "Access-Token",
+            "in": "header",
+            "description": "",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string",
+              "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImVtYWlsIjoiY2FybmVnaWVAZ21haWwuY29tIiwiaWF0IjoxNTEzMTA1ODQyfQ.5lPRavc-YghjPvDiB-hCfTCvD0_yIbeq-6hUAna503Y"
+            },
+            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImVtYWlsIjoiY2FybmVnaWVAZ21haWwuY29tIiwiaWF0IjoxNTEzMTA1ODQyfQ.5lPRavc-YghjPvDiB-hCfTCvD0_yIbeq-6hUAna503Y"
+          },
+          {
+            "name": "Content-Type",
+            "in": "header",
+            "description": "",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string",
+              "example": "application/x-www-form-urlencoded"
+            },
+            "example": "application/x-www-form-urlencoded"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "example": {
+                    "status": "success",
+                    "data": {
+                      "recipe": {
+                        "id": 8,
+                        "name": "Fish sauce new",
+                        "description": "It is fish sauce",
+                        "ingredients": [
+                          "fish",
+                          "milk"
+                        ],
+                        "image": "https://res.cloudinary.com/king-more-recipes/image/upload/v1519865015/jhljrognqm4cha38ucxh.jpg",
+                        "views": 0,
+                        "upvotes": [
+                          2,
+                          1
+                        ],
+                        "downvotes": [
+                          9
+                        ],
+                        "createdAt": "2018-02-28T09:51:17.828Z",
+                        "updatedAt": "2018-03-08T15:52:41.425Z",
+                        "UserId": 1
+                      },
+                      "message": "Recipe downvoted"
+                    }
+                  },
+                  "$ref": "#/components/schemas/DownvoteRecipe"
+                },
+                "example": {
+                  "status": "success",
+                  "data": {
+                    "recipe": {
+                      "id": 8,
+                      "name": "Fish sauce new",
+                      "description": "It is fish sauce",
+                      "ingredients": [
+                        "fish",
+                        "milk"
+                      ],
+                      "image": "https://res.cloudinary.com/king-more-recipes/image/upload/v1519865015/jhljrognqm4cha38ucxh.jpg",
+                      "views": 0,
+                      "upvotes": [
+                        2,
+                        1
+                      ],
+                      "downvotes": [
+                        9
+                      ],
+                      "createdAt": "2018-02-28T09:51:17.828Z",
+                      "updatedAt": "2018-03-08T15:52:41.425Z",
+                      "UserId": 1
+                    },
+                    "message": "Recipe downvoted"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false,
+        "security": [],
+        "servers": [
+          {
+            "url": "https://more-recipe-gbenga.herokuapp.com/api/v1",
+            "variables": {}
+          }
+        ],
+        "x-operation-settings": {
+          "CollectParameters": false,
+          "AllowDynamicQueryParameters": false,
+          "AllowDynamicFormParameters": false,
+          "IsMultiContentStreaming": false
+        }
+      }
+    },
+    "/recipes/most_favourited": {
+      "get": {
+        "tags": [
+          "Misc"
+        ],
+        "summary": "Get most favourited recipes",
+        "description": "",
+        "operationId": "GetMostFavouritedRecipes",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetMostFavouritedRecipes"
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false,
+        "security": [],
+        "servers": [
+          {
+            "url": "https://more-recipe-gbenga.herokuapp.com/api/v1",
+            "variables": {}
+          }
+        ],
+        "x-operation-settings": {
+          "CollectParameters": false,
+          "AllowDynamicQueryParameters": false,
+          "AllowDynamicFormParameters": false,
+          "IsMultiContentStreaming": false
+        }
+      }
+    },
+    "/recipes/8/reviews": {
+      "get": {
+        "tags": [
+          "Misc"
+        ],
+        "summary": "Get recipe reviews",
+        "description": "",
+        "operationId": "GetRecipeReviews",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "example": {
+                    "status": "success",
+                    "data": {
+                      "reviews": [
+                        {
+                          "id": 2,
+                          "review": "I love this recipe",
+                          "createdAt": "2018-02-28T09:51:43.589Z",
+                          "updatedAt": "2018-02-28T09:51:43.589Z",
+                          "RecipeId": 8,
+                          "UserId": 1,
+                          "User": {
+                            "id": 1,
+                            "firstName": "Andrew",
+                            "lastName": "Carnegie",
+                            "email": "carnegie@gmail.com",
+                            "profilePic": "https://res.cloudinary.com/king-more-recipes/image/upload/v1520369347/m2vf0rz4a9tuen0bccsv.jpg",
+                            "about": "About me",
+                            "createdAt": "2018-02-28T08:05:02.026Z",
+                            "updatedAt": "2018-03-06T20:49:11.705Z"
+                          }
+                        },
+                        {
+                          "id": 3,
+                          "review": "Cool recipe",
+                          "createdAt": "2018-03-05T23:01:37.214Z",
+                          "updatedAt": "2018-03-05T23:01:37.214Z",
+                          "RecipeId": 8,
+                          "UserId": 1,
+                          "User": {
+                            "id": 1,
+                            "firstName": "Andrew",
+                            "lastName": "Carnegie",
+                            "email": "carnegie@gmail.com",
+                            "profilePic": "https://res.cloudinary.com/king-more-recipes/image/upload/v1520369347/m2vf0rz4a9tuen0bccsv.jpg",
+                            "about": "About me",
+                            "createdAt": "2018-02-28T08:05:02.026Z",
+                            "updatedAt": "2018-03-06T20:49:11.705Z"
+                          }
+                        },
+                        {
+                          "id": 4,
+                          "review": "Really love this",
+                          "createdAt": "2018-03-06T10:44:29.953Z",
+                          "updatedAt": "2018-03-06T10:44:29.953Z",
+                          "RecipeId": 8,
+                          "UserId": 1,
+                          "User": {
+                            "id": 1,
+                            "firstName": "Andrew",
+                            "lastName": "Carnegie",
+                            "email": "carnegie@gmail.com",
+                            "profilePic": "https://res.cloudinary.com/king-more-recipes/image/upload/v1520369347/m2vf0rz4a9tuen0bccsv.jpg",
+                            "about": "About me",
+                            "createdAt": "2018-02-28T08:05:02.026Z",
+                            "updatedAt": "2018-03-06T20:49:11.705Z"
+                          }
+                        },
+                        {
+                          "id": 5,
+                          "review": "Still loving it",
+                          "createdAt": "2018-03-06T20:47:43.929Z",
+                          "updatedAt": "2018-03-06T20:47:43.929Z",
+                          "RecipeId": 8,
+                          "UserId": 1,
+                          "User": {
+                            "id": 1,
+                            "firstName": "Andrew",
+                            "lastName": "Carnegie",
+                            "email": "carnegie@gmail.com",
+                            "profilePic": "https://res.cloudinary.com/king-more-recipes/image/upload/v1520369347/m2vf0rz4a9tuen0bccsv.jpg",
+                            "about": "About me",
+                            "createdAt": "2018-02-28T08:05:02.026Z",
+                            "updatedAt": "2018-03-06T20:49:11.705Z"
+                          }
+                        },
+                        {
+                          "id": 6,
+                          "review": "I really really do",
+                          "createdAt": "2018-03-06T20:47:56.464Z",
+                          "updatedAt": "2018-03-06T20:47:56.464Z",
+                          "RecipeId": 8,
+                          "UserId": 1,
+                          "User": {
+                            "id": 1,
+                            "firstName": "Andrew",
+                            "lastName": "Carnegie",
+                            "email": "carnegie@gmail.com",
+                            "profilePic": "https://res.cloudinary.com/king-more-recipes/image/upload/v1520369347/m2vf0rz4a9tuen0bccsv.jpg",
+                            "about": "About me",
+                            "createdAt": "2018-02-28T08:05:02.026Z",
+                            "updatedAt": "2018-03-06T20:49:11.705Z"
+                          }
+                        },
+                        {
+                          "id": 7,
+                          "review": "You have no idea",
+                          "createdAt": "2018-03-06T20:48:02.916Z",
+                          "updatedAt": "2018-03-06T20:48:02.916Z",
+                          "RecipeId": 8,
+                          "UserId": 1,
+                          "User": {
+                            "id": 1,
+                            "firstName": "Andrew",
+                            "lastName": "Carnegie",
+                            "email": "carnegie@gmail.com",
+                            "profilePic": "https://res.cloudinary.com/king-more-recipes/image/upload/v1520369347/m2vf0rz4a9tuen0bccsv.jpg",
+                            "about": "About me",
+                            "createdAt": "2018-02-28T08:05:02.026Z",
+                            "updatedAt": "2018-03-06T20:49:11.705Z"
+                          }
+                        }
+                      ],
+                      "paginationMeta": {
+                        "recipeId": "8",
+                        "from": 0,
+                        "limit": 6,
+                        "total": 7,
+                        "next": "https://more-recipe-gbenga.herokuapp.com/api/v1/recipes/8/reviews?from=6&limit=6"
+                      }
+                    }
+                  },
+                  "$ref": "#/components/schemas/GetRecipeReviews"
+                },
+                "example": {
+                  "status": "success",
+                  "data": {
+                    "reviews": [
+                      {
+                        "id": 2,
+                        "review": "I love this recipe",
+                        "createdAt": "2018-02-28T09:51:43.589Z",
+                        "updatedAt": "2018-02-28T09:51:43.589Z",
+                        "RecipeId": 8,
+                        "UserId": 1,
+                        "User": {
+                          "id": 1,
+                          "firstName": "Andrew",
+                          "lastName": "Carnegie",
+                          "email": "carnegie@gmail.com",
+                          "profilePic": "https://res.cloudinary.com/king-more-recipes/image/upload/v1520369347/m2vf0rz4a9tuen0bccsv.jpg",
+                          "about": "About me",
+                          "createdAt": "2018-02-28T08:05:02.026Z",
+                          "updatedAt": "2018-03-06T20:49:11.705Z"
+                        }
+                      },
+                      {
+                        "id": 3,
+                        "review": "Cool recipe",
+                        "createdAt": "2018-03-05T23:01:37.214Z",
+                        "updatedAt": "2018-03-05T23:01:37.214Z",
+                        "RecipeId": 8,
+                        "UserId": 1,
+                        "User": {
+                          "id": 1,
+                          "firstName": "Andrew",
+                          "lastName": "Carnegie",
+                          "email": "carnegie@gmail.com",
+                          "profilePic": "https://res.cloudinary.com/king-more-recipes/image/upload/v1520369347/m2vf0rz4a9tuen0bccsv.jpg",
+                          "about": "About me",
+                          "createdAt": "2018-02-28T08:05:02.026Z",
+                          "updatedAt": "2018-03-06T20:49:11.705Z"
+                        }
+                      },
+                      {
+                        "id": 4,
+                        "review": "Really love this",
+                        "createdAt": "2018-03-06T10:44:29.953Z",
+                        "updatedAt": "2018-03-06T10:44:29.953Z",
+                        "RecipeId": 8,
+                        "UserId": 1,
+                        "User": {
+                          "id": 1,
+                          "firstName": "Andrew",
+                          "lastName": "Carnegie",
+                          "email": "carnegie@gmail.com",
+                          "profilePic": "https://res.cloudinary.com/king-more-recipes/image/upload/v1520369347/m2vf0rz4a9tuen0bccsv.jpg",
+                          "about": "About me",
+                          "createdAt": "2018-02-28T08:05:02.026Z",
+                          "updatedAt": "2018-03-06T20:49:11.705Z"
+                        }
+                      },
+                      {
+                        "id": 5,
+                        "review": "Still loving it",
+                        "createdAt": "2018-03-06T20:47:43.929Z",
+                        "updatedAt": "2018-03-06T20:47:43.929Z",
+                        "RecipeId": 8,
+                        "UserId": 1,
+                        "User": {
+                          "id": 1,
+                          "firstName": "Andrew",
+                          "lastName": "Carnegie",
+                          "email": "carnegie@gmail.com",
+                          "profilePic": "https://res.cloudinary.com/king-more-recipes/image/upload/v1520369347/m2vf0rz4a9tuen0bccsv.jpg",
+                          "about": "About me",
+                          "createdAt": "2018-02-28T08:05:02.026Z",
+                          "updatedAt": "2018-03-06T20:49:11.705Z"
+                        }
+                      },
+                      {
+                        "id": 6,
+                        "review": "I really really do",
+                        "createdAt": "2018-03-06T20:47:56.464Z",
+                        "updatedAt": "2018-03-06T20:47:56.464Z",
+                        "RecipeId": 8,
+                        "UserId": 1,
+                        "User": {
+                          "id": 1,
+                          "firstName": "Andrew",
+                          "lastName": "Carnegie",
+                          "email": "carnegie@gmail.com",
+                          "profilePic": "https://res.cloudinary.com/king-more-recipes/image/upload/v1520369347/m2vf0rz4a9tuen0bccsv.jpg",
+                          "about": "About me",
+                          "createdAt": "2018-02-28T08:05:02.026Z",
+                          "updatedAt": "2018-03-06T20:49:11.705Z"
+                        }
+                      },
+                      {
+                        "id": 7,
+                        "review": "You have no idea",
+                        "createdAt": "2018-03-06T20:48:02.916Z",
+                        "updatedAt": "2018-03-06T20:48:02.916Z",
+                        "RecipeId": 8,
+                        "UserId": 1,
+                        "User": {
+                          "id": 1,
+                          "firstName": "Andrew",
+                          "lastName": "Carnegie",
+                          "email": "carnegie@gmail.com",
+                          "profilePic": "https://res.cloudinary.com/king-more-recipes/image/upload/v1520369347/m2vf0rz4a9tuen0bccsv.jpg",
+                          "about": "About me",
+                          "createdAt": "2018-02-28T08:05:02.026Z",
+                          "updatedAt": "2018-03-06T20:49:11.705Z"
+                        }
+                      }
+                    ],
+                    "paginationMeta": {
+                      "recipeId": "8",
+                      "from": 0,
+                      "limit": 6,
+                      "total": 7,
+                      "next": "https://more-recipe-gbenga.herokuapp.com/api/v1/recipes/8/reviews?from=6&limit=6"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false,
+        "security": [],
+        "servers": [
+          {
+            "url": "https://more-recipe-gbenga.herokuapp.com/api/v1",
+            "variables": {}
+          }
+        ],
+        "x-operation-settings": {
+          "CollectParameters": false,
+          "AllowDynamicQueryParameters": false,
+          "AllowDynamicFormParameters": false,
+          "IsMultiContentStreaming": false
+        }
+      }
+    },
+    "/recipes/reviews/5": {
+      "put": {
+        "tags": [
+          "Misc"
+        ],
+        "summary": "Edit review",
+        "description": "",
+        "operationId": "EditReview",
+        "parameters": [
+          {
+            "name": "Content-Type",
+            "in": "header",
+            "description": "",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string",
+              "example": "application/x-www-form-urlencoded"
+            },
+            "example": "application/x-www-form-urlencoded"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "required": [
+                  "review"
+                ],
+                "type": "object",
+                "properties": {
+                  "review": {
+                    "type": "string",
+                    "example": "cool"
+                  }
+                }
+              }
+            }
+          },
+          "required": false
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "example": {
+                    "status": "success",
+                    "data": {
+                      "updatedReview": {
+                        "id": 11,
+                        "review": "cool",
+                        "createdAt": "2018-03-08T15:57:34.097Z",
+                        "updatedAt": "2018-03-08T15:57:53.665Z",
+                        "RecipeId": 11,
+                        "UserId": 9
+                      }
+                    }
+                  },
+                  "$ref": "#/components/schemas/EditReview"
+                },
+                "example": {
+                  "status": "success",
+                  "data": {
+                    "updatedReview": {
+                      "id": 11,
+                      "review": "cool",
+                      "createdAt": "2018-03-08T15:57:34.097Z",
+                      "updatedAt": "2018-03-08T15:57:53.665Z",
+                      "RecipeId": 11,
+                      "UserId": 9
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false,
+        "security": [],
+        "servers": [
+          {
+            "url": "https://more-recipe-gbenga.herokuapp.com/api/v1",
+            "variables": {}
+          }
+        ],
+        "x-operation-settings": {
+          "CollectParameters": false,
+          "AllowDynamicQueryParameters": false,
+          "AllowDynamicFormParameters": false,
+          "IsMultiContentStreaming": false
+        }
+      },
+      "delete": {
+        "tags": [
+          "Misc"
+        ],
+        "summary": "Delete review",
+        "description": "",
+        "operationId": "DeleteReview",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "example": {
+                    "status": "success",
+                    "data": {
+                      "message": "Review has been successfully deleted"
+                    }
+                  },
+                  "$ref": "#/components/schemas/DeleteReview"
+                },
+                "example": {
+                  "status": "success",
+                  "data": {
+                    "message": "Review has been successfully deleted"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false,
+        "security": [],
+        "servers": [
+          {
+            "url": "https://more-recipe-gbenga.herokuapp.com/api/v1",
+            "variables": {}
+          }
+        ],
+        "x-operation-settings": {
+          "CollectParameters": false,
+          "AllowDynamicQueryParameters": false,
+          "AllowDynamicFormParameters": false,
+          "IsMultiContentStreaming": false
+        }
+      }
+    },
+    "/user/2": {
+      "get": {
+        "tags": [
+          "Misc"
+        ],
+        "summary": "Get user by id",
+        "description": "",
+        "operationId": "GetUserById",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "example": {
+                    "status": "success",
+                    "data": {
+                      "user": {
+                        "id": 2,
+                        "firstName": "John Davidson",
+                        "lastName": "Rockefeller",
+                        "email": "john@gmail.com",
+                        "updatedAt": "2018-02-28T09:18:35.58Z",
+                        "createdAt": "2018-02-28T09:06:18.774Z",
+                        "profilePic": "https://res.cloudinary.com/king-more-recipes/image/upload/v1519809509/oxpcy68yi8qxwziae0t5.jpg",
+                        "about": "About me"
+                      }
+                    }
+                  },
+                  "$ref": "#/components/schemas/GetUserById"
+                },
+                "example": {
+                  "status": "success",
+                  "data": {
+                    "user": {
+                      "id": 2,
+                      "firstName": "John Davidson",
+                      "lastName": "Rockefeller",
+                      "email": "john@gmail.com",
+                      "updatedAt": "2018-02-28T09:18:35.58Z",
+                      "createdAt": "2018-02-28T09:06:18.774Z",
+                      "profilePic": "https://res.cloudinary.com/king-more-recipes/image/upload/v1519809509/oxpcy68yi8qxwziae0t5.jpg",
+                      "about": "About me"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false,
+        "security": [],
+        "servers": [
+          {
+            "url": "https://more-recipe-gbenga.herokuapp.com/api/v1",
+            "variables": {}
+          }
+        ],
+        "x-operation-settings": {
+          "CollectParameters": false,
+          "AllowDynamicQueryParameters": false,
+          "AllowDynamicFormParameters": false,
+          "IsMultiContentStreaming": false
+        }
+      },
+      "delete": {
+        "tags": [
+          "Misc"
+        ],
+        "summary": "Delete user",
+        "description": "",
+        "operationId": "DeleteUser",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "example": {
+                    "status": "success",
+                    "data": {
+                      "message": "User account deleted"
+                    }
+                  },
+                  "$ref": "#/components/schemas/DeleteUser"
+                },
+                "example": {
+                  "status": "success",
+                  "data": {
+                    "message": "User account deleted"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false,
+        "security": [],
+        "servers": [
+          {
+            "url": "https://more-recipe-gbenga.herokuapp.com/api/v1",
+            "variables": {}
+          }
+        ],
+        "x-operation-settings": {
+          "CollectParameters": false,
+          "AllowDynamicQueryParameters": false,
+          "AllowDynamicFormParameters": false,
+          "IsMultiContentStreaming": false
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "SignUpAUser": {
+        "title": "Sign up a user",
+        "required": [
+          "status",
+          "data"
+        ],
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "success"
+          },
+          "data": {
+            "example": {
+              "user": {
+                "id": 9,
+                "firstName": "charles",
+                "lastName": "carnegie",
+                "email": "carnegie@aol.com",
+                "updatedAt": "2018-03-08T15:39:59.35Z",
+                "createdAt": "2018-03-08T15:39:59.35Z",
+                "profilePic": "",
+                "about": ""
+              },
+              "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjksImVtYWlsIjoiY2FybmVnaWVAYW9sLmNvbSIsImlhdCI6MTUyMDUyMzU5OX0.bobWDZHs9cpWOGlCsfmPDX_DSDaEePYz4HWo6bt9IsY"
+            },
+            "$ref": "#/components/schemas/Data"
+          }
+        },
+        "example": {
+          "status": "success",
+          "data": {
+            "user": {
+              "id": 9,
+              "firstName": "charles",
+              "lastName": "carnegie",
+              "email": "carnegie@aol.com",
+              "updatedAt": "2018-03-08T15:39:59.35Z",
+              "createdAt": "2018-03-08T15:39:59.35Z",
+              "profilePic": "",
+              "about": ""
+            },
+            "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjksImVtYWlsIjoiY2FybmVnaWVAYW9sLmNvbSIsImlhdCI6MTUyMDUyMzU5OX0.bobWDZHs9cpWOGlCsfmPDX_DSDaEePYz4HWo6bt9IsY"
+          }
+        }
+      },
+      "Data": {
+        "title": "Data",
+        "required": [
+          "user",
+          "token"
+        ],
+        "type": "object",
+        "properties": {
+          "user": {
+            "example": {
+              "id": 9,
+              "firstName": "charles",
+              "lastName": "carnegie",
+              "email": "carnegie@aol.com",
+              "updatedAt": "2018-03-08T15:39:59.35Z",
+              "createdAt": "2018-03-08T15:39:59.35Z",
+              "profilePic": "",
+              "about": ""
+            },
+            "$ref": "#/components/schemas/User"
+          },
+          "token": {
+            "type": "string",
+            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjksImVtYWlsIjoiY2FybmVnaWVAYW9sLmNvbSIsImlhdCI6MTUyMDUyMzU5OX0.bobWDZHs9cpWOGlCsfmPDX_DSDaEePYz4HWo6bt9IsY"
+          }
+        },
+        "example": {
+          "user": {
+            "id": 9,
+            "firstName": "charles",
+            "lastName": "carnegie",
+            "email": "carnegie@aol.com",
+            "updatedAt": "2018-03-08T15:39:59.35Z",
+            "createdAt": "2018-03-08T15:39:59.35Z",
+            "profilePic": "",
+            "about": ""
+          },
+          "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjksImVtYWlsIjoiY2FybmVnaWVAYW9sLmNvbSIsImlhdCI6MTUyMDUyMzU5OX0.bobWDZHs9cpWOGlCsfmPDX_DSDaEePYz4HWo6bt9IsY"
+        }
+      },
+      "User": {
+        "title": "User",
+        "required": [
+          "id",
+          "firstName",
+          "lastName",
+          "email",
+          "updatedAt",
+          "createdAt",
+          "profilePic",
+          "about"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32",
+            "example": 9
+          },
+          "firstName": {
+            "type": "string",
+            "example": "charles"
+          },
+          "lastName": {
+            "type": "string",
+            "example": "carnegie"
+          },
+          "email": {
+            "type": "string",
+            "example": "carnegie@aol.com"
+          },
+          "updatedAt": {
+            "type": "string",
+            "example": "3/8/2018 3:39:59 PM"
+          },
+          "createdAt": {
+            "type": "string",
+            "example": "3/8/2018 3:39:59 PM"
+          },
+          "profilePic": {
+            "type": "string"
+          },
+          "about": {
+            "type": "string"
+          }
+        },
+        "example": {
+          "id": 9,
+          "firstName": "charles",
+          "lastName": "carnegie",
+          "email": "carnegie@aol.com",
+          "updatedAt": "2018-03-08T15:39:59.35Z",
+          "createdAt": "2018-03-08T15:39:59.35Z",
+          "profilePic": "",
+          "about": ""
+        }
+      },
+      "GetAllRecipes": {
+        "title": "Get all recipes",
+        "required": [
+          "status",
+          "data"
+        ],
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "success"
+          },
+          "data": {
+            "$ref": "#/components/schemas/Data4"
+          }
+        }
+      },
+      "Data4": {
+        "title": "Data4",
+        "required": [
+          "recipes",
+          "paginationMeta"
+        ],
+        "type": "object",
+        "properties": {
+          "recipes": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Recipe"
+            },
+            "description": ""
+          },
+          "paginationMeta": {
+            "example": {
+              "from": 0,
+              "limit": 6,
+              "total": 7,
+              "next": "https://more-recipe-gbenga.herokuapp.com/api/v1/recipes?from=6&limit=6"
+            },
+            "$ref": "#/components/schemas/PaginationMeta"
+          }
+        }
+      },
+      "Recipe": {
+        "title": "Recipe",
+        "required": [
+          "id",
+          "name",
+          "description",
+          "ingredients",
+          "image",
+          "views",
+          "upvotes",
+          "downvotes",
+          "createdAt",
+          "updatedAt",
+          "UserId"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32",
+            "example": 10
+          },
+          "name": {
+            "type": "string",
+            "example": "French Fries"
+          },
+          "description": {
+            "type": "string",
+            "example": "Cool french fries from france"
+          },
+          "ingredients": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "example": [
+                "fries",
+                "french"
+              ]
+            },
+            "description": ""
+          },
+          "image": {
+            "type": "string",
+            "example": "https://res.cloudinary.com/king-more-recipes/image/upload/v1520265751/sx4abyybh0xwywfcvbft.jpg"
+          },
+          "views": {
+            "type": "integer",
+            "format": "int32",
+            "example": 0
+          },
+          "upvotes": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "example": []
+            },
+            "description": ""
+          },
+          "downvotes": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "example": []
+            },
+            "description": ""
+          },
+          "createdAt": {
+            "type": "string",
+            "example": "3/5/2018 4:02:32 PM"
+          },
+          "updatedAt": {
+            "type": "string",
+            "example": "3/5/2018 4:02:32 PM"
+          },
+          "UserId": {
+            "type": "integer",
+            "format": "int32",
+            "example": 1
+          }
+        },
+        "example": {
+          "views": 0,
+          "upvotes": [],
+          "downvotes": [],
+          "id": 11,
+          "name": "Fish sauce",
+          "description": "It is fish sauce",
+          "UserId": 9,
+          "image": "",
+          "ingredients": [
+            "fish",
+            "milk"
+          ],
+          "updatedAt": "2018-03-08T15:42:43.237Z",
+          "createdAt": "2018-03-08T15:42:43.237Z"
+        }
+      },
+      "PaginationMeta": {
+        "title": "PaginationMeta",
+        "required": [
+          "from",
+          "limit",
+          "total",
+          "next"
+        ],
+        "type": "object",
+        "properties": {
+          "from": {
+            "type": "integer",
+            "format": "int32",
+            "example": 0
+          },
+          "limit": {
+            "type": "integer",
+            "format": "int32",
+            "example": 6
+          },
+          "total": {
+            "type": "integer",
+            "format": "int32",
+            "example": 7
+          },
+          "next": {
+            "type": "string",
+            "example": "https://more-recipe-gbenga.herokuapp.com/api/v1/recipes?from=6&limit=6"
+          }
+        },
+        "example": {
+          "from": 0,
+          "limit": 6,
+          "total": 7,
+          "next": "https://more-recipe-gbenga.herokuapp.com/api/v1/recipes?from=6&limit=6"
+        }
+      },
+      "SignInAUser": {
+        "title": "Sign In a user",
+        "required": [
+          "status",
+          "data"
+        ],
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "success"
+          },
+          "data": {
+            "example": {
+              "user": {
+                "id": 9,
+                "firstName": "charles",
+                "lastName": "carnegie",
+                "email": "carnegie@aol.com",
+                "updatedAt": "2018-03-08T15:39:59.35Z",
+                "createdAt": "2018-03-08T15:39:59.35Z",
+                "profilePic": "",
+                "about": ""
+              },
+              "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjksImVtYWlsIjoiY2FybmVnaWVAYW9sLmNvbSIsImlhdCI6MTUyMDUyMzcyNn0._TsGWanrfeBIgHM_c4WMlkIlw99Wg7EzMfovw9OyBWs"
+            },
+            "$ref": "#/components/schemas/Data"
+          }
+        },
+        "example": {
+          "status": "success",
+          "data": {
+            "user": {
+              "id": 9,
+              "firstName": "charles",
+              "lastName": "carnegie",
+              "email": "carnegie@aol.com",
+              "updatedAt": "2018-03-08T15:39:59.35Z",
+              "createdAt": "2018-03-08T15:39:59.35Z",
+              "profilePic": "",
+              "about": ""
+            },
+            "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjksImVtYWlsIjoiY2FybmVnaWVAYW9sLmNvbSIsImlhdCI6MTUyMDUyMzcyNn0._TsGWanrfeBIgHM_c4WMlkIlw99Wg7EzMfovw9OyBWs"
+          }
+        }
+      },
+      "AddARecipe": {
+        "title": "Add a recipe",
+        "required": [
+          "status",
+          "data"
+        ],
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "success"
+          },
+          "data": {
+            "example": {
+              "recipe": {
+                "views": 0,
+                "upvotes": [],
+                "downvotes": [],
+                "id": 11,
+                "name": "Fish sauce",
+                "description": "It is fish sauce",
+                "UserId": 9,
+                "image": "",
+                "ingredients": [
+                  "fish",
+                  "milk"
+                ],
+                "updatedAt": "2018-03-08T15:42:43.237Z",
+                "createdAt": "2018-03-08T15:42:43.237Z"
+              }
+            },
+            "$ref": "#/components/schemas/Data11"
+          }
+        },
+        "example": {
+          "status": "success",
+          "data": {
+            "recipe": {
+              "views": 0,
+              "upvotes": [],
+              "downvotes": [],
+              "id": 11,
+              "name": "Fish sauce",
+              "description": "It is fish sauce",
+              "UserId": 9,
+              "image": "",
+              "ingredients": [
+                "fish",
+                "milk"
+              ],
+              "updatedAt": "2018-03-08T15:42:43.237Z",
+              "createdAt": "2018-03-08T15:42:43.237Z"
+            }
+          }
+        }
+      },
+      "Data11": {
+        "title": "Data11",
+        "required": [
+          "recipe"
+        ],
+        "type": "object",
+        "properties": {
+          "recipe": {
+            "example": {
+              "views": 0,
+              "upvotes": [],
+              "downvotes": [],
+              "id": 11,
+              "name": "Fish sauce",
+              "description": "It is fish sauce",
+              "UserId": 9,
+              "image": "",
+              "ingredients": [
+                "fish",
+                "milk"
+              ],
+              "updatedAt": "2018-03-08T15:42:43.237Z",
+              "createdAt": "2018-03-08T15:42:43.237Z"
+            },
+            "$ref": "#/components/schemas/Recipe"
+          }
+        },
+        "example": {
+          "recipe": {
+            "views": 0,
+            "upvotes": [],
+            "downvotes": [],
+            "id": 11,
+            "name": "Fish sauce",
+            "description": "It is fish sauce",
+            "UserId": 9,
+            "image": "",
+            "ingredients": [
+              "fish",
+              "milk"
+            ],
+            "updatedAt": "2018-03-08T15:42:43.237Z",
+            "createdAt": "2018-03-08T15:42:43.237Z"
+          }
+        }
+      },
+      "GetRecipeById": {
+        "title": "Get recipe by id",
+        "required": [
+          "status",
+          "data"
+        ],
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "success"
+          },
+          "data": {
+            "example": {
+              "recipe": {
+                "id": 5,
+                "name": "Another one",
+                "description": "another one",
+                "ingredients": [
+                  "one"
+                ],
+                "image": "http://res.cloudinary.com/king-more-recipes/image/upload/v1518028470/10546i3DAC5A5993C8BC8C_vtqogc.jpg",
+                "views": 0,
+                "upvotes": [
+                  1
+                ],
+                "downvotes": [],
+                "createdAt": "2018-02-28T09:15:44.305Z",
+                "updatedAt": "2018-03-03T10:17:32.132Z",
+                "UserId": 2
+              }
+            },
+            "$ref": "#/components/schemas/Data14"
+          }
+        },
+        "example": {
+          "status": "success",
+          "data": {
+            "recipe": {
+              "id": 5,
+              "name": "Another one",
+              "description": "another one",
+              "ingredients": [
+                "one"
+              ],
+              "image": "http://res.cloudinary.com/king-more-recipes/image/upload/v1518028470/10546i3DAC5A5993C8BC8C_vtqogc.jpg",
+              "views": 0,
+              "upvotes": [
+                1
+              ],
+              "downvotes": [],
+              "createdAt": "2018-02-28T09:15:44.305Z",
+              "updatedAt": "2018-03-03T10:17:32.132Z",
+              "UserId": 2
+            }
+          }
+        }
+      },
+      "Data14": {
+        "title": "Data14",
+        "required": [
+          "recipe"
+        ],
+        "type": "object",
+        "properties": {
+          "recipe": {
+            "example": {
+              "id": 5,
+              "name": "Another one",
+              "description": "another one",
+              "ingredients": [
+                "one"
+              ],
+              "image": "http://res.cloudinary.com/king-more-recipes/image/upload/v1518028470/10546i3DAC5A5993C8BC8C_vtqogc.jpg",
+              "views": 0,
+              "upvotes": [
+                1
+              ],
+              "downvotes": [],
+              "createdAt": "2018-02-28T09:15:44.305Z",
+              "updatedAt": "2018-03-03T10:17:32.132Z",
+              "UserId": 2
+            },
+            "$ref": "#/components/schemas/Recipe15"
+          }
+        },
+        "example": {
+          "recipe": {
+            "id": 5,
+            "name": "Another one",
+            "description": "another one",
+            "ingredients": [
+              "one"
+            ],
+            "image": "http://res.cloudinary.com/king-more-recipes/image/upload/v1518028470/10546i3DAC5A5993C8BC8C_vtqogc.jpg",
+            "views": 0,
+            "upvotes": [
+              1
+            ],
+            "downvotes": [],
+            "createdAt": "2018-02-28T09:15:44.305Z",
+            "updatedAt": "2018-03-03T10:17:32.132Z",
+            "UserId": 2
+          }
+        }
+      },
+      "Recipe15": {
+        "title": "Recipe15",
+        "required": [
+          "id",
+          "name",
+          "description",
+          "ingredients",
+          "image",
+          "views",
+          "upvotes",
+          "downvotes",
+          "createdAt",
+          "updatedAt",
+          "UserId"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32",
+            "example": 5
+          },
+          "name": {
+            "type": "string",
+            "example": "Another one"
+          },
+          "description": {
+            "type": "string",
+            "example": "another one"
+          },
+          "ingredients": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "example": [
+                "one"
+              ]
+            },
+            "description": ""
+          },
+          "image": {
+            "type": "string",
+            "example": "http://res.cloudinary.com/king-more-recipes/image/upload/v1518028470/10546i3DAC5A5993C8BC8C_vtqogc.jpg"
+          },
+          "views": {
+            "type": "integer",
+            "format": "int32",
+            "example": 0
+          },
+          "upvotes": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int32",
+              "example": [
+                1
+              ]
+            },
+            "description": ""
+          },
+          "downvotes": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "example": []
+            },
+            "description": ""
+          },
+          "createdAt": {
+            "type": "string",
+            "example": "2/28/2018 9:15:44 AM"
+          },
+          "updatedAt": {
+            "type": "string",
+            "example": "3/3/2018 10:17:32 AM"
+          },
+          "UserId": {
+            "type": "integer",
+            "format": "int32",
+            "example": 2
+          }
+        },
+        "example": {
+          "id": 5,
+          "name": "Another one",
+          "description": "another one",
+          "ingredients": [
+            "one"
+          ],
+          "image": "http://res.cloudinary.com/king-more-recipes/image/upload/v1518028470/10546i3DAC5A5993C8BC8C_vtqogc.jpg",
+          "views": 0,
+          "upvotes": [
+            1
+          ],
+          "downvotes": [],
+          "createdAt": "2018-02-28T09:15:44.305Z",
+          "updatedAt": "2018-03-03T10:17:32.132Z",
+          "UserId": 2
+        }
+      },
+      "EditRecipe": {
+        "title": "Edit recipe",
+        "required": [
+          "status",
+          "data"
+        ],
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "success"
+          },
+          "data": {
+            "example": {
+              "updatedRecipe": {
+                "id": 11,
+                "name": "Goat sauce",
+                "description": "It is fish sauce",
+                "ingredients": [
+                  "fish",
+                  "milk"
+                ],
+                "image": "",
+                "views": 0,
+                "upvotes": [],
+                "downvotes": [],
+                "createdAt": "2018-03-08T15:42:43.237Z",
+                "updatedAt": "2018-03-08T15:44:23.301Z",
+                "UserId": 9
+              }
+            },
+            "$ref": "#/components/schemas/Data17"
+          }
+        },
+        "example": {
+          "status": "success",
+          "data": {
+            "updatedRecipe": {
+              "id": 11,
+              "name": "Goat sauce",
+              "description": "It is fish sauce",
+              "ingredients": [
+                "fish",
+                "milk"
+              ],
+              "image": "",
+              "views": 0,
+              "upvotes": [],
+              "downvotes": [],
+              "createdAt": "2018-03-08T15:42:43.237Z",
+              "updatedAt": "2018-03-08T15:44:23.301Z",
+              "UserId": 9
+            }
+          }
+        }
+      },
+      "Data17": {
+        "title": "Data17",
+        "required": [
+          "updatedRecipe"
+        ],
+        "type": "object",
+        "properties": {
+          "updatedRecipe": {
+            "example": {
+              "id": 11,
+              "name": "Goat sauce",
+              "description": "It is fish sauce",
+              "ingredients": [
+                "fish",
+                "milk"
+              ],
+              "image": "",
+              "views": 0,
+              "upvotes": [],
+              "downvotes": [],
+              "createdAt": "2018-03-08T15:42:43.237Z",
+              "updatedAt": "2018-03-08T15:44:23.301Z",
+              "UserId": 9
+            },
+            "$ref": "#/components/schemas/UpdatedRecipe"
+          }
+        },
+        "example": {
+          "updatedRecipe": {
+            "id": 11,
+            "name": "Goat sauce",
+            "description": "It is fish sauce",
+            "ingredients": [
+              "fish",
+              "milk"
+            ],
+            "image": "",
+            "views": 0,
+            "upvotes": [],
+            "downvotes": [],
+            "createdAt": "2018-03-08T15:42:43.237Z",
+            "updatedAt": "2018-03-08T15:44:23.301Z",
+            "UserId": 9
+          }
+        }
+      },
+      "UpdatedRecipe": {
+        "title": "UpdatedRecipe",
+        "required": [
+          "id",
+          "name",
+          "description",
+          "ingredients",
+          "image",
+          "views",
+          "upvotes",
+          "downvotes",
+          "createdAt",
+          "updatedAt",
+          "UserId"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32",
+            "example": 11
+          },
+          "name": {
+            "type": "string",
+            "example": "Goat sauce"
+          },
+          "description": {
+            "type": "string",
+            "example": "It is fish sauce"
+          },
+          "ingredients": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "example": [
+                "fish",
+                "milk"
+              ]
+            },
+            "description": ""
+          },
+          "image": {
+            "type": "string"
+          },
+          "views": {
+            "type": "integer",
+            "format": "int32",
+            "example": 0
+          },
+          "upvotes": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "example": []
+            },
+            "description": ""
+          },
+          "downvotes": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "example": []
+            },
+            "description": ""
+          },
+          "createdAt": {
+            "type": "string",
+            "example": "3/8/2018 3:42:43 PM"
+          },
+          "updatedAt": {
+            "type": "string",
+            "example": "3/8/2018 3:44:23 PM"
+          },
+          "UserId": {
+            "type": "integer",
+            "format": "int32",
+            "example": 9
+          }
+        },
+        "example": {
+          "id": 11,
+          "name": "Goat sauce",
+          "description": "It is fish sauce",
+          "ingredients": [
+            "fish",
+            "milk"
+          ],
+          "image": "",
+          "views": 0,
+          "upvotes": [],
+          "downvotes": [],
+          "createdAt": "2018-03-08T15:42:43.237Z",
+          "updatedAt": "2018-03-08T15:44:23.301Z",
+          "UserId": 9
+        }
+      },
+      "DeleteRecipe": {
+        "title": "Delete recipe",
+        "required": [
+          "status",
+          "data"
+        ],
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "success"
+          },
+          "data": {
+            "example": {
+              "message": "Recipe has been successfully deleted"
+            },
+            "$ref": "#/components/schemas/Data20"
+          }
+        },
+        "example": {
+          "status": "success",
+          "data": {
+            "message": "Recipe has been successfully deleted"
+          }
+        }
+      },
+      "Data20": {
+        "title": "Data20",
+        "required": [
+          "message"
+        ],
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "example": "Recipe has been successfully deleted"
+          }
+        },
+        "example": {
+          "message": "Recipe has been successfully deleted"
+        }
+      },
+      "AddReviewToRecipe": {
+        "title": "Add review to recipe",
+        "required": [
+          "status",
+          "data"
+        ],
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "success"
+          },
+          "data": {
+            "example": {
+              "review": {
+                "id": 12,
+                "review": "cool one",
+                "createdAt": "2018-03-08T16:02:07.873Z",
+                "updatedAt": "2018-03-08T16:02:07.873Z",
+                "RecipeId": 11,
+                "UserId": 9,
+                "User": {
+                  "id": 9,
+                  "firstName": "Andrew",
+                  "lastName": "carnegie",
+                  "email": "carnegie@aol.com",
+                  "profilePic": "",
+                  "about": "",
+                  "createdAt": "2018-03-08T15:39:59.35Z",
+                  "updatedAt": "2018-03-08T15:50:26.827Z"
+                }
+              }
+            },
+            "$ref": "#/components/schemas/Data22"
+          }
+        },
+        "example": {
+          "status": "success",
+          "data": {
+            "review": {
+              "id": 12,
+              "review": "cool one",
+              "createdAt": "2018-03-08T16:02:07.873Z",
+              "updatedAt": "2018-03-08T16:02:07.873Z",
+              "RecipeId": 11,
+              "UserId": 9,
+              "User": {
+                "id": 9,
+                "firstName": "Andrew",
+                "lastName": "carnegie",
+                "email": "carnegie@aol.com",
+                "profilePic": "",
+                "about": "",
+                "createdAt": "2018-03-08T15:39:59.35Z",
+                "updatedAt": "2018-03-08T15:50:26.827Z"
+              }
+            }
+          }
+        }
+      },
+      "Data22": {
+        "title": "Data22",
+        "required": [
+          "review"
+        ],
+        "type": "object",
+        "properties": {
+          "review": {
+            "example": {
+              "id": 12,
+              "review": "cool one",
+              "createdAt": "2018-03-08T16:02:07.873Z",
+              "updatedAt": "2018-03-08T16:02:07.873Z",
+              "RecipeId": 11,
+              "UserId": 9,
+              "User": {
+                "id": 9,
+                "firstName": "Andrew",
+                "lastName": "carnegie",
+                "email": "carnegie@aol.com",
+                "profilePic": "",
+                "about": "",
+                "createdAt": "2018-03-08T15:39:59.35Z",
+                "updatedAt": "2018-03-08T15:50:26.827Z"
+              }
+            },
+            "$ref": "#/components/schemas/Review"
+          }
+        },
+        "example": {
+          "review": {
+            "id": 12,
+            "review": "cool one",
+            "createdAt": "2018-03-08T16:02:07.873Z",
+            "updatedAt": "2018-03-08T16:02:07.873Z",
+            "RecipeId": 11,
+            "UserId": 9,
+            "User": {
+              "id": 9,
+              "firstName": "Andrew",
+              "lastName": "carnegie",
+              "email": "carnegie@aol.com",
+              "profilePic": "",
+              "about": "",
+              "createdAt": "2018-03-08T15:39:59.35Z",
+              "updatedAt": "2018-03-08T15:50:26.827Z"
+            }
+          }
+        }
+      },
+      "Review": {
+        "title": "Review",
+        "required": [
+          "id",
+          "review",
+          "createdAt",
+          "updatedAt",
+          "RecipeId",
+          "UserId",
+          "User"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32",
+            "example": 12
+          },
+          "review": {
+            "type": "string",
+            "example": "cool one"
+          },
+          "createdAt": {
+            "type": "string",
+            "example": "3/8/2018 4:02:07 PM"
+          },
+          "updatedAt": {
+            "type": "string",
+            "example": "3/8/2018 4:02:07 PM"
+          },
+          "RecipeId": {
+            "type": "integer",
+            "format": "int32",
+            "example": 11
+          },
+          "UserId": {
+            "type": "integer",
+            "format": "int32",
+            "example": 9
+          },
+          "User": {
+            "example": {
+              "id": 9,
+              "firstName": "Andrew",
+              "lastName": "carnegie",
+              "email": "carnegie@aol.com",
+              "profilePic": "",
+              "about": "",
+              "createdAt": "2018-03-08T15:39:59.35Z",
+              "updatedAt": "2018-03-08T15:50:26.827Z"
+            },
+            "$ref": "#/components/schemas/User"
+          }
+        },
+        "example": {
+          "id": 12,
+          "review": "cool one",
+          "createdAt": "2018-03-08T16:02:07.873Z",
+          "updatedAt": "2018-03-08T16:02:07.873Z",
+          "RecipeId": 11,
+          "UserId": 9,
+          "User": {
+            "id": 9,
+            "firstName": "Andrew",
+            "lastName": "carnegie",
+            "email": "carnegie@aol.com",
+            "profilePic": "",
+            "about": "",
+            "createdAt": "2018-03-08T15:39:59.35Z",
+            "updatedAt": "2018-03-08T15:50:26.827Z"
+          }
+        }
+      },
+      "EditUser": {
+        "title": "Edit user",
+        "required": [
+          "status",
+          "data"
+        ],
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "success"
+          },
+          "data": {
+            "example": {
+              "user": {
+                "id": 9,
+                "firstName": "Andrew",
+                "lastName": "carnegie",
+                "email": "carnegie@aol.com",
+                "updatedAt": "2018-03-08T15:50:26.827Z",
+                "createdAt": "2018-03-08T15:39:59.35Z",
+                "profilePic": "",
+                "about": ""
+              }
+            },
+            "$ref": "#/components/schemas/Data26"
+          }
+        },
+        "example": {
+          "status": "success",
+          "data": {
+            "user": {
+              "id": 9,
+              "firstName": "Andrew",
+              "lastName": "carnegie",
+              "email": "carnegie@aol.com",
+              "updatedAt": "2018-03-08T15:50:26.827Z",
+              "createdAt": "2018-03-08T15:39:59.35Z",
+              "profilePic": "",
+              "about": ""
+            }
+          }
+        }
+      },
+      "Data26": {
+        "title": "Data26",
+        "required": [
+          "user"
+        ],
+        "type": "object",
+        "properties": {
+          "user": {
+            "example": {
+              "id": 9,
+              "firstName": "Andrew",
+              "lastName": "carnegie",
+              "email": "carnegie@aol.com",
+              "updatedAt": "2018-03-08T15:50:26.827Z",
+              "createdAt": "2018-03-08T15:39:59.35Z",
+              "profilePic": "",
+              "about": ""
+            },
+            "$ref": "#/components/schemas/User"
+          }
+        },
+        "example": {
+          "user": {
+            "id": 9,
+            "firstName": "Andrew",
+            "lastName": "carnegie",
+            "email": "carnegie@aol.com",
+            "updatedAt": "2018-03-08T15:50:26.827Z",
+            "createdAt": "2018-03-08T15:39:59.35Z",
+            "profilePic": "",
+            "about": ""
+          }
+        }
+      },
+      "AddFavourite": {
+        "title": "Add favourite",
+        "required": [
+          "status",
+          "data"
+        ],
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "success"
+          },
+          "data": {
+            "example": {
+              "recipe": {
+                "id": 5,
+                "name": "Another one",
+                "description": "another one",
+                "ingredients": [
+                  "one"
+                ],
+                "image": "http://res.cloudinary.com/king-more-recipes/image/upload/v1518028470/10546i3DAC5A5993C8BC8C_vtqogc.jpg",
+                "views": 0,
+                "upvotes": [
+                  1
+                ],
+                "downvotes": [],
+                "createdAt": "2018-02-28T09:15:44.305Z",
+                "updatedAt": "2018-03-03T10:17:32.132Z",
+                "UserId": 2
+              },
+              "message": "Favourite added"
+            },
+            "$ref": "#/components/schemas/Data29"
+          }
+        },
+        "example": {
+          "status": "success",
+          "data": {
+            "recipe": {
+              "id": 5,
+              "name": "Another one",
+              "description": "another one",
+              "ingredients": [
+                "one"
+              ],
+              "image": "http://res.cloudinary.com/king-more-recipes/image/upload/v1518028470/10546i3DAC5A5993C8BC8C_vtqogc.jpg",
+              "views": 0,
+              "upvotes": [
+                1
+              ],
+              "downvotes": [],
+              "createdAt": "2018-02-28T09:15:44.305Z",
+              "updatedAt": "2018-03-03T10:17:32.132Z",
+              "UserId": 2
+            },
+            "message": "Favourite added"
+          }
+        }
+      },
+      "Data29": {
+        "title": "Data29",
+        "required": [
+          "recipe",
+          "message"
+        ],
+        "type": "object",
+        "properties": {
+          "recipe": {
+            "example": {
+              "id": 5,
+              "name": "Another one",
+              "description": "another one",
+              "ingredients": [
+                "one"
+              ],
+              "image": "http://res.cloudinary.com/king-more-recipes/image/upload/v1518028470/10546i3DAC5A5993C8BC8C_vtqogc.jpg",
+              "views": 0,
+              "upvotes": [
+                1
+              ],
+              "downvotes": [],
+              "createdAt": "2018-02-28T09:15:44.305Z",
+              "updatedAt": "2018-03-03T10:17:32.132Z",
+              "UserId": 2
+            },
+            "$ref": "#/components/schemas/Recipe15"
+          },
+          "message": {
+            "type": "string",
+            "example": "Favourite added"
+          }
+        },
+        "example": {
+          "recipe": {
+            "id": 5,
+            "name": "Another one",
+            "description": "another one",
+            "ingredients": [
+              "one"
+            ],
+            "image": "http://res.cloudinary.com/king-more-recipes/image/upload/v1518028470/10546i3DAC5A5993C8BC8C_vtqogc.jpg",
+            "views": 0,
+            "upvotes": [
+              1
+            ],
+            "downvotes": [],
+            "createdAt": "2018-02-28T09:15:44.305Z",
+            "updatedAt": "2018-03-03T10:17:32.132Z",
+            "UserId": 2
+          },
+          "message": "Favourite added"
+        }
+      },
+      "GetAllFavouritesForUser": {
+        "title": "Get all favourites for user",
+        "required": [
+          "status",
+          "data"
+        ],
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "success"
+          },
+          "data": {
+            "example": {
+              "favourites": [
+                {
+                  "id": 5,
+                  "name": "Another one",
+                  "description": "another one",
+                  "ingredients": [
+                    "one"
+                  ],
+                  "image": "http://res.cloudinary.com/king-more-recipes/image/upload/v1518028470/10546i3DAC5A5993C8BC8C_vtqogc.jpg",
+                  "views": 0,
+                  "upvotes": [
+                    1
+                  ],
+                  "downvotes": [],
+                  "createdAt": "2018-02-28T09:15:44.305Z",
+                  "updatedAt": "2018-03-03T10:17:32.132Z",
+                  "UserId": 2,
+                  "Favourites": {
+                    "createdAt": "2018-03-08T15:51:00.502Z",
+                    "updatedAt": "2018-03-08T15:51:00.502Z",
+                    "RecipeId": 5,
+                    "UserId": 9
+                  }
+                }
+              ]
+            },
+            "$ref": "#/components/schemas/Data32"
+          }
+        },
+        "example": {
+          "status": "success",
+          "data": {
+            "favourites": [
+              {
+                "id": 5,
+                "name": "Another one",
+                "description": "another one",
+                "ingredients": [
+                  "one"
+                ],
+                "image": "http://res.cloudinary.com/king-more-recipes/image/upload/v1518028470/10546i3DAC5A5993C8BC8C_vtqogc.jpg",
+                "views": 0,
+                "upvotes": [
+                  1
+                ],
+                "downvotes": [],
+                "createdAt": "2018-02-28T09:15:44.305Z",
+                "updatedAt": "2018-03-03T10:17:32.132Z",
+                "UserId": 2,
+                "Favourites": {
+                  "createdAt": "2018-03-08T15:51:00.502Z",
+                  "updatedAt": "2018-03-08T15:51:00.502Z",
+                  "RecipeId": 5,
+                  "UserId": 9
+                }
+              }
+            ]
+          }
+        }
+      },
+      "Data32": {
+        "title": "Data32",
+        "required": [
+          "favourites"
+        ],
+        "type": "object",
+        "properties": {
+          "favourites": {
+            "type": "array",
+            "items": {
+              "example": [
+                {
+                  "id": 5,
+                  "name": "Another one",
+                  "description": "another one",
+                  "ingredients": [
+                    "one"
+                  ],
+                  "image": "http://res.cloudinary.com/king-more-recipes/image/upload/v1518028470/10546i3DAC5A5993C8BC8C_vtqogc.jpg",
+                  "views": 0,
+                  "upvotes": [
+                    1
+                  ],
+                  "downvotes": [],
+                  "createdAt": "2018-02-28T09:15:44.305Z",
+                  "updatedAt": "2018-03-03T10:17:32.132Z",
+                  "UserId": 2,
+                  "Favourites": {
+                    "createdAt": "2018-03-08T15:51:00.502Z",
+                    "updatedAt": "2018-03-08T15:51:00.502Z",
+                    "RecipeId": 5,
+                    "UserId": 9
+                  }
+                }
+              ],
+              "$ref": "#/components/schemas/Favourite"
+            },
+            "description": ""
+          }
+        },
+        "example": {
+          "favourites": [
+            {
+              "id": 5,
+              "name": "Another one",
+              "description": "another one",
+              "ingredients": [
+                "one"
+              ],
+              "image": "http://res.cloudinary.com/king-more-recipes/image/upload/v1518028470/10546i3DAC5A5993C8BC8C_vtqogc.jpg",
+              "views": 0,
+              "upvotes": [
+                1
+              ],
+              "downvotes": [],
+              "createdAt": "2018-02-28T09:15:44.305Z",
+              "updatedAt": "2018-03-03T10:17:32.132Z",
+              "UserId": 2,
+              "Favourites": {
+                "createdAt": "2018-03-08T15:51:00.502Z",
+                "updatedAt": "2018-03-08T15:51:00.502Z",
+                "RecipeId": 5,
+                "UserId": 9
+              }
+            }
+          ]
+        }
+      },
+      "Favourite": {
+        "title": "Favourite",
+        "required": [
+          "id",
+          "name",
+          "description",
+          "ingredients",
+          "image",
+          "views",
+          "upvotes",
+          "downvotes",
+          "createdAt",
+          "updatedAt",
+          "UserId",
+          "Favourites"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32",
+            "example": 5
+          },
+          "name": {
+            "type": "string",
+            "example": "Another one"
+          },
+          "description": {
+            "type": "string",
+            "example": "another one"
+          },
+          "ingredients": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "example": [
+                "one"
+              ]
+            },
+            "description": ""
+          },
+          "image": {
+            "type": "string",
+            "example": "http://res.cloudinary.com/king-more-recipes/image/upload/v1518028470/10546i3DAC5A5993C8BC8C_vtqogc.jpg"
+          },
+          "views": {
+            "type": "integer",
+            "format": "int32",
+            "example": 0
+          },
+          "upvotes": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int32",
+              "example": [
+                1
+              ]
+            },
+            "description": ""
+          },
+          "downvotes": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "example": []
+            },
+            "description": ""
+          },
+          "createdAt": {
+            "type": "string",
+            "example": "2/28/2018 9:15:44 AM"
+          },
+          "updatedAt": {
+            "type": "string",
+            "example": "3/3/2018 10:17:32 AM"
+          },
+          "UserId": {
+            "type": "integer",
+            "format": "int32",
+            "example": 2
+          },
+          "Favourites": {
+            "example": {
+              "createdAt": "2018-03-08T15:51:00.502Z",
+              "updatedAt": "2018-03-08T15:51:00.502Z",
+              "RecipeId": 5,
+              "UserId": 9
+            },
+            "$ref": "#/components/schemas/Favourites"
+          }
+        },
+        "example": {
+          "id": 5,
+          "name": "Another one",
+          "description": "another one",
+          "ingredients": [
+            "one"
+          ],
+          "image": "http://res.cloudinary.com/king-more-recipes/image/upload/v1518028470/10546i3DAC5A5993C8BC8C_vtqogc.jpg",
+          "views": 0,
+          "upvotes": [
+            1
+          ],
+          "downvotes": [],
+          "createdAt": "2018-02-28T09:15:44.305Z",
+          "updatedAt": "2018-03-03T10:17:32.132Z",
+          "UserId": 2,
+          "Favourites": {
+            "createdAt": "2018-03-08T15:51:00.502Z",
+            "updatedAt": "2018-03-08T15:51:00.502Z",
+            "RecipeId": 5,
+            "UserId": 9
+          }
+        }
+      },
+      "Favourites": {
+        "title": "Favourites",
+        "required": [
+          "createdAt",
+          "updatedAt",
+          "RecipeId",
+          "UserId"
+        ],
+        "type": "object",
+        "properties": {
+          "createdAt": {
+            "type": "string",
+            "example": "3/8/2018 3:51:00 PM"
+          },
+          "updatedAt": {
+            "type": "string",
+            "example": "3/8/2018 3:51:00 PM"
+          },
+          "RecipeId": {
+            "type": "integer",
+            "format": "int32",
+            "example": 5
+          },
+          "UserId": {
+            "type": "integer",
+            "format": "int32",
+            "example": 9
+          }
+        },
+        "example": {
+          "createdAt": "2018-03-08T15:51:00.502Z",
+          "updatedAt": "2018-03-08T15:51:00.502Z",
+          "RecipeId": 5,
+          "UserId": 9
+        }
+      },
+      "DeleteFavouriteRecipe": {
+        "title": "Delete favourite recipe",
+        "required": [
+          "status",
+          "data"
+        ],
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "success"
+          },
+          "data": {
+            "example": {
+              "message": "Favourite deleted"
+            },
+            "$ref": "#/components/schemas/Data20"
+          }
+        },
+        "example": {
+          "status": "success",
+          "data": {
+            "message": "Favourite deleted"
+          }
+        }
+      },
+      "GetAllRecipesCreatedByUser": {
+        "title": "Get all recipes created by user",
+        "required": [
+          "status",
+          "data"
+        ],
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "success"
+          },
+          "data": {
+            "example": {
+              "recipes": [
+                {
+                  "id": 11,
+                  "name": "Goat sauce",
+                  "description": "It is fish sauce",
+                  "ingredients": [
+                    "fish",
+                    "milk"
+                  ],
+                  "image": "",
+                  "views": 0,
+                  "upvotes": [],
+                  "downvotes": [],
+                  "createdAt": "2018-03-08T15:42:43.237Z",
+                  "updatedAt": "2018-03-08T15:44:23.301Z",
+                  "UserId": 9
+                }
+              ]
+            },
+            "$ref": "#/components/schemas/Data38"
+          }
+        },
+        "example": {
+          "status": "success",
+          "data": {
+            "recipes": [
+              {
+                "id": 11,
+                "name": "Goat sauce",
+                "description": "It is fish sauce",
+                "ingredients": [
+                  "fish",
+                  "milk"
+                ],
+                "image": "",
+                "views": 0,
+                "upvotes": [],
+                "downvotes": [],
+                "createdAt": "2018-03-08T15:42:43.237Z",
+                "updatedAt": "2018-03-08T15:44:23.301Z",
+                "UserId": 9
+              }
+            ]
+          }
+        }
+      },
+      "Data38": {
+        "title": "Data38",
+        "required": [
+          "recipes"
+        ],
+        "type": "object",
+        "properties": {
+          "recipes": {
+            "type": "array",
+            "items": {
+              "example": [
+                {
+                  "id": 11,
+                  "name": "Goat sauce",
+                  "description": "It is fish sauce",
+                  "ingredients": [
+                    "fish",
+                    "milk"
+                  ],
+                  "image": "",
+                  "views": 0,
+                  "upvotes": [],
+                  "downvotes": [],
+                  "createdAt": "2018-03-08T15:42:43.237Z",
+                  "updatedAt": "2018-03-08T15:44:23.301Z",
+                  "UserId": 9
+                }
+              ],
+              "$ref": "#/components/schemas/Recipe"
+            },
+            "description": ""
+          }
+        },
+        "example": {
+          "recipes": [
+            {
+              "id": 11,
+              "name": "Goat sauce",
+              "description": "It is fish sauce",
+              "ingredients": [
+                "fish",
+                "milk"
+              ],
+              "image": "",
+              "views": 0,
+              "upvotes": [],
+              "downvotes": [],
+              "createdAt": "2018-03-08T15:42:43.237Z",
+              "updatedAt": "2018-03-08T15:44:23.301Z",
+              "UserId": 9
+            }
+          ]
+        }
+      },
+      "UpvoteRecipe": {
+        "title": "Upvote recipe",
+        "required": [
+          "status",
+          "data"
+        ],
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "success"
+          },
+          "data": {
+            "example": {
+              "recipe": {
+                "id": 8,
+                "name": "Fish sauce new",
+                "description": "It is fish sauce",
+                "ingredients": [
+                  "fish",
+                  "milk"
+                ],
+                "image": "https://res.cloudinary.com/king-more-recipes/image/upload/v1519865015/jhljrognqm4cha38ucxh.jpg",
+                "views": 0,
+                "upvotes": [
+                  2,
+                  1,
+                  9
+                ],
+                "downvotes": [],
+                "createdAt": "2018-02-28T09:51:17.828Z",
+                "updatedAt": "2018-03-08T15:52:18.502Z",
+                "UserId": 1
+              },
+              "message": "Recipe upvoted"
+            },
+            "$ref": "#/components/schemas/Data29"
+          }
+        },
+        "example": {
+          "status": "success",
+          "data": {
+            "recipe": {
+              "id": 8,
+              "name": "Fish sauce new",
+              "description": "It is fish sauce",
+              "ingredients": [
+                "fish",
+                "milk"
+              ],
+              "image": "https://res.cloudinary.com/king-more-recipes/image/upload/v1519865015/jhljrognqm4cha38ucxh.jpg",
+              "views": 0,
+              "upvotes": [
+                2,
+                1,
+                9
+              ],
+              "downvotes": [],
+              "createdAt": "2018-02-28T09:51:17.828Z",
+              "updatedAt": "2018-03-08T15:52:18.502Z",
+              "UserId": 1
+            },
+            "message": "Recipe upvoted"
+          }
+        }
+      },
+      "DownvoteRecipe": {
+        "title": "Downvote recipe",
+        "required": [
+          "status",
+          "data"
+        ],
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "success"
+          },
+          "data": {
+            "example": {
+              "recipe": {
+                "id": 8,
+                "name": "Fish sauce new",
+                "description": "It is fish sauce",
+                "ingredients": [
+                  "fish",
+                  "milk"
+                ],
+                "image": "https://res.cloudinary.com/king-more-recipes/image/upload/v1519865015/jhljrognqm4cha38ucxh.jpg",
+                "views": 0,
+                "upvotes": [
+                  2,
+                  1
+                ],
+                "downvotes": [
+                  9
+                ],
+                "createdAt": "2018-02-28T09:51:17.828Z",
+                "updatedAt": "2018-03-08T15:52:41.425Z",
+                "UserId": 1
+              },
+              "message": "Recipe downvoted"
+            },
+            "$ref": "#/components/schemas/Data44"
+          }
+        },
+        "example": {
+          "status": "success",
+          "data": {
+            "recipe": {
+              "id": 8,
+              "name": "Fish sauce new",
+              "description": "It is fish sauce",
+              "ingredients": [
+                "fish",
+                "milk"
+              ],
+              "image": "https://res.cloudinary.com/king-more-recipes/image/upload/v1519865015/jhljrognqm4cha38ucxh.jpg",
+              "views": 0,
+              "upvotes": [
+                2,
+                1
+              ],
+              "downvotes": [
+                9
+              ],
+              "createdAt": "2018-02-28T09:51:17.828Z",
+              "updatedAt": "2018-03-08T15:52:41.425Z",
+              "UserId": 1
+            },
+            "message": "Recipe downvoted"
+          }
+        }
+      },
+      "Data44": {
+        "title": "Data44",
+        "required": [
+          "recipe",
+          "message"
+        ],
+        "type": "object",
+        "properties": {
+          "recipe": {
+            "example": {
+              "id": 8,
+              "name": "Fish sauce new",
+              "description": "It is fish sauce",
+              "ingredients": [
+                "fish",
+                "milk"
+              ],
+              "image": "https://res.cloudinary.com/king-more-recipes/image/upload/v1519865015/jhljrognqm4cha38ucxh.jpg",
+              "views": 0,
+              "upvotes": [
+                2,
+                1
+              ],
+              "downvotes": [
+                9
+              ],
+              "createdAt": "2018-02-28T09:51:17.828Z",
+              "updatedAt": "2018-03-08T15:52:41.425Z",
+              "UserId": 1
+            },
+            "$ref": "#/components/schemas/Recipe45"
+          },
+          "message": {
+            "type": "string",
+            "example": "Recipe downvoted"
+          }
+        },
+        "example": {
+          "recipe": {
+            "id": 8,
+            "name": "Fish sauce new",
+            "description": "It is fish sauce",
+            "ingredients": [
+              "fish",
+              "milk"
+            ],
+            "image": "https://res.cloudinary.com/king-more-recipes/image/upload/v1519865015/jhljrognqm4cha38ucxh.jpg",
+            "views": 0,
+            "upvotes": [
+              2,
+              1
+            ],
+            "downvotes": [
+              9
+            ],
+            "createdAt": "2018-02-28T09:51:17.828Z",
+            "updatedAt": "2018-03-08T15:52:41.425Z",
+            "UserId": 1
+          },
+          "message": "Recipe downvoted"
+        }
+      },
+      "Recipe45": {
+        "title": "Recipe45",
+        "required": [
+          "id",
+          "name",
+          "description",
+          "ingredients",
+          "image",
+          "views",
+          "upvotes",
+          "downvotes",
+          "createdAt",
+          "updatedAt",
+          "UserId"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32",
+            "example": 8
+          },
+          "name": {
+            "type": "string",
+            "example": "Fish sauce new"
+          },
+          "description": {
+            "type": "string",
+            "example": "It is fish sauce"
+          },
+          "ingredients": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "example": [
+                "fish",
+                "milk"
+              ]
+            },
+            "description": ""
+          },
+          "image": {
+            "type": "string",
+            "example": "https://res.cloudinary.com/king-more-recipes/image/upload/v1519865015/jhljrognqm4cha38ucxh.jpg"
+          },
+          "views": {
+            "type": "integer",
+            "format": "int32",
+            "example": 0
+          },
+          "upvotes": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int32",
+              "example": [
+                2,
+                1
+              ]
+            },
+            "description": ""
+          },
+          "downvotes": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int32",
+              "example": [
+                9
+              ]
+            },
+            "description": ""
+          },
+          "createdAt": {
+            "type": "string",
+            "example": "2/28/2018 9:51:17 AM"
+          },
+          "updatedAt": {
+            "type": "string",
+            "example": "3/8/2018 3:52:41 PM"
+          },
+          "UserId": {
+            "type": "integer",
+            "format": "int32",
+            "example": 1
+          }
+        },
+        "example": {
+          "id": 8,
+          "name": "Fish sauce new",
+          "description": "It is fish sauce",
+          "ingredients": [
+            "fish",
+            "milk"
+          ],
+          "image": "https://res.cloudinary.com/king-more-recipes/image/upload/v1519865015/jhljrognqm4cha38ucxh.jpg",
+          "views": 0,
+          "upvotes": [
+            2,
+            1
+          ],
+          "downvotes": [
+            9
+          ],
+          "createdAt": "2018-02-28T09:51:17.828Z",
+          "updatedAt": "2018-03-08T15:52:41.425Z",
+          "UserId": 1
+        }
+      },
+      "GetMostFavouritedRecipes": {
+        "title": "Get most favourited recipes",
+        "required": [
+          "status",
+          "data"
+        ],
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "success"
+          },
+          "data": {
+            "$ref": "#/components/schemas/Data47"
+          }
+        }
+      },
+      "Data47": {
+        "title": "Data47",
+        "required": [
+          "recipes"
+        ],
+        "type": "object",
+        "properties": {
+          "recipes": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Recipe48"
+            },
+            "description": ""
+          }
+        }
+      },
+      "Recipe48": {
+        "title": "Recipe48",
+        "required": [
+          "id",
+          "name",
+          "description",
+          "ingredients",
+          "image",
+          "upvotes",
+          "downvotes",
+          "UserId",
+          "count"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32",
+            "example": 7
+          },
+          "name": {
+            "type": "string",
+            "example": "Fish sauce"
+          },
+          "description": {
+            "type": "string",
+            "example": "It is fish sauce"
+          },
+          "ingredients": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "example": [
+                "fish",
+                "milk"
+              ]
+            },
+            "description": ""
+          },
+          "image": {
+            "type": "string",
+            "example": "https://res.cloudinary.com/king-more-recipes/image/upload/v1519864999/kakxjqbcf5immjbjx2aj.jpg"
+          },
+          "upvotes": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "example": []
+            },
+            "description": ""
+          },
+          "downvotes": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "example": []
+            },
+            "description": ""
+          },
+          "UserId": {
+            "type": "integer",
+            "format": "int32",
+            "example": 1
+          },
+          "count": {
+            "type": "string",
+            "example": "1"
+          }
+        }
+      },
+      "GetRecipeReviews": {
+        "title": "Get recipe reviews",
+        "required": [
+          "status",
+          "data"
+        ],
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "success"
+          },
+          "data": {
+            "example": {
+              "reviews": [
+                {
+                  "id": 2,
+                  "review": "I love this recipe",
+                  "createdAt": "2018-02-28T09:51:43.589Z",
+                  "updatedAt": "2018-02-28T09:51:43.589Z",
+                  "RecipeId": 8,
+                  "UserId": 1,
+                  "User": {
+                    "id": 1,
+                    "firstName": "Andrew",
+                    "lastName": "Carnegie",
+                    "email": "carnegie@gmail.com",
+                    "profilePic": "https://res.cloudinary.com/king-more-recipes/image/upload/v1520369347/m2vf0rz4a9tuen0bccsv.jpg",
+                    "about": "About me",
+                    "createdAt": "2018-02-28T08:05:02.026Z",
+                    "updatedAt": "2018-03-06T20:49:11.705Z"
+                  }
+                },
+                {
+                  "id": 3,
+                  "review": "Cool recipe",
+                  "createdAt": "2018-03-05T23:01:37.214Z",
+                  "updatedAt": "2018-03-05T23:01:37.214Z",
+                  "RecipeId": 8,
+                  "UserId": 1,
+                  "User": {
+                    "id": 1,
+                    "firstName": "Andrew",
+                    "lastName": "Carnegie",
+                    "email": "carnegie@gmail.com",
+                    "profilePic": "https://res.cloudinary.com/king-more-recipes/image/upload/v1520369347/m2vf0rz4a9tuen0bccsv.jpg",
+                    "about": "About me",
+                    "createdAt": "2018-02-28T08:05:02.026Z",
+                    "updatedAt": "2018-03-06T20:49:11.705Z"
+                  }
+                },
+                {
+                  "id": 4,
+                  "review": "Really love this",
+                  "createdAt": "2018-03-06T10:44:29.953Z",
+                  "updatedAt": "2018-03-06T10:44:29.953Z",
+                  "RecipeId": 8,
+                  "UserId": 1,
+                  "User": {
+                    "id": 1,
+                    "firstName": "Andrew",
+                    "lastName": "Carnegie",
+                    "email": "carnegie@gmail.com",
+                    "profilePic": "https://res.cloudinary.com/king-more-recipes/image/upload/v1520369347/m2vf0rz4a9tuen0bccsv.jpg",
+                    "about": "About me",
+                    "createdAt": "2018-02-28T08:05:02.026Z",
+                    "updatedAt": "2018-03-06T20:49:11.705Z"
+                  }
+                },
+                {
+                  "id": 5,
+                  "review": "Still loving it",
+                  "createdAt": "2018-03-06T20:47:43.929Z",
+                  "updatedAt": "2018-03-06T20:47:43.929Z",
+                  "RecipeId": 8,
+                  "UserId": 1,
+                  "User": {
+                    "id": 1,
+                    "firstName": "Andrew",
+                    "lastName": "Carnegie",
+                    "email": "carnegie@gmail.com",
+                    "profilePic": "https://res.cloudinary.com/king-more-recipes/image/upload/v1520369347/m2vf0rz4a9tuen0bccsv.jpg",
+                    "about": "About me",
+                    "createdAt": "2018-02-28T08:05:02.026Z",
+                    "updatedAt": "2018-03-06T20:49:11.705Z"
+                  }
+                },
+                {
+                  "id": 6,
+                  "review": "I really really do",
+                  "createdAt": "2018-03-06T20:47:56.464Z",
+                  "updatedAt": "2018-03-06T20:47:56.464Z",
+                  "RecipeId": 8,
+                  "UserId": 1,
+                  "User": {
+                    "id": 1,
+                    "firstName": "Andrew",
+                    "lastName": "Carnegie",
+                    "email": "carnegie@gmail.com",
+                    "profilePic": "https://res.cloudinary.com/king-more-recipes/image/upload/v1520369347/m2vf0rz4a9tuen0bccsv.jpg",
+                    "about": "About me",
+                    "createdAt": "2018-02-28T08:05:02.026Z",
+                    "updatedAt": "2018-03-06T20:49:11.705Z"
+                  }
+                },
+                {
+                  "id": 7,
+                  "review": "You have no idea",
+                  "createdAt": "2018-03-06T20:48:02.916Z",
+                  "updatedAt": "2018-03-06T20:48:02.916Z",
+                  "RecipeId": 8,
+                  "UserId": 1,
+                  "User": {
+                    "id": 1,
+                    "firstName": "Andrew",
+                    "lastName": "Carnegie",
+                    "email": "carnegie@gmail.com",
+                    "profilePic": "https://res.cloudinary.com/king-more-recipes/image/upload/v1520369347/m2vf0rz4a9tuen0bccsv.jpg",
+                    "about": "About me",
+                    "createdAt": "2018-02-28T08:05:02.026Z",
+                    "updatedAt": "2018-03-06T20:49:11.705Z"
+                  }
+                }
+              ],
+              "paginationMeta": {
+                "recipeId": "8",
+                "from": 0,
+                "limit": 6,
+                "total": 7,
+                "next": "https://more-recipe-gbenga.herokuapp.com/api/v1/recipes/8/reviews?from=6&limit=6"
+              }
+            },
+            "$ref": "#/components/schemas/Data50"
+          }
+        },
+        "example": {
+          "status": "success",
+          "data": {
+            "reviews": [
+              {
+                "id": 2,
+                "review": "I love this recipe",
+                "createdAt": "2018-02-28T09:51:43.589Z",
+                "updatedAt": "2018-02-28T09:51:43.589Z",
+                "RecipeId": 8,
+                "UserId": 1,
+                "User": {
+                  "id": 1,
+                  "firstName": "Andrew",
+                  "lastName": "Carnegie",
+                  "email": "carnegie@gmail.com",
+                  "profilePic": "https://res.cloudinary.com/king-more-recipes/image/upload/v1520369347/m2vf0rz4a9tuen0bccsv.jpg",
+                  "about": "About me",
+                  "createdAt": "2018-02-28T08:05:02.026Z",
+                  "updatedAt": "2018-03-06T20:49:11.705Z"
+                }
+              },
+              {
+                "id": 3,
+                "review": "Cool recipe",
+                "createdAt": "2018-03-05T23:01:37.214Z",
+                "updatedAt": "2018-03-05T23:01:37.214Z",
+                "RecipeId": 8,
+                "UserId": 1,
+                "User": {
+                  "id": 1,
+                  "firstName": "Andrew",
+                  "lastName": "Carnegie",
+                  "email": "carnegie@gmail.com",
+                  "profilePic": "https://res.cloudinary.com/king-more-recipes/image/upload/v1520369347/m2vf0rz4a9tuen0bccsv.jpg",
+                  "about": "About me",
+                  "createdAt": "2018-02-28T08:05:02.026Z",
+                  "updatedAt": "2018-03-06T20:49:11.705Z"
+                }
+              },
+              {
+                "id": 4,
+                "review": "Really love this",
+                "createdAt": "2018-03-06T10:44:29.953Z",
+                "updatedAt": "2018-03-06T10:44:29.953Z",
+                "RecipeId": 8,
+                "UserId": 1,
+                "User": {
+                  "id": 1,
+                  "firstName": "Andrew",
+                  "lastName": "Carnegie",
+                  "email": "carnegie@gmail.com",
+                  "profilePic": "https://res.cloudinary.com/king-more-recipes/image/upload/v1520369347/m2vf0rz4a9tuen0bccsv.jpg",
+                  "about": "About me",
+                  "createdAt": "2018-02-28T08:05:02.026Z",
+                  "updatedAt": "2018-03-06T20:49:11.705Z"
+                }
+              },
+              {
+                "id": 5,
+                "review": "Still loving it",
+                "createdAt": "2018-03-06T20:47:43.929Z",
+                "updatedAt": "2018-03-06T20:47:43.929Z",
+                "RecipeId": 8,
+                "UserId": 1,
+                "User": {
+                  "id": 1,
+                  "firstName": "Andrew",
+                  "lastName": "Carnegie",
+                  "email": "carnegie@gmail.com",
+                  "profilePic": "https://res.cloudinary.com/king-more-recipes/image/upload/v1520369347/m2vf0rz4a9tuen0bccsv.jpg",
+                  "about": "About me",
+                  "createdAt": "2018-02-28T08:05:02.026Z",
+                  "updatedAt": "2018-03-06T20:49:11.705Z"
+                }
+              },
+              {
+                "id": 6,
+                "review": "I really really do",
+                "createdAt": "2018-03-06T20:47:56.464Z",
+                "updatedAt": "2018-03-06T20:47:56.464Z",
+                "RecipeId": 8,
+                "UserId": 1,
+                "User": {
+                  "id": 1,
+                  "firstName": "Andrew",
+                  "lastName": "Carnegie",
+                  "email": "carnegie@gmail.com",
+                  "profilePic": "https://res.cloudinary.com/king-more-recipes/image/upload/v1520369347/m2vf0rz4a9tuen0bccsv.jpg",
+                  "about": "About me",
+                  "createdAt": "2018-02-28T08:05:02.026Z",
+                  "updatedAt": "2018-03-06T20:49:11.705Z"
+                }
+              },
+              {
+                "id": 7,
+                "review": "You have no idea",
+                "createdAt": "2018-03-06T20:48:02.916Z",
+                "updatedAt": "2018-03-06T20:48:02.916Z",
+                "RecipeId": 8,
+                "UserId": 1,
+                "User": {
+                  "id": 1,
+                  "firstName": "Andrew",
+                  "lastName": "Carnegie",
+                  "email": "carnegie@gmail.com",
+                  "profilePic": "https://res.cloudinary.com/king-more-recipes/image/upload/v1520369347/m2vf0rz4a9tuen0bccsv.jpg",
+                  "about": "About me",
+                  "createdAt": "2018-02-28T08:05:02.026Z",
+                  "updatedAt": "2018-03-06T20:49:11.705Z"
+                }
+              }
+            ],
+            "paginationMeta": {
+              "recipeId": "8",
+              "from": 0,
+              "limit": 6,
+              "total": 7,
+              "next": "https://more-recipe-gbenga.herokuapp.com/api/v1/recipes/8/reviews?from=6&limit=6"
+            }
+          }
+        }
+      },
+      "Data50": {
+        "title": "Data50",
+        "required": [
+          "reviews",
+          "paginationMeta"
+        ],
+        "type": "object",
+        "properties": {
+          "reviews": {
+            "type": "array",
+            "items": {
+              "example": [
+                {
+                  "id": 2,
+                  "review": "I love this recipe",
+                  "createdAt": "2018-02-28T09:51:43.589Z",
+                  "updatedAt": "2018-02-28T09:51:43.589Z",
+                  "RecipeId": 8,
+                  "UserId": 1,
+                  "User": {
+                    "id": 1,
+                    "firstName": "Andrew",
+                    "lastName": "Carnegie",
+                    "email": "carnegie@gmail.com",
+                    "profilePic": "https://res.cloudinary.com/king-more-recipes/image/upload/v1520369347/m2vf0rz4a9tuen0bccsv.jpg",
+                    "about": "About me",
+                    "createdAt": "2018-02-28T08:05:02.026Z",
+                    "updatedAt": "2018-03-06T20:49:11.705Z"
+                  }
+                },
+                {
+                  "id": 3,
+                  "review": "Cool recipe",
+                  "createdAt": "2018-03-05T23:01:37.214Z",
+                  "updatedAt": "2018-03-05T23:01:37.214Z",
+                  "RecipeId": 8,
+                  "UserId": 1,
+                  "User": {
+                    "id": 1,
+                    "firstName": "Andrew",
+                    "lastName": "Carnegie",
+                    "email": "carnegie@gmail.com",
+                    "profilePic": "https://res.cloudinary.com/king-more-recipes/image/upload/v1520369347/m2vf0rz4a9tuen0bccsv.jpg",
+                    "about": "About me",
+                    "createdAt": "2018-02-28T08:05:02.026Z",
+                    "updatedAt": "2018-03-06T20:49:11.705Z"
+                  }
+                },
+                {
+                  "id": 4,
+                  "review": "Really love this",
+                  "createdAt": "2018-03-06T10:44:29.953Z",
+                  "updatedAt": "2018-03-06T10:44:29.953Z",
+                  "RecipeId": 8,
+                  "UserId": 1,
+                  "User": {
+                    "id": 1,
+                    "firstName": "Andrew",
+                    "lastName": "Carnegie",
+                    "email": "carnegie@gmail.com",
+                    "profilePic": "https://res.cloudinary.com/king-more-recipes/image/upload/v1520369347/m2vf0rz4a9tuen0bccsv.jpg",
+                    "about": "About me",
+                    "createdAt": "2018-02-28T08:05:02.026Z",
+                    "updatedAt": "2018-03-06T20:49:11.705Z"
+                  }
+                },
+                {
+                  "id": 5,
+                  "review": "Still loving it",
+                  "createdAt": "2018-03-06T20:47:43.929Z",
+                  "updatedAt": "2018-03-06T20:47:43.929Z",
+                  "RecipeId": 8,
+                  "UserId": 1,
+                  "User": {
+                    "id": 1,
+                    "firstName": "Andrew",
+                    "lastName": "Carnegie",
+                    "email": "carnegie@gmail.com",
+                    "profilePic": "https://res.cloudinary.com/king-more-recipes/image/upload/v1520369347/m2vf0rz4a9tuen0bccsv.jpg",
+                    "about": "About me",
+                    "createdAt": "2018-02-28T08:05:02.026Z",
+                    "updatedAt": "2018-03-06T20:49:11.705Z"
+                  }
+                },
+                {
+                  "id": 6,
+                  "review": "I really really do",
+                  "createdAt": "2018-03-06T20:47:56.464Z",
+                  "updatedAt": "2018-03-06T20:47:56.464Z",
+                  "RecipeId": 8,
+                  "UserId": 1,
+                  "User": {
+                    "id": 1,
+                    "firstName": "Andrew",
+                    "lastName": "Carnegie",
+                    "email": "carnegie@gmail.com",
+                    "profilePic": "https://res.cloudinary.com/king-more-recipes/image/upload/v1520369347/m2vf0rz4a9tuen0bccsv.jpg",
+                    "about": "About me",
+                    "createdAt": "2018-02-28T08:05:02.026Z",
+                    "updatedAt": "2018-03-06T20:49:11.705Z"
+                  }
+                },
+                {
+                  "id": 7,
+                  "review": "You have no idea",
+                  "createdAt": "2018-03-06T20:48:02.916Z",
+                  "updatedAt": "2018-03-06T20:48:02.916Z",
+                  "RecipeId": 8,
+                  "UserId": 1,
+                  "User": {
+                    "id": 1,
+                    "firstName": "Andrew",
+                    "lastName": "Carnegie",
+                    "email": "carnegie@gmail.com",
+                    "profilePic": "https://res.cloudinary.com/king-more-recipes/image/upload/v1520369347/m2vf0rz4a9tuen0bccsv.jpg",
+                    "about": "About me",
+                    "createdAt": "2018-02-28T08:05:02.026Z",
+                    "updatedAt": "2018-03-06T20:49:11.705Z"
+                  }
+                }
+              ],
+              "$ref": "#/components/schemas/Review"
+            },
+            "description": ""
+          },
+          "paginationMeta": {
+            "example": {
+              "recipeId": "8",
+              "from": 0,
+              "limit": 6,
+              "total": 7,
+              "next": "https://more-recipe-gbenga.herokuapp.com/api/v1/recipes/8/reviews?from=6&limit=6"
+            },
+            "$ref": "#/components/schemas/PaginationMeta53"
+          }
+        },
+        "example": {
+          "reviews": [
+            {
+              "id": 2,
+              "review": "I love this recipe",
+              "createdAt": "2018-02-28T09:51:43.589Z",
+              "updatedAt": "2018-02-28T09:51:43.589Z",
+              "RecipeId": 8,
+              "UserId": 1,
+              "User": {
+                "id": 1,
+                "firstName": "Andrew",
+                "lastName": "Carnegie",
+                "email": "carnegie@gmail.com",
+                "profilePic": "https://res.cloudinary.com/king-more-recipes/image/upload/v1520369347/m2vf0rz4a9tuen0bccsv.jpg",
+                "about": "About me",
+                "createdAt": "2018-02-28T08:05:02.026Z",
+                "updatedAt": "2018-03-06T20:49:11.705Z"
+              }
+            },
+            {
+              "id": 3,
+              "review": "Cool recipe",
+              "createdAt": "2018-03-05T23:01:37.214Z",
+              "updatedAt": "2018-03-05T23:01:37.214Z",
+              "RecipeId": 8,
+              "UserId": 1,
+              "User": {
+                "id": 1,
+                "firstName": "Andrew",
+                "lastName": "Carnegie",
+                "email": "carnegie@gmail.com",
+                "profilePic": "https://res.cloudinary.com/king-more-recipes/image/upload/v1520369347/m2vf0rz4a9tuen0bccsv.jpg",
+                "about": "About me",
+                "createdAt": "2018-02-28T08:05:02.026Z",
+                "updatedAt": "2018-03-06T20:49:11.705Z"
+              }
+            },
+            {
+              "id": 4,
+              "review": "Really love this",
+              "createdAt": "2018-03-06T10:44:29.953Z",
+              "updatedAt": "2018-03-06T10:44:29.953Z",
+              "RecipeId": 8,
+              "UserId": 1,
+              "User": {
+                "id": 1,
+                "firstName": "Andrew",
+                "lastName": "Carnegie",
+                "email": "carnegie@gmail.com",
+                "profilePic": "https://res.cloudinary.com/king-more-recipes/image/upload/v1520369347/m2vf0rz4a9tuen0bccsv.jpg",
+                "about": "About me",
+                "createdAt": "2018-02-28T08:05:02.026Z",
+                "updatedAt": "2018-03-06T20:49:11.705Z"
+              }
+            },
+            {
+              "id": 5,
+              "review": "Still loving it",
+              "createdAt": "2018-03-06T20:47:43.929Z",
+              "updatedAt": "2018-03-06T20:47:43.929Z",
+              "RecipeId": 8,
+              "UserId": 1,
+              "User": {
+                "id": 1,
+                "firstName": "Andrew",
+                "lastName": "Carnegie",
+                "email": "carnegie@gmail.com",
+                "profilePic": "https://res.cloudinary.com/king-more-recipes/image/upload/v1520369347/m2vf0rz4a9tuen0bccsv.jpg",
+                "about": "About me",
+                "createdAt": "2018-02-28T08:05:02.026Z",
+                "updatedAt": "2018-03-06T20:49:11.705Z"
+              }
+            },
+            {
+              "id": 6,
+              "review": "I really really do",
+              "createdAt": "2018-03-06T20:47:56.464Z",
+              "updatedAt": "2018-03-06T20:47:56.464Z",
+              "RecipeId": 8,
+              "UserId": 1,
+              "User": {
+                "id": 1,
+                "firstName": "Andrew",
+                "lastName": "Carnegie",
+                "email": "carnegie@gmail.com",
+                "profilePic": "https://res.cloudinary.com/king-more-recipes/image/upload/v1520369347/m2vf0rz4a9tuen0bccsv.jpg",
+                "about": "About me",
+                "createdAt": "2018-02-28T08:05:02.026Z",
+                "updatedAt": "2018-03-06T20:49:11.705Z"
+              }
+            },
+            {
+              "id": 7,
+              "review": "You have no idea",
+              "createdAt": "2018-03-06T20:48:02.916Z",
+              "updatedAt": "2018-03-06T20:48:02.916Z",
+              "RecipeId": 8,
+              "UserId": 1,
+              "User": {
+                "id": 1,
+                "firstName": "Andrew",
+                "lastName": "Carnegie",
+                "email": "carnegie@gmail.com",
+                "profilePic": "https://res.cloudinary.com/king-more-recipes/image/upload/v1520369347/m2vf0rz4a9tuen0bccsv.jpg",
+                "about": "About me",
+                "createdAt": "2018-02-28T08:05:02.026Z",
+                "updatedAt": "2018-03-06T20:49:11.705Z"
+              }
+            }
+          ],
+          "paginationMeta": {
+            "recipeId": "8",
+            "from": 0,
+            "limit": 6,
+            "total": 7,
+            "next": "https://more-recipe-gbenga.herokuapp.com/api/v1/recipes/8/reviews?from=6&limit=6"
+          }
+        }
+      },
+      "PaginationMeta53": {
+        "title": "PaginationMeta53",
+        "required": [
+          "recipeId",
+          "from",
+          "limit",
+          "total",
+          "next"
+        ],
+        "type": "object",
+        "properties": {
+          "recipeId": {
+            "type": "string",
+            "example": "8"
+          },
+          "from": {
+            "type": "integer",
+            "format": "int32",
+            "example": 0
+          },
+          "limit": {
+            "type": "integer",
+            "format": "int32",
+            "example": 6
+          },
+          "total": {
+            "type": "integer",
+            "format": "int32",
+            "example": 7
+          },
+          "next": {
+            "type": "string",
+            "example": "https://more-recipe-gbenga.herokuapp.com/api/v1/recipes/8/reviews?from=6&limit=6"
+          }
+        },
+        "example": {
+          "recipeId": "8",
+          "from": 0,
+          "limit": 6,
+          "total": 7,
+          "next": "https://more-recipe-gbenga.herokuapp.com/api/v1/recipes/8/reviews?from=6&limit=6"
+        }
+      },
+      "EditReview": {
+        "title": "Edit review",
+        "required": [
+          "status",
+          "data"
+        ],
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "success"
+          },
+          "data": {
+            "example": {
+              "updatedReview": {
+                "id": 11,
+                "review": "cool",
+                "createdAt": "2018-03-08T15:57:34.097Z",
+                "updatedAt": "2018-03-08T15:57:53.665Z",
+                "RecipeId": 11,
+                "UserId": 9
+              }
+            },
+            "$ref": "#/components/schemas/Data55"
+          }
+        },
+        "example": {
+          "status": "success",
+          "data": {
+            "updatedReview": {
+              "id": 11,
+              "review": "cool",
+              "createdAt": "2018-03-08T15:57:34.097Z",
+              "updatedAt": "2018-03-08T15:57:53.665Z",
+              "RecipeId": 11,
+              "UserId": 9
+            }
+          }
+        }
+      },
+      "Data55": {
+        "title": "Data55",
+        "required": [
+          "updatedReview"
+        ],
+        "type": "object",
+        "properties": {
+          "updatedReview": {
+            "example": {
+              "id": 11,
+              "review": "cool",
+              "createdAt": "2018-03-08T15:57:34.097Z",
+              "updatedAt": "2018-03-08T15:57:53.665Z",
+              "RecipeId": 11,
+              "UserId": 9
+            },
+            "$ref": "#/components/schemas/UpdatedReview"
+          }
+        },
+        "example": {
+          "updatedReview": {
+            "id": 11,
+            "review": "cool",
+            "createdAt": "2018-03-08T15:57:34.097Z",
+            "updatedAt": "2018-03-08T15:57:53.665Z",
+            "RecipeId": 11,
+            "UserId": 9
+          }
+        }
+      },
+      "UpdatedReview": {
+        "title": "UpdatedReview",
+        "required": [
+          "id",
+          "review",
+          "createdAt",
+          "updatedAt",
+          "RecipeId",
+          "UserId"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32",
+            "example": 11
+          },
+          "review": {
+            "type": "string",
+            "example": "cool"
+          },
+          "createdAt": {
+            "type": "string",
+            "example": "3/8/2018 3:57:34 PM"
+          },
+          "updatedAt": {
+            "type": "string",
+            "example": "3/8/2018 3:57:53 PM"
+          },
+          "RecipeId": {
+            "type": "integer",
+            "format": "int32",
+            "example": 11
+          },
+          "UserId": {
+            "type": "integer",
+            "format": "int32",
+            "example": 9
+          }
+        },
+        "example": {
+          "id": 11,
+          "review": "cool",
+          "createdAt": "2018-03-08T15:57:34.097Z",
+          "updatedAt": "2018-03-08T15:57:53.665Z",
+          "RecipeId": 11,
+          "UserId": 9
+        }
+      },
+      "DeleteReview": {
+        "title": "Delete review",
+        "required": [
+          "status",
+          "data"
+        ],
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "success"
+          },
+          "data": {
+            "example": {
+              "message": "Review has been successfully deleted"
+            },
+            "$ref": "#/components/schemas/Data20"
+          }
+        },
+        "example": {
+          "status": "success",
+          "data": {
+            "message": "Review has been successfully deleted"
+          }
+        }
+      },
+      "GetUserById": {
+        "title": "Get user by id",
+        "required": [
+          "status",
+          "data"
+        ],
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "success"
+          },
+          "data": {
+            "example": {
+              "user": {
+                "id": 2,
+                "firstName": "John Davidson",
+                "lastName": "Rockefeller",
+                "email": "john@gmail.com",
+                "updatedAt": "2018-02-28T09:18:35.58Z",
+                "createdAt": "2018-02-28T09:06:18.774Z",
+                "profilePic": "https://res.cloudinary.com/king-more-recipes/image/upload/v1519809509/oxpcy68yi8qxwziae0t5.jpg",
+                "about": "About me"
+              }
+            },
+            "$ref": "#/components/schemas/Data26"
+          }
+        },
+        "example": {
+          "status": "success",
+          "data": {
+            "user": {
+              "id": 2,
+              "firstName": "John Davidson",
+              "lastName": "Rockefeller",
+              "email": "john@gmail.com",
+              "updatedAt": "2018-02-28T09:18:35.58Z",
+              "createdAt": "2018-02-28T09:06:18.774Z",
+              "profilePic": "https://res.cloudinary.com/king-more-recipes/image/upload/v1519809509/oxpcy68yi8qxwziae0t5.jpg",
+              "about": "About me"
+            }
+          }
+        }
+      },
+      "DeleteUser": {
+        "title": "Delete user",
+        "required": [
+          "status",
+          "data"
+        ],
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "success"
+          },
+          "data": {
+            "example": {
+              "message": "User account deleted"
+            },
+            "$ref": "#/components/schemas/Data20"
+          }
+        },
+        "example": {
+          "status": "success",
+          "data": {
+            "message": "User account deleted"
+          }
+        }
+      }
+    }
+  }
+}

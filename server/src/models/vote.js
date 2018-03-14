@@ -5,12 +5,5 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false
     }
   });
-
-  // Votes.associate = (models) => {
-  //   Votes.hasOne(models.Recipes, {
-  //     foreignKey: 'recipeId',
-  //     onDelete: 'CASCADE',
-  //   });
-  // };
   return Votes;
 };

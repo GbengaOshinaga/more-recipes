@@ -21,8 +21,8 @@ const userCardActionPropTypes = {
 
 /**
  * Component for displaying card
- * @param {*} props
- * @returns {*} jsx
+ * @param {Object} props
+ * @returns {Node} jsx
  */
 export function VoteCardAction({
   onClickVote, isLoggedIn, upvoteClassName, downvoteClassName,
@@ -34,6 +34,7 @@ export function VoteCardAction({
         <div className="card-action">
           <div className="recipe-icons">
             <a
+              id="upvote-button"
               href="#!"
               className={upvoteClassName}
               onClick={onClickVote}
@@ -41,6 +42,7 @@ export function VoteCardAction({
               <i id={id} className="material-icons">thumb_up</i>
             </a>
             <a
+              id="downvote-button"
               href="#!"
               className={downvoteClassName}
               onClick={onClickVote}
@@ -48,6 +50,7 @@ export function VoteCardAction({
               <i id={id} className="material-icons">thumb_down</i>
             </a>
             <a
+              id="favourite-button"
               href="#!"
               className={favouriteClassName}
               onClick={onClickFavourite}
@@ -63,6 +66,7 @@ export function VoteCardAction({
 /**
  * Component for displaying card actions
  * @param {Object} props
+ *
  * @returns {Node} jsx
  */
 export function UserCardAction({
@@ -74,6 +78,7 @@ export function UserCardAction({
         <i id="desc" className="material-icons">description</i>
       </Link>
       <a
+        id="edit"
         className="modal-trigger btn-floating waves-effect waves-light blue icons"
         href="#edit-modal"
         onClick={getIdForEdit}
@@ -81,6 +86,7 @@ export function UserCardAction({
         <i id={id} className="material-icons">edit</i>
       </a>
       <a
+        id="delete"
         className="modal-trigger btn-floating waves-effect waves-light red icons"
         href="#confirm-modal"
         onClick={getId}

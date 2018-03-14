@@ -6,9 +6,10 @@ import db from '../models/index';
 export default class FavouriteRecipesController {
   /**
      * Adds a favourite for a user
-     * @param {*} req
-     * @param {*} res
-     * @returns {*} res
+     * @param {Object} req
+     * @param {Object} res
+     *
+     * @returns {Object} res
      */
   static addFavourite(req, res) {
     let foundRecipe;
@@ -19,16 +20,20 @@ export default class FavouriteRecipesController {
     db.User.findById(req.user.userId)
       .then((user) => {
         user.addFavouriteRecipe(foundRecipe);
-        return res.status(200).jsend.success({ message: 'Favourite added' });
+        return res.status(200).jsend.success({
+          recipe: foundRecipe,
+          message: 'Favourite added'
+        });
       })
-      .catch(error => res.status(400).jsend.error(error));
+      .catch(error => res.status(500).jsend.error(error));
   }
 
   /**
      * Method gets the favourite recipes for a user
-     * @param {*} req
-     * @param {*} res
-     * @returns {*} res
+     * @param {Object} req
+     * @param {Object} res
+     *
+     * @returns {Object} res
      */
   static getFavourites(req, res) {
     db.User.findById(req.user.userId)
@@ -40,28 +45,30 @@ export default class FavouriteRecipesController {
             }
             res.status(200).jsend.success({ favourites });
           })
-          .catch(error => res.status(400).jsend.fail(error));
+          .catch(error => res.status(500).jsend.fail(error));
       });
   }
 
   /**
    * Deletes a user favourite
-   * @param {*} req
-   * @param {*} res
-   * @returns {*} res
-   */
+     * @param {Object} req
+     * @param {Object} res
+     *
+     * @returns {Object} res
+     */
   static deleteFavourites(req, res) {
     db.sequelize.query(`DELETE FROM "Favourites" WHERE "UserId" = ${req.user.userId} AND "RecipeId" IN (${req.params.id})`)
       .spread(() => res.status(200).jsend.success({ message: 'Favourite deleted' }))
-      .catch(error => res.status(400).jsend.fail(error));
+      .catch(error => res.status(500).jsend.fail(error));
   }
 
   /**
    * Get recipes by most favourited
-   * @param {*} req
-   * @param {*} res
-   * @returns {*} res
-   */
+     * @param {Object} req
+     * @param {Object} res
+     *
+     * @returns {Object} res
+     */
   static getMostFavourited(req, res) {
     db.sequelize.query(`SELECT "Recipes"."id", "Recipes"."name", "Recipes"."description",
     "Recipes"."ingredients", "Recipes"."image", "Recipes"."upvotes",

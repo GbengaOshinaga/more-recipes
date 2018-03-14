@@ -1,6 +1,7 @@
 {
     "root": true,
     "extends": "airbnb",
+    "parser": "babel-eslint",
     "env": {
       "node": true,
       "es6": true,
@@ -14,7 +15,8 @@
       "window": false,
       "document": false,
       "$": false,
-      "fetch": false
+      "fetch": false,
+      "FormData": false
     },
     "rules": {
       "one-var": 0,
@@ -54,7 +56,8 @@
         "components": [ "Link" ],
         "specialLink": [ "hrefLeft", "hrefRight", "to" ],
         "aspects": [ "noHref", "invalidHref", "preferButton" ]
-      }]
+      }],
+      "jsx-ally/label-has-for": "off"
     }
   }
   

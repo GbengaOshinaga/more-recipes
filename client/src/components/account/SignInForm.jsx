@@ -17,8 +17,9 @@ const propTypes = {
 
 /**
  * Functional component for signin form
- * @param {*} props
- * @returns {*} jsx
+ * @param {Object} props
+ *
+ * @returns {Node} jsx
  */
 function SignInForm({
   onChange, email, password, onClickSave, onSuccess, onFailure
