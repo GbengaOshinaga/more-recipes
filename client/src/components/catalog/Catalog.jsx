@@ -112,7 +112,7 @@ export class Catalog extends React.Component {
       });
     }
     if (value === '') {
-      this.setState({ hasSearchValue: false });
+      this.setState({ hasSearchValue: false, searchValue: '' });
     } else {
       this.setState({ hasSearchValue: true });
     }
