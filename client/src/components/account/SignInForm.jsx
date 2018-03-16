@@ -29,7 +29,7 @@ function SignInForm({
       <Header
         mainLinks={
           <React.Fragment>
-            <li><Link to="/catalog">Catalog</Link></li>
+            <li><Link id="catalog-link" to="/catalog">Catalog</Link></li>
           </React.Fragment>}
       />
       <div className="signin-box">

@@ -22,7 +22,7 @@ export default class RecipeValidator {
     if (!req.body.description || validator.isEmpty(req.body.description.trim())) {
       messages.push('Recipe description is required');
     }
-    if (!req.body.ingredients) {
+    if (!req.body.ingredients || req.body.ingredients.length === 0) {
       messages.push('Ingredients are required');
     }
     if (messages.length > 0) {

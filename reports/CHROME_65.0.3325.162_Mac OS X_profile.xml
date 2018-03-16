@@ -5,16 +5,16 @@
 
   <testsuite name="profile"
     errors="0" failures="0" hostname="" id="" package="profile" skipped="0"
-    tests="2" time="16.77" timestamp="Wed, 14 Mar 2018 11:52:55 GMT">
+    tests="2" time="17.78" timestamp="Fri, 16 Mar 2018 09:36:33 GMT">
   
-    <testcase name="Sign up user" classname="profile" time="10.70" assertions="2">
+    <testcase name="Sign up user" classname="profile" time="11.80" assertions="2">
 
     
 
     
     </testcase>
   
-    <testcase name="Edit profile" classname="profile" time="6.079" assertions="4">
+    <testcase name="Edit profile" classname="profile" time="5.976" assertions="4">
 
     
 

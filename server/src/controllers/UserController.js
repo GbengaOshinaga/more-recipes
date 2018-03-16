@@ -102,28 +102,26 @@ export default class UserController {
      */
   static modifyUser(req, res) {
     db.User.findById(req.user.userId)
-      .then((user) => {
-        user.update({
-          firstName: req.body.firstName || user.firstName,
-          lastName: req.body.lastName || user.lastName,
-          email: req.body.email || user.email,
-          profilePic: req.body.profilePic || user.profilePic,
-          about: req.body.about || user.about
-        })
-          .then(updatedUser => res.status(200).jsend.success({
-            user: {
-              id: updatedUser.id,
-              firstName: updatedUser.firstName,
-              lastName: updatedUser.lastName,
-              email: updatedUser.email,
-              updatedAt: updatedUser.updatedAt,
-              createdAt: updatedUser.createdAt,
-              profilePic: updatedUser.profilePic,
-              about: updatedUser.about
-            }
-          }))
-          .catch(error => res.status(400).jsend.fail(error));
+      .then(user => user.update({
+        firstName: req.body.firstName || user.firstName,
+        lastName: req.body.lastName || user.lastName,
+        email: req.body.email || user.email,
+        profilePic: req.body.profilePic || user.profilePic,
+        about: req.body.about || user.about
       })
+        .then(updatedUser => res.status(200).jsend.success({
+          user: {
+            id: updatedUser.id,
+            firstName: updatedUser.firstName,
+            lastName: updatedUser.lastName,
+            email: updatedUser.email,
+            updatedAt: updatedUser.updatedAt,
+            createdAt: updatedUser.createdAt,
+            profilePic: updatedUser.profilePic,
+            about: updatedUser.about
+          }
+        }))
+        .catch(error => res.status(400).jsend.fail(error)))
       .catch(error => res.status(500).jsend.fail(error));
   }
 

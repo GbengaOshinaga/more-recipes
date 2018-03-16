@@ -33,7 +33,11 @@ const defaultProps = {
 
 const reviewPropTypes = {
   review: PropTypes.string.isRequired,
-  profilePic: PropTypes.string.isRequired
+  profilePic: PropTypes.string
+};
+
+const reviewDefaultProps = {
+  profilePic: ''
 };
 
 const addReviewPropTypes = {
@@ -121,8 +125,14 @@ function RecipeDetailsPage({
               <div className="container">
                 <div className="details-content">
                   <h4>{recipe.name}</h4>
-                  <p>{recipe.description}</p>
-                  <ul>{displayIngredients(recipe.ingredients)}</ul>
+                  <div className="description-section">
+                    <h6>Description</h6>
+                    <p>{recipe.description}</p>
+                  </div>
+                  <div className="ingredients-section">
+                    <h6>Ingredients</h6>
+                    <ul>{displayIngredients(recipe.ingredients)}</ul>
+                  </div>
                   {isLoggedIn &&
                   <div id="vote">
                     <a
@@ -176,7 +186,7 @@ function RecipeDetailsPage({
                   />}
                   {!isLoggedIn &&
                   <div>
-                    <p><Link to={{ pathname: '/signin', state: { from: location } }}>Sign In</Link> To Add Review</p>
+                    <p><Link id="sign-in-review-link" to={{ pathname: '/signin', state: { from: location } }}>Sign In</Link> To Add Review</p>
                   </div>}
                 </div>
               </div>
@@ -254,7 +264,10 @@ function AddReview({
 
 RecipeDetailsPage.propTypes = propTypes;
 RecipeDetailsPage.defaultProps = defaultProps;
+
 Review.propTypes = reviewPropTypes;
+Review.defaultProps = reviewDefaultProps;
+
 AddReview.propTypes = addReviewPropTypes;
 AddReview.defaultProps = addReviewDefaultProps;
 
