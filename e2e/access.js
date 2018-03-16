@@ -1,3 +1,4 @@
+/* eslint-disable */
 import faker from 'faker';
 
 const firstName = faker.name.firstName();
@@ -6,10 +7,8 @@ const email = faker.internet.email();
 const password = faker.internet.password(7);
 
 const recipeName = faker.random.word();
-const editRecipeName = faker.random.word();
 const recipeDescription = faker.random.words(30);
 const ingredient = faker.random.word();
-const review = faker.random.words(10);
 
 module.exports = {
   'Sign up user': function (browser) {
@@ -55,46 +54,60 @@ module.exports = {
       .click('#submit')
       .pause(1000)
       .waitForElementVisible('.recipe-card', 1000)
-      .assert.containsText('.card-title', recipeName);
+      .assert.containsText('.card-title', recipeName)
+      .pause(1000);
   },
-  'edit recipe': function (browser) {
+  'Logged out': function (browser) {
+    browser
+      .click('.dropdown-button')
+      .pause(1000)
+      .click('#logout')
+      .pause(1000)
+      .click('.brand-logo')
+      .pause(1000)
+      .expect.element('.card-action').to.not.be.present;
     browser
       .pause(1000)
-      .click('a#edit')
+      .click('.card-title')
       .pause(1000)
-      .clearValue('#edit-modal input[type=text]')
-      .pause(1000)
-      .setValue('#edit-modal input[type=text]', editRecipeName)
-      .click('#edit-submit')
-      .pause(1000)
-      .assert.containsText('.card-title', editRecipeName);
-  },
-  'view and delete recipe': function (browser) {
+      .expect.element('#vote').to.not.be.present;
     browser
       .pause(1000)
-      .click('#desc')
+      .assert.visible('#sign-in-review-link')
       .pause(1000)
-      .assert.containsText('.details-content h4', editRecipeName)
-      .click('#details-thumb-up')
+      .click('#sign-in-review-link')
       .pause(1000)
-      .assert.containsText('#upvotes', 1)
+      .assert.urlContains('signin')
+      .setValue('input#email', email)
       .pause(1000)
-      .click('#details-thumb-down')
-      .pause(1000)
-      .assert.containsText('#upvotes', 0)
-      .assert.containsText('#downvotes', 1)
-      .pause(1000)
-      .click('#details-favourite')
-      .pause(1000)
-      .assert.cssClassPresent('#details-favourite', 'red-text')
-      .pause(1000)
-      .setValue('textarea#review-textarea', review)
+      .setValue('input#password', password)
       .pause(1000)
       .click('button[type=submit]')
+      .pause(2000)
+      .assert.urlContains('recipe')
+      .assert.visible('.review-card')
       .pause(1000)
-      .waitForElementVisible('.review-card', 1000)
-      .assert.containsText('.card-content p', review)
-      .back()
+      .click('.dropdown-button')
+      .pause(1000)
+      .click('#logout')
+      .pause(1000)
+      .url('http://localhost:8000/profile')
+      .pause(1000)
+      .assert.urlContains('signin')
+      .pause(1000)
+      .setValue('input#email', email)
+      .pause(1000)
+      .setValue('input#password', password)
+      .pause(1000)
+      .click('button[type=submit]')
+      .pause(2000)
+      .assert.urlContains('profile')
+  },
+  'Delete recipe': function (browser) {
+      browser
+      .click('.dropdown-button')
+      .pause(1000)
+      .click('#my-recipes')
       .pause(1000)
       .click('#delete')
       .waitForElementVisible('#confirm-modal', 1000)

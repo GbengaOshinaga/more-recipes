@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites errors="0"
+            failures="0"
+            tests="4">
+
+  <testsuite name="access"
+    errors="0" failures="0" hostname="" id="" package="access" skipped="0"
+    tests="4" time="49.57" timestamp="Fri, 16 Mar 2018 09:34:36 GMT">
+  
+    <testcase name="Sign up user" classname="access" time="14.06" assertions="4">
+
+    
+
+    
+
+    
+
+    
+    </testcase>
+  
+    <testcase name="Add recipe" classname="access" time="9.250" assertions="2">
+
+    
+
+    
+    </testcase>
+  
+    <testcase name="Logged out" classname="access" time="22.85" assertions="8">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    </testcase>
+  
+    <testcase name="Delete recipe" classname="access" time="3.405" assertions="2">
+
+    
+
+    
+    </testcase>
+  
+
+  
+
+  
+  </testsuite>
+</testsuites>

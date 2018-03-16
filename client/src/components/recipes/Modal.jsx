@@ -66,13 +66,16 @@ export function AddModal({
             />
           </div>
           <div className="row">
-            <ChipInput
-              id="ingredients-chip"
-              value={[...data.ingredients]}
-              onRequestAdd={chip => handleAddModalChipAdd(chip)}
-              onRequestDelete={chip => handleAddModalChipDelete(chip)}
-              floatingLabelText="Enter Ingredients - Press enter after entering each"
-            />
+            <div className="col s12">
+              <ChipInput
+                id="ingredients-chip"
+                value={[...data.ingredients]}
+                onRequestAdd={chip => handleAddModalChipAdd(chip)}
+                onRequestDelete={chip => handleAddModalChipDelete(chip)}
+                floatingLabelText="Enter Ingredients - Press enter after entering each"
+                fullWidth
+              />
+            </div>
           </div>
           <div className="file-field input-field">
             <div className="btn">
@@ -119,7 +122,7 @@ export function EditModal({
 
         <form action="#">
           <InputField
-            id="edit-name"
+            id="name"
             type="text"
             onChange={onInputChange}
             value={editData.name}
@@ -127,17 +130,20 @@ export function EditModal({
           />
           <div className="row">
             <TextArea
-              id="edit-description"
+              id="description"
               value={editData.description}
               onChange={onInputChange}
             />
           </div>
           <div className="row">
-            <ChipInput
-              value={[...editData.ingredients]}
-              onRequestAdd={chip => handleChipAdd(chip)}
-              onRequestDelete={chip => handleChipDelete(chip)}
-            />
+            <div className="col s12">
+              <ChipInput
+                value={[...editData.ingredients]}
+                onRequestAdd={chip => handleChipAdd(chip)}
+                onRequestDelete={chip => handleChipDelete(chip)}
+                fullWidth
+              />
+            </div>
           </div>
           <div className="file-field input-field">
             <div className="btn">

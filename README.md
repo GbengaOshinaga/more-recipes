@@ -13,8 +13,8 @@ This project was written in react and redux for the client, and express for the 
 
 ### Prerequisites
 
-Node JS is required for this project. Install it here: https://nodejs.org/en/
-Add a .env file with the property `JWT_SECRET='your secret'` to the root of the application for your authentication
+Node JS is required for this project. Install it here: https://nodejs.org/en/ <br />
+Add a .env file with the property `JWT_SECRET='your secret'` to the root of the application for authentication
 
 ### Installing
 
@@ -122,3 +122,9 @@ Downvote a recipe - ```POST /api/v1/recipes/downvote/{recipe_id}```
 
 ### Documentation
 API Documentation can be found [here](https://more-recipe-gbenga.herokuapp.com/api/v1/docs/)
+
+### Contribution
+Find details on contributing [here](CONTRIBUTING.md)
+
+### License
+This projects makes use of the MIT License. Find it [here](LICENSE.md)

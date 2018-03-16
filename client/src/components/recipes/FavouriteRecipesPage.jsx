@@ -34,7 +34,7 @@ function FavouriteRecipesPage({
       />
       <div className="container">
         <div className="favorited-reviews">
-          <h4>Favorited Recipes</h4>
+          <h4 className="center-align">Favorited Recipes</h4>
           <hr />
           <RecipesDisplay
             recipes={recipes}

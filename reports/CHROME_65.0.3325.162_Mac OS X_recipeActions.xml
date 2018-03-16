@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <testsuites errors="0"
             failures="0"
-            tests="3">
+            tests="4">
 
   <testsuite name="recipeActions"
     errors="0" failures="0" hostname="" id="" package="recipeActions" skipped="0"
-    tests="3" time="35.70" timestamp="Wed, 14 Mar 2018 11:53:11 GMT">
+    tests="4" time="40.08" timestamp="Fri, 16 Mar 2018 09:36:51 GMT">
   
-    <testcase name="Sign up user" classname="recipeActions" time="14.15" assertions="4">
+    <testcase name="Sign up user" classname="recipeActions" time="14.05" assertions="4">
 
     
 
@@ -18,14 +18,19 @@
     
     </testcase>
   
-    <testcase name="Add recipe" classname="recipeActions" time="8.067" assertions="2">
+    <testcase name="Add recipe" classname="recipeActions" time="8.313" assertions="2">
 
     
 
     
     </testcase>
   
-    <testcase name="view and delete recipe" classname="recipeActions" time="13.49" assertions="9">
+    <testcase name="edit recipe" classname="recipeActions" time="4.305" assertions="1">
+
+    
+    </testcase>
+  
+    <testcase name="view and delete recipe" classname="recipeActions" time="13.41" assertions="9">
 
     
 
