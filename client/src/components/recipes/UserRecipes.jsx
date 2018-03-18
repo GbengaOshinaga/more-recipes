@@ -189,6 +189,9 @@ class UserRecipes extends React.Component {
    * @returns {undefined}
    */
   saveRecipe = () => {
+    if (this.state.data.name.length > 255) {
+      return toastr.error('Recipe name is too long');
+    }
     sessionService.loadSession()
       .then((token) => {
         this.props.actions.addRecipe(token, this.state.data)
@@ -225,6 +228,9 @@ class UserRecipes extends React.Component {
    * @returns {undefined}
    */
   editRecipe = () => {
+    if (this.state.edit.name.length > 255) {
+      return toastr.error('Recipe Name is too long');
+    }
     sessionService.loadSession()
       .then((token) => {
         this.props.actions.editRecipe(token, this.state.edit.id, this.state.edit)

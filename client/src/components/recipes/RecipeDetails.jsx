@@ -4,6 +4,7 @@ import { bindActionCreators } from 'redux';
 import { sessionService } from 'redux-react-session';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
+import swal from 'sweetalert';
 import * as recipeActions from '../../actions/RecipeActions';
 import Page from './RecipeDetailsPage';
 import { pluginsInit } from '../../helpers/jqueryHelper';
@@ -59,24 +60,24 @@ export class RecipeDetails extends React.Component {
     let isRecipeAvailable = false;
     const { id } = this.props.match.params;
     const { reviewsPaginationMeta } = this.props;
-    let foundRecipe;
+
+    if (reviewsPaginationMeta.next) {
+      // eslint-disable-next-line
+      this.setState({ hasMoreReviews: true });
+    }
 
     this.props.recipes.map((recipe) => {
       if (recipe.id === Number(id)) {
         isRecipeAvailable = true;
         this.upvoteVoteStatus(recipe, this.props.userId, this.props.userFavourites);
-        foundRecipe = recipe;
+        this.props.actions.getRecipeReviews(id);
         this.setState({ recipe });
       }
     });
     if (!isRecipeAvailable) {
       this.props.actions.getRecipe(id)
+        .then(() => this.props.actions.getRecipeReviews(id))
         .catch(() => this.setState({ notFound: true }));
-    }
-    if (Object.keys(reviewsPaginationMeta).length === 0 ||
-        Number(reviewsPaginationMeta.recipeId) !== Number(id) ||
-        (reviewsPaginationMeta.recipeId === id && foundRecipe.Reviews.length === 0)) {
-      this.props.actions.getRecipeReviews(id);
     }
   }
 
@@ -110,6 +111,14 @@ export class RecipeDetails extends React.Component {
     pluginsInit();
   }
 
+  /**
+   * Called when component is unmounting
+   *
+   * @returns {undefined}
+  */
+  // componentWillUnmount() {
+  //   this.props.actions.clearReviewsPagination();
+  // }
 
   /**
    * Method to save review
@@ -131,11 +140,49 @@ export class RecipeDetails extends React.Component {
    * onChange method for adding review
    * @param {Object} event
    *
-   * @returns {Object} new state
+   * @returns {undefined}
    */
   onAddReviewChange = (event) => {
     const { value } = event.target;
     this.setState({ review: value });
+  }
+
+  /**
+   * Deletes review
+   * @param {Number} reviewId
+   *
+   * @returns {undefined}
+   */
+  onConfirmReviewDelete = async (reviewId) => {
+    const { id } = this.props.match.params;
+    const token = await sessionService.loadSession();
+    if (token) {
+      this.props.actions.deleteReview(reviewId, id, token);
+    }
+  }
+
+
+  /**
+   * Get id of recipe
+   * @param {Object} event
+   *
+   * @returns {undefined}
+   */
+  getId = (event) => {
+    event.persist();
+    event.preventDefault();
+    swal({
+      title: 'Delete this review?',
+      text: 'This review will be permanently deleted',
+      icon: 'warning',
+      buttons: true,
+      dangerMode: true,
+    })
+      .then((willDelete) => {
+        if (willDelete) {
+          this.onConfirmReviewDelete(event.target.id);
+        }
+      });
   }
 
   /**
@@ -233,7 +280,6 @@ export class RecipeDetails extends React.Component {
     }
   }
 
-
   /**
    * Component render method
    *
@@ -261,6 +307,9 @@ export class RecipeDetails extends React.Component {
         hasMoreReviews={this.state.hasMoreReviews}
         fetchReviews={this.fetchReviews}
         isLoadingReviews={this.state.isLoadingReviews}
+        userId={this.props.userId}
+        getId={this.getId}
+        onConfirmReviewDelete={this.onConfirmReviewDelete}
       />
     );
   }
