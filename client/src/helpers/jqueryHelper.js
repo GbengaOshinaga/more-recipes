@@ -4,7 +4,7 @@
  * @returns {undefined}
  */
 export function pluginsInit() {
-  $('.button-collapse').sideNav();
+  $('.button-collapse').sideNav({ closeOnClick: true, draggable: true });
   $('.parallax').parallax();
   $('.dropdown-button').dropdown();
   $('ul.tabs').tabs();

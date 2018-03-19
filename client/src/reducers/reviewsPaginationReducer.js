@@ -14,9 +14,6 @@ export default function paginationReducer(state = initialState.reviewsPagination
     case types.GET_REVIEWS_PAGINATION_META:
       return { ...response };
 
-    case types.CLEAR_REVIEWS_PAGINATION:
-      return {};
-
     default:
       return state;
   }

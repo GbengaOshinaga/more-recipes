@@ -4,6 +4,7 @@ import toastr from 'toastr';
 import { sessionService } from 'redux-react-session';
 import { signUp } from '../../actions/accountActions';
 import SignUpForm from './SignUpForm';
+import { pluginsInit, transformNavBar } from '../../helpers/jqueryHelper';
 
 const defaultUserAvatar = 'http://res.cloudinary.com/king-more-recipes/image/upload/v1518031651/Expert-tutor-placeholder_cg9wet.jpg';
 
@@ -33,6 +34,26 @@ class SignUp extends React.Component {
       positionClass: 'toast-top-right'
     };
   }
+
+  /**
+   * Called when component is mounting
+   *
+   * @returns {undefined}
+  */
+  componentDidMount() {
+    pluginsInit();
+    transformNavBar();
+  }
+
+  /**
+ * Called when component is updating
+ *
+ * @returns {undefined}
+ */
+  componentWillUpdate() {
+    pluginsInit();
+  }
+
 
   /**
    * Signs up a user

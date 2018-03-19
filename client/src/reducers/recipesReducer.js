@@ -65,6 +65,14 @@ export default function recipesReducer(state = initialState.recipes, action) {
         return recipe;
       });
 
+    case types.CLEAR_REVIEWS:
+      return state.map((recipe) => {
+        if (recipe.id === Number(response)) {
+          return { ...recipe, Reviews: [...recipe.Reviews.slice(recipe.Reviews.length)] };
+        }
+        return recipe;
+      });
+
     default:
       return state;
   }

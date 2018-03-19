@@ -26,11 +26,12 @@ function setup() {
     actions: {
       upvoteRecipe: jest.fn(),
       downvoteRecipe: jest.fn(),
-      getAllRecipes: jest.fn(),
-      getMostFavouritedRecipes: jest.fn(),
+      getAllRecipes: jest.fn(r => Promise.reject(r)),
+      getMostFavouritedRecipes: jest.fn(r => Promise.reject(r)),
       search: jest.fn(),
       addFavourite: jest.fn(r => Promise.resolve(r)),
-      deleteFavourite: jest.fn(r => Promise.resolve(r))
+      deleteFavourite: jest.fn(r => Promise.resolve(r)),
+      getFavourites: jest.fn(r => Promise.reject(r))
     },
     mostFavouritedRecipes: [],
     searchResults: [],
@@ -100,8 +101,8 @@ describe('Catalog', () => {
       actions: {
         upvoteRecipe: jest.fn(),
         downvoteRecipe: jest.fn(),
-        getAllRecipes: jest.fn(),
-        getMostFavouritedRecipes: jest.fn(),
+        getAllRecipes: jest.fn(r => Promise.reject(r)),
+        getMostFavouritedRecipes: jest.fn(r => Promise.reject(r)),
         search: jest.fn()
       },
       mostFavouritedRecipes: [],

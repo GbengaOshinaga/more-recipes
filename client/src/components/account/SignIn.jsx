@@ -5,6 +5,7 @@ import toastr from 'toastr';
 import { sessionService } from 'redux-react-session';
 import { signIn } from '../../actions/accountActions';
 import SignInForm from './SignInForm';
+import { pluginsInit } from '../../helpers/jqueryHelper';
 
 const propTypes = {
   location: PropTypes.objectOf(PropTypes.any).isRequired
@@ -32,6 +33,24 @@ class SignIn extends React.Component {
       closeButton: true,
       positionClass: 'toast-top-right'
     };
+  }
+
+  /**
+   * Called when component is mounting
+   *
+   * @returns {undefined}
+  */
+  componentDidMount() {
+    pluginsInit();
+  }
+
+  /**
+   * Called when component is updating
+   *
+   * @returns {undefined}
+   */
+  componentWillUpdate() {
+    pluginsInit();
   }
 
   /**

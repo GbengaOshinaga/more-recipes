@@ -72,7 +72,7 @@ describe('RecipeDetails', () => {
     props.recipes[0].id = 2;
     wrapper.instance().componentDidMount();
     expect(props.actions.getRecipe.mock.calls.length).toEqual(1);
-    expect(props.actions.getRecipeReviews.mock.calls.length).toEqual(3);
+    expect(props.actions.getRecipeReviews.mock.calls.length).toEqual(2);
   });
 
   it('should receive next props', () => {

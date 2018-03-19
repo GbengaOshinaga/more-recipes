@@ -31,6 +31,7 @@ function SignUpForm({
   return (
     <div className="sign-body">
       <Header
+        catalogId="catalog-nav"
         mainLinks={
           <React.Fragment>
             <li><Link to="/catalog">Catalog</Link></li>

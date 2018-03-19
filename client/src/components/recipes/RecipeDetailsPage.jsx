@@ -237,7 +237,7 @@ function Review({
               <div className="col s2">
                 <a
                   id="delete"
-                  className={`modal-trigger btn-floating waves-effect waves-light red icons right-align ${deleteButtonClassName}`}
+                  className={`btn-floating waves-effect waves-light red icons right-align ${deleteButtonClassName}`}
                   href="#!"
                   style={{ marginLeft: '100%' }}
                   onClick={getId}

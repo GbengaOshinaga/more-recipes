@@ -131,12 +131,13 @@ function updateReviewsPaginationMeta(response) {
 }
 
 /**
- * Clears reviews pagination
+ * Clears reviews
+ * @param {Object} response
  *
  * @returns {Object} object
 */
-function updateClearReviewsPagination() {
-  return { type: types.CLEAR_REVIEWS_PAGINATION };
+function updateClearReviews(response) {
+  return { type: types.CLEAR_REVIEWS, response };
 }
 
 /**
@@ -218,13 +219,14 @@ export function getRecipeReviews(id, next) {
 }
 
 /**
- * Clear reviews pagination
+ * Clear reviews
+ * @param {Number} id
  *
  * @returns {func} dispatch
 */
-export function clearReviewsPagination() {
+export function clearReviews(id) {
   return function (dispatch) {
-    dispatch(updateClearReviewsPagination());
+    dispatch(updateClearReviews(id));
   };
 }
 

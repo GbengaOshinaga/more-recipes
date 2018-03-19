@@ -32,38 +32,42 @@ function SignInForm({
             <li><Link id="catalog-link" to="/catalog">Catalog</Link></li>
           </React.Fragment>}
       />
-      <div className="signin-box">
-        <InputField
-          id="email"
-          type="email"
-          onChange={onChange}
-          value={email}
-          label="Email Address"
-          dataError="Invalid Email Address"
-        />
-        <InputField
-          id="password"
-          type="password"
-          onChange={onChange}
-          value={password}
-          label="Password"
-        />
-        <Button
-          onClick={onClickSave}
-          className="btn waves-effect waves-light red darken-2"
-          type="submit"
-          name="action"
-          materialIcon="arrow_forward"
-          buttonText="Sign In"
-        />
-        <SocialLoginButtons
-          isAMemberText="Not a member?"
-          href="/signup"
-          hrefText="Sign Up"
-          onSuccess={onSuccess}
-          onFailure={onFailure}
-          buttonText="Sign In With Google"
-        />
+      <div className="container">
+        <div className="col s12">
+          <div className="signin-box">
+            <InputField
+              id="email"
+              type="email"
+              onChange={onChange}
+              value={email}
+              label="Email Address"
+              dataError="Invalid Email Address"
+            />
+            <InputField
+              id="password"
+              type="password"
+              onChange={onChange}
+              value={password}
+              label="Password"
+            />
+            <Button
+              onClick={onClickSave}
+              className="btn waves-effect waves-light red darken-2"
+              type="submit"
+              name="action"
+              materialIcon="arrow_forward"
+              buttonText="Sign In"
+            />
+            <SocialLoginButtons
+              isAMemberText="Not a member?"
+              href="/signup"
+              hrefText="Sign Up"
+              onSuccess={onSuccess}
+              onFailure={onFailure}
+              buttonText="Sign In With Google"
+            />
+          </div>
+        </div>
       </div>
     </div>
   );

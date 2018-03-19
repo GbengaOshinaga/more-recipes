@@ -5,9 +5,9 @@
 
   <testsuite name="catalog"
     errors="0" failures="0" hostname="" id="" package="catalog" skipped="0"
-    tests="4" time="36.18" timestamp="Fri, 16 Mar 2018 09:35:56 GMT">
+    tests="4" time="37.19" timestamp="Mon, 19 Mar 2018 10:38:11 GMT">
   
-    <testcase name="Sign up user" classname="catalog" time="13.78" assertions="4">
+    <testcase name="Sign up user" classname="catalog" time="14.65" assertions="4">
 
     
 
@@ -18,14 +18,14 @@
     
     </testcase>
   
-    <testcase name="Add recipe" classname="catalog" time="9.572" assertions="2">
+    <testcase name="Add recipe" classname="catalog" time="9.547" assertions="2">
 
     
 
     
     </testcase>
   
-    <testcase name="Catalog" classname="catalog" time="9.590" assertions="9">
+    <testcase name="Catalog" classname="catalog" time="9.678" assertions="9">
 
     
 
@@ -46,7 +46,7 @@
     
     </testcase>
   
-    <testcase name="Search" classname="catalog" time="3.237" assertions="2">
+    <testcase name="Search" classname="catalog" time="3.315" assertions="2">
 
     
 

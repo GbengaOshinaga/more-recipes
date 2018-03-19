@@ -5,6 +5,7 @@ import { sessionService } from 'redux-react-session';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import swal from 'sweetalert';
+import toastr from 'toastr';
 import * as recipeActions from '../../actions/RecipeActions';
 import Page from './RecipeDetailsPage';
 import { pluginsInit } from '../../helpers/jqueryHelper';
@@ -116,9 +117,10 @@ export class RecipeDetails extends React.Component {
    *
    * @returns {undefined}
   */
-  // componentWillUnmount() {
-  //   this.props.actions.clearReviewsPagination();
-  // }
+  componentWillUnmount() {
+    const { id } = this.props.match.params;
+    this.props.actions.clearReviews(id);
+  }
 
   /**
    * Method to save review
@@ -128,6 +130,10 @@ export class RecipeDetails extends React.Component {
    */
   onClickSaveReview = async (event) => {
     event.preventDefault();
+    const { review } = this.state;
+    if (review.trim().length === 0) {
+      return toastr.error('Review is Required');
+    }
     const { id } = this.props.match.params;
     const token = await sessionService.loadSession();
     if (token) {
