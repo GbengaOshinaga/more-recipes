@@ -5,38 +5,38 @@
 
   <testsuite name="auth"
     errors="0" failures="0" hostname="" id="" package="auth" skipped="0"
-    tests="6" time="30.61" timestamp="Fri, 16 Mar 2018 09:35:26 GMT">
+    tests="6" time="28.16" timestamp="Mon, 19 Mar 2018 10:37:43 GMT">
   
-    <testcase name="Launch app" classname="auth" time="6.414" assertions="2">
+    <testcase name="Launch app" classname="auth" time="4.559" assertions="2">
 
     
 
     
     </testcase>
   
-    <testcase name="Check errors for sign up" classname="auth" time="1.575" assertions="1">
+    <testcase name="Check errors for sign up" classname="auth" time="1.576" assertions="1">
 
     
     </testcase>
   
-    <testcase name="Register user" classname="auth" time="10.77" assertions="2">
+    <testcase name="Register user" classname="auth" time="10.74" assertions="2">
 
     
 
     
     </testcase>
   
-    <testcase name="Sign In a user" classname="auth" time="7.439" assertions="1">
+    <testcase name="Sign In a user" classname="auth" time="7.417" assertions="1">
 
     
     </testcase>
   
-    <testcase name="Check errors for sign in" classname="auth" time="3.361" assertions="1">
+    <testcase name="Check errors for sign in" classname="auth" time="2.809" assertions="1">
 
     
     </testcase>
   
-    <testcase name="end" classname="auth" time="1.057" assertions="0">
+    <testcase name="end" classname="auth" time="1.060" assertions="0">
     </testcase>
   
 

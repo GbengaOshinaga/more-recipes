@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import initialState from './initialState';
 import * as types from '../actions/actions';
 
@@ -36,13 +37,38 @@ export default function recipesReducer(state = initialState.recipes, action) {
         return recipe;
       })];
 
+    case types.DELETE_REVIEW_SUCCESS:
+      return [...state.map((recipe) => {
+        if (recipe.id === Number(response.recipeId)) {
+          return {
+            ...recipe,
+            Reviews: [
+              ...recipe.Reviews.filter(review =>
+                review.id !== Number(response.reviewId))
+            ]
+          };
+        }
+        return recipe;
+      })];
+
     case types.GET_REVIEWS_SUCCESS:
       if (response.length === 0) {
         return state;
       }
       return state.map((recipe) => {
         if (recipe.id === response[0].RecipeId) {
-          return { ...recipe, Reviews: [...recipe.Reviews.concat(response)] };
+          if (_.isEqual(recipe.Reviews, response)) {
+            return recipe;
+          }
+          return { ...recipe, Reviews: [...recipe.Reviews, ...response] };
+        }
+        return recipe;
+      });
+
+    case types.CLEAR_REVIEWS:
+      return state.map((recipe) => {
+        if (recipe.id === Number(response)) {
+          return { ...recipe, Reviews: [...recipe.Reviews.slice(recipe.Reviews.length)] };
         }
         return recipe;
       });

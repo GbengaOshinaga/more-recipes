@@ -201,7 +201,7 @@ describe('Recipe async actions', () => {
 
     return store.dispatch(recipeActions.getFavourites('token')).then(() => {
       expect(store.getActions()).toEqual(expectedActions);
-    });
+    }).catch(() => {});
   });
 
   it('creates GET_MOST_FAVOURITED_RECIPES_SUCCESS when getting most favourited recipes', () => {

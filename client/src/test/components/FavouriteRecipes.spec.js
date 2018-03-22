@@ -24,7 +24,7 @@ function setup() {
     recipes: [],
     userId: 0,
     actions: {
-      getFavourites: jest.fn(),
+      getFavourites: jest.fn(r => Promise.resolve(r)),
       upvoteRecipe: jest.fn(),
       downvoteRecipe: jest.fn(),
       deleteFavourite: jest.fn(r => Promise.resolve(r))

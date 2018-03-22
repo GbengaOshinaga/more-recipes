@@ -108,6 +108,7 @@
     "sinon": "^4.4.2",
     "style-loader": "^0.19.1",
     "swagger-ui-express": "^2.0.15",
+    "sweetalert": "^2.1.0",
     "toastr": "^2.1.2",
     "validator": "^9.4.1",
     "webpack": "^3.10.0"

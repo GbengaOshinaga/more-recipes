@@ -6,6 +6,7 @@ import { MainHeader } from '../common/Header';
 import TextArea from '../common/TextArea';
 import Preloader from '../common/Preloader';
 
+
 const propTypes = {
   recipe: PropTypes.objectOf(PropTypes.any),
   profilePic: PropTypes.string,
@@ -22,22 +23,26 @@ const propTypes = {
   favouriteClassName: PropTypes.string.isRequired,
   hasMoreReviews: PropTypes.bool.isRequired,
   fetchReviews: PropTypes.func.isRequired,
-  isLoadingReviews: PropTypes.bool.isRequired
+  isLoadingReviews: PropTypes.bool.isRequired,
+  userId: PropTypes.number,
+  getId: PropTypes.func.isRequired,
 };
 
 const defaultProps = {
   recipe: {},
   profilePic: '',
-  firstName: ''
+  firstName: '',
+  userId: 0
 };
 
 const reviewPropTypes = {
-  review: PropTypes.string.isRequired,
-  profilePic: PropTypes.string
+  review: PropTypes.objectOf(PropTypes.any).isRequired,
+  userId: PropTypes.number,
+  getId: PropTypes.func.isRequired
 };
 
 const reviewDefaultProps = {
-  profilePic: ''
+  userId: 0
 };
 
 const addReviewPropTypes = {
@@ -56,18 +61,21 @@ const defaultUserAvatar = 'http://res.cloudinary.com/king-more-recipes/image/upl
 /**
  * Function to display reviews
  * @param {Array} reviews
+ * @param {Number} userId
+ * @param {func} getId
  *
  * @returns {Node} jsx
  */
-function displayReviews(reviews) {
-  if (reviews === undefined || reviews.length === 0) {
+function displayReviews(reviews, userId, getId) {
+  if (!reviews || reviews.length === 0) {
     return 'No Reviews';
   }
   return reviews.map(review =>
     (<Review
       key={review.id}
-      review={review.review}
-      profilePic={review.User.profilePic}
+      review={review}
+      userId={userId}
+      getId={getId}
     />));
 }
 
@@ -90,9 +98,9 @@ function displayIngredients(ingredients) {
  * @returns {Node} jsx
  */
 function RecipeDetailsPage({
-  recipe, isLoggedIn, firstName, onClickSaveReview, onAddReviewChange,
+  recipe, isLoggedIn, firstName, onClickSaveReview, onAddReviewChange, userId,
   newReview, location, profilePic, onClickVote, onClickFavourite, isLoadingReviews,
-  upvoteClassName, downvoteClassName, favouriteClassName, hasMoreReviews, fetchReviews
+  upvoteClassName, downvoteClassName, favouriteClassName, hasMoreReviews, fetchReviews, getId
 }) {
   if (recipe === undefined || Object.keys(recipe).length === 0) {
     return (
@@ -165,7 +173,7 @@ function RecipeDetailsPage({
                 </div>
                 <div className="review">
                   <h5>Reviews</h5>
-                  {displayReviews(recipe.Reviews)}
+                  {displayReviews(recipe.Reviews, userId, getId)}
                   {hasMoreReviews &&
                   <p>
                     <a
@@ -204,9 +212,13 @@ function RecipeDetailsPage({
  *
  * @returns {Node} jsx
  */
-function Review({ review, profilePic }) {
+function Review({
+  review, userId, getId
+}) {
   let profilePicture;
-  profilePic === '' ? profilePicture = defaultUserAvatar : profilePicture = profilePic;
+  review.User.profilePic === '' ? profilePicture = defaultUserAvatar : profilePicture = review.User.profilePic;
+  const deleteButtonClassName = userId === review.User.id ? '' : 'hide';
+
   return (
     <div className="row">
       <div className="card horizontal review-card">
@@ -215,7 +227,25 @@ function Review({ review, profilePic }) {
         </div>
         <div className="card-stacked">
           <div className="card-content">
-            <p>{review}</p>
+            <div className="review-content row">
+              <div className="col s10">
+                <p>{review.review}</p>
+                <p className="review-by-text">
+                  By {`${review.User.firstName} ${review.User.lastName}`} on {new Date(review.createdAt).toDateString()}
+                </p>
+              </div>
+              <div className="col s2">
+                <a
+                  id="delete"
+                  className={`btn-floating waves-effect waves-light red icons right-align ${deleteButtonClassName}`}
+                  href="#!"
+                  style={{ marginLeft: '100%' }}
+                  onClick={getId}
+                >
+                  <i id={review.id} className="material-icons">delete</i>
+                </a>
+              </div>
+            </div>
           </div>
         </div>
       </div>

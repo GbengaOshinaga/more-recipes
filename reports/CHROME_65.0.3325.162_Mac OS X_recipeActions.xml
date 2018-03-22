@@ -5,9 +5,9 @@
 
   <testsuite name="recipeActions"
     errors="0" failures="0" hostname="" id="" package="recipeActions" skipped="0"
-    tests="4" time="40.08" timestamp="Fri, 16 Mar 2018 09:36:51 GMT">
+    tests="4" time="49.01" timestamp="Mon, 19 Mar 2018 10:39:05 GMT">
   
-    <testcase name="Sign up user" classname="recipeActions" time="14.05" assertions="4">
+    <testcase name="Sign up user" classname="recipeActions" time="14.76" assertions="4">
 
     
 
@@ -18,19 +18,19 @@
     
     </testcase>
   
-    <testcase name="Add recipe" classname="recipeActions" time="8.313" assertions="2">
+    <testcase name="Add recipe" classname="recipeActions" time="9.973" assertions="2">
 
     
 
     
     </testcase>
   
-    <testcase name="edit recipe" classname="recipeActions" time="4.305" assertions="1">
+    <testcase name="edit recipe" classname="recipeActions" time="4.911" assertions="1">
 
     
     </testcase>
   
-    <testcase name="view and delete recipe" classname="recipeActions" time="13.41" assertions="9">
+    <testcase name="view and delete recipe" classname="recipeActions" time="19.37" assertions="9">
 
     
 

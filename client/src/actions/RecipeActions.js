@@ -4,6 +4,7 @@ import api from './Fetch';
 /**
  * Updates reducer if get recipes action is successful
  * @param {Array} response
+ *
  * @returns {Object} object
  */
 function updateGetRecipesSuccess(response) {
@@ -13,6 +14,7 @@ function updateGetRecipesSuccess(response) {
 /**
  * Updates reducer if get reviews action is successful
  * @param {Array} response
+ *
  * @returns {Object} object
  */
 function updateGetReviewsSuccess(response) {
@@ -22,6 +24,7 @@ function updateGetReviewsSuccess(response) {
 /**
  * Updates reducer if get recipe action is successful
  * @param {Object} response
+ *
  * @returns {Object} object
  */
 function updateGetRecipeSuccess(response) {
@@ -31,6 +34,7 @@ function updateGetRecipeSuccess(response) {
 /**
  * Updates reducer if add review action is successful
  * @param {Object} response
+ *
  * @returns {Object} object
  */
 function updateAddReviewSuccess(response) {
@@ -38,8 +42,19 @@ function updateAddReviewSuccess(response) {
 }
 
 /**
+ * Updates reducer if add review action is successful
+ * @param {Object} response
+ *
+ * @returns {Object} object
+ */
+function updateDeleteReviewSuccess(response) {
+  return { type: types.DELETE_REVIEW_SUCCESS, response };
+}
+
+/**
  * Updates reducer with search results
  * @param {Array} response
+ *
  * @returns {Object} object
  */
 function updateSearchResultsSuccess(response) {
@@ -48,6 +63,7 @@ function updateSearchResultsSuccess(response) {
 
 /**
  * Updates reducer if there are no results
+ *
  * @returns {Object} object
  */
 function updateSearchResultsFailure() {
@@ -57,6 +73,7 @@ function updateSearchResultsFailure() {
 /**
  * Updates reducer if get user favourites action is successful
  * @param {Object} response
+ *
  * @returns {Object} object
  */
 function updateUserFavouritesSuccess(response) {
@@ -66,6 +83,7 @@ function updateUserFavouritesSuccess(response) {
 
 /**
  * Updates reducer if get user favourites action is not successful
+ *
  * @returns {Object} object
  */
 function updateUserFavouritesFailure() {
@@ -75,6 +93,7 @@ function updateUserFavouritesFailure() {
 /**
  * Updates reducer if getting most favourited recipes is successful
  * @param {Array} response
+ *
  * @returns {Object} object
  */
 function updateGetMostFavouritedSuccess(response) {
@@ -84,6 +103,7 @@ function updateGetMostFavouritedSuccess(response) {
 /**
  * Updates reducer if vote is successful
  * @param {Object} response
+ *
  * @returns {Object} object
  */
 function updateVoteSuccess(response) {
@@ -108,6 +128,16 @@ function updatePaginationMeta(response) {
  */
 function updateReviewsPaginationMeta(response) {
   return { type: types.GET_REVIEWS_PAGINATION_META, response };
+}
+
+/**
+ * Clears reviews
+ * @param {Object} response
+ *
+ * @returns {Object} object
+*/
+function updateClearReviews(response) {
+  return { type: types.CLEAR_REVIEWS, response };
 }
 
 /**
@@ -189,8 +219,21 @@ export function getRecipeReviews(id, next) {
 }
 
 /**
+ * Clear reviews
+ * @param {Number} id
+ *
+ * @returns {func} dispatch
+*/
+export function clearReviews(id) {
+  return function (dispatch) {
+    dispatch(updateClearReviews(id));
+  };
+}
+
+/**
  * Action to get single recipe
  * @param {Number} id
+ *
  * @returns {func} dispatch
  */
 export function getRecipe(id) {
@@ -212,6 +255,7 @@ export function getRecipe(id) {
  * @param {Number} id
  * @param {String} token
  * @param {String} review
+ *
  * @returns {func} dispatch
  */
 export function addReview(id, token, review) {
@@ -224,9 +268,29 @@ export function addReview(id, token, review) {
 }
 
 /**
+ * Action to delete review
+ * @param {Number} reviewId
+ * @param {Number} recipeId
+ * @param {String} token
+ *
+ * @returns {func} dispatch
+ */
+export function deleteReview(reviewId, recipeId, token) {
+  return function (dispatch) {
+    return api.del(`/api/v1/recipes/reviews/${reviewId}`, { 'Access-Token': token })
+      .then((response) => {
+        if (response.status === 'success') {
+          dispatch(updateDeleteReviewSuccess({ reviewId, recipeId }));
+        }
+      });
+  };
+}
+
+/**
  * Action to upvote a recipe
  * @param {Number} id
  * @param {String} token
+ *
  * @returns {func} dispatch
  */
 export function upvoteRecipe(id, token) {
@@ -244,6 +308,7 @@ export function upvoteRecipe(id, token) {
  * Action to downvote a recipe
  * @param {Number} id
  * @param {String} token
+ *
  * @returns {func} dispatch
  */
 export function downvoteRecipe(id, token) {
@@ -260,6 +325,7 @@ export function downvoteRecipe(id, token) {
 /**
  * Action to search for recipes
  * @param {String} query
+ *
  * @returns {func} dispatch
  */
 export function search(query) {
@@ -279,6 +345,7 @@ export function search(query) {
  * Action to add favourite for user
  * @param {String} token
  * @param {Number} recipeId
+ *
  * @returns {func} dispatch
  */
 export function addFavourite(token, recipeId) {
@@ -300,6 +367,7 @@ export function addFavourite(token, recipeId) {
 /**
  * Action to get user favourites
  * @param {String} token
+ *
  * @returns {func} dispatch
  */
 export function getFavourites(token) {
@@ -320,6 +388,7 @@ export function getFavourites(token) {
  * Action to add favourite for user
  * @param {String} token
  * @param {Number} recipeId
+ *
  * @returns {func} dispatch
  */
 export function deleteFavourite(token, recipeId) {
@@ -342,6 +411,7 @@ export function deleteFavourite(token, recipeId) {
 
 /**
  * Action to get most favourited recipes
+ *
  * @returns {func} dispatch
  */
 export function getMostFavouritedRecipes() {

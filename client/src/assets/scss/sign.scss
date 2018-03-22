@@ -23,7 +23,7 @@ p{
 
 .sign-box {
 	text-align: center;
-    width: 500px;
+    width: 25rem;
     background: rgba(255,255,255, 0.8);
     margin: 0 auto;
     border-radius: 5px;
@@ -56,3 +56,39 @@ p{
 .google-button {
     background: url('../img/btn_google_signin_dark_normal_web.png');
 }
+
+/* Portrait and Landscape */
+@media only screen 
+  and (min-device-width: 320px) 
+  and (max-device-width: 568px)
+  and (-webkit-min-device-pixel-ratio: 2) {
+    .sign-box {
+        text-align: center;
+        width: 20rem;
+        background: rgba(255,255,255, 0.8);
+        margin-top: 100px;
+        padding-top: 10px;
+        border-radius: 5px;
+        box-shadow: 0px 2px 0px 0px rgba(0, 0, 0, 0.1);
+    }
+    .sign-body {
+        // background-image: url('../../assets/img/bg-image.jpg');
+        background: url("../../assets/img/bg-image.jpg") no-repeat center center fixed; 
+       -webkit-background-size: cover;
+       -moz-background-size: cover;
+       -o-background-size: cover;
+       background-size: cover;
+
+ 
+ 
+        /* Set up proportionate scaling */
+        width: 100%;
+        height: auto;
+        
+        /* Set up positioning */
+        
+        top: 0;
+        left: 0;
+    }
+}
+
