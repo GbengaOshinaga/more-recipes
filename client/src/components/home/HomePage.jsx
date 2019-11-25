@@ -2,6 +2,7 @@
 import React from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import { sessionService } from 'redux-react-session';
+import $ from 'jquery';
 import { Header } from '../common/Header';
 
 
@@ -41,7 +42,8 @@ class HomePage extends React.Component {
    * @returns {undefined}
    */
   componentDidMount() {
-    $('.button-collapse').sideNav();
+    // TODO: Refactor later to not use jquery
+    // $('.button-collapse').sideNav();
   }
 
   /**
