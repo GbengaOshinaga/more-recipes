@@ -56,8 +56,9 @@ export class Catalog extends React.Component {
    * @returns {undefined}
    */
   componentDidMount() {
-    pluginsInit();
-    transformNavBar();
+    // TODO: Refactor code to not use jquery
+    // pluginsInit();
+    // transformNavBar();
     if (!this.props.paginationMeta.total) {
       this.props.actions.getAllRecipes()
         .catch(() => this.setState({ isAllRecipesFound: false }));
@@ -95,7 +96,8 @@ export class Catalog extends React.Component {
    * @returns {undefined}
    */
   componentDidUpdate() {
-    pluginsInit();
+    // TODO: Refactor code to not use jquery
+    // pluginsInit();
   }
 
   /**

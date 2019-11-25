@@ -1,6 +1,6 @@
 const webpack = require('webpack');
 const path = require('path');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 const GLOBALS = {
   'process.env.NODE_ENV': JSON.stringify('production')
@@ -21,7 +21,7 @@ module.exports = {
   plugins: [
     new webpack.optimize.OccurrenceOrderPlugin(),
     new webpack.DefinePlugin(GLOBALS),
-    new ExtractTextPlugin({ filename: 'style.css' }),
+    new MiniCssExtractPlugin({ filename: 'style.css' }),
     new webpack.optimize.UglifyJsPlugin()
   ],
   resolve: {
@@ -34,7 +34,7 @@ module.exports = {
         include: path.join(__dirname, 'client/src'),
         loader: 'babel-loader',
         query: {
-          plugins: ['transform-runtime'],
+          plugins: ['@babel/transform-runtime'],
           presets: ['es2015', 'stage-0', 'react']
         }
       },
@@ -52,11 +52,12 @@ module.exports = {
       },
       {
         test: /\.scss$/,
-        use: ExtractTextPlugin.extract({
-          fallback: 'style-loader',
-          // resolve-url-loader may be chained before sass-loader if necessary
-          use: ['css-loader', 'sass-loader'],
-        }),
+        use: [{
+          loader: MiniCssExtractPlugin.loader
+        },
+        'css-loader',
+        'sass-loader',
+        ]
       }
     ]
   }

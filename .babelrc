@@ -1,8 +1,9 @@
 {
   "plugins": [
-    "transform-es2015-destructuring",
-    "transform-object-rest-spread",
-    "transform-class-properties"
+    "@babel/plugin-transform-runtime",
+    "@babel/plugin-transform-destructuring",
+    "@babel/plugin-transform-spread",
+    "@babel/plugin-proposal-class-properties"
   ],
-  "presets": [ "react", "es2015" ]
+  "presets": [ "@babel/preset-env", "@babel/preset-react" ]
 }
