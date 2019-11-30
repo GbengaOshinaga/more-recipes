@@ -1,23 +1,58 @@
-import UserController from '../controllers/UserController';
-import UserValidator from '../validator/UsersValidator';
-import AuthValidator from '../validator/AuthValidator';
-import RecipeValidator from '../validator/RecipeValidator';
+import * as userController from '../controllers/userController';
+import * as userValidator from '../validator/usersValidator';
+import errorHandler from '../middlewares/errorHandler';
+import { authenticate } from '../middlewares/authenticate';
+import { getIdValidation } from '../validator/idValidator';
+
+const {
+  getSignUpValidation,
+  getEmailAndPasswordValidation,
+  getUpdateValidation
+} = userValidator;
+
+const baseUrl = '/api/v1/users';
 
 export default (app) => {
   // Sign up a user
-  app.post('/api/v1/users/signup', UserValidator.validateSignUp, UserController.signup);
+  app.post(
+    `${baseUrl}/signup`,
+    errorHandler(getSignUpValidation()),
+    userController.signUp
+  );
 
   // Sign in a user
-  app.post('/api/v1/users/signin', UserValidator.validateSignIn, UserController.signin);
+  app.post(
+    `${baseUrl}/signin`,
+    errorHandler(getEmailAndPasswordValidation()),
+    userController.signIn
+  );
 
   // Edit user information
-  app.post('/api/v1/users/edit', AuthValidator.authenticate, UserValidator.validateInput, UserController.modifyUser);
+  app.post(
+    `${baseUrl}/edit`,
+    authenticate,
+    errorHandler(getUpdateValidation()),
+    userController.modifyUser
+  );
 
   // Get user by id
-  app.get('/api/v1/user/:id', RecipeValidator.validateID, UserController.getUserById);
+  app.get(
+    `${baseUrl}/:id`,
+    errorHandler(getIdValidation()),
+    userController.getUserById
+  );
 
   // Delete user
-  app.delete('/api/v1/user/:id', AuthValidator.authenticate, RecipeValidator.validateID, UserController.deleteUser);
+  app.delete(
+    `${baseUrl}/:id`,
+    authenticate,
+    errorHandler(getIdValidation()),
+    userController.deleteUser
+  );
 
-  app.get('/api/v1/users/recipes', AuthValidator.authenticate, UserController.getUsersRecipes);
+  app.get(
+    `${baseUrl}/recipes`,
+    authenticate,
+    userController.getUserRecipes
+  );
 };
