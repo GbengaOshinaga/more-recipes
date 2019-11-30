@@ -17,6 +17,7 @@ module.exports = {
     database: process.env.DEV_TEST_DB_NAME,
     host: process.env.DEV_DB_HOST,
     port: process.env.DEV_DB_PORT,
+    dialect: 'postgres',
     logging: false
   },
   production: {

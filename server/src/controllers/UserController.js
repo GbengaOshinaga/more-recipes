@@ -4,7 +4,7 @@ import db from '../models/index';
 
 const { User } = db;
 
-const getUserObject = user => ({
+const getUserObject = (user = {}) => ({
   id: user.id,
   firstName: user.firstName,
   lastName: user.lastName,
@@ -16,17 +16,21 @@ const getUserObject = user => ({
 });
 
 export const signUp = (req, res) => {
+  const {
+    profilePic, firstName, lastName, email
+  } = req.body;
+
   let picture = '';
-  if (req.body.profilePic) {
-    picture = req.body.profilePic;
+  if (profilePic) {
+    picture = profilePic;
   }
 
   const createAndReturnUser = async (err, hash) => {
     try {
       const user = await User.create({
-        firstName: req.body.firstName,
-        lastName: req.body.lastName,
-        email: req.body.email,
+        firstName,
+        lastName,
+        email,
         password: hash,
         profilePic: picture
       });

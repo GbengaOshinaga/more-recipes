@@ -4,9 +4,9 @@ export const getEmailAndPasswordValidation = () => {
   const validation = [
     check('email')
       .not().isEmpty().withMessage('Email Address is required')
-      .normalizeEmail()
       .isEmail()
-      .withMessage('Email Address is not valid'),
+      .withMessage('Email Address is not valid')
+      .normalizeEmail(),
     check('password')
       .not().isEmpty().withMessage('Password is required')
       .isLength({ min: 6 })
@@ -55,9 +55,9 @@ export const getUpdateValidation = () => {
       .escape(),
     check('email')
       .optional()
-      .normalizeEmail()
       .isEmail()
-      .withMessage('Email Address is not valid'),
+      .withMessage('Email Address is not valid')
+      .normalizeEmail(),
     check('profilePic').optional().trim().escape(),
     check('about').optional().trim().escape()
   ];
