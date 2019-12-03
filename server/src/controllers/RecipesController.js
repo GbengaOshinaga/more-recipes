@@ -1,5 +1,5 @@
 import db from '../models/index';
-import { getPaginationMeta, check } from '../helpers/';
+import { getPaginationMeta, check } from "../helpers";
 
 /**
  * RecipesController

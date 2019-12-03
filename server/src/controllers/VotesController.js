@@ -84,7 +84,7 @@ export default class VotesController {
                 });
               }))
             .catch(error => res.status(500).jsend.fail(error));
-        } else if (vote && vote.vote !== valueOfVote) {
+        } if (vote && vote.vote !== valueOfVote) {
           // If vote is different from previous vote, delete previous vote, and create present one
           vote.destroy();
           db.Votes.create({

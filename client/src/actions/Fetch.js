@@ -2,17 +2,17 @@ import 'cross-fetch/polyfill';
 
 /**
  * Fetch API
-*/
+ */
 export default class Fetch {
   /**
-     * Fetch method
-     * @param {String} url
-     * @param {String} method
-     * @param {Object} data
-     * @param {Object} headers
-     *
-     * @returns {Promise} response
-     */
+   * Fetch method
+   * @param {String} url
+   * @param {String} method
+   * @param {Object} data
+   * @param {Object} headers
+   *
+   * @returns {Promise} response
+   */
   static commonFetch(url, method, data, headers) {
     let defaultHeader = { 'Content-Type': 'application/json' };
     let options;
@@ -28,8 +28,7 @@ export default class Fetch {
       options = { method, body: data };
     }
 
-    return fetch(url, options)
-      .then(response => response.json());
+    return fetch(url, options).then(response => response.json());
   }
 
   /**
@@ -78,4 +77,3 @@ export default class Fetch {
     return this.commonFetch(url, 'delete', null, headers);
   }
 }
-

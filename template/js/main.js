@@ -1,14 +1,14 @@
-$(document).ready(function(){
+$(document).ready(() => {
 
-	//Materialize components initialization
+	// Materialize components initialization
 	$(".button-collapse").sideNav();
 	$('.parallax').parallax();
 	$(".dropdown-button").dropdown();
 	$('#desc-textarea').trigger('autoresize');
 	$('.modal').modal();
 
-	//Transform catalog navbar on scroll
-	$(window).scroll(function(){
+	// Transform catalog navbar on scroll
+	$(window).scroll(() => {
 		if($(window).scrollTop() > 0){
 			$('#search-nav').removeClass('hide');
 			$('#nav').addClass('grey darken-2');
@@ -21,8 +21,8 @@ $(document).ready(function(){
 
 	});
 
-	//Enable editing on profile when edit button is clicked
-	$('#edit-button').click(function(){
+	// Enable editing on profile when edit button is clicked
+	$('#edit-button').click(() => {
 		$('#profile-name').prop('disabled', false);
 		$('#profile-email').prop('disabled', false);
 		$('#desc-textarea').prop('disabled', false);
@@ -30,8 +30,8 @@ $(document).ready(function(){
 		$('#edit-photo').removeClass('hide');
 	});
 
-	//Disable editing on profile when save button is clicked
-	$('#save').click(function(){
+	// Disable editing on profile when save button is clicked
+	$('#save').click(() => {
 		$('#profile-name').prop('disabled', true);
 		$('#profile-email').prop('disabled', true);
 		$('#desc-textarea').prop('disabled', true);
