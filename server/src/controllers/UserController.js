@@ -16,9 +16,7 @@ const getUserObject = (user = {}) => ({
 });
 
 export const signUp = (req, res) => {
-  const {
-    profilePic, firstName, lastName, email
-  } = req.body;
+  const { profilePic, firstName, lastName, email } = req.body;
 
   let picture = '';
   if (profilePic) {
@@ -35,15 +33,21 @@ export const signUp = (req, res) => {
         profilePic: picture
       });
 
-      const accessToken = jwt.sign({
-        userId: user.id,
-        email: user.email
-      }, process.env.JWT_SECRET);
+      const accessToken = jwt.sign(
+        {
+          userId: user.id,
+          email: user.email
+        },
+        process.env.JWT_SECRET
+      );
 
-      return res.successResponse({
-        user: getUserObject(user),
-        token: accessToken
-      }, 201);
+      return res.successResponse(
+        {
+          user: getUserObject(user),
+          token: accessToken
+        },
+        201
+      );
     } catch (error) {
       return res.failResponse(error.errors?.[0]?.message);
     }
@@ -66,10 +70,13 @@ export const signIn = async (req, res) => {
       return res.failResponse('Invalid Credentials');
     }
 
-    const accessToken = jwt.sign({
-      userId: user.id,
-      email: user.email
-    }, process.env.JWT_SECRET);
+    const accessToken = jwt.sign(
+      {
+        userId: user.id,
+        email: user.email
+      },
+      process.env.JWT_SECRET
+    );
 
     return res.successResponse({
       user: getUserObject(user),
@@ -82,16 +89,8 @@ export const signIn = async (req, res) => {
 
 export const modifyUser = async (req, res) => {
   const {
-    user: {
-      userId
-    } = {},
-    body: {
-      firstName,
-      lastName,
-      email,
-      profilePic,
-      about
-    }
+    user: { userId } = {},
+    body: { firstName, lastName, email, profilePic, about }
   } = req;
 
   try {
@@ -114,7 +113,9 @@ export const getUserById = async (req, res) => {
   try {
     const user = await User.findById(req.params.id);
     if (!user) {
-      return res.failResponse({ message: 'User with specified id does not exist' });
+      return res.failResponse({
+        message: 'User with specified id does not exist'
+      });
     }
 
     return res.successResponse({ user: getUserObject(user) });
@@ -127,10 +128,14 @@ export const deleteUser = async (req, res) => {
   try {
     const user = await User.findById(req.params.id);
     if (!user) {
-      return res.failResponse({ message: 'User with specified id does not exist' });
+      return res.failResponse({
+        message: 'User with specified id does not exist'
+      });
     }
     if (req.user.userId !== user.id) {
-      return res.failResponse({ message: 'You are not authorized to delete this account' });
+      return res.failResponse({
+        message: 'You are not authorized to delete this account'
+      });
     }
     await user.destroy();
     return res.successResponse('User account deleted');
@@ -143,7 +148,9 @@ export const getUserRecipes = async (req, res) => {
   try {
     const user = await db.User.findById(req.user.userId);
     if (!user) {
-      return res.failResponse({ message: 'User with specified id does not exist' });
+      return res.failResponse({
+        message: 'User with specified id does not exist'
+      });
     }
 
     const recipes = await user.getRecipes();

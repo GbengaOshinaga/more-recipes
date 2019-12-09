@@ -22,14 +22,20 @@ const defaultProps = {
  *
  * @returns {Node} jsx
  */
-function InputField({
-  id, type, onChange, value, label, dataError
-}) {
+function InputField({ id, type, onChange, value, label, dataError }) {
   return (
     <div className="row">
       <div className="input-field col s12">
-        <input id={id} type={type} className="validate" onChange={onChange} value={value} />
-        <label htmlFor={id} data-error={dataError}>{label}</label>
+        <input
+          id={id}
+          type={type}
+          className="validate"
+          onChange={onChange}
+          value={value}
+        />
+        <label htmlFor={id} data-error={dataError}>
+          {label}
+        </label>
       </div>
     </div>
   );

@@ -1,6 +1,6 @@
 import { sessionService } from 'redux-react-session';
 import * as types from './actions';
-import api from './Fetch';
+import api from '../utils/api/fetch';
 
 /**
  * Updates reducer if add recipe action is successful
@@ -45,13 +45,14 @@ function updateEditRecipeSuccess(response) {
  * @returns {func} dispatch
  */
 export function addRecipe(token, data) {
-  return function (dispatch) {
-    return api.post('/api/v1/recipes', data, { 'Access-Token': token })
-      .then((response) => {
+  return function(dispatch) {
+    return api
+      .post('/api/v1/recipes', data, { 'Access-Token': token })
+      .then(response => {
         if (response.status === 'success') {
           dispatch(updateAddRecipeSuccess(response.data.recipe));
         } else {
-          throw (response.data.errors);
+          throw response.data.errors;
         }
       });
   };
@@ -64,9 +65,10 @@ export function addRecipe(token, data) {
  * @returns {func} dispatch
  */
 export function deleteRecipe(token, id) {
-  return function (dispatch) {
-    return api.del(`/api/v1/recipes/${id}`, { 'Access-Token': token })
-      .then((response) => {
+  return function(dispatch) {
+    return api
+      .del(`/api/v1/recipes/${id}`, { 'Access-Token': token })
+      .then(response => {
         if (response.status === 'success') {
           dispatch(updateDeleteRecipeSuccess(id));
         }
@@ -80,9 +82,10 @@ export function deleteRecipe(token, id) {
  * @returns {func} dispatch
  */
 export function getUserRecipes(token) {
-  return function (dispatch) {
-    return api.get('/api/v1/users/recipes', { 'Access-Token': token })
-      .then((response) => {
+  return function(dispatch) {
+    return api
+      .get('/api/v1/users/recipes', { 'Access-Token': token })
+      .then(response => {
         if (response.status === 'success') {
           dispatch(updateGetUserRecipesSuccess(response.data.recipes));
         } else {
@@ -100,13 +103,14 @@ export function getUserRecipes(token) {
  */
 export function modifyUser(token, data) {
   // eslint-disable-next-line
-  return function (dispatch) {
-    return api.post('/api/v1/users/edit', data, { 'Access-Token': token })
-      .then((response) => {
+  return function(dispatch) {
+    return api
+      .post('/api/v1/users/edit', data, { 'Access-Token': token })
+      .then(response => {
         if (response.status === 'success') {
           sessionService.saveUser(response.data.user);
         } else {
-          throw (response.data.error);
+          throw response.data.error;
         }
       });
   };
@@ -120,13 +124,14 @@ export function modifyUser(token, data) {
  * @returns {func} dispatch
  */
 export function editRecipe(token, id, data) {
-  return function (dispatch) {
-    return api.put(`/api/v1/recipes/${id}`, data, { 'Access-Token': token })
-      .then((response) => {
+  return function(dispatch) {
+    return api
+      .put(`/api/v1/recipes/${id}`, data, { 'Access-Token': token })
+      .then(response => {
         if (response.status === 'success') {
           dispatch(updateEditRecipeSuccess(response.data.updatedRecipe));
         } else {
-          throw (response.data.message || response.data.messages);
+          throw response.data.message || response.data.messages;
         }
       });
   };
@@ -142,6 +147,8 @@ export function uploadImage(imageFile) {
   formData.append('file', imageFile);
   formData.append('upload_preset', 'tyut3vgq');
 
-  return api.post('https://api.cloudinary.com/v1_1/king-more-recipes/image/upload', formData);
+  return api.post(
+    'https://api.cloudinary.com/v1_1/king-more-recipes/image/upload',
+    formData
+  );
 }
-

@@ -1,36 +1,36 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import InputField from '../common/InputField';
 import Button from '../common/Button';
-import SocialLoginButtons from './SocialLoginButtons';
+import GoogleLoginButton from './GoogleLoginButton';
 import { Header } from '../common/Header';
+import { useSignIn } from '../../hooks/authorization';
 
-const propTypes = {
-  onChange: PropTypes.func.isRequired,
-  email: PropTypes.string.isRequired,
-  password: PropTypes.string.isRequired,
-  onClickSave: PropTypes.func.isRequired,
-  onSuccess: PropTypes.func.isRequired,
-  onFailure: PropTypes.func.isRequired
-};
+const SignIn = () => {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
-/**
- * Functional component for signin form
- * @param {Object} props
- *
- * @returns {Node} jsx
- */
-function SignInForm({
-  onChange, email, password, onClickSave, onSuccess, onFailure
-}) {
+  const { signIn } = useSignIn();
+
+  const onGoogleLoginSuccess = response => {
+    signIn({
+      email: response?.profileObj?.email,
+      password: process.env.GOOGLE_LOGIN_PASSWORD
+    });
+  };
+
   return (
     <div className="sign-body">
       <Header
         mainLinks={
-          <React.Fragment>
-            <li><Link id="catalog-link" to="/catalog">Catalog</Link></li>
-          </React.Fragment>}
+          <>
+            <li>
+              <Link id="catalog-link" to="/catalog">
+                Catalog
+              </Link>
+            </li>
+          </>
+        }
       />
       <div className="container">
         <div className="col s12">
@@ -38,7 +38,7 @@ function SignInForm({
             <InputField
               id="email"
               type="email"
-              onChange={onChange}
+              onChange={e => setEmail(e.target.value)}
               value={email}
               label="Email Address"
               dataError="Invalid Email Address"
@@ -46,33 +46,30 @@ function SignInForm({
             <InputField
               id="password"
               type="password"
-              onChange={onChange}
+              onChange={e => setPassword(e.target.value)}
               value={password}
               label="Password"
             />
             <Button
-              onClick={onClickSave}
+              onClick={() => signIn({ email, password })}
               className="btn waves-effect waves-light red darken-2"
               type="submit"
               name="action"
               materialIcon="arrow_forward"
               buttonText="Sign In"
             />
-            <SocialLoginButtons
-              isAMemberText="Not a member?"
-              href="/signup"
-              hrefText="Sign Up"
-              onSuccess={onSuccess}
-              onFailure={onFailure}
+            <GoogleLoginButton
+              onSuccess={onGoogleLoginSuccess}
               buttonText="Sign In With Google"
             />
+            <p>
+              Not a member? <Link to="/signup">Sign Up</Link>
+            </p>
           </div>
         </div>
       </div>
     </div>
   );
-}
+};
 
-SignInForm.propTypes = propTypes;
-
-export default SignInForm;
+export default SignIn;

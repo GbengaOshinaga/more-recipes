@@ -1,13 +1,12 @@
 import React from 'react';
 
 /**
- * Individual loader
- * @param {String} color
+ * Preloader component
  *
- * @returns {Node} loader
+ * @returns {Node} preloader
  */
-function loader(color) {
-  return (
+export default function Preloader() {
+  const loader = color => (
     <div className={`spinner-layer ${color}`}>
       <div className="circle-clipper left">
         <div className="circle" />
@@ -20,16 +19,12 @@ function loader(color) {
       </div>
     </div>
   );
-}
 
-/**
- * Preloader component
- *
- * @returns {Node} preloader
- */
-export default function Preloader() {
   return (
-    <div style={{ marginLeft: '50%' }} className="preloader-wrapper active center-align">
+    <div
+      style={{ marginLeft: '50%' }}
+      className="preloader-wrapper active center-align"
+    >
       {loader('spinner-blue')}
       {loader('spinner-red')}
       {loader('spinner-yellow')}
