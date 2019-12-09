@@ -2,36 +2,37 @@
 @import 'partials/global';
 
 .profile-body {
-	/* The image used */
-    background-image: url('../img/index-bg-image.jpg');
+  /* The image used */
+  background-image: url('https://res.cloudinary.com/king-more-recipes/image/upload/v1575834556/6-62408_fast-food-food-icons-png_wa5nfm.png');
 
-    /* Full height */
-    height: 100vh; 
+  /* Full height */
+  height: 100vh;
 
-    /* Center and scale the image nicely */
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
+  /* Center and scale the image nicely */
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
 }
-.box{
-	margin-top: 50px;
+.box {
+  margin-top: 50px;
 }
-footer{
-	position: absolute;
-	bottom: 0;
-	width: 100%;
-}
-
-textarea.materialize-textarea{
-	padding: 0;
+footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
 }
 
-input[value], textarea{
-	font-family: $header-font;
+textarea.materialize-textarea {
+  padding: 0;
 }
 
-.card{
-	.card-action{
-		border-top: none;
-	}
+input[value],
+textarea {
+  font-family: $header-font;
+}
+
+.card {
+  .card-action {
+    border-top: none;
+  }
 }

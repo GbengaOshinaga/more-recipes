@@ -60,7 +60,6 @@ const SignIn = () => {
             />
             <GoogleLoginButton
               onSuccess={onGoogleLoginSuccess}
-              onFailure={() => {}}
               buttonText="Sign In With Google"
             />
             <p>

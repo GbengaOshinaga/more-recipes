@@ -1,5 +1,5 @@
 import * as types from './actions';
-import api from './Fetch';
+import api from '../utils/api/fetch';
 
 /**
  * Updates reducer if get recipes action is successful
@@ -80,7 +80,6 @@ function updateUserFavouritesSuccess(response) {
   return { type: types.GET_USER_FAVOURITES_SUCCESS, response };
 }
 
-
 /**
  * Updates reducer if get user favourites action is not successful
  *
@@ -135,7 +134,7 @@ function updateReviewsPaginationMeta(response) {
  * @param {Object} response
  *
  * @returns {Object} object
-*/
+ */
 function updateClearReviews(response) {
   return { type: types.CLEAR_REVIEWS, response };
 }
@@ -144,7 +143,7 @@ function updateClearReviews(response) {
  * Clear recipes
  *
  * @returns {Object} object
-*/
+ */
 function clearRecipesState() {
   return { type: types.CLEAR_RECIPES };
 }
@@ -158,7 +157,6 @@ function clearPagination() {
   return { type: types.CLEAR_PAGINATION };
 }
 
-
 /**
  * Action to get all recipes
  * @param {String} next
@@ -166,55 +164,53 @@ function clearPagination() {
  * @returns {func} dispatch
  */
 export function getAllRecipes(next) {
-  return function (dispatch) {
+  return function(dispatch) {
     let url;
     if (next) {
       url = next;
     } else {
       url = '/api/v1/recipes';
     }
-    return api.get(url)
-      .then((response) => {
-        if (response.status === 'success') {
-          if (response.data.recipes.length === 0) {
-            throw new Error('No Recipe Available');
-          }
-          response.data.recipes.map((recipe) => {
-            recipe.Reviews = [];
-          });
-          if (!response.data.paginationMeta.previous) {
-            dispatch(clearRecipesState());
-            dispatch(clearPagination());
-          }
-          dispatch(updateGetRecipesSuccess(response.data.recipes));
-          dispatch(updatePaginationMeta(response.data.paginationMeta));
+    return api.get(url).then(response => {
+      if (response.status === 'success') {
+        if (response.data.recipes.length === 0) {
+          throw new Error('No Recipe Available');
         }
-      });
+        response.data.recipes.map(recipe => {
+          recipe.Reviews = [];
+        });
+        if (!response.data.paginationMeta.previous) {
+          dispatch(clearRecipesState());
+          dispatch(clearPagination());
+        }
+        dispatch(updateGetRecipesSuccess(response.data.recipes));
+        dispatch(updatePaginationMeta(response.data.paginationMeta));
+      }
+    });
   };
 }
 
 /**
-   * Get recipe reviews
-   * @param {Number} id
-   * @param {String} next
-   *
-   * @returns {Promise} response
-   */
+ * Get recipe reviews
+ * @param {Number} id
+ * @param {String} next
+ *
+ * @returns {Promise} response
+ */
 export function getRecipeReviews(id, next) {
-  return function (dispatch) {
+  return function(dispatch) {
     let url;
     if (next) {
       url = next;
     } else {
       url = `/api/v1/recipes/${id}/reviews`;
     }
-    return api.get(url)
-      .then((response) => {
-        if (response.status === 'success') {
-          dispatch(updateGetReviewsSuccess(response.data.reviews));
-          dispatch(updateReviewsPaginationMeta(response.data.paginationMeta));
-        }
-      });
+    return api.get(url).then(response => {
+      if (response.status === 'success') {
+        dispatch(updateGetReviewsSuccess(response.data.reviews));
+        dispatch(updateReviewsPaginationMeta(response.data.paginationMeta));
+      }
+    });
   };
 }
 
@@ -223,9 +219,9 @@ export function getRecipeReviews(id, next) {
  * @param {Number} id
  *
  * @returns {func} dispatch
-*/
+ */
 export function clearReviews(id) {
-  return function (dispatch) {
+  return function(dispatch) {
     dispatch(updateClearReviews(id));
   };
 }
@@ -237,16 +233,15 @@ export function clearReviews(id) {
  * @returns {func} dispatch
  */
 export function getRecipe(id) {
-  return function (dispatch) {
-    return api.get(`/api/v1/recipes/${id}`)
-      .then((response) => {
-        if (response.status === 'success') {
-          response.data.recipe.Reviews = [];
-          dispatch(updateGetRecipeSuccess(response.data.recipe));
-        } else {
-          throw Error('Recipe Not Found');
-        }
-      });
+  return function(dispatch) {
+    return api.get(`/api/v1/recipes/${id}`).then(response => {
+      if (response.status === 'success') {
+        response.data.recipe.Reviews = [];
+        dispatch(updateGetRecipeSuccess(response.data.recipe));
+      } else {
+        throw Error('Recipe Not Found');
+      }
+    });
   };
 }
 
@@ -259,9 +254,14 @@ export function getRecipe(id) {
  * @returns {func} dispatch
  */
 export function addReview(id, token, review) {
-  return function (dispatch) {
-    return api.post(`/api/v1/recipes/${id}/reviews`, { review }, { 'Access-Token': token })
-      .then((response) => {
+  return function(dispatch) {
+    return api
+      .post(
+        `/api/v1/recipes/${id}/reviews`,
+        { review },
+        { 'Access-Token': token }
+      )
+      .then(response => {
         dispatch(updateAddReviewSuccess(response.data.review));
       });
   };
@@ -276,9 +276,10 @@ export function addReview(id, token, review) {
  * @returns {func} dispatch
  */
 export function deleteReview(reviewId, recipeId, token) {
-  return function (dispatch) {
-    return api.del(`/api/v1/recipes/reviews/${reviewId}`, { 'Access-Token': token })
-      .then((response) => {
+  return function(dispatch) {
+    return api
+      .del(`/api/v1/recipes/reviews/${reviewId}`, { 'Access-Token': token })
+      .then(response => {
         if (response.status === 'success') {
           dispatch(updateDeleteReviewSuccess({ reviewId, recipeId }));
         }
@@ -294,9 +295,10 @@ export function deleteReview(reviewId, recipeId, token) {
  * @returns {func} dispatch
  */
 export function upvoteRecipe(id, token) {
-  return function (dispatch) {
-    return api.post(`/api/v1/recipes/upvote/${id}`, null, { 'Access-Token': token })
-      .then((response) => {
+  return function(dispatch) {
+    return api
+      .post(`/api/v1/recipes/upvote/${id}`, null, { 'Access-Token': token })
+      .then(response => {
         if (response.status === 'success') {
           dispatch(updateVoteSuccess(response.data.recipe));
         }
@@ -312,9 +314,10 @@ export function upvoteRecipe(id, token) {
  * @returns {func} dispatch
  */
 export function downvoteRecipe(id, token) {
-  return function (dispatch) {
-    return api.post(`/api/v1/recipes/downvote/${id}`, null, { 'Access-Token': token })
-      .then((response) => {
+  return function(dispatch) {
+    return api
+      .post(`/api/v1/recipes/downvote/${id}`, null, { 'Access-Token': token })
+      .then(response => {
         if (response.status === 'success') {
           dispatch(updateVoteSuccess(response.data.recipe));
         }
@@ -329,15 +332,14 @@ export function downvoteRecipe(id, token) {
  * @returns {func} dispatch
  */
 export function search(query) {
-  return function (dispatch) {
-    return api.get(`/api/v1/recipes?query=${query}`)
-      .then((response) => {
-        if (response.status === 'success') {
-          dispatch(updateSearchResultsSuccess(response.data.recipes));
-        } else {
-          dispatch(updateSearchResultsFailure());
-        }
-      });
+  return function(dispatch) {
+    return api.get(`/api/v1/recipes?query=${query}`).then(response => {
+      if (response.status === 'success') {
+        dispatch(updateSearchResultsSuccess(response.data.recipes));
+      } else {
+        dispatch(updateSearchResultsFailure());
+      }
+    });
   };
 }
 
@@ -349,14 +351,20 @@ export function search(query) {
  * @returns {func} dispatch
  */
 export function addFavourite(token, recipeId) {
-  return function (dispatch) {
-    return api.post(`/api/v1/users/recipes/${recipeId}/favourites`, null, { 'Access-Token': token })
-      .then((response) => {
+  return function(dispatch) {
+    return api
+      .post(`/api/v1/users/recipes/${recipeId}/favourites`, null, {
+        'Access-Token': token
+      })
+      .then(response => {
         if (response.status === 'success') {
-          api.get('/api/v1/users/recipes/favourites', { 'Access-Token': token })
-            .then((favResponse) => {
+          api
+            .get('/api/v1/users/recipes/favourites', { 'Access-Token': token })
+            .then(favResponse => {
               if (favResponse.status === 'success') {
-                dispatch(updateUserFavouritesSuccess(favResponse.data.favourites));
+                dispatch(
+                  updateUserFavouritesSuccess(favResponse.data.favourites)
+                );
               }
             });
         }
@@ -371,9 +379,10 @@ export function addFavourite(token, recipeId) {
  * @returns {func} dispatch
  */
 export function getFavourites(token) {
-  return function (dispatch) {
-    return api.get('/api/v1/users/recipes/favourites', { 'Access-Token': token })
-      .then((response) => {
+  return function(dispatch) {
+    return api
+      .get('/api/v1/users/recipes/favourites', { 'Access-Token': token })
+      .then(response => {
         if (response.status === 'success') {
           dispatch(updateUserFavouritesSuccess(response.data.favourites));
         } else {
@@ -392,14 +401,20 @@ export function getFavourites(token) {
  * @returns {func} dispatch
  */
 export function deleteFavourite(token, recipeId) {
-  return function (dispatch) {
-    return api.del(`/api/v1/users/recipes/${recipeId}/favourites`, { 'Access-Token': token })
-      .then((response) => {
+  return function(dispatch) {
+    return api
+      .del(`/api/v1/users/recipes/${recipeId}/favourites`, {
+        'Access-Token': token
+      })
+      .then(response => {
         if (response.status === 'success') {
-          api.get('/api/v1/users/recipes/favourites', { 'Access-Token': token })
-            .then((favResponse) => {
+          api
+            .get('/api/v1/users/recipes/favourites', { 'Access-Token': token })
+            .then(favResponse => {
               if (favResponse.status === 'success') {
-                dispatch(updateUserFavouritesSuccess(favResponse.data.favourites));
+                dispatch(
+                  updateUserFavouritesSuccess(favResponse.data.favourites)
+                );
               } else {
                 dispatch(updateUserFavouritesFailure());
               }
@@ -415,15 +430,14 @@ export function deleteFavourite(token, recipeId) {
  * @returns {func} dispatch
  */
 export function getMostFavouritedRecipes() {
-  return function (dispatch) {
-    return api.get('/api/v1/recipes/most_favourited')
-      .then((response) => {
-        if (response.status === 'success') {
-          if (response.data.recipes.length === 0) {
-            throw new Error('No Recipe Available');
-          }
-          dispatch(updateGetMostFavouritedSuccess(response.data.recipes));
+  return function(dispatch) {
+    return api.get('/api/v1/recipes/most_favourited').then(response => {
+      if (response.status === 'success') {
+        if (response.data.recipes.length === 0) {
+          throw new Error('No Recipe Available');
         }
-      });
+        dispatch(updateGetMostFavouritedSuccess(response.data.recipes));
+      }
+    });
   };
 }

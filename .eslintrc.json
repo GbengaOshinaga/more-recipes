@@ -34,6 +34,7 @@
     "class-methods-use-this": "off",
     "no-restricted-syntax": "off",
     "react/prefer-stateless-function": 0,
+    "react/prop-types": "off",
     "func-names": ["error", "never"],
     "react/jsx-filename-extension": 0,
     "import/no-unresolved": [2, { "commonjs": true }],
@@ -42,6 +43,7 @@
     "require-jsdoc": "off",
     "no-shadow": ["error", { "allow": ["req", "res", "err"] }],
     "react-hooks/exhaustive-deps": "warn",
+    "react-hooks/rules-of-hooks": "error",
     "no-unused-vars": "warn",
     "arrow-parens": "off",
     "valid-jsdoc": [

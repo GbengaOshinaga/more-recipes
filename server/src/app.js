@@ -16,18 +16,18 @@ dotenv.config();
 // Set up the express app
 const app = new Express();
 
-app.use('/', Express.static(path.join(__dirname, '../../dist')));
+// app.use('/', Express.static(path.join(__dirname, '../../dist')));
 
-if (process.env.NODE_ENV === 'development') {
-  const compiler = webpack(config);
+// if (process.env.NODE_ENV === 'development') {
+//   const compiler = webpack(config);
 
-  app.use(require('webpack-dev-middleware')(compiler, {
-    noInfo: true,
-    publicPath: config.output.publicPath
-  }));
+//   app.use(require('webpack-dev-middleware')(compiler, {
+//     noInfo: true,
+//     publicPath: config.output.publicPath
+//   }));
 
-  app.use(require('webpack-hot-middleware')(compiler));
-}
+//   app.use(require('webpack-hot-middleware')(compiler));
+// }
 
 app.use(cors());
 app.options('*', cors());
@@ -54,15 +54,14 @@ app.all('/api/v1/*', (req, res) => {
   });
 });
 
-app.get('/*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'index.html'));
-});
+// app.get('/*', (req, res) => {
+//   res.sendFile(path.join(__dirname, 'index.html'));
+// });
 
 const port = process.env.PORT || 8000;
 
 db.sequelize.sync().then(() => {
-  app.listen(port, () => {
-  });
+  app.listen(port, () => {});
 });
 
 export default app;

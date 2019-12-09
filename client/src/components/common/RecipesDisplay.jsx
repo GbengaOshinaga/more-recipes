@@ -50,8 +50,14 @@ const defaultProps = {
  * @returns {Node} card action
  */
 function getCardAction(
-  recipe, onClickVote, onClickFavourite, isLoggedIn,
-  userId, favourites, getId, getIdForEdit
+  recipe,
+  onClickVote,
+  onClickFavourite,
+  isLoggedIn,
+  userId,
+  favourites,
+  getId,
+  getIdForEdit
 ) {
   let cardAction;
   if (onClickVote) {
@@ -61,21 +67,25 @@ function getCardAction(
       favouriteClassName
     } = updateClassName(recipe, userId, favourites);
 
-    cardAction = (<VoteCardAction
-      id={recipe.id}
-      onClickVote={onClickVote}
-      isLoggedIn={isLoggedIn}
-      upvoteClassName={upvoteClassName}
-      downvoteClassName={downvoteClassName}
-      favouriteClassName={favouriteClassName}
-      onClickFavourite={onClickFavourite}
-    />);
+    cardAction = (
+      <VoteCardAction
+        id={recipe.id}
+        onClickVote={onClickVote}
+        isLoggedIn={isLoggedIn}
+        upvoteClassName={upvoteClassName}
+        downvoteClassName={downvoteClassName}
+        favouriteClassName={favouriteClassName}
+        onClickFavourite={onClickFavourite}
+      />
+    );
   } else {
-    cardAction = (<UserCardAction
-      id={recipe.id}
-      getId={getId}
-      getIdForEdit={getIdForEdit}
-    />);
+    cardAction = (
+      <UserCardAction
+        id={recipe.id}
+        getId={getId}
+        getIdForEdit={getIdForEdit}
+      />
+    );
   }
   return cardAction;
 }
@@ -96,8 +106,16 @@ function getCardAction(
  * @returns {Node} recipes
  */
 function displayRecipes(
-  recipes, onClickVote, onClickFavourite, isLoggedIn, isFound,
-  userId, favourites, hasSearchValue, getId, getIdForEdit
+  recipes,
+  onClickVote,
+  onClickFavourite,
+  isLoggedIn,
+  isFound,
+  userId,
+  favourites,
+  hasSearchValue,
+  getId,
+  getIdForEdit
 ) {
   const chunkedRecipes = _.chunk(recipes, 3);
   if (hasSearchValue && recipes.length === 0) {
@@ -107,21 +125,33 @@ function displayRecipes(
     return <h5>No Recipe Available</h5>;
   }
   if (recipes === undefined || recipes.length === 0) {
-    return <div style={{ marginTop: '50px' }}><Preloader /></div>;
+    return (
+      <div style={{ marginTop: '50px' }}>
+        <Preloader />
+      </div>
+    );
   }
   return chunkedRecipes.map(chunk => (
     <div className="row" key={chunk[0].id}>
-      {chunk.map(recipe => (<Card
-        key={recipe.id}
-        id={recipe.id}
-        image={recipe.image}
-        recipeName={recipe.name}
-        recipeDescription={recipe.description}
-        cardAction={getCardAction(
-            recipe, onClickVote, onClickFavourite,
-            isLoggedIn, userId, favourites, getId, getIdForEdit
-            )}
-      />))}
+      {chunk.map(recipe => (
+        <Card
+          key={recipe.id}
+          id={recipe.id}
+          image={recipe.image}
+          recipeName={recipe.name}
+          recipeDescription={recipe.description}
+          cardAction={getCardAction(
+            recipe,
+            onClickVote,
+            onClickFavourite,
+            isLoggedIn,
+            userId,
+            favourites,
+            getId,
+            getIdForEdit
+          )}
+        />
+      ))}
     </div>
   ));
 }
@@ -133,19 +163,38 @@ function displayRecipes(
  * @returns {Node} recipes
  */
 function RecipesDisplay({
-  recipes, onClickVote, onClickFavourite, isLoggedIn, isFound,
-  userId, favourites, hasSearchValue, getId, getIdForEdit, next, hasMore
+  recipes,
+  onClickVote,
+  onClickFavourite,
+  isLoggedIn,
+  isFound,
+  userId,
+  favourites,
+  hasSearchValue,
+  getId,
+  getIdForEdit,
+  next,
+  hasMore
 }) {
   return (
     <InfiniteScroll
+      dataLength={recipes?.length}
       next={next}
       hasMore={hasMore}
       loader={<Preloader />}
     >
       {displayRecipes(
-        recipes, onClickVote, onClickFavourite, isLoggedIn, isFound,
-        userId, favourites, hasSearchValue, getId, getIdForEdit
-        )}
+        recipes,
+        onClickVote,
+        onClickFavourite,
+        isLoggedIn,
+        isFound,
+        userId,
+        favourites,
+        hasSearchValue,
+        getId,
+        getIdForEdit
+      )}
     </InfiniteScroll>
   );
 }

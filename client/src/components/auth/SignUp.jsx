@@ -140,7 +140,6 @@ const SignUp = () => {
               />
               <GoogleLoginButton
                 onSuccess={onGoogleLoginSuccess}
-                onFailure={() => {}}
                 buttonText="Sign Up With Google"
               />
               <p>

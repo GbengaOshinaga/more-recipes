@@ -35,12 +35,29 @@ const mainHeaderDefaultProps = {
 };
 
 const dropdownLinks = (
-  <React.Fragment>
-    <li><Link id="profile" to="/profile">Profile</Link></li>
-    <li><Link id="my-recipes" to="/my_recipes">My Recipes</Link></li>
-    <li><Link id="favourites" to="/favourites">Favourite Recipes</Link></li>
-    <li><Link id="logout" to="/logout">Logout</Link></li>
-  </React.Fragment>);
+  <>
+    <li>
+      <Link id="profile" to="/profile">
+        Profile
+      </Link>
+    </li>
+    <li>
+      <Link id="my-recipes" to="/my_recipes">
+        My Recipes
+      </Link>
+    </li>
+    <li>
+      <Link id="favourites" to="/favourites">
+        Favourite Recipes
+      </Link>
+    </li>
+    <li>
+      <Link id="logout" to="/logout">
+        Logout
+      </Link>
+    </li>
+  </>
+);
 
 /**
  * Logged in links
@@ -54,21 +71,27 @@ const dropdownLinks = (
  */
 function loggedInLinks(activates, firstName, onChange, value, type) {
   const commonLinks = (
-    <React.Fragment>
-      <li><Link id="catalog-link" to="/catalog">Catalog</Link></li>
+    <>
+      <li>
+        <Link id="catalog-link" to="/catalog">
+          Catalog
+        </Link>
+      </li>
       <li>
         <a className="dropdown-button" href="#!" data-activates={activates}>
-          {firstName}<i className="material-icons right">arrow_drop_down</i>
+          {firstName}
+          <i className="material-icons right">arrow_drop_down</i>
         </a>
       </li>
-    </React.Fragment>);
+    </>
+  );
 
   if (type === 'catalog') {
     return (
-      <React.Fragment>
+      <>
         <li id="search-nav" className="hide">
           <div className="center row">
-            <div className="col s12 " >
+            <div className="col s12 ">
               <div className="row" id="topbarsearch">
                 <div className="input-field col s6 s12 white-text">
                   <i className="white-text material-icons prefix">search</i>
@@ -86,13 +109,10 @@ function loggedInLinks(activates, firstName, onChange, value, type) {
           </div>
         </li>
         {commonLinks}
-      </React.Fragment>
+      </>
     );
   }
-  return (
-    <React.Fragment>
-      {commonLinks}
-    </React.Fragment>);
+  return <>{commonLinks}</>;
 }
 
 /**
@@ -100,22 +120,20 @@ function loggedInLinks(activates, firstName, onChange, value, type) {
  *
  * @returns {Node} jsx
  */
-function Header({
-  mainLinks, sideLinks, navClassName, catalogId
-}) {
+function Header({ mainLinks, sideLinks, navClassName, catalogId }) {
   return (
     <div>
       <div className="navbar-fixed">
         <nav id={catalogId} className={navClassName}>
           <div className="container">
             <div className="nav-wrapper">
-              <Link to="/catalog" className="brand-logo">More-Recipes</Link>
+              <Link to="/catalog" className="brand-logo">
+                More-Recipes
+              </Link>
               <a href="#!" data-activates="mobile" className="button-collapse">
                 <i className="material-icons">menu</i>
               </a>
-              <ul className="right hide-on-med-and-down">
-                {mainLinks}
-              </ul>
+              <ul className="right hide-on-med-and-down">{mainLinks}</ul>
             </div>
           </div>
         </nav>
@@ -135,10 +153,28 @@ function Header({
  * @returns {Node} jsx
  */
 function MainHeader({
-  isLoggedIn, firstName, onChange, value, type, navClassName, catalogId
+  isLoggedIn,
+  firstName,
+  onChange,
+  value,
+  type,
+  navClassName,
+  catalogId
 }) {
-  const mainLinks = loggedInLinks('dropdown1', firstName, onChange, value, type);
-  const sideLinks = loggedInLinks('dropdown2', firstName, onChange, value, type);
+  const mainLinks = loggedInLinks(
+    'dropdown1',
+    firstName,
+    onChange,
+    value,
+    type
+  );
+  const sideLinks = loggedInLinks(
+    'dropdown2',
+    firstName,
+    onChange,
+    value,
+    type
+  );
 
   if (isLoggedIn) {
     return (
@@ -164,11 +200,18 @@ function MainHeader({
       navClassName={navClassName}
       catalogId={catalogId}
       mainLinks={
-        <React.Fragment>
-          <li><Link to="/catalog">Catalog</Link></li>
-          <li><Link to="/signup">Sign Up</Link></li>
-          <li><Link to="/signin">Sign In</Link></li>
-        </React.Fragment>}
+        <>
+          <li>
+            <Link to="/catalog">Catalog</Link>
+          </li>
+          <li>
+            <Link to="/signup">Sign Up</Link>
+          </li>
+          <li>
+            <Link to="/signin">Sign In</Link>
+          </li>
+        </>
+      }
     />
   );
 }
