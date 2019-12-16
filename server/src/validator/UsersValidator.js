@@ -1,24 +1,20 @@
-import { check, body } from 'express-validator';
+import { body } from 'express-validator';
 
-export const getEmailAndPasswordValidation = () => {
-  const validation = [
-    check('email')
-      .not()
-      .isEmpty()
-      .withMessage('Email Address is required')
-      .isEmail()
-      .withMessage('Email Address is not valid')
-      .normalizeEmail(),
-    check('password')
-      .not()
-      .isEmpty()
-      .withMessage('Password is required')
-      .isLength({ min: 6 })
-      .withMessage('Password is too short, minimum is 6 characters')
-  ];
-
-  return validation;
-};
+export const getEmailAndPasswordValidation = () => [
+  body('email')
+    .not()
+    .isEmpty()
+    .withMessage('Email Address is required')
+    .isEmail()
+    .withMessage('Email Address is not valid')
+    .normalizeEmail(),
+  body('password')
+    .not()
+    .isEmpty()
+    .withMessage('Password is required')
+    .isLength({ min: 6 })
+    .withMessage('Password is too short, minimum is 6 characters')
+];
 
 export const getSignUpValidation = () => {
   const comparePasswords = (value, { req }) => {
@@ -29,54 +25,48 @@ export const getSignUpValidation = () => {
     return true;
   };
 
-  const validation = [
-    check('firstName')
+  return [
+    body('firstName')
       .not()
       .isEmpty()
       .withMessage('First Name is required')
       .trim()
       .escape(),
-    check('lastName')
+    body('lastName')
       .not()
       .isEmpty()
       .withMessage('Last Name is required')
       .trim()
       .escape(),
     ...getEmailAndPasswordValidation(),
-    check('confirmPassword')
+    body('confirmPassword')
       .not()
       .isEmpty()
       .withMessage('Confirm Password is required'),
     body('confirmPassword').custom(comparePasswords)
   ];
-
-  return validation;
 };
 
-export const getUpdateValidation = () => {
-  const validation = [
-    check('firstName')
-      .optional()
-      .trim()
-      .escape(),
-    check('lastName')
-      .optional()
-      .trim()
-      .escape(),
-    check('email')
-      .optional()
-      .isEmail()
-      .withMessage('Email Address is not valid')
-      .normalizeEmail(),
-    check('profilePic')
-      .optional()
-      .trim()
-      .escape(),
-    check('about')
-      .optional()
-      .trim()
-      .escape()
-  ];
-
-  return validation;
-};
+export const getUpdateValidation = () => [
+  body('firstName')
+    .optional()
+    .trim()
+    .escape(),
+  body('lastName')
+    .optional()
+    .trim()
+    .escape(),
+  body('email')
+    .optional()
+    .isEmail()
+    .withMessage('Email Address is not valid')
+    .normalizeEmail(),
+  body('profilePic')
+    .optional()
+    .trim()
+    .escape(),
+  body('about')
+    .optional()
+    .trim()
+    .escape()
+];
