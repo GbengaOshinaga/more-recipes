@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken';
 
-export const authenticate = (req, res, next) => {
+const authenticate = (req, res, next) => {
   const accessToken = req.body.accessToken || req.get('Access-Token');
 
   try {
@@ -13,3 +13,5 @@ export const authenticate = (req, res, next) => {
     res.failResponse('Authentication is required to perform this request', 401);
   }
 };
+
+export default authenticate;
