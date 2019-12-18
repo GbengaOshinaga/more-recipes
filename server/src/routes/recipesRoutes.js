@@ -1,31 +1,84 @@
-import RecipeValidator from '../validator/RecipeValidator';
-import RecipesController from '../controllers/RecipesController';
-import { authenticate } from '../middlewares/authenticate';
-import Pagination from '../middlewares/pagination';
+import {
+  getRecipeValidation,
+  getParamsValidation,
+  getIdValidation,
+  getReviewValidation
+} from '../validator';
+import * as recipesController from '../controllers/recipesController';
+import * as reviewsController from '../controllers/reviewsController';
+import { authenticate, paginate, errorHandler, getUser } from '../middlewares';
 
-export default (app) => {
-  app.get('/api/v1/recipes/', RecipeValidator.validateQueryParams, Pagination.paginate, (req, res) => { RecipesController.getRecipes(req, res); });
+const baseUrl = '/api/v1/recipes';
 
-  app.get('/api/v1/recipes/:id', RecipeValidator.validateID, RecipesController.getRecipeById);
+export default app => {
+  app.get(
+    baseUrl,
+    getUser,
+    errorHandler(getParamsValidation()),
+    paginate,
+    recipesController.getRecipes
+  );
+
+  app.get(
+    `${baseUrl}/:id`,
+    errorHandler(getIdValidation()),
+    recipesController.getRecipeById
+  );
 
   // Add a recipe
-  app.post('/api/v1/recipes/', authenticate, RecipeValidator.validateRecipe, RecipesController.addRecipe);
+  app.post(
+    baseUrl,
+    authenticate,
+    errorHandler(getRecipeValidation()),
+    recipesController.addRecipe
+  );
 
   // Edit a recipe
-  app.put('/api/v1/recipes/:id', authenticate, RecipeValidator.validateID, RecipesController.modifyRecipe);
+  app.put(
+    `${baseUrl}/:id`,
+    authenticate,
+    errorHandler(getIdValidation()),
+    recipesController.editRecipe
+  );
 
   // Delete a recipe
-  app.delete('/api/v1/recipes/:id', authenticate, RecipeValidator.validateID, RecipesController.deleteRecipe);
+  app.delete(
+    `${baseUrl}/:id`,
+    authenticate,
+    errorHandler(getIdValidation()),
+    recipesController.deleteRecipe
+  );
 
   // Add a review for a recipe
-  app.post('/api/v1/recipes/:id/reviews', authenticate, RecipeValidator.validateID, RecipeValidator.validateReview, RecipesController.addReview);
+  app.post(
+    `${baseUrl}/:id/reviews`,
+    authenticate,
+    errorHandler(getIdValidation()),
+    errorHandler(getReviewValidation()),
+    reviewsController.addReview
+  );
 
   // Get reviews for a recipe
-  app.get('/api/v1/recipes/:id/reviews', RecipeValidator.validateID, Pagination.paginate, RecipesController.getRecipeReviews);
+  app.get(
+    `${baseUrl}/:id/reviews`,
+    errorHandler(getIdValidation()),
+    paginate,
+    reviewsController.getReviews
+  );
 
   // Edit a review
-  app.put('/api/v1/recipes/reviews/:id', authenticate, RecipeValidator.validateID, RecipesController.editReview);
+  app.put(
+    `${baseUrl}/:id/reviews`,
+    authenticate,
+    errorHandler(getIdValidation()),
+    reviewsController.editReview
+  );
 
   // Delete a review
-  app.delete('/api/v1/recipes/reviews/:id', authenticate, RecipeValidator.validateID, RecipesController.deleteReview);
+  app.delete(
+    `${baseUrl}/:id/reviews`,
+    authenticate,
+    errorHandler(getIdValidation()),
+    reviewsController.deleteReview
+  );
 };

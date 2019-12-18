@@ -1,277 +1,224 @@
 import db from '../models/index';
-import { getPaginationMeta, check } from "../helpers";
+import { getPaginationMeta, ControllerError, tryCatch } from '../utils';
 
-/**
- * RecipesController
- */
-export default class RecipesController {
-  /**
-   * Adds a recipe
-   * @param {Object} req
-   * @param {Object} res
-   *
-   * @returns {Array} all recipes
-   */
-  static addRecipe(req, res) {
-    let ingredientsArray;
-    if (!Array.isArray(req.body.ingredients)) {
-      ingredientsArray = req.body.ingredients.split(',');
-    } else {
-      ingredientsArray = req.body.ingredients;
-    }
+const { Recipes, Sequelize, User } = db;
 
-    db.Recipes.findOne({
+/*
+  |--------------------------------------------------------------------------
+  | Add a recipe controller
+  |--------------------------------------------------------------------------
+*/
+export const addRecipe = async (req, res) => {
+  const {
+    user: { userId } = {},
+    body: { ingredients = [], name, description, image }
+  } = req;
+
+  let ingredientsArray = ingredients;
+  if (typeof ingredients === 'string') {
+    ingredientsArray = ingredients.split(',');
+  }
+
+  tryCatch(res, async () => {
+    const existingRecipe = await Recipes.findOne({
       where: {
         UserId: req.user.userId,
         name: req.body.name
       }
-    })
-      .then((existingRecipe) => {
-        if (existingRecipe) {
-          return res.status(400).jsend.fail({ message: 'You have already created this recipe' });
-        }
-        db.Recipes.create({
-          name: req.body.name,
-          description: req.body.description,
-          UserId: req.user.userId,
-          image: req.body.image,
-          ingredients: ingredientsArray
-        })
-          .then(recipe => res.status(201).jsend.success({ recipe }))
-          .catch(error => res.status(500).jsend.error(error));
-      })
-      .catch(error => res.status(500).jsend.error(error));
-  }
-
-  /**
-   * Gets Recipes
-   * @param {Object} req
-   * @param {Object} res
-   *
-   * @returns {Array} all recipes
-   */
-  static getRecipes(req, res) {
-    if (req.query.sort && req.query.order) {
-      db.Recipes.findAll({
-        group: 'id',
-        order: db.sequelize.literal(`max(${req.query.sort}) ${req.query.order.toUpperCase()}`),
-        offset: req.query.from,
-        limit: req.query.limit
-      })
-        .then(recipes => getPaginationMeta(req, db.Recipes)
-          .then(paginationMeta => res.status(200).jsend.success({ recipes, paginationMeta })))
-        .catch(error => res.status(400).jsend.error({ error }));
-    } else if (req.query.query) {
-      this.searchRecipes(req.query.query.trim(), req, res);
-    } else {
-      db.Recipes.findAll({
-        group: 'id',
-        order: db.sequelize.literal('max(id) DESC'),
-        offset: req.query.from,
-        limit: req.query.limit
-      })
-        .then(recipes => getPaginationMeta(req, db.Recipes)
-          .then(paginationMeta => res.status(200).jsend.success({ recipes, paginationMeta })))
-        .catch(error => res.status(500).jsend.error(error));
-    }
-  }
-
-  /**
-   * Gets recipe with specified id
-   * @param {Object} req
-   * @param {Object} res
-   *
-   * @returns {Object} res
-   */
-  static getRecipeById(req, res) {
-    db.Recipes.findById(req.params.id)
-      .then((recipe) => {
-        if (!recipe) {
-          return res.status(404).jsend.fail({ message: `Recipe with Id of ${req.params.id} does not exist` });
-        }
-        return res.status(200).jsend.success({ recipe });
-      })
-      .catch(() => res.status(500).jsend.error('An error occured'));
-  }
-
-  /**
-   * Modifies a recipe
-   * @param {Object} req
-   * @param {Object} res
-   *
-   * @returns {Object} Modified recipe
-   */
-  static modifyRecipe(req, res) {
-    let ingredientsArray;
-    if (req.body.ingredients) {
-      if (!Array.isArray(req.body.ingredients)) {
-        ingredientsArray = req.body.ingredients.split(',');
-      } else {
-        ingredientsArray = req.body.ingredients;
-      }
+    });
+    if (existingRecipe) {
+      return res.failResponse({
+        message: 'You have already created a recipe with this name'
+      });
     }
 
-    db.Recipes.findById(req.params.id)
-      .then((recipe) => {
-        const result = check(recipe, req.user.userId, 'recipe', 'edit');
-        if (result) {
-          return res.status(result.status).jsend.fail({ message: result.message });
-        }
-        recipe.update({
-          name: req.body.name || recipe.name,
-          description: req.body.description || recipe.description,
-          userId: req.user.userId,
-          image: req.body.image || recipe.image,
-          ingredients: ingredientsArray || recipe.ingredients
-        }).then(updatedRecipe => res.status(200).jsend.success({ updatedRecipe }));
-      })
-      .catch(error => res.status(500).jsend.error(error));
-  }
+    const recipe = await Recipes.create({
+      name,
+      description,
+      UserId: userId,
+      image,
+      ingredients: ingredientsArray
+    });
+    return res.successResponse({ recipe }, 201);
+  });
+};
 
-  /**
-   * Deletes specified recipe
-   * @param {Object} req
-   * @param {Object} res
-   *
-   * @returns {String} message
-   */
-  static deleteRecipe(req, res) {
-    db.Recipes.findById(req.params.id)
-      .then((recipe) => {
-        const result = check(recipe, req.user.userId, 'recipe', 'delete');
-        if (result) {
-          return res.status(result.status).jsend.fail({ message: result.message });
-        }
-        recipe.destroy({ force: true })
-          .then(() => res.status(200).jsend.success({ message: 'Recipe has been successfully deleted' }))
-          .catch(error => res.status(500).jsend.error(error));
-      })
-      .catch(error => res.status(500).jsend.error(error));
-  }
-
-  /**
-   * Add review to recipe
-   * @param {Object} req
-   * @param {Object} res
-   *
-   * @returns {Object} recipe object
-   */
-  static addReview(req, res) {
-    db.Reviews.create({
-      review: req.body.review,
-      UserId: req.user.userId,
-      RecipeId: req.params.id
-    })
-      .then(review => db.Reviews.findById(review.id, {
-        include: [{
-          model: db.User,
-          attributes: { exclude: ['password'] }
-        }]
-      }))
-      .then(userReviews => res.status(201).jsend.success({ review: userReviews }))
-      .catch(error => res.status(500).jsend.error(error));
-  }
-
-  /**
-   * Get reviews for a recipe
-   * @param {Object} req
-   * @param {Object} res
-   *
-   * @returns {Object} res
-   */
-  static getRecipeReviews(req, res) {
-    const condition = { RecipeId: req.params.id };
-    db.Reviews.findAll({
-      where: condition,
-      include: [{ model: db.User, attributes: { exclude: ['password'] } }],
-      offset: req.query.from,
-      limit: req.query.limit
-    })
-      .then(reviews => getPaginationMeta(req, db.Reviews, condition)
-        .then(paginationMeta => res.status(200).jsend.success({ reviews, paginationMeta })))
-      .catch(error => res.status(500).jsend.error(error));
-  }
-
-  /**
-   * Edits a review
-   * @param {Object} req
-   * @param {Object} res
-   *
-   * @returns {Object} res
-   */
-  static editReview(req, res) {
-    db.Reviews.findById(req.params.id)
-      .then((review) => {
-        const result = check(review, req.user.userId, 'review', 'edit');
-        if (result) {
-          return res.status(result.status).jsend.fail({ message: result.message });
-        }
-        review.update({
-          review: req.body.review || review.review
-        })
-          .then(updatedReview => res.status(200).jsend.success({ updatedReview }))
-          .catch(error => res.status(500).jsend.error(error));
-      });
-  }
-
-  /**
-   * Deletes a review
-   * @param {Object} req
-   * @param {Object} res
-   *
-   * @returns {String} res
-   */
-  static deleteReview(req, res) {
-    db.Reviews.findById(req.params.id)
-      .then((review) => {
-        const result = check(review, req.user.userId, 'review', 'delete');
-        if (result) {
-          return res.status(result.status).jsend.fail({ message: result.message });
-        }
-        review.destroy()
-          .then(() => res.status(200).jsend.success({ message: 'Review has been successfully deleted' }))
-          .catch(error => res.status(500).jsend.error(error));
-      });
-  }
-
-  /**
-   * Search for recipes
-   * @param {String} query
-   * @param {Object} req
-   * @param {Object} res
-   *
-   * @returns {Array} res
-   */
-  static searchRecipes(query, req, res) {
-    const op = db.Sequelize.Op;
-    const condition = {
-      [op.or]: {
-        name: {
-          [op.iLike]: `%${query}%`
-        },
-        description: {
-          [op.iLike]: `%${query}%`
-        },
-        ingredients: {
-          [op.contains]: [`${query}`]
-        }
+/*
+  |--------------------------------------------------------------------------
+  | Searches for recipes using the passed in query. Used by get all recipes
+  | controller.
+  |--------------------------------------------------------------------------
+*/
+const searchRecipes = async (query, req, res) => {
+  const { Op } = Sequelize;
+  const condition = {
+    [Op.or]: {
+      name: {
+        [Op.iLike]: `%${query}%`
+      },
+      description: {
+        [Op.iLike]: `%${query}%`
+      },
+      ingredients: {
+        [Op.contains]: [`${query}`]
       }
-    };
+    }
+  };
 
-    db.Recipes.findAll({
-      where: condition,
+  const recipes = await Recipes.findAll({
+    where: condition,
+    group: 'id',
+    order: db.sequelize.literal('max(id) ASC'),
+    offset: req.query.from,
+    limit: req.query.limit
+  });
+  if (recipes.length === 0) {
+    return res.failResponse({ message: 'No Results Found' }, 404);
+  }
+  const paginationMeta = await getPaginationMeta(req, Recipes, condition);
+  return res.successResponse({ recipes, paginationMeta });
+};
+
+const getUserFavouriteRecipesIds = async userId => {
+  const user = await User.findById(userId);
+  const favouritesId = await user.getFavouriteRecipes({ attributes: ['id'] });
+
+  return favouritesId;
+};
+
+/*
+  |--------------------------------------------------------------------------
+  | Get recipes controller
+  |--------------------------------------------------------------------------
+*/
+export const getRecipes = async (req, res) => {
+  const {
+    query: { sort, order, from, limit, query },
+    user: { userId } = {}
+  } = req;
+
+  const getAllRecipes = async sequelizeLiteral => {
+    const recipes = await Recipes.findAll({
       group: 'id',
-      order: db.sequelize.literal('max(id) ASC'),
-      offset: req.query.from,
-      limit: req.query.limit
-    })
-      .then((recipes) => {
-        if (recipes.length === 0) {
-          return res.status(404).jsend.fail({ message: 'No Results Found' });
-        }
-        return getPaginationMeta(req, db.Recipes, condition)
-          .then(paginationMeta => res.status(200).jsend.success({ recipes, paginationMeta }));
-      })
-      .catch(error => res.status(500).jsend.error(error));
+      order: db.sequelize.literal(sequelizeLiteral),
+      offset: from,
+      limit
+    });
+    const paginationMeta = await getPaginationMeta(req, Recipes);
+
+    const response = { recipes, paginationMeta };
+
+    let favourites;
+    if (userId) {
+      favourites = await getUserFavouriteRecipesIds(userId);
+      response.favourites = favourites;
+    }
+
+    return res.successResponse(response);
+  };
+
+  tryCatch(res, async () => {
+    if (sort && order) {
+      return getAllRecipes(`max(${sort}) ${order.toUpperCase()}`);
+    }
+
+    if (query) {
+      return searchRecipes(query, req, res);
+    }
+
+    return getAllRecipes('max(id) DESC');
+  });
+};
+
+/*
+  |--------------------------------------------------------------------------
+  | Get a single recipe using an id controller
+  |--------------------------------------------------------------------------
+*/
+export const getRecipeById = (req, res) => {
+  tryCatch(res, async () => {
+    const recipe = await Recipes.findById(req.params.id);
+    if (!recipe) {
+      return res.failResponse({
+        message: 'Recipe with specified id does not exist'
+      });
+    }
+    return res.successResponse({ recipe });
+  });
+};
+
+/**
+ * Gets a single recipe and checks authorization and existence
+ * @param {Number} recipeId
+ * @param {Number} userId
+ * @param {String} currentAction: edit or delete
+ *
+ * @returns {Object} recipe
+ */
+const getAndValidateRecipe = async (recipeId, userId, currentAction) => {
+  const recipe = await Recipes.findById(recipeId);
+
+  if (!recipe) {
+    throw new ControllerError(404, 'Recipe with specified id does not exist');
   }
-}
+  if (recipe.UserId !== userId) {
+    throw new ControllerError(
+      401,
+      `You are not authorized to ${currentAction} this recipe`
+    );
+  }
+
+  return recipe;
+};
+
+/*
+  |--------------------------------------------------------------------------
+  | Edit a recipe controller
+  |--------------------------------------------------------------------------
+*/
+export const editRecipe = async (req, res) => {
+  const {
+    user: { userId } = {},
+    body: { ingredients = [], name, description, image },
+    params: { id }
+  } = req;
+
+  let ingredientsArray = ingredients;
+  if (typeof ingredients === 'string') {
+    ingredientsArray = ingredients.split(',');
+  }
+
+  tryCatch(res, async () => {
+    const recipe = await getAndValidateRecipe(id, userId, 'edit');
+
+    const updatedRecipe = await recipe.update({
+      name: name || recipe.name,
+      description: description || recipe.description,
+      userId,
+      image: image || recipe.image,
+      ingredients: ingredientsArray || recipe.ingredients
+    });
+    return res.successResponse({ updatedRecipe });
+  });
+};
+
+/*
+  |--------------------------------------------------------------------------
+  | Delete a recipe controller
+  |--------------------------------------------------------------------------
+*/
+export const deleteRecipe = async (req, res) => {
+  const {
+    user: { userId } = {},
+    params: { id }
+  } = req;
+
+  tryCatch(res, async () => {
+    const recipe = await getAndValidateRecipe(id, userId, 'delete');
+    await recipe.destroy({ force: true });
+
+    return res.successResponse({
+      message: 'Recipe has been successfully deleted'
+    });
+  });
+};

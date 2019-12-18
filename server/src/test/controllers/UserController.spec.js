@@ -11,7 +11,7 @@ const { expect } = chai;
 chai.use(chaiHttp);
 
 describe('Users can signup, signin, and modify data', () => {
-  let email;
+  const email = faker.internet.email().toLowerCase();
   let accessToken;
   let token;
   let userId;
@@ -20,20 +20,23 @@ describe('Users can signup, signin, and modify data', () => {
     const user = await db.User.create({
       firstName: faker.name.findName(),
       lastName: faker.name.findName(),
-      email: faker.internet.email(),
+      email,
       password: await bcrypt.hash('password', 10)
     });
-    token = jwt.sign({ userId: user.id, email: user.email }, process.env.JWT_SECRET);
+    token = jwt.sign(
+      { userId: user.id, email: user.email },
+      process.env.JWT_SECRET
+    );
   });
 
-  it('it should sign up a user and return user and token', (done) => {
+  it('it should sign up a user and return user and token', done => {
     const firstName = faker.name.firstName();
-    email = faker.internet.email();
-    chai.request(app)
+    chai
+      .request(app)
       .post('/api/v1/users/signup')
       .send({
         firstName,
-        email,
+        email: faker.internet.email().toLowerCase(),
         lastName: faker.name.lastName(),
         password: 'iamjohngates',
         confirmPassword: 'iamjohngates'
@@ -49,12 +52,13 @@ describe('Users can signup, signin, and modify data', () => {
       });
   });
 
-  it('should sign in a user and return user and token', (done) => {
-    chai.request(app)
+  it('should sign in a user and return user and token', done => {
+    chai
+      .request(app)
       .post('/api/v1/users/signin')
       .send({
         email,
-        password: 'iamjohngates',
+        password: 'iamjohngates'
       })
       .end((err, res) => {
         expect(res).to.have.status(200);
@@ -65,9 +69,10 @@ describe('Users can signup, signin, and modify data', () => {
       });
   });
 
-  it('should edit a user\'s data', (done) => {
+  it("should edit a user's data", done => {
     const firstName = faker.name.findName();
-    chai.request(app)
+    chai
+      .request(app)
       .post('/api/v1/users/edit')
       .set('Access-Token', accessToken)
       .send({
@@ -81,9 +86,10 @@ describe('Users can signup, signin, and modify data', () => {
       });
   });
 
-  it('should get user by id', (done) => {
-    chai.request(app)
-      .get(`/api/v1/user/${userId}`)
+  it('should get user by id', done => {
+    chai
+      .request(app)
+      .get(`/api/v1/users/${userId}`)
       .end((err, res) => {
         expect(res).to.have.status(200);
         expect(res.body.status).to.equal('success');
@@ -92,48 +98,58 @@ describe('Users can signup, signin, and modify data', () => {
       });
   });
 
-  it('should return user not found', (done) => {
-    chai.request(app)
-      .get('/api/v1/user/99')
+  it('should return user not found', done => {
+    chai
+      .request(app)
+      .get('/api/v1/users/99')
       .end((err, res) => {
         expect(res).to.have.status(404);
         expect(res.body.status).to.equal('fail');
-        expect(res.body.data.message).to.equal('User with Id of 99 does not exist');
+        expect(res.body.message).to.equal(
+          'User with specified id does not exist'
+        );
         done();
       });
   });
 
-  it('should return unauthorized', (done) => {
-    chai.request(app)
-      .del(`/api/v1/user/${userId}`)
+  it('should return unauthorized', done => {
+    chai
+      .request(app)
+      .del(`/api/v1/users/${userId}`)
       .set('Access-Token', token)
       .end((err, res) => {
         expect(res).to.have.status(401);
         expect(res.body.status).to.equal('fail');
-        expect(res.body.data.message).to.equal('You are not authorized to delete this account');
+        expect(res.body.message).to.equal(
+          'You are not authorized to delete this account'
+        );
         done();
       });
   });
 
-  it('should delete user by id', (done) => {
-    chai.request(app)
-      .del(`/api/v1/user/${userId}`)
+  it('should delete user by id', done => {
+    chai
+      .request(app)
+      .del(`/api/v1/users/${userId}`)
       .set('Access-Token', accessToken)
       .end((err, res) => {
         expect(res).to.have.status(200);
         expect(res.body.status).to.equal('success');
-        expect(res.body.data.message).to.equal('User account deleted');
+        expect(res.body.message).to.equal('User account deleted');
         done();
       });
   });
 
-  it('should return user not found', (done) => {
-    chai.request(app)
-      .get(`/api/v1/user/${userId}`)
+  it('should return user not found', done => {
+    chai
+      .request(app)
+      .get(`/api/v1/users/${userId}`)
       .end((err, res) => {
         expect(res).to.have.status(404);
         expect(res.body.status).to.equal('fail');
-        expect(res.body.data.message).to.equal(`User with Id of ${userId} does not exist`);
+        expect(res.body.message).to.equal(
+          `User with specified id does not exist`
+        );
         done();
       });
   });

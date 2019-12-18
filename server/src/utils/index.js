@@ -1,4 +1,5 @@
 import querystring from 'querystring';
+import ControllerError from './ControllerError';
 
 /**
  * Get query count
@@ -26,22 +27,31 @@ async function getCount(model, condition) {
  * @returns {Promise} pagination meta
  */
 export async function getPaginationMeta(req, model, condition) {
-  let originUrl = req.originalUrl;
-  if (req.originalUrl.indexOf('?') !== -1) {
-    originUrl = req.originalUrl.slice(0, req.originalUrl.indexOf('?'));
+  const {
+    originalUrl,
+    query: { limit: queryLimit, from },
+    params: { id }
+  } = req;
+
+  let originUrl = originalUrl;
+  if (originalUrl.indexOf('?') !== -1) {
+    originUrl = originalUrl.slice(0, originalUrl.indexOf('?'));
   }
 
   const url = `https://${req.get('host')}${originUrl}`;
   const dbCount = await getCount(model, condition);
-  const limit = Number(req.query.limit);
-  const offset = Number(req.query.from);
+  const limit = Number(queryLimit);
+  const offset = Number(from);
 
   let recipeId;
-  if (req.params.id) {
-    recipeId = req.params.id;
+  if (id) {
+    recipeId = id;
   }
   const paginationMeta = {
-    recipeId, from: offset, limit, total: dbCount
+    recipeId,
+    from: offset,
+    limit,
+    total: dbCount
   };
 
   const nextOffset = offset + limit;
@@ -55,23 +65,34 @@ export async function getPaginationMeta(req, model, condition) {
     req.query.from = previousOffset;
     paginationMeta.previous = `${url}?${querystring.stringify(req.query)}`;
   }
+
   return paginationMeta;
 }
 
-/**
- * Check authorization and existence
- * @param {Object} obj
- * @param {Number} userId
- * @param {String} message
- * @param {String} type
- *
- * @returns {Object} res
- */
-export function check(obj, userId, message, type) {
-  if (!obj) {
-    return { message: `The ${message} does not exist`, status: 404 };
+const getErrorResponse = error => {
+  if (process.env.NODE_ENV === 'production') {
+    // if it's a sequelize error, a generic message should
+    // be returned
+    if (error?.sql) {
+      return 'An error occurred';
+    }
   }
-  if (obj.UserId !== userId) {
-    return { message: `You are not authorized to ${type} this ${message}`, status: 401 };
+
+  if (error instanceof ControllerError) {
+    return [error.message, error.statusCode];
   }
-}
+
+  // eslint-disable-next-line no-console
+  console.log(error);
+  return [error];
+};
+
+export const tryCatch = async (res, cb) => {
+  try {
+    await cb();
+  } catch (error) {
+    return res.errorResponse(...getErrorResponse(error));
+  }
+};
+
+export { ControllerError };

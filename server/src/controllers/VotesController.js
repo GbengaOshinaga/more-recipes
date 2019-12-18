@@ -1,141 +1,157 @@
 import db from '../models/index';
+import { tryCatch } from '../utils';
+
+const { Votes, Recipes } = db;
+
+const voteTypes = {
+  UPVOTE: 'upvote',
+  DOWNVOTE: 'downvote'
+};
 
 /**
- * VotesController class
+ * Delete vote
+ * @param {Object} params
+ * @returns {Object} recipe
  */
-export default class VotesController {
-  /**
-     * Adds an upvote to a recipe
-     * @param {Object} req
-     * @param {Object} res
-     *
-     * @returns {Object} res
-     */
-  static addUpvote(req, res) {
-    this.addVote(1, 'upvotes', 'downvotes', 'upvoted', req, res);
+const removeVote = async ({ vote, voteType, recipeId, userId }) => {
+  await vote.destroy();
+
+  const recipe = await Recipes.findById(recipeId);
+
+  if (voteType === voteTypes.UPVOTE) {
+    recipe.update({
+      upvotes: [...recipe.upvotes.filter(id => id !== userId)]
+    });
+  } else {
+    recipe.update({
+      downvotes: [...recipe.downvotes.filter(id => id !== userId)]
+    });
+  }
+  return recipe;
+};
+
+/**
+ * Delete current vote and create another
+ * @param {Object} params
+ * @returns {Object} recipe
+ */
+const removeAndCreateVote = async ({
+  vote,
+  voteType,
+  recipeId,
+  userId,
+  valueOfVote
+}) => {
+  await vote.destroy();
+  await Votes.create({
+    UserId: userId,
+    RecipeId: recipeId,
+    vote: valueOfVote
+  });
+
+  const recipe = await Recipes.findById(recipeId);
+  if (voteType === voteTypes.UPVOTE) {
+    await recipe.update({
+      upvotes: [...recipe.upvotes, userId],
+      downvotes: [...recipe.downvotes.filter(id => id !== userId)]
+    });
+  } else {
+    await recipe.update({
+      downvotes: [...recipe.downvotes, userId],
+      upvotes: [...recipe.upvotes.filter(id => id !== userId)]
+    });
   }
 
-  /**
-   * Adds a downvote to a recipe
-   * @param {Object} req
-   * @param {Object} res
-   *
-   * @returns {Object} res
-   */
-  static addDownvote(req, res) {
-    this.addVote(0, 'downvotes', 'upvotes', 'downvoted', req, res);
+  return recipe;
+};
+
+/**
+ * Create vote and update recipe
+ * @param {Object} params
+ * @returns {Object} recipe
+ */
+const createVote = async ({ voteType, recipeId, userId, valueOfVote }) => {
+  await Votes.create({
+    UserId: userId,
+    RecipeId: recipeId,
+    vote: valueOfVote
+  });
+
+  const recipe = await Recipes.findById(recipeId);
+  if (voteType === voteTypes.UPVOTE) {
+    await recipe.update({
+      upvotes: [...recipe.upvotes, userId]
+    });
+  } else {
+    await recipe.update({
+      downvotes: [...recipe.downvotes, userId]
+    });
   }
 
-  /**
-   * Update
-   * @param {Object} recipe
-   * @param {String} message
-   * @param {Object} res
-   * @param {Object} condition
-   *
-   * @returns {Object} res
-   */
-  static update(recipe, message, res, condition) {
-    return recipe.update(condition)
-      .then(() => res.status(200).jsend.success({ recipe, message: `Recipe ${message}` }))
-      .catch(error => res.status(500).jsend.error(error));
-  }
+  return recipe;
+};
 
-  /**
-   * Method for adding vote
-   * Users are allowed to vote more than once, if and only if their previous vote is
-   * different from the next one, for example, a user can only upvote once, but a user
-   * can downvote after already upvoting, and vice versa
-   * @param {Number} valueOfVote
-   * @param {String} typeOfVote
-   * @param {String} otherTypeOfVote
-   * @param {String} message
-   * @param {Object} req
-   * @param {Object} res
-   *
-   * @returns {Object} res
-   */
-  static addVote(valueOfVote, typeOfVote, otherTypeOfVote, message, req, res) {
-    db.Votes.findOne({
+/**
+ * Add vote logic
+ * @param {Object} params
+ * @returns {Object} res
+ */
+const addVote = async ({ req, res, valueOfVote, voteType }) => {
+  const {
+    user: { userId } = {},
+    params: { id }
+  } = req;
+
+  tryCatch(res, async () => {
+    const vote = await Votes.findOne({
       where: {
-        UserId: req.user.userId,
-        RecipeId: req.params.id,
+        UserId: userId,
+        RecipeId: id
       }
-    })
-      .then((vote) => {
-        // If user has voted already and the value of the vote
-        // is the same as the requested one, remove the vote
-        if (vote && vote.vote === valueOfVote) {
-          return vote.destroy()
-            .then(() => db.Recipes.findById(req.params.id)
-              .then((recipe) => {
-                if (typeOfVote === 'upvotes') {
-                  recipe.update({
-                    upvotes: [...recipe.upvotes.filter(id => id !== req.user.userId)]
-                  });
-                } else {
-                  recipe.update({
-                    downvotes: [...recipe.downvotes.filter(id => id !== req.user.userId)]
-                  });
-                }
-                return res.status(200).jsend.success({
-                  recipe,
-                  message: `Your ${typeOfVote.slice(0, typeOfVote.length - 1)} has been cancelled`
-                });
-              }))
-            .catch(error => res.status(500).jsend.fail(error));
-        } if (vote && vote.vote !== valueOfVote) {
-          // If vote is different from previous vote, delete previous vote, and create present one
-          vote.destroy();
-          db.Votes.create({
-            UserId: req.user.userId,
-            RecipeId: req.params.id,
-            vote: valueOfVote
-          });
-          // Find recipe user voted for, decrement the value of the previous vote, and increment
-          // the present one
-          db.Recipes.findById(req.params.id)
-            .then((recipe) => {
-              if (typeOfVote === 'upvotes') {
-                recipe.update({
-                  upvotes: [...recipe.upvotes, req.user.userId]
-                })
-                  .then(() => this.update(recipe, message, res, {
-                    downvotes: [...recipe.downvotes.filter(id => id !== req.user.userId)]
-                  }));
-              } else {
-                recipe.update({
-                  downvotes: [...recipe.downvotes, req.user.userId]
-                })
-                  .then(() => this.update(recipe, message, res, {
-                    upvotes: [...recipe.upvotes.filter(id => id !== req.user.userId)]
-                  }));
-              }
-            })
-            .catch(error => res.status(500).jsend.error(error));
-        } else {
-          // If user has not voted at all, then create the vote
-          db.Votes.create({
-            UserId: req.user.userId,
-            RecipeId: req.params.id,
-            vote: valueOfVote
-          })
-            .then(() => {
-              db.Recipes.findById(req.params.id)
-                .then((recipe) => {
-                  if (typeOfVote === 'upvotes') {
-                    return this.update(recipe, message, res, {
-                      upvotes: [...recipe.upvotes, req.user.userId]
-                    });
-                  }
-                  return this.update(recipe, message, res, {
-                    downvotes: [...recipe.downvotes, req.user.userId]
-                  });
-                });
-            })
-            .catch(error => res.status(500).jsend.error(error));
-        }
-      })
-      .catch(error => res.status(500).jsend.error(error));
-  }
-}
+    });
+    if (vote?.vote === valueOfVote) {
+      const recipe = await removeVote({ vote, voteType, recipeId: id, userId });
+      return res.successResponse({
+        recipe,
+        message: `Your ${voteType} has been cancelled`
+      });
+    }
+
+    if (vote && vote.vote !== valueOfVote) {
+      const recipe = await removeAndCreateVote({
+        vote,
+        voteType,
+        recipeId: id,
+        userId,
+        valueOfVote
+      });
+      return res.successResponse({ recipe, message: `Recipe ${voteType}d` });
+    }
+
+    const recipe = await createVote({
+      voteType,
+      recipeId: id,
+      userId,
+      valueOfVote
+    });
+    return res.successResponse({ recipe, message: `Recipe ${voteType}d` });
+  });
+};
+
+/*
+  |--------------------------------------------------------------------------
+  | Add upvote controller
+  |--------------------------------------------------------------------------
+*/
+export const addUpvote = async (req, res) => {
+  await addVote({ req, res, valueOfVote: 1, voteType: voteTypes.UPVOTE });
+};
+
+/*
+  |--------------------------------------------------------------------------
+  | Add downvote controller
+  |--------------------------------------------------------------------------
+*/
+export const addDownvote = async (req, res) => {
+  await addVote({ req, res, valueOfVote: 0, voteType: voteTypes.DOWNVOTE });
+};
