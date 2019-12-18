@@ -51,13 +51,13 @@ export const getParamsValidation = () => [
     )
     .custom(({ sort, order }) => {
       if (
-        sort.toLowerCase() !== 'upvotes' ||
+        sort.toLowerCase() !== 'upvotes' &&
         sort.toLowerCase() !== 'downvotes'
       ) {
         throw new Error('sort parameter must be upvotes or downvotes');
       }
 
-      if (order.toLowerCase() !== 'asc' || order.toLowerCase() !== 'desc') {
+      if (order.toLowerCase() !== 'asc' && order.toLowerCase() !== 'desc') {
         throw new Error('order parameter must be asc or desc');
       }
 

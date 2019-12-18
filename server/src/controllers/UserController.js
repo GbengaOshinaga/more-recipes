@@ -1,6 +1,7 @@
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import db from '../models/index';
+import { tryCatch } from '../utils';
 
 const { User } = db;
 
@@ -75,7 +76,7 @@ export const signUp = (req, res) => {
 export const signIn = async (req, res) => {
   const { email, password } = req.body;
 
-  try {
+  tryCatch(res, async () => {
     const user = await User.findOne({ where: { email } });
     if (!user) {
       return res.failResponse('Invalid Credentials');
@@ -98,9 +99,7 @@ export const signIn = async (req, res) => {
       user: getUserObject(user),
       token: accessToken
     });
-  } catch (error) {
-    return res.errorResponse(error);
-  }
+  });
 };
 
 /*
@@ -114,8 +113,16 @@ export const editUser = async (req, res) => {
     body: { firstName, lastName, email, profilePic, about }
   } = req;
 
-  try {
+  tryCatch(res, async () => {
     const user = await User.findById(userId);
+    if (!user) {
+      return res.failResponse(
+        {
+          message: 'User with specified id does not exist'
+        },
+        404
+      );
+    }
     const updatedUser = await user.update({
       firstName: firstName || user.firstName,
       lastName: lastName || user.lastName,
@@ -125,9 +132,7 @@ export const editUser = async (req, res) => {
     });
 
     return res.successResponse({ user: getUserObject(updatedUser) });
-  } catch (error) {
-    res.errorResponse(error);
-  }
+  });
 };
 
 /*
@@ -136,18 +141,19 @@ export const editUser = async (req, res) => {
   |--------------------------------------------------------------------------
 */
 export const getUserById = async (req, res) => {
-  try {
+  tryCatch(res, async () => {
     const user = await User.findById(req.params.id);
     if (!user) {
-      return res.failResponse({
-        message: 'User with specified id does not exist'
-      });
+      return res.failResponse(
+        {
+          message: 'User with specified id does not exist'
+        },
+        404
+      );
     }
 
     return res.successResponse({ user: getUserObject(user) });
-  } catch (error) {
-    return res.errorResponse(error);
-  }
+  });
 };
 
 /*
@@ -156,23 +162,27 @@ export const getUserById = async (req, res) => {
   |--------------------------------------------------------------------------
 */
 export const deleteUser = async (req, res) => {
-  try {
+  tryCatch(res, async () => {
     const user = await User.findById(req.params.id);
     if (!user) {
-      return res.failResponse({
-        message: 'User with specified id does not exist'
-      });
+      return res.failResponse(
+        {
+          message: 'User with specified id does not exist'
+        },
+        404
+      );
     }
     if (req.user.userId !== user.id) {
-      return res.failResponse({
-        message: 'You are not authorized to delete this account'
-      });
+      return res.failResponse(
+        {
+          message: 'You are not authorized to delete this account'
+        },
+        401
+      );
     }
     await user.destroy();
     return res.successResponse('User account deleted');
-  } catch (error) {
-    return res.errorResponse(error);
-  }
+  });
 };
 
 /*
@@ -181,21 +191,22 @@ export const deleteUser = async (req, res) => {
   |--------------------------------------------------------------------------
 */
 export const getUserRecipes = async (req, res) => {
-  try {
-    const user = await db.User.findById(req.user.userId);
+  tryCatch(res, async () => {
+    const user = await User.findById(req.user.userId);
     if (!user) {
-      return res.failResponse({
-        message: 'User with specified id does not exist'
-      });
+      return res.failResponse(
+        {
+          message: 'User with specified id does not exist'
+        },
+        404
+      );
     }
 
     const recipes = await user.getRecipes();
     if (recipes.length === 0) {
-      return res.failResponse({ message: 'No Recipe Found' });
+      return res.failResponse({ message: 'No Recipe Found' }, 404);
     }
 
     return res.successResponse({ recipes });
-  } catch (error) {
-    return res.errorResponse(error);
-  }
+  });
 };

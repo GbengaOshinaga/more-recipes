@@ -21,7 +21,10 @@ describe('Users should be able to add, get and delete favourites', () => {
       email: faker.internet.email(),
       password: await bcrypt.hash('password', 10)
     });
-    token = jwt.sign({ userId: user.id, email: user.email }, process.env.JWT_SECRET);
+    token = jwt.sign(
+      { userId: user.id, email: user.email },
+      process.env.JWT_SECRET
+    );
     const recipe = await db.Recipes.create({
       name: faker.name.findName(),
       description: faker.lorem.sentence(),
@@ -31,13 +34,14 @@ describe('Users should be able to add, get and delete favourites', () => {
     recipeId = recipe.id;
   });
 
-  it('should add favourite', (done) => {
-    chai.request(app)
+  it('should add favourite', done => {
+    chai
+      .request(app)
       .post(`/api/v1/users/recipes/${recipeId}/favourites`)
       .set('Access-Token', token)
       .end((err, res) => {
         expect(res).to.have.status(200);
-        expect(res.body.data.message).to.equal('Favourite added');
+        expect(res.body.message).to.equal('Favourite added');
         done();
       });
   });
@@ -54,7 +58,10 @@ describe('Get user favourites', () => {
       password: await bcrypt.hash('password', 10)
     });
     recipeName = faker.name.findName();
-    token = jwt.sign({ userId: user.id, email: user.email }, process.env.JWT_SECRET);
+    token = jwt.sign(
+      { userId: user.id, email: user.email },
+      process.env.JWT_SECRET
+    );
     const recipe = await db.Recipes.create({
       name: recipeName,
       description: faker.lorem.sentence(),
@@ -65,15 +72,15 @@ describe('Get user favourites', () => {
     const favourite = await user.addFavouriteRecipe(recipe);
   });
 
-  it('should get user favourites recipes', (done) => {
-    chai.request(app)
+  it('should get user favourites recipes', () => {
+    chai
+      .request(app)
       .get('/api/v1/users/recipes/favourites')
       .set('Access-Token', token)
       .end((err, res) => {
         expect(res).to.have.status(200);
         expect(res.body.data.favourites).to.be.an('array');
         expect(res.body.data.favourites[0].name).to.equal(recipeName);
-        done();
       });
   });
 });
@@ -90,7 +97,10 @@ describe('delete user favourites', () => {
       password: await bcrypt.hash('password', 10)
     });
     recipeName = faker.name.findName();
-    token = jwt.sign({ userId: user.id, email: user.email }, process.env.JWT_SECRET);
+    token = jwt.sign(
+      { userId: user.id, email: user.email },
+      process.env.JWT_SECRET
+    );
     const recipe = await db.Recipes.create({
       name: recipeName,
       description: faker.lorem.sentence(),
@@ -101,13 +111,14 @@ describe('delete user favourites', () => {
     user.addFavouriteRecipe(recipe);
   });
 
-  it('should delete user favourite recipe', (done) => {
-    chai.request(app)
+  it('should delete user favourite recipe', done => {
+    chai
+      .request(app)
       .del(`/api/v1/users/recipes/${recipeId}/favourites`)
       .set('Access-Token', token)
       .end((err, res) => {
         expect(res).to.have.status(200);
-        expect(res.body.data.message).to.equal('Favourite deleted');
+        expect(res.body.message).to.equal('Favourite deleted');
         done();
       });
   });
@@ -122,16 +133,20 @@ describe('Not found', () => {
       email: faker.internet.email(),
       password: await bcrypt.hash('password', 10)
     });
-    token = jwt.sign({ userId: user.id, email: user.email }, process.env.JWT_SECRET);
+    token = jwt.sign(
+      { userId: user.id, email: user.email },
+      process.env.JWT_SECRET
+    );
   });
 
-  it('should return not found when there are no favourites', (done) => {
-    chai.request(app)
+  it('should return not found when there are no favourites', done => {
+    chai
+      .request(app)
       .get('/api/v1/users/recipes/favourites')
       .set('Access-Token', token)
       .end((err, res) => {
         expect(res).to.have.status(404);
-        expect(res.body.data.message).to.equal('No Favourites');
+        expect(res.body.message).to.equal('No Favourites');
         done();
       });
   });

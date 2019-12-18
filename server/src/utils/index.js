@@ -1,4 +1,5 @@
 import querystring from 'querystring';
+import ControllerError from './ControllerError';
 
 /**
  * Get query count
@@ -68,7 +69,7 @@ export async function getPaginationMeta(req, model, condition) {
   return paginationMeta;
 }
 
-export const getErrorResponse = error => {
+const getErrorResponse = error => {
   if (process.env.NODE_ENV === 'production') {
     // if it's a sequelize error, a generic message should
     // be returned
@@ -77,5 +78,21 @@ export const getErrorResponse = error => {
     }
   }
 
-  return error;
+  if (error instanceof ControllerError) {
+    return [error.message, error.statusCode];
+  }
+
+  // eslint-disable-next-line no-console
+  console.log(error);
+  return [error];
 };
+
+export const tryCatch = async (res, cb) => {
+  try {
+    await cb();
+  } catch (error) {
+    return res.errorResponse(...getErrorResponse(error));
+  }
+};
+
+export { ControllerError };

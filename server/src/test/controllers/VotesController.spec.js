@@ -31,46 +31,50 @@ describe('Users should be able to upvote and downvote a recipe', () => {
     recipeId = recipe.id;
   });
 
-  it('should upvote a recipe', (done) => {
-    chai.request(app)
+  it('should upvote a recipe', done => {
+    chai
+      .request(app)
       .post(`/api/v1/recipes/upvote/${recipeId}`)
       .set('Access-Token', token)
       .end((err, res) => {
         expect(res).to.have.status(200);
-        expect(res.body.data.message).to.equal('Recipe upvoted');
+        expect(res.body.message).to.equal('Recipe upvoted');
         done();
       });
   });
 
-  it('should cancel vote if user has already voted', (done) => {
-    chai.request(app)
+  it('should cancel vote if user has already voted', done => {
+    chai
+      .request(app)
       .post(`/api/v1/recipes/upvote/${recipeId}`)
       .set('Access-Token', token)
       .end((err, res) => {
         expect(res).to.have.status(200);
-        expect(res.body.data.message).to.equal('Your upvote has been cancelled');
+        expect(res.body.message).to.equal('Your upvote has been cancelled');
         done();
       });
   });
 
-  it('should downvote a recipe', (done) => {
-    chai.request(app)
+  it('should downvote a recipe', done => {
+    chai
+      .request(app)
       .post(`/api/v1/recipes/downvote/${recipeId}`)
       .set('Access-Token', token)
       .end((err, res) => {
         expect(res).to.have.status(200);
-        expect(res.body.data.message).to.equal('Recipe downvoted');
+        expect(res.body.message).to.equal('Recipe downvoted');
         done();
       });
   });
 
-  it('should upvote a recipe', (done) => {
-    chai.request(app)
+  it('should upvote a recipe', done => {
+    chai
+      .request(app)
       .post(`/api/v1/recipes/upvote/${recipeId}`)
       .set('Access-Token', token)
       .end((err, res) => {
         expect(res).to.have.status(200);
-        expect(res.body.data.message).to.equal('Recipe upvoted');
+        expect(res.body.message).to.equal('Recipe upvoted');
         done();
       });
   });

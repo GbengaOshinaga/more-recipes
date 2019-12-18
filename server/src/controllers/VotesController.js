@@ -1,5 +1,5 @@
 import db from '../models/index';
-import { getErrorResponse } from '../utils';
+import { tryCatch } from '../utils';
 
 const { Votes, Recipes } = db;
 
@@ -102,7 +102,7 @@ const addVote = async ({ req, res, valueOfVote, voteType }) => {
     params: { id }
   } = req;
 
-  try {
+  tryCatch(res, async () => {
     const vote = await Votes.findOne({
       where: {
         UserId: userId,
@@ -135,9 +135,7 @@ const addVote = async ({ req, res, valueOfVote, voteType }) => {
       valueOfVote
     });
     return res.successResponse({ recipe, message: `Recipe ${voteType}d` });
-  } catch (error) {
-    return res.errorResponse(getErrorResponse(error));
-  }
+  });
 };
 
 /*

@@ -32,6 +32,8 @@ export default app => {
     userController.editUser
   );
 
+  app.get(`${baseUrl}/recipes`, authenticate, userController.getUserRecipes);
+
   // Get user by id
   app.get(
     `${baseUrl}/:id`,
@@ -46,6 +48,4 @@ export default app => {
     errorHandler(getIdValidation()),
     userController.deleteUser
   );
-
-  app.get(`${baseUrl}/recipes`, authenticate, userController.getUserRecipes);
 };

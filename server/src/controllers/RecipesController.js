@@ -1,5 +1,5 @@
 import db from '../models/index';
-import { getPaginationMeta, getErrorResponse } from '../utils';
+import { getPaginationMeta, ControllerError, tryCatch } from '../utils';
 
 const { Recipes, Sequelize, User } = db;
 
@@ -19,7 +19,7 @@ export const addRecipe = async (req, res) => {
     ingredientsArray = ingredients.split(',');
   }
 
-  try {
+  tryCatch(res, async () => {
     const existingRecipe = await Recipes.findOne({
       where: {
         UserId: req.user.userId,
@@ -40,9 +40,7 @@ export const addRecipe = async (req, res) => {
       ingredients: ingredientsArray
     });
     return res.successResponse({ recipe }, 201);
-  } catch (error) {
-    return res.errorResponse(getErrorResponse(error));
-  }
+  });
 };
 
 /*
@@ -52,37 +50,33 @@ export const addRecipe = async (req, res) => {
   |--------------------------------------------------------------------------
 */
 const searchRecipes = async (query, req, res) => {
-  const { op } = Sequelize;
+  const { Op } = Sequelize;
   const condition = {
-    [op.or]: {
+    [Op.or]: {
       name: {
-        [op.iLike]: `%${query}%`
+        [Op.iLike]: `%${query}%`
       },
       description: {
-        [op.iLike]: `%${query}%`
+        [Op.iLike]: `%${query}%`
       },
       ingredients: {
-        [op.contains]: [`${query}`]
+        [Op.contains]: [`${query}`]
       }
     }
   };
 
-  try {
-    const recipes = await Recipes.findAll({
-      where: condition,
-      group: 'id',
-      order: db.sequelize.literal('max(id) ASC'),
-      offset: req.query.from,
-      limit: req.query.limit
-    });
-    if (recipes.length === 0) {
-      return res.failResponse({ message: 'No Results Found' }, 404);
-    }
-    const paginationMeta = await getPaginationMeta(req, Recipes, condition);
-    return res.successResponse({ recipes, paginationMeta });
-  } catch (error) {
-    return res.errorResponse(getErrorResponse(error));
+  const recipes = await Recipes.findAll({
+    where: condition,
+    group: 'id',
+    order: db.sequelize.literal('max(id) ASC'),
+    offset: req.query.from,
+    limit: req.query.limit
+  });
+  if (recipes.length === 0) {
+    return res.failResponse({ message: 'No Results Found' }, 404);
   }
+  const paginationMeta = await getPaginationMeta(req, Recipes, condition);
+  return res.successResponse({ recipes, paginationMeta });
 };
 
 const getUserFavouriteRecipesIds = async userId => {
@@ -123,7 +117,7 @@ export const getRecipes = async (req, res) => {
     return res.successResponse(response);
   };
 
-  try {
+  tryCatch(res, async () => {
     if (sort && order) {
       return getAllRecipes(`max(${sort}) ${order.toUpperCase()}`);
     }
@@ -133,9 +127,7 @@ export const getRecipes = async (req, res) => {
     }
 
     return getAllRecipes('max(id) DESC');
-  } catch (error) {
-    return res.errorResponse(getErrorResponse(error));
-  }
+  });
 };
 
 /*
@@ -143,39 +135,37 @@ export const getRecipes = async (req, res) => {
   | Get a single recipe using an id controller
   |--------------------------------------------------------------------------
 */
-export const getRecipeById = async (req, res) => {
-  try {
+export const getRecipeById = (req, res) => {
+  tryCatch(res, async () => {
     const recipe = await Recipes.findById(req.params.id);
     if (!recipe) {
       return res.failResponse({
         message: 'Recipe with specified id does not exist'
       });
     }
-    return res.sucessResponse({ recipe });
-  } catch (error) {
-    return res.errorResponse(getErrorResponse(error));
-  }
+    return res.successResponse({ recipe });
+  });
 };
 
 /**
  * Gets a single recipe and checks authorization and existence
  * @param {Number} recipeId
  * @param {Number} userId
+ * @param {String} currentAction: edit or delete
  *
  * @returns {Object} recipe
  */
-const getAndValidateRecipe = async (recipeId, userId) => {
+const getAndValidateRecipe = async (recipeId, userId, currentAction) => {
   const recipe = await Recipes.findById(recipeId);
 
   if (!recipe) {
-    throw new Error({
-      message: 'Recipe with specified id does not exist'
-    });
+    throw new ControllerError(404, 'Recipe with specified id does not exist');
   }
   if (recipe.UserId !== userId) {
-    throw new Error({
-      message: 'You are not authorized to edit this recipe'
-    });
+    throw new ControllerError(
+      401,
+      `You are not authorized to ${currentAction} this recipe`
+    );
   }
 
   return recipe;
@@ -198,8 +188,8 @@ export const editRecipe = async (req, res) => {
     ingredientsArray = ingredients.split(',');
   }
 
-  try {
-    const recipe = await getAndValidateRecipe(id, userId);
+  tryCatch(res, async () => {
+    const recipe = await getAndValidateRecipe(id, userId, 'edit');
 
     const updatedRecipe = await recipe.update({
       name: name || recipe.name,
@@ -209,9 +199,7 @@ export const editRecipe = async (req, res) => {
       ingredients: ingredientsArray || recipe.ingredients
     });
     return res.successResponse({ updatedRecipe });
-  } catch (error) {
-    return res.errorResponse(getErrorResponse(error));
-  }
+  });
 };
 
 /*
@@ -224,14 +212,13 @@ export const deleteRecipe = async (req, res) => {
     user: { userId } = {},
     params: { id }
   } = req;
-  try {
-    const recipe = await getAndValidateRecipe(id, userId);
+
+  tryCatch(res, async () => {
+    const recipe = await getAndValidateRecipe(id, userId, 'delete');
     await recipe.destroy({ force: true });
 
-    return res.sucessResponse({
+    return res.successResponse({
       message: 'Recipe has been successfully deleted'
     });
-  } catch (error) {
-    return res.errorResponse(getErrorResponse(error));
-  }
+  });
 };

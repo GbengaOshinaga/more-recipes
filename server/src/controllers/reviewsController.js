@@ -1,5 +1,5 @@
 import db from '../models/index';
-import { getPaginationMeta, getErrorResponse } from '../utils';
+import { getPaginationMeta, tryCatch, ControllerError } from '../utils';
 
 const { Reviews, User } = db;
 
@@ -15,7 +15,7 @@ export const addReview = async (req, res) => {
     params: { id }
   } = req;
 
-  try {
+  tryCatch(res, async () => {
     const createdReview = await Reviews.create({
       review,
       UserId: userId,
@@ -30,9 +30,7 @@ export const addReview = async (req, res) => {
       ]
     });
     return res.successResponse({ review: reviewWithUserData }, 201);
-  } catch (error) {
-    return res.errorResponse(getErrorResponse(error));
-  }
+  });
 };
 
 /*
@@ -48,7 +46,7 @@ export const getReviews = async (req, res) => {
 
   const condition = { RecipeId: id };
 
-  try {
+  tryCatch(res, async () => {
     const reviews = await Reviews.findAll({
       where: condition,
       include: [{ model: User, attributes: { exclude: ['password'] } }],
@@ -57,31 +55,29 @@ export const getReviews = async (req, res) => {
     });
 
     const paginationMeta = await getPaginationMeta(req, db.Reviews, condition);
-    return res.sucessResponse({ reviews, paginationMeta });
-  } catch (error) {
-    return res.errorResponse(getErrorResponse(error));
-  }
+    return res.successResponse({ reviews, paginationMeta });
+  });
 };
 
 /**
  * Gets a single review and checks authorization and existence
  * @param {Number} reviewId
  * @param {Number} userId
+ * @param {String} action: edit or delete
  *
  * @returns {Object} recipe
  */
-const getAndValidateReview = async (reviewId, userId) => {
+const getAndValidateReview = async (reviewId, userId, action) => {
   const review = await Reviews.findById(reviewId);
 
   if (!review) {
-    throw new Error({
-      message: 'Review with specified id does not exist'
-    });
+    throw new ControllerError(404, 'Review with specified id does not exist');
   }
   if (review.UserId !== userId) {
-    throw new Error({
-      message: 'You are not authorized to edit this review'
-    });
+    throw new ControllerError(
+      401,
+      `You are not authorized to ${action} this review`
+    );
   }
 
   return review;
@@ -99,15 +95,13 @@ export const editReview = async (req, res) => {
     body: { review: reviewBody }
   } = req;
 
-  try {
-    const review = await getAndValidateReview(id, userId);
+  tryCatch(res, async () => {
+    const review = await getAndValidateReview(id, userId, 'edit');
     const updatedReview = await review.update({
       review: reviewBody || review.review
     });
-    return res.sucessResponse({ updatedReview });
-  } catch (error) {
-    return res.errorResponse(getErrorResponse(error));
-  }
+    return res.successResponse({ updatedReview });
+  });
 };
 
 /*
@@ -121,14 +115,12 @@ export const deleteReview = async (req, res) => {
     user: { userId } = {}
   } = req;
 
-  try {
-    const review = await getAndValidateReview(id, userId);
+  tryCatch(res, async () => {
+    const review = await getAndValidateReview(id, userId, 'delete');
     await review.destroy();
 
-    return res.sucessResponse({
+    return res.successResponse({
       message: 'Review has been successfully deleted'
     });
-  } catch (error) {
-    return res.errorResponse(getErrorResponse(error));
-  }
+  });
 };
