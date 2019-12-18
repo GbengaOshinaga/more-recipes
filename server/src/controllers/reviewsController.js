@@ -66,6 +66,7 @@ export const getReviews = async (req, res) => {
  * @param {String} action: edit or delete
  *
  * @returns {Object} recipe
+ * @throws {ControllerError}
  */
 const getAndValidateReview = async (reviewId, userId, action) => {
   const review = await Reviews.findById(reviewId);

@@ -1,7 +1,7 @@
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import db from '../models/index';
-import { tryCatch } from '../utils';
+import { tryCatch, ControllerError } from '../utils';
 
 const { User } = db;
 
@@ -102,6 +102,21 @@ export const signIn = async (req, res) => {
   });
 };
 
+/**
+ * Find and return user
+ * @param {String} userId
+ * @returns {Object} user
+ * @throws {ControllerError} if user is not found
+ */
+const findUser = async userId => {
+  const user = await User.findById(userId);
+  if (!user) {
+    throw new ControllerError(404, 'User with specified id does not exist');
+  }
+
+  return user;
+};
+
 /*
   |--------------------------------------------------------------------------
   | Edit user controller
@@ -114,15 +129,7 @@ export const editUser = async (req, res) => {
   } = req;
 
   tryCatch(res, async () => {
-    const user = await User.findById(userId);
-    if (!user) {
-      return res.failResponse(
-        {
-          message: 'User with specified id does not exist'
-        },
-        404
-      );
-    }
+    const user = await findUser(userId);
     const updatedUser = await user.update({
       firstName: firstName || user.firstName,
       lastName: lastName || user.lastName,
@@ -142,15 +149,7 @@ export const editUser = async (req, res) => {
 */
 export const getUserById = async (req, res) => {
   tryCatch(res, async () => {
-    const user = await User.findById(req.params.id);
-    if (!user) {
-      return res.failResponse(
-        {
-          message: 'User with specified id does not exist'
-        },
-        404
-      );
-    }
+    const user = await findUser(req.params.id);
 
     return res.successResponse({ user: getUserObject(user) });
   });
@@ -162,17 +161,14 @@ export const getUserById = async (req, res) => {
   |--------------------------------------------------------------------------
 */
 export const deleteUser = async (req, res) => {
+  const {
+    params: { id },
+    user: { userId }
+  } = req;
+
   tryCatch(res, async () => {
-    const user = await User.findById(req.params.id);
-    if (!user) {
-      return res.failResponse(
-        {
-          message: 'User with specified id does not exist'
-        },
-        404
-      );
-    }
-    if (req.user.userId !== user.id) {
+    const user = await findUser(id);
+    if (userId !== user.id) {
       return res.failResponse(
         {
           message: 'You are not authorized to delete this account'
@@ -191,16 +187,12 @@ export const deleteUser = async (req, res) => {
   |--------------------------------------------------------------------------
 */
 export const getUserRecipes = async (req, res) => {
+  const {
+    user: { userId }
+  } = req;
+
   tryCatch(res, async () => {
-    const user = await User.findById(req.user.userId);
-    if (!user) {
-      return res.failResponse(
-        {
-          message: 'User with specified id does not exist'
-        },
-        404
-      );
-    }
+    const user = await findUser(userId);
 
     const recipes = await user.getRecipes();
     if (recipes.length === 0) {

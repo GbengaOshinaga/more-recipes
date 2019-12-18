@@ -154,6 +154,7 @@ export const getRecipeById = (req, res) => {
  * @param {String} currentAction: edit or delete
  *
  * @returns {Object} recipe
+ * @throws {ControllerError}
  */
 const getAndValidateRecipe = async (recipeId, userId, currentAction) => {
   const recipe = await Recipes.findById(recipeId);
