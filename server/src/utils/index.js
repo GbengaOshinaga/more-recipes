@@ -91,7 +91,9 @@ export const tryCatch = async (res, cb) => {
   try {
     await cb();
   } catch (error) {
-    return res.errorResponse(...getErrorResponse(error));
+    return error instanceof ControllerError
+      ? res.failResponse(...getErrorResponse(error))
+      : res.errorResponse(...getErrorResponse(error));
   }
 };
 
