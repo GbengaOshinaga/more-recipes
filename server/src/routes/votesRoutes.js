@@ -1,10 +1,16 @@
-import VotesController from '../controllers/VotesController';
-import { authenticate } from '../middlewares/authenticate';
+import * as votesController from '../controllers/votesController';
+import { authenticate } from '../middlewares';
 
-export default (app) => {
+const baseUrl = '/api/v1/recipes';
+
+export default app => {
   // Add upvote for recipe
-  app.post('/api/v1/recipes/upvote/:id', authenticate, (req, res) => { VotesController.addUpvote(req, res); });
+  app.post(`${baseUrl}/upvote/:id`, authenticate, votesController.addUpvote);
 
   // Add downvote for recipe
-  app.post('/api/v1/recipes/downvote/:id', authenticate, (req, res) => { VotesController.addDownvote(req, res); });
+  app.post(
+    `${baseUrl}/downvote/:id`,
+    authenticate,
+    votesController.addDownvote
+  );
 };
