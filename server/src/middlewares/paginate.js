@@ -8,6 +8,9 @@ const paginate = (req, res, next) => {
     limit = 6;
   }
 
+  req.query.from = from;
+  req.query.limit = limit;
+
   return next();
 };
 

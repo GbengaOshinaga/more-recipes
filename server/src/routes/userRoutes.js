@@ -1,18 +1,15 @@
 import * as userController from '../controllers/userController';
-import * as userValidator from '../validator/usersValidator';
-import errorHandler from '../middlewares/errorHandler';
-import { authenticate } from '../middlewares/authenticate';
-import { getIdValidation } from '../validator/idValidator';
-
-const {
+import { authenticate, errorHandler } from '../middlewares';
+import {
+  getIdValidation,
   getSignUpValidation,
   getEmailAndPasswordValidation,
   getUpdateValidation
-} = userValidator;
+} from '../validator';
 
 const baseUrl = '/api/v1/users';
 
-export default (app) => {
+export default app => {
   // Sign up a user
   app.post(
     `${baseUrl}/signup`,
@@ -32,7 +29,7 @@ export default (app) => {
     `${baseUrl}/edit`,
     authenticate,
     errorHandler(getUpdateValidation()),
-    userController.modifyUser
+    userController.editUser
   );
 
   // Get user by id
@@ -50,9 +47,5 @@ export default (app) => {
     userController.deleteUser
   );
 
-  app.get(
-    `${baseUrl}/recipes`,
-    authenticate,
-    userController.getUserRecipes
-  );
+  app.get(`${baseUrl}/recipes`, authenticate, userController.getUserRecipes);
 };

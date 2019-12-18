@@ -24,6 +24,7 @@ export const getReviewValidation = () => [
   body('review')
     .not()
     .isEmpty()
+    .isString()
     .withMessage('Review is required')
     .escape()
 ];

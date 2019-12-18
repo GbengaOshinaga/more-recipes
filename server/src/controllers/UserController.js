@@ -4,6 +4,12 @@ import db from '../models/index';
 
 const { User } = db;
 
+/**
+ * Get user object
+ * @param {Object} user
+ *
+ * @returns {Object} user
+ */
 const getUserObject = (user = {}) => ({
   id: user.id,
   firstName: user.firstName,
@@ -15,6 +21,11 @@ const getUserObject = (user = {}) => ({
   about: user.about
 });
 
+/*
+  |--------------------------------------------------------------------------
+  | Sign up controller
+  |--------------------------------------------------------------------------
+*/
 export const signUp = (req, res) => {
   const { profilePic, firstName, lastName, email } = req.body;
 
@@ -56,6 +67,11 @@ export const signUp = (req, res) => {
   bcrypt.hash(req.body.password, 10, createAndReturnUser);
 };
 
+/*
+  |--------------------------------------------------------------------------
+  | Sign in controller
+  |--------------------------------------------------------------------------
+*/
 export const signIn = async (req, res) => {
   const { email, password } = req.body;
 
@@ -87,7 +103,12 @@ export const signIn = async (req, res) => {
   }
 };
 
-export const modifyUser = async (req, res) => {
+/*
+  |--------------------------------------------------------------------------
+  | Edit user controller
+  |--------------------------------------------------------------------------
+*/
+export const editUser = async (req, res) => {
   const {
     user: { userId } = {},
     body: { firstName, lastName, email, profilePic, about }
@@ -109,6 +130,11 @@ export const modifyUser = async (req, res) => {
   }
 };
 
+/*
+  |--------------------------------------------------------------------------
+  | Get user by id controller
+  |--------------------------------------------------------------------------
+*/
 export const getUserById = async (req, res) => {
   try {
     const user = await User.findById(req.params.id);
@@ -124,6 +150,11 @@ export const getUserById = async (req, res) => {
   }
 };
 
+/*
+  |--------------------------------------------------------------------------
+  | Delete user controller
+  |--------------------------------------------------------------------------
+*/
 export const deleteUser = async (req, res) => {
   try {
     const user = await User.findById(req.params.id);
@@ -144,6 +175,11 @@ export const deleteUser = async (req, res) => {
   }
 };
 
+/*
+  |--------------------------------------------------------------------------
+  | Get user recipes controller
+  |--------------------------------------------------------------------------
+*/
 export const getUserRecipes = async (req, res) => {
   try {
     const user = await db.User.findById(req.user.userId);

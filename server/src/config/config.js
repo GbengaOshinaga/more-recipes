@@ -9,6 +9,7 @@ module.exports = {
     database: process.env.DEV_DB_NAME,
     host: process.env.DEV_DB_HOST,
     port: process.env.DEV_DB_PORT,
+    logging: true,
     dialect: 'postgres'
   },
   test: {
