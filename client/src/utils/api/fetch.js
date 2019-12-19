@@ -1,9 +1,6 @@
 import 'cross-fetch/polyfill';
 
-/**
- * Fetch API
- */
-export default class Fetch {
+export default (function() {
   /**
    * Fetch method
    * @param {String} url
@@ -13,19 +10,13 @@ export default class Fetch {
    *
    * @returns {Promise} response
    */
-  static commonFetch(url, method, data, headers) {
-    let defaultHeader = { 'Content-Type': 'application/json' };
-    let options;
-    if (headers) {
-      defaultHeader = Object.assign(defaultHeader, headers);
-    }
+
+  function commonFetch(url, method, data, headers = {}) {
+    const defaultHeader = { 'Content-Type': 'application/json', ...headers };
+    const options = { method, headers: defaultHeader };
+
     if (data) {
-      options = { method, headers: defaultHeader, body: JSON.stringify(data) };
-    } else {
-      options = { method, headers: defaultHeader };
-    }
-    if (data instanceof FormData) {
-      options = { method, body: data };
+      options.body = data instanceof FormData ? data : JSON.stringify(data);
     }
 
     return fetch(url, options).then(response => {
@@ -43,8 +34,8 @@ export default class Fetch {
    *
    * @returns {Promise} response
    */
-  static get(url, headers) {
-    return this.commonFetch(url, 'get', null, headers);
+  function get(url, headers) {
+    return commonFetch(url, 'get', null, headers);
   }
 
   /**
@@ -55,8 +46,8 @@ export default class Fetch {
    *
    * @returns {Promise} response
    */
-  static post(url, data, headers) {
-    return this.commonFetch(url, 'post', data, headers);
+  function post(url, data, headers) {
+    return commonFetch(url, 'post', data, headers);
   }
 
   /**
@@ -67,8 +58,8 @@ export default class Fetch {
    *
    * @returns {Promise} response
    */
-  static put(url, data, headers) {
-    return this.commonFetch(url, 'put', data, headers);
+  function put(url, data, headers) {
+    return commonFetch(url, 'put', data, headers);
   }
 
   /**
@@ -78,7 +69,14 @@ export default class Fetch {
    *
    * @returns {Promise} response
    */
-  static del(url, headers) {
-    return this.commonFetch(url, 'delete', null, headers);
+  function del(url, headers) {
+    return commonFetch(url, 'delete', null, headers);
   }
-}
+
+  return {
+    get,
+    post,
+    put,
+    del
+  };
+})();
