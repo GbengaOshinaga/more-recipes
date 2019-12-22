@@ -6,7 +6,7 @@ const operations = actions => {
   const fetchRecipes = async nextUrl => {
     try {
       const response = await api.getAllRecipes(nextUrl);
-      saveRecipes(response);
+      saveRecipes(response?.data);
     } catch (error) {
       logger('Fetch Recipes', error);
     }

@@ -108,10 +108,8 @@ export const getRecipes = async (req, res) => {
 
     const response = { recipes, paginationMeta };
 
-    let favourites;
     if (userId) {
-      favourites = await getUserFavouriteRecipesIds(userId);
-      response.favourites = favourites;
+      response.favourites = await getUserFavouriteRecipesIds(userId);
     }
 
     return res.successResponse(response);

@@ -6,7 +6,6 @@ import { connect } from 'react-redux';
 import { sessionService } from 'redux-react-session';
 import CatalogPage from './CatalogPage';
 import * as recipeActions from '../../actions/RecipeActions';
-import { pluginsInit, transformNavBar } from '../../helpers/jqueryHelper';
 
 const propTypes = {
   isLoggedIn: PropTypes.bool.isRequired,
@@ -245,3 +244,22 @@ Catalog.propTypes = propTypes;
 Catalog.defaultProps = defaultProps;
 
 export default connect(mapStateToProps, mapDispatchToProps)(Catalog);
+
+// import React, { useEffect } from 'react';
+// import { useStoreContext } from '../../hooks/globalStore';
+
+// const CatalogPage = props => {
+//   console.log('props', props);
+
+//   const { recipes, fetchRecipes } = useStoreContext();
+
+//   useEffect(() => {
+//     fetchRecipes();
+//   }, [fetchRecipes]);
+
+//   console.log('recipes', recipes);
+
+//   return <div>catalog</div>;
+// };
+
+// export default CatalogPage;

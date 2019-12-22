@@ -27,7 +27,6 @@ const defaultProps = {
   userId: 0
 };
 
-
 /**
  * Functional component for catalog page
  * @param {*} props
@@ -35,9 +34,22 @@ const defaultProps = {
  * @returns {Node} jsx
  */
 export default function CatalogPage({
-  isLoggedIn, firstName, allRecipes, mostFavouritedRecipes, searchResults, hasMore, fetchNext,
-  onClickVote, onSearchChange, searchValue, hasSearchValue, userId, onClickFavourite, favourites,
-  isAllRecipesFound, isMostFavouritedFound
+  isLoggedIn,
+  firstName,
+  allRecipes,
+  mostFavouritedRecipes,
+  searchResults,
+  hasMore,
+  fetchNext,
+  onClickVote,
+  onSearchChange,
+  searchValue,
+  hasSearchValue,
+  userId,
+  onClickFavourite,
+  favourites,
+  isAllRecipesFound,
+  isMostFavouritedFound
 }) {
   return (
     <div>
@@ -51,7 +63,9 @@ export default function CatalogPage({
           navClassName="transparent z-depth-0"
           catalogId="catalog-nav"
         />
-        <div className="parallax"><img src="/assets/img/bg-search.jpg" alt="parallax" /></div>
+        <div className="parallax">
+          <img src="../../assets/img/bg-search.jpg" alt="parallax" />
+        </div>
         <div className="search-form">
           <div className="container">
             <form>
@@ -68,7 +82,6 @@ export default function CatalogPage({
             </form>
           </div>
         </div>
-
       </div>
 
       <div className="section">
@@ -76,63 +89,82 @@ export default function CatalogPage({
           <div className="col s12 pin">
             <ul className="tabs">
               <div className="container">
-                {hasSearchValue &&
-                <li className="tab col s12">
-                  <a id="search-results-link" href="#search-results" className="active">Search Results</a>
-                </li>}
-                {!hasSearchValue &&
-                <div>
-                  <li className="tab col s6"><a id="all-link" href="#all">All</a></li>
-                  <li className="tab col s6"><a id="most-fav-link" href="#most-fav">Most Favorited</a></li>
-                </div>}
+                {hasSearchValue && (
+                  <li className="tab col s12">
+                    <a
+                      id="search-results-link"
+                      href="#search-results"
+                      className="active"
+                    >
+                      Search Results
+                    </a>
+                  </li>
+                )}
+                {!hasSearchValue && (
+                  <div>
+                    <li className="tab col s6">
+                      <a id="all-link" href="#all">
+                        All
+                      </a>
+                    </li>
+                    <li className="tab col s6">
+                      <a id="most-fav-link" href="#most-fav">
+                        Most Favorited
+                      </a>
+                    </li>
+                  </div>
+                )}
               </div>
             </ul>
           </div>
         </div>
-        {!hasSearchValue &&
-        <div id="all">
-          <div className="container">
-            <RecipesDisplay
-              recipes={allRecipes}
-              onClickVote={onClickVote}
-              onClickFavourite={onClickFavourite}
-              isLoggedIn={isLoggedIn}
-              userId={userId}
-              favourites={favourites}
-              hasMore={hasMore}
-              next={fetchNext}
-              isFound={isAllRecipesFound}
-            />
+        {!hasSearchValue && (
+          <div id="all">
+            <div className="container">
+              <RecipesDisplay
+                recipes={allRecipes}
+                onClickVote={onClickVote}
+                onClickFavourite={onClickFavourite}
+                isLoggedIn={isLoggedIn}
+                userId={userId}
+                favourites={favourites}
+                hasMore={hasMore}
+                next={fetchNext}
+                isFound={isAllRecipesFound}
+              />
+            </div>
           </div>
-        </div>}
-        {!hasSearchValue &&
-        <div id="most-fav">
-          <div className="container">
-            <RecipesDisplay
-              recipes={mostFavouritedRecipes}
-              onClickVote={onClickVote}
-              onClickFavourite={onClickFavourite}
-              isLoggedIn={isLoggedIn}
-              userId={userId}
-              favourites={favourites}
-              isFound={isMostFavouritedFound}
-            />
+        )}
+        {!hasSearchValue && (
+          <div id="most-fav">
+            <div className="container">
+              <RecipesDisplay
+                recipes={mostFavouritedRecipes}
+                onClickVote={onClickVote}
+                onClickFavourite={onClickFavourite}
+                isLoggedIn={isLoggedIn}
+                userId={userId}
+                favourites={favourites}
+                isFound={isMostFavouritedFound}
+              />
+            </div>
           </div>
-        </div>}
-        {hasSearchValue &&
-        <div id="search-results">
-          <div className="container">
-            <RecipesDisplay
-              recipes={searchResults}
-              onClickVote={onClickVote}
-              onClickFavourite={onClickFavourite}
-              isLoggedIn={isLoggedIn}
-              userId={userId}
-              favourites={favourites}
-              hasSearchValue={hasSearchValue}
-            />
+        )}
+        {hasSearchValue && (
+          <div id="search-results">
+            <div className="container">
+              <RecipesDisplay
+                recipes={searchResults}
+                onClickVote={onClickVote}
+                onClickFavourite={onClickFavourite}
+                isLoggedIn={isLoggedIn}
+                userId={userId}
+                favourites={favourites}
+                hasSearchValue={hasSearchValue}
+              />
+            </div>
           </div>
-        </div>}
+        )}
       </div>
     </div>
   );
