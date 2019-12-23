@@ -3,7 +3,7 @@ import { useHistory, useLocation } from 'react-router-dom';
 import { useToasts } from 'react-toast-notifications';
 
 import { api, logger } from '../../utils/index';
-import { saveUserAndRedirect } from './utils';
+import { saveAuthAndRedirect } from './utils';
 
 const post = ([credentials]) => api.signIn(credentials);
 
@@ -14,7 +14,8 @@ function useSignIn() {
 
   const onSuccess = async response => {
     logger('success signin response', response);
-    await saveUserAndRedirect({ location, history, response });
+    const { data: { user: { firstName } = {} } = {} } = response;
+    await saveAuthAndRedirect({ location, history, userName: firstName });
   };
 
   const onReject = async errorData => {
@@ -25,9 +26,13 @@ function useSignIn() {
     addToast(message, { appearance: 'error' });
   };
 
-  const { run } = useAsync({ deferFn: post, onResolve: onSuccess, onReject });
+  const { isLoading, run } = useAsync({
+    deferFn: post,
+    onResolve: onSuccess,
+    onReject
+  });
 
-  return { signIn: run };
+  return { signIn: run, isSigningIn: isLoading };
 }
 
 export default useSignIn;

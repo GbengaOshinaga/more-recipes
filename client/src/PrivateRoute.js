@@ -2,8 +2,8 @@
 import React, { useState, useEffect } from 'react';
 import { Route } from 'react-router';
 import { Redirect } from 'react-router-dom';
-import { sessionService } from 'redux-react-session';
 import Preloader from './components/common/Preloader';
+import { getIsUserAuthenticated } from './hooks/globalStore';
 
 const PrivateRoute = ({ component: Component, ...rest }) => {
   const [loading, setLoading] = useState(true);
@@ -12,8 +12,7 @@ const PrivateRoute = ({ component: Component, ...rest }) => {
   useEffect(() => {
     async function setAuthenticatedState() {
       try {
-        await sessionService.loadSession();
-        setAuthenticated(true);
+        setAuthenticated(getIsUserAuthenticated());
         setLoading(false);
       } catch (e) {
         setLoading(false);

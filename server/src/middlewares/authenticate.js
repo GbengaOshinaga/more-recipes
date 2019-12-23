@@ -1,7 +1,7 @@
 import jwt from 'jsonwebtoken';
 
 const authenticate = (req, res, next) => {
-  const accessToken = req.body.accessToken || req.get('Access-Token');
+  const { accessToken } = req.signedCookies || {};
 
   try {
     const user = jwt.verify(accessToken, process.env.JWT_SECRET);

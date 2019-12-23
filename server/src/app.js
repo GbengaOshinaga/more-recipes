@@ -6,12 +6,15 @@ import cors from 'cors';
 import path from 'path';
 import webpack from 'webpack';
 import dotenv from 'dotenv';
+import cookieParser from 'cookie-parser';
 import swaggerUI from 'swagger-ui-express';
 import config from '../../webpack.config.dev';
 import routes from './routes/index';
 import db from './models/index';
 
 dotenv.config();
+
+const { COOKIE_SECRET } = process.env;
 
 // Set up the express app
 const app = new Express();
@@ -29,11 +32,12 @@ const app = new Express();
 //   app.use(require('webpack-hot-middleware')(compiler));
 // }
 
-app.use(cors());
+app.use(cors({ credentials: true, origin: true }));
 app.options('*', cors());
 
 // Log requests to the console.
 app.use(logger('dev'));
+app.use(cookieParser(COOKIE_SECRET));
 
 // Parse incoming requests data (https://gC:\Users\gbenga.oshinaga\Documents\Andela\more-recipes\more-recipes\node_modules\babylon\lib\inithub.com/expressjs/body-parser)
 app.use(bodyParser.json());
