@@ -13,7 +13,7 @@ export default (function() {
 
   function commonFetch(url, method, data, headers = {}) {
     const defaultHeader = { 'Content-Type': 'application/json', ...headers };
-    const options = { method, headers: defaultHeader };
+    const options = { method, headers: defaultHeader, credentials: 'include' };
 
     if (data) {
       options.body = data instanceof FormData ? data : JSON.stringify(data);

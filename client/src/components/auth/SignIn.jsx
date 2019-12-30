@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import InputField from '../common/InputField';
 import Button from '../common/Button';
 import GoogleLoginButton from './GoogleLoginButton';
-import { Header } from '../common/Header';
+import Header from '../common/Header';
 import { useSignIn } from '../../hooks/authorization';
 
 const SignIn = () => {

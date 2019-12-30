@@ -14,8 +14,8 @@ function useSignUp() {
 
   const onSuccess = async response => {
     logger('success signup response', response);
-    const { data: { user: { firstName } = {} } = {} } = response;
-    await saveAuthAndRedirect({ location, history, userName: firstName });
+    const { data: { user: { id } = {} } = {} } = response;
+    await saveAuthAndRedirect({ location, history, userId: id });
   };
 
   const onReject = async errorData => {

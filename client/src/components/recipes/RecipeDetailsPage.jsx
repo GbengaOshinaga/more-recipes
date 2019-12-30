@@ -2,10 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import Button from '../common/Button';
-import { MainHeader } from '../common/Header';
+// import { MainHeader } from '../common/Header';
 import TextArea from '../common/TextArea';
 import Preloader from '../common/Preloader';
-
 
 const propTypes = {
   recipe: PropTypes.objectOf(PropTypes.any),
@@ -25,7 +24,7 @@ const propTypes = {
   fetchReviews: PropTypes.func.isRequired,
   isLoadingReviews: PropTypes.bool.isRequired,
   userId: PropTypes.number,
-  getId: PropTypes.func.isRequired,
+  getId: PropTypes.func.isRequired
 };
 
 const defaultProps = {
@@ -56,7 +55,8 @@ const addReviewDefaultProps = {
   profilePic: ''
 };
 
-const defaultUserAvatar = 'http://res.cloudinary.com/king-more-recipes/image/upload/v1518031651/Expert-tutor-placeholder_cg9wet.jpg';
+const defaultUserAvatar =
+  'http://res.cloudinary.com/king-more-recipes/image/upload/v1518031651/Expert-tutor-placeholder_cg9wet.jpg';
 
 /**
  * Function to display reviews
@@ -70,13 +70,9 @@ function displayReviews(reviews, userId, getId) {
   if (!reviews || reviews.length === 0) {
     return 'No Reviews';
   }
-  return reviews.map(review =>
-    (<Review
-      key={review.id}
-      review={review}
-      userId={userId}
-      getId={getId}
-    />));
+  return reviews.map(review => (
+    <Review key={review.id} review={review} userId={userId} getId={getId} />
+  ));
 }
 
 /**
@@ -98,17 +94,32 @@ function displayIngredients(ingredients) {
  * @returns {Node} jsx
  */
 function RecipeDetailsPage({
-  recipe, isLoggedIn, firstName, onClickSaveReview, onAddReviewChange, userId,
-  newReview, location, profilePic, onClickVote, onClickFavourite, isLoadingReviews,
-  upvoteClassName, downvoteClassName, favouriteClassName, hasMoreReviews, fetchReviews, getId
+  recipe,
+  isLoggedIn,
+  firstName,
+  onClickSaveReview,
+  onAddReviewChange,
+  userId,
+  newReview,
+  location,
+  profilePic,
+  onClickVote,
+  onClickFavourite,
+  isLoadingReviews,
+  upvoteClassName,
+  downvoteClassName,
+  favouriteClassName,
+  hasMoreReviews,
+  fetchReviews,
+  getId
 }) {
   if (recipe === undefined || Object.keys(recipe).length === 0) {
     return (
       <div>
-        <MainHeader
+        {/* <MainHeader
           isLoggedIn={isLoggedIn}
           firstName={firstName}
-        />
+        /> */}
         <div style={{ marginTop: '20%' }} className="container">
           <Preloader />
         </div>
@@ -117,15 +128,19 @@ function RecipeDetailsPage({
   }
   return (
     <div className="details">
-      <MainHeader
+      {/* <MainHeader
         isLoggedIn={isLoggedIn}
         firstName={firstName}
-      />
+      /> */}
       <div className="container">
         <div className="details-box">
           <div className="row">
             <div className="col s12 center-align">
-              <img className="responsive-img details-img" src={recipe.image} alt="recipe" />
+              <img
+                className="responsive-img details-img"
+                src={recipe.image}
+                alt="recipe"
+              />
             </div>
           </div>
           <div className="row">
@@ -141,61 +156,76 @@ function RecipeDetailsPage({
                     <h6>Ingredients</h6>
                     <ul>{displayIngredients(recipe.ingredients)}</ul>
                   </div>
-                  {isLoggedIn &&
-                  <div id="vote">
-                    <a
-                      href="#!"
-                      id="details-thumb-up"
-                      className={upvoteClassName}
-                      onClick={onClickVote}
-                    >
-                      <i className="small material-icons">thumb_up</i>
-                    </a>
-                    <span id="upvotes">{recipe.upvotes.length}</span>
-                    <a
-                      href="#!"
-                      id="details-thumb-down"
-                      className={downvoteClassName}
-                      onClick={onClickVote}
-                    >
-                      <i className="small material-icons">thumb_down</i>
-                    </a>
-                    <span id="downvotes">{recipe.downvotes.length}</span>
-                    <a
-                      href="#!"
-                      id="details-favourite"
-                      className={favouriteClassName}
-                      onClick={onClickFavourite}
-                    >
-                      <i className="small material-icons">favorite</i>
-                    </a>
-                  </div>}
+                  {isLoggedIn && (
+                    <div id="vote">
+                      <a
+                        href="#!"
+                        id="details-thumb-up"
+                        className={upvoteClassName}
+                        onClick={onClickVote}
+                      >
+                        <i className="small material-icons">thumb_up</i>
+                      </a>
+                      <span id="upvotes">{recipe.upvotes.length}</span>
+                      <a
+                        href="#!"
+                        id="details-thumb-down"
+                        className={downvoteClassName}
+                        onClick={onClickVote}
+                      >
+                        <i className="small material-icons">thumb_down</i>
+                      </a>
+                      <span id="downvotes">{recipe.downvotes.length}</span>
+                      <a
+                        href="#!"
+                        id="details-favourite"
+                        className={favouriteClassName}
+                        onClick={onClickFavourite}
+                      >
+                        <i className="small material-icons">favorite</i>
+                      </a>
+                    </div>
+                  )}
                 </div>
                 <div className="review">
                   <h5>Reviews</h5>
                   {displayReviews(recipe.Reviews, userId, getId)}
-                  {hasMoreReviews &&
-                  <p>
-                    <a
-                      className="center-align"
-                      href="#!"
-                      onClick={fetchReviews}
-                    >
-                    Load More Reviews
-                    </a>
-                  </p>}
+                  {hasMoreReviews && (
+                    <p>
+                      <a
+                        className="center-align"
+                        href="#!"
+                        onClick={fetchReviews}
+                      >
+                        Load More Reviews
+                      </a>
+                    </p>
+                  )}
                   {isLoadingReviews && <Preloader />}
-                  {isLoggedIn &&
-                  <AddReview
-                    onClickSaveReview={onClickSaveReview}
-                    onAddReviewChange={onAddReviewChange}
-                    newReview={newReview}
-                    profilePic={profilePic}
-                  />}
-                  {!isLoggedIn &&
-                  <div>
-                    <p><Link id="sign-in-review-link" to={{ pathname: '/signin', state: { from: location } }}>Sign In</Link> To Add Review</p>
-                  </div>}
+                  {isLoggedIn && (
+                    <AddReview
+                      onClickSaveReview={onClickSaveReview}
+                      onAddReviewChange={onAddReviewChange}
+                      newReview={newReview}
+                      profilePic={profilePic}
+                    />
+                  )}
+                  {!isLoggedIn && (
+                    <div>
+                      <p>
+                        <Link
+                          id="sign-in-review-link"
+                          to={{
+                            pathname: '/signin',
+                            state: { from: location }
+                          }}
+                        >
+                          Sign In
+                        </Link>{' '}
+                        To Add Review
+                      </p>
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
@@ -212,11 +242,11 @@ function RecipeDetailsPage({
  *
  * @returns {Node} jsx
  */
-function Review({
-  review, userId, getId
-}) {
+function Review({ review, userId, getId }) {
   let profilePicture;
-  review.User.profilePic === '' ? profilePicture = defaultUserAvatar : profilePicture = review.User.profilePic;
+  review.User.profilePic === ''
+    ? (profilePicture = defaultUserAvatar)
+    : (profilePicture = review.User.profilePic);
   const deleteButtonClassName = userId === review.User.id ? '' : 'hide';
 
   return (
@@ -231,7 +261,8 @@ function Review({
               <div className="col s10">
                 <p>{review.review}</p>
                 <p className="review-by-text">
-                  By {`${review.User.firstName} ${review.User.lastName}`} on {new Date(review.createdAt).toDateString()}
+                  By {`${review.User.firstName} ${review.User.lastName}`} on{' '}
+                  {new Date(review.createdAt).toDateString()}
                 </p>
               </div>
               <div className="col s2">
@@ -242,7 +273,9 @@ function Review({
                   style={{ marginLeft: '100%' }}
                   onClick={getId}
                 >
-                  <i id={review.id} className="material-icons">delete</i>
+                  <i id={review.id} className="material-icons">
+                    delete
+                  </i>
                 </a>
               </div>
             </div>
@@ -260,7 +293,10 @@ function Review({
  * @returns {Node} jsx
  */
 function AddReview({
-  profilePic, onClickSaveReview, onAddReviewChange, newReview
+  profilePic,
+  onClickSaveReview,
+  onAddReviewChange,
+  newReview
 }) {
   return (
     <div className="row">
@@ -287,7 +323,6 @@ function AddReview({
           </div>
         </div>
       </div>
-
     </div>
   );
 }

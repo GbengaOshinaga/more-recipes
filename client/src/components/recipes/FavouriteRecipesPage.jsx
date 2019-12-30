@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { MainHeader } from '../common/Header';
+// import { MainHeader } from '../common/Header';
 import RecipesDisplay from '../common/RecipesDisplay';
 
 const propTypes = {
@@ -24,14 +24,20 @@ const defaultProps = {
  * @returns {Node} jsx
  */
 function FavouriteRecipesPage({
-  isLoggedIn, firstName, recipes, userId, onClickVote, onClickFavourite, isFound
+  isLoggedIn,
+  firstName,
+  recipes,
+  userId,
+  onClickVote,
+  onClickFavourite,
+  isFound
 }) {
   return (
     <div>
-      <MainHeader
+      {/* <MainHeader
         isLoggedIn={isLoggedIn}
         firstName={firstName}
-      />
+      /> */}
       <div className="container">
         <div className="favorited-reviews">
           <h4 className="center-align">Favorited Recipes</h4>
@@ -46,7 +52,6 @@ function FavouriteRecipesPage({
           />
         </div>
       </div>
-
     </div>
   );
 }
@@ -55,4 +60,3 @@ FavouriteRecipesPage.propTypes = propTypes;
 FavouriteRecipesPage.defaultProps = defaultProps;
 
 export default FavouriteRecipesPage;
-

@@ -3,7 +3,7 @@ import { Formik } from 'formik';
 import { Link } from 'react-router-dom';
 import { useSignUp } from '../../hooks/authorization';
 import InputField from '../common/InputField';
-import { Header } from '../common/Header';
+import Header from '../common/Header';
 import Button from '../common/Button';
 import GoogleLoginButton from './GoogleLoginButton';
 
