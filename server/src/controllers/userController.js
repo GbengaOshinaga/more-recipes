@@ -1,7 +1,10 @@
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
+import dotenv from 'dotenv';
 import db from '../models/index';
-import { tryCatch, ControllerError } from '../utils';
+import { tryCatch, ControllerError, setCookie, clearCookie } from '../utils';
+
+dotenv.config();
 
 const { User } = db;
 
@@ -53,6 +56,8 @@ export const signUp = (req, res) => {
         process.env.JWT_SECRET
       );
 
+      setCookie({ res, key: 'accessToken', value: accessToken });
+
       return res.successResponse(
         {
           user: getUserObject(user),
@@ -95,12 +100,16 @@ export const signIn = async (req, res) => {
       process.env.JWT_SECRET
     );
 
+    setCookie({ res, key: 'accessToken', value: accessToken });
+
     return res.successResponse({
       user: getUserObject(user),
       token: accessToken
     });
   });
 };
+
+export const signOut = (req, res) => clearCookie(res, 'accessToken');
 
 /**
  * Find and return user

@@ -3,8 +3,7 @@ import React from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import { sessionService } from 'redux-react-session';
 import $ from 'jquery';
-import { Header } from '../common/Header';
-
+import Header from '../common/Header';
 
 /**
  * HomePage component
@@ -50,10 +49,10 @@ class HomePage extends React.Component {
    * Component render method
    *
    * @returns {Node} jsx
-  */
+   */
   render() {
     if (this.state.isAuthenticated) {
-      return (<Redirect to="/catalog" />);
+      return <Redirect to="/catalog" />;
     }
 
     return (
@@ -61,18 +60,32 @@ class HomePage extends React.Component {
         <Header
           mainLinks={
             <React.Fragment>
-              <li><Link id="sign-in" to="/signin"> Sign In</Link></li>
-              <li><Link id="sign-up" to="/signup">Sign Up</Link></li>
-            </React.Fragment>}
+              <li>
+                <Link id="sign-in" to="/signin">
+                  {' '}
+                  Sign In
+                </Link>
+              </li>
+              <li>
+                <Link id="sign-up" to="/signup">
+                  Sign Up
+                </Link>
+              </li>
+            </React.Fragment>
+          }
         />
         <div className="container">
           <div className="info center-align">
             <h2 className="white-text">Welcome to More-Recipes</h2>
-            <h4 className="white-text">A platform for sharing recipe ideas you invented or learnt.
-                    Find innovative recipes or share one of your own.
+            <h4 className="white-text">
+              A platform for sharing recipe ideas you invented or learnt. Find
+              innovative recipes or share one of your own.
             </h4>
             <div className="cta-buttons">
-              <Link to="/catalog" className="waves-effect waves-light btn-large red darken-2">
+              <Link
+                to="/catalog"
+                className="waves-effect waves-light btn-large red darken-2"
+              >
                 VIEW CATALOG
               </Link>
             </div>

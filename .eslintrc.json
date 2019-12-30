@@ -30,7 +30,6 @@
     "curly": ["error", "multi-line"],
     "linebreak-style": ["error", "windows"],
     "no-underscore-dangle": ["off"],
-    "no-unused-expressions": [2, { "allowTernary": true }],
     "class-methods-use-this": "off",
     "no-restricted-syntax": "off",
     "react/prefer-stateless-function": 0,
@@ -46,6 +45,9 @@
     "react-hooks/rules-of-hooks": "error",
     "no-unused-vars": "warn",
     "arrow-parens": "off",
+    "arrow-body-style": "off",
+    "react/jsx-props-no-spreading": "off",
+    "no-unused-expressions": "off",
     "valid-jsdoc": [
       "error",
       {

@@ -1,13 +1,19 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
+import moment from 'moment';
+import MaterialUICard from '@material-ui/core/Card';
+import CardHeader from '@material-ui/core/CardHeader';
+import CardMedia from '@material-ui/core/CardMedia';
+import CardContent from '@material-ui/core/CardContent';
+import Typography from '@material-ui/core/Typography';
+import styles from './Card.modules.scss';
 
 const propTypes = {
   image: PropTypes.string,
   id: PropTypes.number.isRequired,
   recipeName: PropTypes.string.isRequired,
-  recipeDescription: PropTypes.string.isRequired,
-  cardAction: PropTypes.node.isRequired
+  recipeDescription: PropTypes.string.isRequired
 };
 
 const defaultProps = {
@@ -17,16 +23,16 @@ const defaultProps = {
 /**
  * Formats recipe description based on length
  * @param {String} content
+ * @param {Number} maxLength of string
  *
  * @returns {String} formatted content
  */
-function formatContent(content) {
-  if (content.length > 40) {
-    return `${content.slice(0, 40)}...`;
+function formatContent(content, maxLength = 40) {
+  if (content.length > maxLength) {
+    return `${content.slice(0, maxLength)}...`;
   }
   return content;
 }
-
 
 /**
  * Card component
@@ -35,24 +41,29 @@ function formatContent(content) {
  * @returns {Node} jsx
  */
 function Card({
-  image, id, recipeName, recipeDescription, cardAction
+  id,
+  image,
+  recipeName,
+  recipeDescription,
+  createdAt,
+  renderActions
 }) {
   return (
-    <div className="col s12 l4 m6">
-      <div className="card recipe-card">
-        <div className="card-image">
-          <img src={image} alt="recipe" />
-        </div>
-        <div className="card-stacked">
-          <div className="card-content">
-            <Link to={`/recipe/${id}`}><span className="card-title">{formatContent(recipeName)}</span></Link>
-            <p>{formatContent(recipeDescription)}</p>
-
-          </div>
-          {cardAction}
-        </div>
-      </div>
-    </div>
+    <MaterialUICard className={styles.cardContainer}>
+      <Link to={`/recipe/${id}`}>
+        <CardHeader
+          title={formatContent(recipeName, 25)}
+          subheader={moment(createdAt).format('LL')}
+        />
+        <CardMedia className={styles.image} image={image} title={recipeName} />
+        <CardContent>
+          <Typography variant="body2" color="textSecondary" component="p">
+            {formatContent(recipeDescription)}
+          </Typography>
+        </CardContent>
+      </Link>
+      {renderActions && renderActions()}
+    </MaterialUICard>
   );
 }
 

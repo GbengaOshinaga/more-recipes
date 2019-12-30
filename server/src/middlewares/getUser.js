@@ -1,7 +1,7 @@
 import jwt from 'jsonwebtoken';
 
 const getUser = (req, res, next) => {
-  const accessToken = req.body.accessToken || req.get('Access-Token');
+  const { accessToken } = req.signedCookies || {};
 
   if (!accessToken) {
     return next();
@@ -13,8 +13,7 @@ const getUser = (req, res, next) => {
       req.user = user;
     }
   } catch (error) {
-    // eslint-disable-next-line no-console
-    console.log(error);
+    // Verification failed, should still go to next handler
   }
   return next();
 };

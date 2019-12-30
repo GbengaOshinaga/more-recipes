@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { MainHeader } from '../common/Header';
+// import { MainHeader } from '../common/Header';
 
 const propTypes = {
   profilePic: PropTypes.string,
@@ -25,7 +25,11 @@ const defaultProps = {
   firstName: ''
 };
 
-const editPhotoButtonStyle = { position: 'absolute', top: '10px', margin: '10px' };
+const editPhotoButtonStyle = {
+  position: 'absolute',
+  top: '10px',
+  margin: '10px'
+};
 const buttonStyle = { margin: '10px' };
 
 /**
@@ -35,16 +39,27 @@ const buttonStyle = { margin: '10px' };
  * @returns {Node} jsx
  */
 export default function ProfilePage({
-  profilePic, lastName, email, about, isLoggedIn, firstName, isDisabled,
-  saveButtonClass, onEditClick, onChange, onClickSave, editPhotoButtonClass,
-  onFileChange, onClickCancel
+  profilePic,
+  lastName,
+  email,
+  about,
+  isLoggedIn,
+  firstName,
+  isDisabled,
+  saveButtonClass,
+  onEditClick,
+  onChange,
+  onClickSave,
+  editPhotoButtonClass,
+  onFileChange,
+  onClickCancel
 }) {
   return (
     <div className="profile-body">
-      <MainHeader
+      {/* <MainHeader
         isLoggedIn={isLoggedIn}
         firstName={firstName}
-      />
+      /> */}
       <div className="container">
         <div className="box">
           <div className="card horizontal">
@@ -62,18 +77,18 @@ export default function ProfilePage({
                     style={editPhotoButtonStyle}
                   >
                     <input type="file" onChange={onFileChange} />
-                    <span><i className="material-icons">add_a_photo</i></span>
+                    <span>
+                      <i className="material-icons">add_a_photo</i>
+                    </span>
                   </div>
                 </div>
               </div>
             </div>
             <div className="card-stacked">
               <div className="card-content">
-
                 <div className="row">
                   <form>
                     <div className="col s10">
-
                       <span className="card-title">
                         <div className="input-field">
                           <input
@@ -128,7 +143,7 @@ export default function ProfilePage({
                           onClick={onClickSave}
                           style={buttonStyle}
                         >
-                        SAVE
+                          SAVE
                         </a>
                         <a
                           id="cancel-button"
@@ -137,7 +152,7 @@ export default function ProfilePage({
                           onClick={onClickCancel}
                           style={buttonStyle}
                         >
-                        CANCEL
+                          CANCEL
                         </a>
                       </div>
                     </div>
@@ -151,14 +166,12 @@ export default function ProfilePage({
                         <i className="material-icons">edit</i>
                       </a>
                     </div>
-
                   </form>
                 </div>
               </div>
             </div>
           </div>
         </div>
-
       </div>
     </div>
   );

@@ -24,6 +24,9 @@ export default app => {
     userController.signIn
   );
 
+  // Sign out user
+  app.delete(`${baseUrl}/signOut`, userController.signOut);
+
   // Edit user information
   app.post(
     `${baseUrl}/edit`,

@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { MainHeader } from '../common/Header';
+// import { MainHeader } from '../common/Header';
 import { AddModal, DeleteModal, EditModal } from './Modal';
 import RecipesDisplay from '../common/RecipesDisplay';
 
@@ -40,18 +40,35 @@ const pageDefaultProps = {
  * @returns {Node} jsx
  */
 function Page({
-  isLoggedIn, firstName, data, onInputChange, inputValue,
-  descValue, onClickSave, onFileChange, inputRef, editInputRef,
-  userRecipes, onConfirmDelete, getId, handleChipAdd, handleChipDelete,
-  getIdForEdit, editData, onClickEdit, onEditInputChange,
-  handleAddModalChipAdd, handleAddModalChipDelete, isFound
+  isLoggedIn,
+  firstName,
+  data,
+  onInputChange,
+  inputValue,
+  descValue,
+  onClickSave,
+  onFileChange,
+  inputRef,
+  editInputRef,
+  userRecipes,
+  onConfirmDelete,
+  getId,
+  handleChipAdd,
+  handleChipDelete,
+  getIdForEdit,
+  editData,
+  onClickEdit,
+  onEditInputChange,
+  handleAddModalChipAdd,
+  handleAddModalChipDelete,
+  isFound
 }) {
   return (
     <div>
-      <MainHeader
+      {/* <MainHeader
         isLoggedIn={isLoggedIn}
         firstName={firstName}
-      />
+      /> */}
       <div className="container">
         <a
           className="btn-floating btn-large waves-effect
@@ -71,9 +88,7 @@ function Page({
           inputRef={inputRef}
           data={data}
         />
-        <DeleteModal
-          onConfirm={onConfirmDelete}
-        />
+        <DeleteModal onConfirm={onConfirmDelete} />
         <EditModal
           onInputChange={onEditInputChange}
           inputValue={inputValue}
@@ -87,7 +102,9 @@ function Page({
           handleChipDelete={handleChipDelete}
         />
         <div className="favorited-recipes">
-          <h4 id="my-recipes-text" className="center-align">My Recipes</h4>
+          <h4 id="my-recipes-text" className="center-align">
+            My Recipes
+          </h4>
           <hr />
           <RecipesDisplay
             recipes={userRecipes}

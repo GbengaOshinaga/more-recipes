@@ -44,25 +44,26 @@ module.exports = {
           presets: ['@babel/preset-env']
         }
       },
-      { test: /(\.jpg)$/, use: [{ loader: 'file-loader' }] },
-      { test: /(\.png)$/, use: [{ loader: 'file-loader' }] },
+      { test: /\.(png|svg|jpg|gif)$/, use: [{ loader: 'file-loader' }] },
       {
-        test: /\.css$/,
-        use: [
+        test: /\.s?css$/,
+        oneOf: [
           {
-            loader: 'style-loader'
+            test: /\.module\.s?css$/,
+            use: [
+              'style-loader',
+              { loader: 'css-loader', options: { modules: true } },
+              'sass-loader'
+            ]
           },
           {
-            loader: 'sass-loader'
-          },
-          {
-            loader: 'css-loader'
+            use: [
+              'style-loader',
+              { loader: 'css-loader', options: { modules: true } },
+              'sass-loader'
+            ]
           }
         ]
-      },
-      {
-        test: /\.scss$/,
-        use: ['style-loader', 'css-loader', 'sass-loader']
       }
     ]
   }

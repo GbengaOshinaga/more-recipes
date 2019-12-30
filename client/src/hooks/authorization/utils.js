@@ -1,9 +1,13 @@
-import { sessionService } from 'redux-react-session';
-
-export const saveUserAndRedirect = async ({ location, history, response }) => {
-  await sessionService.saveSession(response?.data?.token);
-  await sessionService.saveUser(response?.data?.user);
-
-  const { state: { from } = { from: { pathname: '/' } } } = location;
+export const saveAuthAndRedirect = async ({ location, history, userId }) => {
+  const { state: { from } = { from: { pathname: '/catalog' } } } = location;
+  const { localStorage } = window;
+  localStorage.setItem('isAuthenticated', true);
+  localStorage.setItem('userId', userId);
   history.replace(from);
+};
+
+export const removeAuth = () => {
+  const { localStorage } = window;
+  localStorage.removeItem('isAuthenticated');
+  localStorage.removeItem('userId');
 };

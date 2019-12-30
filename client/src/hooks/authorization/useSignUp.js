@@ -2,8 +2,8 @@ import { useAsync } from 'react-async';
 import { useHistory, useLocation } from 'react-router-dom';
 import { useToasts } from 'react-toast-notifications';
 
-import { api, logger } from '../../utils/index';
-import { saveUserAndRedirect } from './utils';
+import { api, logger } from '../../utils';
+import { saveAuthAndRedirect } from './utils';
 
 const post = ([data]) => api.signUp(data);
 
@@ -14,7 +14,8 @@ function useSignUp() {
 
   const onSuccess = async response => {
     logger('success signup response', response);
-    await saveUserAndRedirect({ location, history, response });
+    const { data: { user: { id } = {} } = {} } = response;
+    await saveAuthAndRedirect({ location, history, userId: id });
   };
 
   const onReject = async errorData => {
@@ -25,9 +26,13 @@ function useSignUp() {
     addToast(message, { appearance: 'error' });
   };
 
-  const { run } = useAsync({ deferFn: post, onResolve: onSuccess, onReject });
+  const { isLoading, run } = useAsync({
+    deferFn: post,
+    onResolve: onSuccess,
+    onReject
+  });
 
-  return { signUp: run };
+  return { signUp: run, isSigningUp: isLoading };
 }
 
 export default useSignUp;

@@ -1,0 +1,27 @@
+@import '../../styles/variables';
+
+.container {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  height: 100%;
+}
+
+.buttonsContainer {
+  display: flex;
+  flex-direction: row;
+}
+
+.button {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5em;
+  font-family: $body-font;
+  border: none;
+}
+
+.root {
+  flex-grow: 1;
+}

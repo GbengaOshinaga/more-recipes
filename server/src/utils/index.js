@@ -38,7 +38,8 @@ export async function getPaginationMeta(req, model, condition) {
     originUrl = originalUrl.slice(0, originalUrl.indexOf('?'));
   }
 
-  const url = `https://${req.get('host')}${originUrl}`;
+  const protocol = process.env.NODE_ENV === 'development' ? 'http' : 'https';
+  const url = `${protocol}://${req.get('host')}${originUrl}`;
   const dbCount = await getCount(model, condition);
   const limit = Number(queryLimit);
   const offset = Number(from);
@@ -98,3 +99,4 @@ export const tryCatch = async (res, cb) => {
 };
 
 export { ControllerError };
+export * from './cookies';
