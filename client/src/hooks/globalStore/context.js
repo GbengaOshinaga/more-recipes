@@ -1,7 +1,7 @@
 import React, { createContext, useContext } from 'react';
 import useGlobalStore from './useGlobalStore';
 
-const StoreContext = createContext({});
+const StoreContext = createContext();
 
 export const useStoreContext = () => useContext(StoreContext);
 

@@ -1,10 +1,14 @@
 import { combineReducers } from 'redux';
-import recipes, {
+import allRecipes, {
   initialState as recipesInitialState
-} from './recipes/reducers';
+} from './allRecipes/reducers';
+import mostFavoritedRecipes, {
+  initialState as mostFavoritedInitialState
+} from './mostFavoritedRecipes/reducers';
 
-export default combineReducers({ recipes });
+export default combineReducers({ allRecipes, mostFavoritedRecipes });
 
 export const initialState = {
-  recipes: recipesInitialState
+  allRecipes: recipesInitialState,
+  mostFavoritedRecipes: mostFavoritedInitialState
 };
