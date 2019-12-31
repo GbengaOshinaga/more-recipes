@@ -9,7 +9,7 @@ import RecipesDisplay from '../common/RecipesDisplay';
 import useActions from './useActions';
 
 const Recipes = () => {
-  const { allRecipes, fetchRecipes } = useStoreContext();
+  const { allRecipes, fetchRecipes, fetchNextRecipes } = useStoreContext();
   const renderActions = useActions();
 
   const recipes = getRecipes(allRecipes);
@@ -20,8 +20,8 @@ const Recipes = () => {
     fetchRecipes();
   }, [fetchRecipes]);
 
-  const fetchNextRecipes = () => {
-    fetchRecipes(nextUrl);
+  const fetchNext = () => {
+    fetchNextRecipes(nextUrl);
   };
 
   return (
@@ -29,7 +29,7 @@ const Recipes = () => {
       isFetching={isFetching}
       recipes={recipes}
       hasMore={!!nextUrl}
-      fetchNext={fetchNextRecipes}
+      fetchNext={fetchNext}
       renderActions={renderActions}
     />
   );

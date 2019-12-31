@@ -16,6 +16,7 @@ export default function useGlobalStore() {
 
   const {
     fetchRecipes,
+    fetchNextRecipes,
     fetchMostFavoritedRecipes,
     upvoteRecipe,
     downvoteRecipe,
@@ -33,6 +34,7 @@ export default function useGlobalStore() {
     recipeDetails,
     // actions
     fetchRecipes,
+    fetchNextRecipes,
     fetchMostFavoritedRecipes,
     upvoteRecipe,
     downvoteRecipe,
