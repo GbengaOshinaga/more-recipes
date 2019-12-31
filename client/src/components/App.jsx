@@ -1,18 +1,18 @@
 import React from 'react';
 import { ToastProvider } from 'react-toast-notifications';
-// import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import Routes from '../Routes';
 import { StoreProvider } from '../hooks/globalStore';
+import ErrorBoundary from './errorBoundary/ErrorBoundary';
 import '../styles/reset.scss';
 import '../styles/global.scss';
 
 const App = () => (
   <ToastProvider>
-    {/* <MuiThemeProvider> */}
     <StoreProvider>
-      <Routes />
+      <ErrorBoundary>
+        <Routes />
+      </ErrorBoundary>
     </StoreProvider>
-    {/* </MuiThemeProvider> */}
   </ToastProvider>
 );
 
