@@ -5,9 +5,9 @@ import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import SwipeableViews from 'react-swipeable-views';
-import Header from '../common/Header';
 import NavBar from '../common/NavBar';
 import Recipes from './Recipes';
+import Search from './Search';
 import MostFavoritedRecipes from './MostFavoritedRecipes';
 import styles from './Catalog.modules.scss';
 
@@ -36,6 +36,7 @@ function a11yProps(index) {
 }
 
 const CatalogPage = () => {
+  const [searchTerm, setSearchTerm] = useState('');
   const [value, setValue] = useState(0);
 
   const handleChange = (event, newValue) => {
@@ -63,18 +64,30 @@ const CatalogPage = () => {
     );
   };
 
+  const renderSearch = () => {
+    return <Search searchTerm={searchTerm} />;
+  };
+
+  const renderCatalog = () => {
+    return (
+      <>
+        {renderTabs()}
+        <SwipeableViews index={value} onChangeIndex={handleChangeIndex}>
+          <TabPanel value={value} index={0}>
+            <Recipes />
+          </TabPanel>
+          <TabPanel value={value} index={1}>
+            <MostFavoritedRecipes />
+          </TabPanel>
+        </SwipeableViews>
+      </>
+    );
+  };
+
   return (
     <div className={styles.container}>
-      <NavBar />
-      {renderTabs()}
-      <SwipeableViews axis="x" index={value} onChangeIndex={handleChangeIndex}>
-        <TabPanel value={value} index={0} direction="ltr">
-          <Recipes />
-        </TabPanel>
-        <TabPanel value={value} index={1} direction="ltr">
-          <MostFavoritedRecipes />
-        </TabPanel>
-      </SwipeableViews>
+      <NavBar searchTerm={searchTerm} onChangeSearchTerm={setSearchTerm} />
+      {searchTerm.length ? renderSearch() : renderCatalog()}
     </div>
   );
 };

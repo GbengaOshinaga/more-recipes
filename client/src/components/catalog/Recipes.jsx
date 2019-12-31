@@ -2,18 +2,17 @@ import React, { useEffect } from 'react';
 import {
   useStoreContext,
   getRecipes,
-  getFavouritesIds,
   getIsFetchingRecipes,
   getRecipesPaginationMeta
 } from '../../hooks/globalStore';
 import RecipesDisplay from '../common/RecipesDisplay';
-import VoteAndFavActions from '../common/VoteAndFavActions';
+import useActions from './useActions';
 
 const Recipes = () => {
   const { allRecipes, fetchRecipes } = useStoreContext();
+  const renderActions = useActions();
 
   const recipes = getRecipes(allRecipes);
-  const favoritesIds = getFavouritesIds(allRecipes);
   const isFetching = getIsFetchingRecipes(allRecipes);
   const { next: nextUrl } = getRecipesPaginationMeta(allRecipes);
 
@@ -23,10 +22,6 @@ const Recipes = () => {
 
   const fetchNextRecipes = () => {
     fetchRecipes(nextUrl);
-  };
-
-  const renderActions = recipe => {
-    return <VoteAndFavActions recipe={recipe} favorites={favoritesIds} />;
   };
 
   return (
