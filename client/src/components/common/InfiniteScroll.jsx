@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import styles from './InfiniteScroll.modules.scss';
 
@@ -11,16 +11,21 @@ const InfiniteScroll = ({
   children
 }) => {
   const [shouldShowLoader, setShouldShowLoader] = useState(false);
+  const hasFetched = useRef(false);
 
   const hasReachedBottom = element => {
     return element
-      ? element.getBoundingClientRect().bottom <= window.innerHeight
+      ? element.getBoundingClientRect().bottom - 50 <= window.innerHeight
       : false;
   };
 
   const onEndReached = () => {
     const element = document.getElementById(id);
     if (hasReachedBottom(element) && hasMore) {
+      // Prevent fetchNext from being called multiple times
+      if (hasFetched.current) return;
+
+      hasFetched.current = true;
       setShouldShowLoader(true);
       fetchNext();
     }
@@ -34,6 +39,7 @@ const InfiniteScroll = ({
 
   useEffect(() => {
     setShouldShowLoader(false);
+    hasFetched.current = false;
   }, [dataLength]);
 
   return (

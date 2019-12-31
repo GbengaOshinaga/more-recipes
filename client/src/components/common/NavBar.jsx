@@ -73,7 +73,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export default function PrimarySearchAppBar() {
+export default function NavBar({ searchTerm, onChangeSearchTerm }) {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
@@ -152,6 +152,8 @@ export default function PrimarySearchAppBar() {
             </div>
             <InputBase
               placeholder="Search…"
+              value={searchTerm}
+              onChange={e => onChangeSearchTerm(e.target.value)}
               classes={{
                 root: classes.inputRoot,
                 input: classes.inputInput

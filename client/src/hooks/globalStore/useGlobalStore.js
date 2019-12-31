@@ -5,7 +5,7 @@ import reducer, { initialState } from './reducers';
 import operations from './operations';
 
 export default function useGlobalStore() {
-  const [{ allRecipes, mostFavoritedRecipes }, dispatch] = useReducer(
+  const [{ allRecipes, mostFavoritedRecipes, search }, dispatch] = useReducer(
     reducer,
     initialState
   );
@@ -19,18 +19,23 @@ export default function useGlobalStore() {
     fetchMostFavoritedRecipes,
     upvoteRecipe,
     downvoteRecipe,
-    favoriteRecipe
+    favoriteRecipe,
+    searchRecipes,
+    getNextSearchResults
   } = useMemo(() => operations(actions), [actions]);
 
   return {
     // data
     allRecipes,
     mostFavoritedRecipes,
+    search,
     // actions
     fetchRecipes,
     fetchMostFavoritedRecipes,
     upvoteRecipe,
     downvoteRecipe,
-    favoriteRecipe
+    favoriteRecipe,
+    searchRecipes,
+    getNextSearchResults
   };
 }

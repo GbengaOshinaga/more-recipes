@@ -5,10 +5,12 @@ import allRecipes, {
 import mostFavoritedRecipes, {
   initialState as mostFavoritedInitialState
 } from './mostFavoritedRecipes/reducers';
+import search, { initialState as searchInitialState } from './search/reducers';
 
-export default combineReducers({ allRecipes, mostFavoritedRecipes });
+export default combineReducers({ allRecipes, mostFavoritedRecipes, search });
 
 export const initialState = {
   allRecipes: recipesInitialState,
-  mostFavoritedRecipes: mostFavoritedInitialState
+  mostFavoritedRecipes: mostFavoritedInitialState,
+  search: searchInitialState
 };

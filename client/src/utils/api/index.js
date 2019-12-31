@@ -18,7 +18,12 @@ const api = {
   favoriteRecipe: recipeId =>
     fetch.post(`${USERS_BASE_URL}/recipes/${recipeId}/favourites`),
   deleteFavorite: recipeId =>
-    fetch.del(`${USERS_BASE_URL}/recipes/${recipeId}/favourites`)
+    fetch.del(`${USERS_BASE_URL}/recipes/${recipeId}/favourites`),
+  searchRecipes: (searchTerm, nextUrl) => {
+    const url = nextUrl || `${RECIPES_BASE_URL}?query=${searchTerm}`;
+
+    return fetch.get(url);
+  }
 };
 
 export default api;

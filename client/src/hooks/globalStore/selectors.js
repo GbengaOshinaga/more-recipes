@@ -11,12 +11,19 @@ export const getIsFetchingMostFavorites = mostFavoritedRecipes =>
 
 export const getRecipes = allRecipes => allRecipes?.recipes ?? emptyArr;
 
+export const getIsSearching = search => search?.isSearching ?? false;
+
+export const getSearchResults = search => search?.recipes ?? emptyArr;
+
 export const getMostFavorites = mostFavoritedRecipes => {
   return mostFavoritedRecipes?.recipes ?? [];
 };
 
 export const getRecipesPaginationMeta = allRecipes =>
   allRecipes?.paginationMeta ?? emptyObj;
+
+export const getSearchResultsPaginationMeta = search =>
+  search?.paginationMeta ?? emptyObj;
 
 export const getFavouritesIds = allRecipes =>
   allRecipes?.favourites ?? emptyArr;
