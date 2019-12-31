@@ -48,6 +48,7 @@
     "arrow-body-style": "off",
     "react/jsx-props-no-spreading": "off",
     "no-unused-expressions": "off",
+    "eqeqeq": "off",
     "valid-jsdoc": [
       "error",
       {

@@ -5,7 +5,6 @@ import { sessionService } from 'redux-react-session';
 import { connect } from 'react-redux';
 import Page from './FavouriteRecipesPage';
 import * as recipeActions from '../../actions/RecipeActions';
-import { pluginsInit } from '../../helpers/jqueryHelper';
 
 const propTypes = {
   isLoggedIn: PropTypes.bool.isRequired,
@@ -24,10 +23,10 @@ const defaultProps = {
  */
 export class FavouriteRecipes extends React.Component {
   /**
-     * Component constructor
-     * @param {Object} props
-     * @param {Object} context
-     */
+   * Component constructor
+   * @param {Object} props
+   * @param {Object} context
+   */
   constructor(props, context) {
     super(props, context);
     this.state = {
@@ -41,12 +40,11 @@ export class FavouriteRecipes extends React.Component {
    * @returns {undefined}
    */
   async componentDidMount() {
-    pluginsInit();
-
     if (this.props.recipes.length === 0) {
       const token = await sessionService.loadSession();
       if (token) {
-        this.props.actions.getFavourites(token)
+        this.props.actions
+          .getFavourites(token)
           .then(() => this.setState({ isFound: true }))
           .catch(() => {
             this.setState({ isFound: false });
@@ -73,7 +71,7 @@ export class FavouriteRecipes extends React.Component {
    *
    * @returns {undefined}
    */
-  vote = async (event) => {
+  vote = async event => {
     event.persist();
     event.preventDefault();
     const { currentTarget } = event;
@@ -87,7 +85,7 @@ export class FavouriteRecipes extends React.Component {
         currentTarget.classList.toggle('black-text');
       }
     }
-  }
+  };
 
   /**
    * Remove favourite
@@ -95,15 +93,14 @@ export class FavouriteRecipes extends React.Component {
    *
    * @returns {undefined}
    */
-  removeFavourite = async (event) => {
+  removeFavourite = async event => {
     event.persist();
     event.preventDefault();
     const token = await sessionService.loadSession();
     if (token) {
       this.props.actions.deleteFavourite(token, event.target.id);
     }
-  }
-
+  };
 
   /**
    * Component render function
@@ -141,11 +138,11 @@ function mapStateToProps(state) {
 }
 
 /**
-     * Maps actions to component properties
-     * @param {func} dispatch
-     *
-     * @returns {Object} actions
-     */
+ * Maps actions to component properties
+ * @param {func} dispatch
+ *
+ * @returns {Object} actions
+ */
 function mapDispatchToProps(dispatch) {
   return {
     actions: bindActionCreators(recipeActions, dispatch)

@@ -7,7 +7,6 @@ import toastr from 'toastr';
 import Loader from 'react-loader';
 import ProfilePage from './ProfilePage';
 import * as userActions from '../../actions/userActions';
-import { pluginsInit } from '../../helpers/jqueryHelper';
 
 const propTypes = {
   isLoggedIn: PropTypes.bool.isRequired,
@@ -19,10 +18,10 @@ const propTypes = {
  */
 class Profile extends React.Component {
   /**
-     * Component constructor
-     * @param {Object} props
-     * @param {Object} context
-     */
+   * Component constructor
+   * @param {Object} props
+   * @param {Object} context
+   */
   constructor(props, context) {
     super(props, context);
     this.state = {
@@ -31,11 +30,12 @@ class Profile extends React.Component {
         firstName: '',
         lastName: '',
         email: '',
-        about: '',
+        about: ''
       },
       isDisabled: true,
       saveButtonClass: 'card-action hide',
-      editPhotoButtonClass: 'btn-floating btn-large waves-effect waves-light teal lighten-1 hide',
+      editPhotoButtonClass:
+        'btn-floating btn-large waves-effect waves-light teal lighten-1 hide',
       loaded: true
     };
     toastr.options = {
@@ -50,20 +50,17 @@ class Profile extends React.Component {
    * @returns {undefined}
    */
   componentDidMount() {
-    pluginsInit();
-
-    sessionService.loadUser()
-      .then((user) => {
-        this.setState({
-          data: {
-            profilePic: user.profilePic,
-            firstName: user.firstName,
-            lastName: user.lastName,
-            email: user.email,
-            about: user.about
-          }
-        });
+    sessionService.loadUser().then(user => {
+      this.setState({
+        data: {
+          profilePic: user.profilePic,
+          firstName: user.firstName,
+          lastName: user.lastName,
+          email: user.email,
+          about: user.about
+        }
       });
+    });
   }
 
   /**
@@ -72,14 +69,15 @@ class Profile extends React.Component {
    *
    * @returns {undefined}
    */
-  onEditClick = (event) => {
+  onEditClick = event => {
     event.preventDefault();
     this.setState({
       isDisabled: false,
       saveButtonClass: 'card-action',
-      editPhotoButtonClass: 'btn-floating btn-large waves-effect waves-light teal lighten-1'
+      editPhotoButtonClass:
+        'btn-floating btn-large waves-effect waves-light teal lighten-1'
     });
-  }
+  };
 
   /**
    * Method for when save button is clicked
@@ -87,28 +85,32 @@ class Profile extends React.Component {
    *
    * @returns {undefined}
    */
-  onClickSave = (event) => {
+  onClickSave = event => {
     event.preventDefault();
-    sessionService.loadSession()
-      .then((token) => {
-        this.props.actions.modifyUser(token, this.state.data)
-          .then(this.setState({
+    sessionService.loadSession().then(token => {
+      this.props.actions
+        .modifyUser(token, this.state.data)
+        .then(
+          this.setState({
             isDisabled: true,
             saveButtonClass: 'card-action hide',
-            editPhotoButtonClass: 'btn-floating btn-large waves-effect waves-light teal lighten-1 hide'
-          }))
-          .catch((error) => {
-            toastr.error(error);
-            if (error) {
-              this.setState({
-                isDisabled: false,
-                saveButtonClass: 'card-action',
-                editPhotoButtonClass: 'btn-floating btn-large waves-effect waves-light teal lighten-1'
-              });
-            }
-          });
-      });
-  }
+            editPhotoButtonClass:
+              'btn-floating btn-large waves-effect waves-light teal lighten-1 hide'
+          })
+        )
+        .catch(error => {
+          toastr.error(error);
+          if (error) {
+            this.setState({
+              isDisabled: false,
+              saveButtonClass: 'card-action',
+              editPhotoButtonClass:
+                'btn-floating btn-large waves-effect waves-light teal lighten-1'
+            });
+          }
+        });
+    });
+  };
 
   /**
    * Method for when cancel button is clicked
@@ -116,26 +118,26 @@ class Profile extends React.Component {
    *
    * @returns {undefined}
    */
-  onClickCancel = (event) => {
+  onClickCancel = event => {
     event.preventDefault();
     this.setState({
       isDisabled: true,
       saveButtonClass: 'card-action hide',
-      editPhotoButtonClass: 'btn-floating btn-large waves-effect waves-light teal lighten-1 hide'
+      editPhotoButtonClass:
+        'btn-floating btn-large waves-effect waves-light teal lighten-1 hide'
     });
-    sessionService.loadUser()
-      .then((user) => {
-        this.setState({
-          data: {
-            profilePic: user.profilePic,
-            firstName: user.firstName,
-            lastName: user.lastName,
-            email: user.email,
-            about: user.about
-          }
-        });
+    sessionService.loadUser().then(user => {
+      this.setState({
+        data: {
+          profilePic: user.profilePic,
+          firstName: user.firstName,
+          lastName: user.lastName,
+          email: user.email,
+          about: user.about
+        }
       });
-  }
+    });
+  };
 
   /**
    * Method for when file loads
@@ -143,18 +145,17 @@ class Profile extends React.Component {
    *
    * @returns {undefined}
    */
-  onFileChange = (event) => {
+  onFileChange = event => {
     this.setState({ loaded: false });
     const file = event.target.files[0];
     if (file) {
-      userActions.uploadImage(file)
-        .then((response) => {
-          const { data } = this.state;
-          data.profilePic = response.secure_url;
-          this.setState({ data, loaded: true });
-        });
+      userActions.uploadImage(file).then(response => {
+        const { data } = this.state;
+        data.profilePic = response.secure_url;
+        this.setState({ data, loaded: true });
+      });
     }
-  }
+  };
 
   /**
    * Handles input field value change
@@ -162,11 +163,11 @@ class Profile extends React.Component {
    *
    * @returns {undefined}
    */
-  handleInputChange = (event) => {
+  handleInputChange = event => {
     const name = this.state.data;
     name[event.target.id] = event.target.value;
     this.setState({ data: name });
-  }
+  };
 
   /**
    * Component render function
@@ -211,7 +212,7 @@ class Profile extends React.Component {
           zIndex={2e9}
           top="50%"
           left="50%"
-          scale={1.00}
+          scale={1.0}
           loadedClassName="loadedContent"
         />
       </div>
@@ -227,7 +228,7 @@ class Profile extends React.Component {
 function mapStateToProps(state) {
   return {
     isLoggedIn: state.session.authenticated,
-    firstName: state.session.user.firstName,
+    firstName: state.session.user.firstName
   };
 }
 

@@ -1,11 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import moment from 'moment';
 import MaterialUICard from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
 import CardMedia from '@material-ui/core/CardMedia';
 import CardContent from '@material-ui/core/CardContent';
+import CardActionArea from '@material-ui/core/CardActionArea';
 import Typography from '@material-ui/core/Typography';
 import styles from './Card.modules.scss';
 
@@ -48,9 +49,11 @@ function Card({
   createdAt,
   renderActions
 }) {
+  const history = useHistory();
+
   return (
     <MaterialUICard className={styles.cardContainer}>
-      <Link to={`/recipe/${id}`}>
+      <CardActionArea onClick={() => history.push(`/recipe/${id}`)}>
         <CardHeader
           title={formatContent(recipeName, 25)}
           subheader={moment(createdAt).format('LL')}
@@ -61,7 +64,7 @@ function Card({
             {formatContent(recipeDescription)}
           </Typography>
         </CardContent>
-      </Link>
+      </CardActionArea>
       {renderActions && renderActions()}
     </MaterialUICard>
   );

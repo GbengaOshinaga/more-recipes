@@ -23,7 +23,8 @@ const api = {
     const url = nextUrl || `${RECIPES_BASE_URL}?query=${searchTerm}`;
 
     return fetch.get(url);
-  }
+  },
+  getRecipeDetails: recipeId => fetch.get(`${RECIPES_BASE_URL}/${recipeId}`)
 };
 
 export default api;

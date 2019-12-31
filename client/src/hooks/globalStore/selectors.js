@@ -51,3 +51,9 @@ export const getHasUserFavorited = (recipeId, favorites) => {
   const ids = favorites.map(favourite => favourite.id);
   return ids.includes(recipeId);
 };
+
+export const getIsFetchingRecipeDetails = recipeDetails =>
+  recipeDetails?.isFetching ?? false;
+
+export const getRecipeDetails = recipeDetails =>
+  recipeDetails?.recipeDetails ?? emptyObj;
