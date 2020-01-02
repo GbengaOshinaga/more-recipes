@@ -1,4 +1,5 @@
 import React from 'react';
+import { useHistory } from 'react-router-dom';
 import { fade, makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -10,6 +11,7 @@ import Menu from '@material-ui/core/Menu';
 import SearchIcon from '@material-ui/icons/Search';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import MoreIcon from '@material-ui/icons/MoreVert';
+import { getIsUserAuthenticated } from '../../hooks/globalStore';
 
 const useStyles = makeStyles(theme => ({
   grow: {
@@ -75,11 +77,13 @@ const useStyles = makeStyles(theme => ({
 
 export default function NavBar({ searchTerm, onChangeSearchTerm }) {
   const classes = useStyles();
+  const history = useHistory();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
 
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
+  const isUserAuthenticated = getIsUserAuthenticated();
 
   const handleProfileMenuOpen = event => {
     setAnchorEl(event.currentTarget);
@@ -98,6 +102,27 @@ export default function NavBar({ searchTerm, onChangeSearchTerm }) {
     setMobileMoreAnchorEl(event.currentTarget);
   };
 
+  const onMenuPress = path => {
+    handleMenuClose();
+    history.push(path);
+  };
+
+  const renderLoggedInLinks = () => (
+    <>
+      <MenuItem onClick={() => onMenuPress('/profile')}>Profile</MenuItem>
+      <MenuItem onClick={() => onMenuPress('/my_recipes')}>My Recipes</MenuItem>
+      <MenuItem onClick={() => onMenuPress('/favourites')}>Favorites</MenuItem>
+      <MenuItem onClick={() => onMenuPress('/logout')}>Logout</MenuItem>
+    </>
+  );
+
+  const renderLinks = () => (
+    <>
+      <MenuItem onClick={() => onMenuPress('/signin')}>Sign In</MenuItem>
+      <MenuItem onClick={() => onMenuPress('/signup')}>Sign Up</MenuItem>
+    </>
+  );
+
   const menuId = 'primary-search-account-menu';
   const renderMenu = (
     <Menu
@@ -109,8 +134,7 @@ export default function NavBar({ searchTerm, onChangeSearchTerm }) {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-      <MenuItem onClick={handleMenuClose}>My account</MenuItem>
+      {isUserAuthenticated ? renderLoggedInLinks() : renderLinks()}
     </Menu>
   );
 

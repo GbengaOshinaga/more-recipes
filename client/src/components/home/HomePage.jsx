@@ -1,99 +1,37 @@
-/* eslint-disable no-empty */
 import React from 'react';
-import { Link, Redirect } from 'react-router-dom';
-import { sessionService } from 'redux-react-session';
-import $ from 'jquery';
-import Header from '../common/Header';
+import { Redirect, useHistory } from 'react-router-dom';
+import Grid from '@material-ui/core/Grid';
+import Typography from '@material-ui/core/Typography';
+import Button from '@material-ui/core/Button';
+import { getIsUserAuthenticated } from '../../hooks/globalStore';
+import NavBar from '../common/NavBar';
 
-/**
- * HomePage component
- */
-class HomePage extends React.Component {
-  /**
-   * Component constructor
-   * @param {Object} props
-   * @param {Object} context
-   */
-  constructor(props, context) {
-    super(props, context);
-    this.state = {
-      isAuthenticated: false
-    };
+const HomePage = () => {
+  const history = useHistory();
+
+  const navigateToCatalog = () => history.push('/catalog');
+
+  if (getIsUserAuthenticated()) {
+    return <Redirect to="/catalog" />;
   }
 
-  /**
-   * Componentwillmount
-   *
-   * @returns {undefined}
-   */
-  async componentWillMount() {
-    try {
-      const token = await sessionService.loadSession();
-      if (token) {
-        this.setState({ isAuthenticated: true });
-      }
-    } catch (error) {}
-  }
-
-  /**
-   * ComponentDidMount
-   *
-   * @returns {undefined}
-   */
-  componentDidMount() {
-    // TODO: Refactor later to not use jquery
-    // $('.button-collapse').sideNav();
-  }
-
-  /**
-   * Component render method
-   *
-   * @returns {Node} jsx
-   */
-  render() {
-    if (this.state.isAuthenticated) {
-      return <Redirect to="/catalog" />;
-    }
-
-    return (
-      <div className="index-body">
-        <Header
-          mainLinks={
-            <React.Fragment>
-              <li>
-                <Link id="sign-in" to="/signin">
-                  {' '}
-                  Sign In
-                </Link>
-              </li>
-              <li>
-                <Link id="sign-up" to="/signup">
-                  Sign Up
-                </Link>
-              </li>
-            </React.Fragment>
-          }
-        />
-        <div className="container">
-          <div className="info center-align">
-            <h2 className="white-text">Welcome to More-Recipes</h2>
-            <h4 className="white-text">
-              A platform for sharing recipe ideas you invented or learnt. Find
-              innovative recipes or share one of your own.
-            </h4>
-            <div className="cta-buttons">
-              <Link
-                to="/catalog"
-                className="waves-effect waves-light btn-large red darken-2"
-              >
-                VIEW CATALOG
-              </Link>
-            </div>
-          </div>
-        </div>
-      </div>
-    );
-  }
-}
+  return (
+    <div>
+      <NavBar />
+      <Grid container>
+        <Grid item xs={10}>
+          <Typography variant="body1">Welcome to More-Recipes</Typography>
+          <Typography variant="body2">
+            A platform for sharing recipe ideas you invented or learnt. Find
+            innovative recipes or share one of your own.
+          </Typography>
+          <Button variant="contained" onClick={navigateToCatalog}>
+            VIEW CATALOG
+          </Button>
+        </Grid>
+      </Grid>
+    </div>
+  );
+};
 
 export default HomePage;
