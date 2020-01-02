@@ -21,7 +21,8 @@ import {
 export const initialState = {
   isFetching: false,
   recipes: [],
-  paginationMeta: {}
+  paginationMeta: {},
+  favourites: []
 };
 
 const saveRecipes = (state, action) => {

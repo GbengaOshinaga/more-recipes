@@ -4,8 +4,8 @@ import {
   getMostFavorites,
   getIsFetchingMostFavorites
 } from '../../hooks/globalStore';
+import useActions from '../../hooks/useActions';
 import RecipesDisplay from '../common/RecipesDisplay';
-import useActions from './useActions';
 
 const MostFavoritedRecipes = () => {
   const { mostFavoritedRecipes, fetchMostFavoritedRecipes } = useStoreContext();
@@ -15,8 +15,10 @@ const MostFavoritedRecipes = () => {
   const isFetching = getIsFetchingMostFavorites(mostFavoritedRecipes);
 
   useEffect(() => {
-    fetchMostFavoritedRecipes();
-  }, [fetchMostFavoritedRecipes]);
+    if (!recipes.length) {
+      fetchMostFavoritedRecipes();
+    }
+  }, [fetchMostFavoritedRecipes, recipes.length]);
 
   return (
     <RecipesDisplay

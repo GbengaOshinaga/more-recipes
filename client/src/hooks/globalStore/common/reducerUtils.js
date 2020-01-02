@@ -1,3 +1,5 @@
+import cloneDeep from 'lodash/cloneDeep';
+
 /**
  * Update upvotes or downvotes state
  * @param {Object} state
@@ -18,29 +20,30 @@ const updateVoteState = ({ state, action, activeVoteKey, inActiveVoteKey }) => {
   if (!recipe) {
     return state;
   }
-  const activeVotes = recipe[activeVoteKey];
-  const inActiveVotes = recipe[inActiveVoteKey];
+  const clonedRecipe = cloneDeep(recipe);
+  const activeVotes = clonedRecipe[activeVoteKey];
+  const inActiveVotes = clonedRecipe[inActiveVoteKey];
 
   if (!activeVotes?.includes(userId)) {
-    recipe[activeVoteKey].push(userId);
+    clonedRecipe[activeVoteKey].push(userId);
 
     if (inActiveVotes?.includes(userId)) {
       // If active vote, let's say upvotes for example, has been updated,
       // we should check if downvotes also needs to be updated, as a user
       // can't have both upvote and downvote
       const voteIndex = inActiveVotes.findIndex(item => item === userId);
-      recipe[inActiveVoteKey].splice(voteIndex, 1);
+      clonedRecipe[inActiveVoteKey].splice(voteIndex, 1);
     }
   } else {
     const voteIndex = activeVotes.findIndex(item => item === userId);
-    recipe[activeVoteKey].splice(voteIndex, 1);
+    clonedRecipe[activeVoteKey].splice(voteIndex, 1);
   }
 
   return {
     ...state,
     recipes: state.recipes.map(stateRecipe => {
       if (stateRecipe.id === recipe.id) {
-        return { ...stateRecipe, ...recipe };
+        return { ...stateRecipe, ...clonedRecipe };
       }
       return stateRecipe;
     })

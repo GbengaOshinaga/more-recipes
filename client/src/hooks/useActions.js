@@ -1,12 +1,18 @@
 import React from 'react';
-import { useStoreContext, getFavouritesIds } from '../../hooks/globalStore';
-import VoteAndFavActions from '../common/VoteAndFavActions';
+import { useStoreContext, getFavouritesIds } from './globalStore';
+import VoteAndFavActions from '../components/common/VoteAndFavActions';
 
 export default function useActions() {
   const { allRecipes } = useStoreContext();
 
   const favoritesIds = getFavouritesIds(allRecipes);
 
+  /**
+   * Renders vote and favorite actions
+   * @param {Object} recipe
+   *
+   * @returns {JSX} VoteAndFavActions
+   */
   const renderActions = recipe => {
     return <VoteAndFavActions recipe={recipe} favorites={favoritesIds} />;
   };

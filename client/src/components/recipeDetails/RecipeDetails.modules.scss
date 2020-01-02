@@ -1,0 +1,29 @@
+.container {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.detailsContainer {
+  width: 45%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 1em;
+}
+
+.imageContainer {
+  width: 100%;
+  margin-left: auto;
+  left: auto;
+  right: auto;
+  margin-left: -0.75rem;
+  margin-right: -0.75rem;
+}
+
+.image {
+  max-width: 100%;
+  height: auto;
+}

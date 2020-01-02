@@ -6,7 +6,7 @@ import operations from './operations';
 
 export default function useGlobalStore() {
   const [
-    { allRecipes, mostFavoritedRecipes, search, recipeDetails },
+    { allRecipes, mostFavoritedRecipes, search, recipeDetails, reviews },
     dispatch
   ] = useReducer(reducer, initialState);
 
@@ -23,7 +23,11 @@ export default function useGlobalStore() {
     favoriteRecipe,
     searchRecipes,
     getNextSearchResults,
-    fetchRecipeDetails
+    fetchRecipeDetails,
+    fetchReviews,
+    addReview,
+    editReview,
+    deleteReview
   } = useMemo(() => operations(actions), [actions]);
 
   return {
@@ -32,6 +36,7 @@ export default function useGlobalStore() {
     mostFavoritedRecipes,
     search,
     recipeDetails,
+    reviews,
     // actions
     fetchRecipes,
     fetchNextRecipes,
@@ -41,6 +46,10 @@ export default function useGlobalStore() {
     favoriteRecipe,
     searchRecipes,
     getNextSearchResults,
-    fetchRecipeDetails
+    fetchRecipeDetails,
+    fetchReviews,
+    addReview,
+    editReview,
+    deleteReview
   };
 }

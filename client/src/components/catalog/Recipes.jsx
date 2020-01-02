@@ -5,8 +5,8 @@ import {
   getIsFetchingRecipes,
   getRecipesPaginationMeta
 } from '../../hooks/globalStore';
+import useActions from '../../hooks/useActions';
 import RecipesDisplay from '../common/RecipesDisplay';
-import useActions from './useActions';
 
 const Recipes = () => {
   const { allRecipes, fetchRecipes, fetchNextRecipes } = useStoreContext();
@@ -17,8 +17,10 @@ const Recipes = () => {
   const { next: nextUrl } = getRecipesPaginationMeta(allRecipes);
 
   useEffect(() => {
-    fetchRecipes();
-  }, [fetchRecipes]);
+    if (!recipes.length) {
+      fetchRecipes();
+    }
+  }, [fetchRecipes, recipes.length]);
 
   const fetchNext = () => {
     fetchNextRecipes(nextUrl);

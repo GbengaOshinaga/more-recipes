@@ -1,4 +1,8 @@
-import { SET_IS_FETCHING, SAVE_RECIPE_DETAILS } from './actionCreators';
+import {
+  SET_IS_FETCHING,
+  SAVE_RECIPE_DETAILS,
+  SET_NOT_FOUND
+} from './actionCreators';
 import {
   UPDATE_UPVOTE_OPTIMISTICALLY,
   UPDATE_UPVOTE_REVERT,
@@ -8,7 +12,8 @@ import {
 
 export const initialState = {
   isFetching: false,
-  recipeDetails: {}
+  recipeDetails: {},
+  notFound: false
 };
 
 const updateVoteState = ({ state, action, activeVoteKey, inActiveVoteKey }) => {
@@ -69,7 +74,9 @@ const reducer = (state = initialState, action) => {
     case SET_IS_FETCHING:
       return { ...state, isFetching: action.payload };
     case SAVE_RECIPE_DETAILS:
-      return { ...state, recipeDetails: action.payload };
+      return { ...state, recipeDetails: action.payload, notFound: false };
+    case SET_NOT_FOUND:
+      return { ...state, notFound: true };
     case UPDATE_UPVOTE_OPTIMISTICALLY:
       return upvoteRecipe(state, action);
     case UPDATE_DOWNVOTE_OPTIMISTICALLY:

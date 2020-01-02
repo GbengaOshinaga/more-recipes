@@ -11,6 +11,8 @@ import Search from './Search';
 import MostFavoritedRecipes from './MostFavoritedRecipes';
 import styles from './Catalog.modules.scss';
 
+const { localStorage } = window;
+
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
 
@@ -36,15 +38,18 @@ function a11yProps(index) {
 }
 
 const CatalogPage = () => {
+  const currentTab = Number(localStorage.getItem('currentTab'));
   const [searchTerm, setSearchTerm] = useState('');
-  const [value, setValue] = useState(0);
+  const [value, setValue] = useState(currentTab);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
+    localStorage.setItem('currentTab', newValue);
   };
 
   const handleChangeIndex = index => {
     setValue(index);
+    localStorage.setItem('currentTab', index);
   };
 
   const renderTabs = () => {

@@ -30,7 +30,7 @@ const defaultProps = {
  */
 function formatContent(content, maxLength = 40) {
   if (content.length > maxLength) {
-    return `${content.slice(0, maxLength)}...`;
+    return `${content.slice(0, maxLength).trim()}...`;
   }
   return content;
 }
@@ -52,7 +52,7 @@ function Card({
   const history = useHistory();
 
   return (
-    <MaterialUICard className={styles.cardContainer}>
+    <MaterialUICard raised className={styles.cardContainer}>
       <CardActionArea onClick={() => history.push(`/recipe/${id}`)}>
         <CardHeader
           title={formatContent(recipeName, 25)}

@@ -1,7 +1,11 @@
 import { api, logger } from '../../../utils';
 
 const operations = actions => {
-  const { setIsFetchingRecipeDetails, saveRecipeDetails } = actions;
+  const {
+    setIsFetchingRecipeDetails,
+    saveRecipeDetails,
+    setNotFound
+  } = actions;
 
   const fetchRecipeDetails = async recipeId => {
     setIsFetchingRecipeDetails(true);
@@ -11,6 +15,7 @@ const operations = actions => {
       saveRecipeDetails(response?.data?.recipe);
     } catch (error) {
       logger('Recipe Details Error', await error);
+      setNotFound();
     } finally {
       setIsFetchingRecipeDetails(false);
     }

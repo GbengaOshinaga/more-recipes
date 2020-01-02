@@ -7,7 +7,7 @@ import SignOut from './components/auth/SignOut';
 import UserRecipes from './components/recipes/UserRecipes';
 import Profile from './components/user/Profile';
 import CatalogComp from './components/catalog/Catalog';
-import RecipeDetailsComp from './components/recipes/RecipeDetails';
+import RecipeDetailsComp from './components/recipeDetails/RecipeDetails';
 import FavouriteRecipesComp from './components/recipes/FavouriteRecipes';
 import PrivateRoute from './PrivateRoute';
 import NotFound from './components/404Page';

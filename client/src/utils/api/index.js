@@ -24,7 +24,13 @@ const api = {
 
     return fetch.get(url);
   },
-  getRecipeDetails: recipeId => fetch.get(`${RECIPES_BASE_URL}/${recipeId}`)
+  getRecipeDetails: recipeId => fetch.get(`${RECIPES_BASE_URL}/${recipeId}`),
+  getReviews: recipeId => fetch.get(`${RECIPES_BASE_URL}/${recipeId}/reviews`),
+  addReview: (recipeId, review) =>
+    fetch.post(`${RECIPES_BASE_URL}/${recipeId}/reviews`, { review }),
+  editReview: (reviewId, review) =>
+    fetch.put(`${RECIPES_BASE_URL}/${reviewId}/reviews`, { review }),
+  deleteReview: reviewId => fetch.del(`${RECIPES_BASE_URL}/${reviewId}/reviews`)
 };
 
 export default api;

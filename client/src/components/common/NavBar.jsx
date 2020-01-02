@@ -146,7 +146,7 @@ export default function NavBar({ searchTerm, onChangeSearchTerm }) {
           <Typography className={classes.title} variant="h6" noWrap>
             More-Recipes
           </Typography>
-          {/* Should check if searchTerm is either undefined or null */}
+          {/* Should check if searchTerm is either undefined or null, != does that. */}
           {searchTerm != undefined ? (
             <div className={classes.search}>
               <div className={classes.searchIcon}>
