@@ -1,7 +1,9 @@
 import React from 'react';
 import CardActions from '@material-ui/core/CardActions';
 import IconButton from '@material-ui/core/IconButton';
-import { Favorite, ThumbUp, ThumbDown } from '@material-ui/icons';
+import Favorite from '@material-ui/icons/Favorite';
+import ThumbUp from '@material-ui/icons/ThumbUp';
+import ThumbDown from '@material-ui/icons/ThumbDown';
 import {
   getIsUserAuthenticated,
   getHasUserVoted,

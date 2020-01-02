@@ -9,6 +9,7 @@ import {
 
 export const SET_IS_FETCHING_RECIPES = 'SET_IS_FETCHING_RECIPES';
 export const SAVE_RECIPES = 'SAVE_RECIPES';
+export const SAVE_NEXT_RECIPES = 'SAVE_NEXT_RECIPES';
 
 export const setIsFetching = isFetching => ({
   type: SET_IS_FETCHING_RECIPES,
@@ -17,6 +18,11 @@ export const setIsFetching = isFetching => ({
 
 export const saveRecipes = recipes => ({
   type: SAVE_RECIPES,
+  payload: recipes
+});
+
+export const saveNextRecipes = recipes => ({
+  type: SAVE_NEXT_RECIPES,
   payload: recipes
 });
 

@@ -7,7 +7,6 @@ import toastr from 'toastr';
 import Loader from 'react-loader';
 import Page from './UserRecipesPage';
 import * as userActions from '../../actions/userActions';
-import { pluginsInit } from '../../helpers/jqueryHelper';
 
 const propTypes = {
   isLoggedIn: PropTypes.bool.isRequired,
@@ -20,7 +19,8 @@ const defaultProps = {
   firstName: ''
 };
 
-const defaultImage = 'https://res.cloudinary.com/king-more-recipes/image/upload/v1518028470/10546i3DAC5A5993C8BC8C_vtqogc.jpg';
+const defaultImage =
+  'https://res.cloudinary.com/king-more-recipes/image/upload/v1518028470/10546i3DAC5A5993C8BC8C_vtqogc.jpg';
 let imageContext;
 
 /**
@@ -28,10 +28,10 @@ let imageContext;
  */
 class UserRecipes extends React.Component {
   /**
-     * Component constructor
-     * @param {Object} props
-     * @param {Object} context
-     */
+   * Component constructor
+   * @param {Object} props
+   * @param {Object} context
+   */
   constructor(props, context) {
     super(props, context);
     this.state = {
@@ -66,15 +66,11 @@ class UserRecipes extends React.Component {
    * @returns {undefined}
    */
   componentDidMount() {
-    pluginsInit();
-
-    sessionService.loadSession()
-      .then((token) => {
-        this.props.actions.getUserRecipes(token)
-          .catch(() => {
-            this.setState({ isFound: false });
-          });
+    sessionService.loadSession().then(token => {
+      this.props.actions.getUserRecipes(token).catch(() => {
+        this.setState({ isFound: false });
       });
+    });
   }
 
   /**
@@ -83,7 +79,7 @@ class UserRecipes extends React.Component {
    *
    * @returns {undefined}
    */
-  onClickSave = (event) => {
+  onClickSave = event => {
     event.preventDefault();
     this.setState({ loaded: false });
     if (!(this.state.imageFile instanceof File)) {
@@ -94,17 +90,16 @@ class UserRecipes extends React.Component {
       });
       this.setState({ loaded: true });
     } else {
-      userActions.uploadImage(this.state.imageFile)
-        .then((response) => {
-          const { data } = this.state;
-          data.image = response.secure_url;
-          this.setState({ data }, () => {
-            this.saveRecipe();
-          });
-          this.setState({ loaded: true, isFound: true });
+      userActions.uploadImage(this.state.imageFile).then(response => {
+        const { data } = this.state;
+        data.image = response.secure_url;
+        this.setState({ data }, () => {
+          this.saveRecipe();
         });
+        this.setState({ loaded: true, isFound: true });
+      });
     }
-  }
+  };
 
   /**
    * Handle edit
@@ -112,24 +107,23 @@ class UserRecipes extends React.Component {
    *
    * @returns {undefined}
    */
-  onClickEdit = (event) => {
+  onClickEdit = event => {
     event.preventDefault();
     this.setState({ loaded: false });
     if (!(this.state.imageFile instanceof File)) {
       this.editRecipe();
       this.setState({ loaded: true });
     } else {
-      userActions.uploadImage(this.state.imageFile)
-        .then((response) => {
-          const { edit } = this.state;
-          edit.image = response.secure_url;
-          this.setState({ edit }, () => {
-            this.editRecipe();
-          });
+      userActions.uploadImage(this.state.imageFile).then(response => {
+        const { edit } = this.state;
+        edit.image = response.secure_url;
+        this.setState({ edit }, () => {
+          this.editRecipe();
         });
+      });
       this.setState({ loaded: true });
     }
-  }
+  };
 
   /**
    * Method to delete recipe
@@ -137,14 +131,15 @@ class UserRecipes extends React.Component {
    *
    * @returns {undefined}
    */
-  onConfirmDelete = (event) => {
+  onConfirmDelete = event => {
     event.preventDefault();
-    sessionService.loadSession()
-      .then((token) => {
+    sessionService
+      .loadSession()
+      .then(token => {
         this.props.actions.deleteRecipe(token, this.state.deleteId);
       })
       .then(toastr.success('Recipe successfully deleted'));
-  }
+  };
 
   /**
    * Get id of recipe
@@ -152,10 +147,10 @@ class UserRecipes extends React.Component {
    *
    * @returns {undefined}
    */
-  getId = (event) => {
+  getId = event => {
     event.preventDefault();
     this.setState({ deleteId: event.target.id });
-  }
+  };
 
   /**
    * Get id of recipe for edit
@@ -163,9 +158,11 @@ class UserRecipes extends React.Component {
    *
    * @returns {undefined}
    */
-  getIdForEdit = (event) => {
+  getIdForEdit = event => {
     const recipeForEdit = [
-      ...this.props.userRecipes.filter(recipe => recipe.id === Number(event.target.id))
+      ...this.props.userRecipes.filter(
+        recipe => recipe.id === Number(event.target.id)
+      )
     ];
     this.setState({
       edit: {
@@ -180,7 +177,7 @@ class UserRecipes extends React.Component {
     img.src = recipeForEdit[0].image;
     imageContext = this.editInputElement.getContext('2d');
     imageContext.drawImage(img, 0, 0, 300, 200);
-  }
+  };
 
   /**
    * Save recipe
@@ -192,9 +189,11 @@ class UserRecipes extends React.Component {
     if (this.state.data.name.length > 255) {
       return toastr.error('Recipe name is too long');
     }
-    sessionService.loadSession()
-      .then((token) => {
-        this.props.actions.addRecipe(token, this.state.data)
+    sessionService
+      .loadSession()
+      .then(token => {
+        this.props.actions
+          .addRecipe(token, this.state.data)
           .then(() => {
             toastr.success('Recipe Added');
             this.setState({
@@ -211,7 +210,7 @@ class UserRecipes extends React.Component {
               imageContext.clearRect(0, 0, 300, 200);
             }
           })
-          .catch((errors) => {
+          .catch(errors => {
             if (Array.isArray(errors)) {
               errors.map(error => toastr.error(error));
             } else {
@@ -220,7 +219,7 @@ class UserRecipes extends React.Component {
           });
       })
       .catch(() => {});
-  }
+  };
 
   /**
    * Edits recipe
@@ -231,9 +230,11 @@ class UserRecipes extends React.Component {
     if (this.state.edit.name.length > 255) {
       return toastr.error('Recipe Name is too long');
     }
-    sessionService.loadSession()
-      .then((token) => {
-        this.props.actions.editRecipe(token, this.state.edit.id, this.state.edit)
+    sessionService
+      .loadSession()
+      .then(token => {
+        this.props.actions
+          .editRecipe(token, this.state.edit.id, this.state.edit)
           .then(() => {
             toastr.success('Recipe modified successfully');
             this.setState({
@@ -251,8 +252,7 @@ class UserRecipes extends React.Component {
           .catch(error => toastr.error(error));
       })
       .catch(() => {});
-  }
-
+  };
 
   /**
    * Loads image to canvas
@@ -260,7 +260,7 @@ class UserRecipes extends React.Component {
    *
    * @returns {undefined}
    */
-  loadImage = (event) => {
+  loadImage = event => {
     if (event.target.id === 'fileUpload') {
       imageContext = this.inputElement.getContext('2d');
     } else {
@@ -269,7 +269,7 @@ class UserRecipes extends React.Component {
     const file = event.target.files[0];
     this.setState({ imageFile: file });
     const fileReader = new FileReader();
-    fileReader.onload = function (e) {
+    fileReader.onload = function(e) {
       const img = new Image(300, 200);
       img.addEventListener('load', () => {
         imageContext.drawImage(img, 0, 0, 300, 200);
@@ -281,7 +281,7 @@ class UserRecipes extends React.Component {
     } catch (error) {
       throw error;
     }
-  }
+  };
 
   /**
    * Handle adding of ingredient in edit mode
@@ -289,11 +289,11 @@ class UserRecipes extends React.Component {
    *
    * @returns {undefined}
    */
-  handleChipAdd = (chip) => {
+  handleChipAdd = chip => {
     const { edit } = this.state;
     edit.ingredients = [...edit.ingredients, chip];
     this.setState({ edit });
-  }
+  };
 
   /**
    * Handle deleting of ingredient in edit mode
@@ -301,11 +301,13 @@ class UserRecipes extends React.Component {
    *
    * @returns {undefined}
    */
-  handleChipDelete = (chip) => {
+  handleChipDelete = chip => {
     const { edit } = this.state;
-    edit.ingredients = edit.ingredients.filter(ingredient => ingredient !== chip);
+    edit.ingredients = edit.ingredients.filter(
+      ingredient => ingredient !== chip
+    );
     this.setState({ edit });
-  }
+  };
 
   /**
    * Handle adding of ingredient in add mode
@@ -313,11 +315,11 @@ class UserRecipes extends React.Component {
    *
    * @returns {undefined}
    */
-  handleAddModalChipAdd = (chip) => {
+  handleAddModalChipAdd = chip => {
     const { data } = this.state;
     data.ingredients = [...data.ingredients, chip];
     this.setState({ data });
-  }
+  };
 
   /**
    * Handle deleting of ingredient in add mode
@@ -325,11 +327,13 @@ class UserRecipes extends React.Component {
    *
    * @returns {undefined}
    */
-  handleAddModalChipDelete = (chip) => {
+  handleAddModalChipDelete = chip => {
     const { data } = this.state;
-    data.ingredients = data.ingredients.filter(ingredient => ingredient !== chip);
+    data.ingredients = data.ingredients.filter(
+      ingredient => ingredient !== chip
+    );
     this.setState({ data });
-  }
+  };
 
   /**
    * Handles input field value change
@@ -337,11 +341,11 @@ class UserRecipes extends React.Component {
    *
    * @returns {undefined}
    */
-  handleInputChange = (event) => {
+  handleInputChange = event => {
     const name = this.state.data;
     name[event.target.id] = event.target.value;
     this.setState({ data: name });
-  }
+  };
 
   /**
    * Handles input field value change
@@ -349,11 +353,11 @@ class UserRecipes extends React.Component {
    *
    * @returns {undefined}
    */
-  handleEditInputChange = (event) => {
+  handleEditInputChange = event => {
     const name = this.state.edit;
     name[event.target.id] = event.target.value;
     this.setState({ edit: name });
-  }
+  };
 
   /**
    * Component render method
@@ -374,8 +378,12 @@ class UserRecipes extends React.Component {
           editData={this.state.edit}
           onClickSave={this.onClickSave}
           onFileChange={this.loadImage}
-          inputRef={(el) => { this.inputElement = el; }}
-          editInputRef={(el) => { this.editInputElement = el; }}
+          inputRef={el => {
+            this.inputElement = el;
+          }}
+          editInputRef={el => {
+            this.editInputElement = el;
+          }}
           onConfirmDelete={this.onConfirmDelete}
           getId={this.getId}
           getIdForEdit={this.getIdForEdit}
@@ -406,7 +414,7 @@ class UserRecipes extends React.Component {
           zIndex={2e9}
           top="50%"
           left="50%"
-          scale={1.00}
+          scale={1.0}
           loadedClassName="loadedContent"
         />
       </div>

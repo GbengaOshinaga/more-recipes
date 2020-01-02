@@ -75,7 +75,7 @@ const getErrorResponse = error => {
     // if it's a sequelize error, a generic message should
     // be returned
     if (error?.sql) {
-      return 'An error occurred';
+      return ['An error occurred'];
     }
   }
 

@@ -11,20 +11,31 @@ const operations = actions => {
     updateDownvoteOptimistically,
     updateDownvoteRevert,
     updateFavoriteOptimistically,
-    updateFavoriteRevert
+    updateFavoriteRevert,
+    saveNextRecipes
   } = actions;
   const userId = getUserId();
 
-  const fetchRecipes = async nextUrl => {
-    !nextUrl && setIsFetching(true);
+  const fetchRecipes = async () => {
+    setIsFetching(true);
     try {
-      const response = await api.getAllRecipes(nextUrl);
+      const response = await api.getAllRecipes();
       logger('response', response);
       saveRecipes(response?.data);
     } catch (error) {
       logger('Fetch Recipes', error);
     } finally {
-      !nextUrl && setIsFetching(false);
+      setIsFetching(false);
+    }
+  };
+
+  const fetchNextRecipes = async nextUrl => {
+    try {
+      const response = await api.getAllRecipes(nextUrl);
+      logger('next recipes response', response);
+      saveNextRecipes(response?.data);
+    } catch (error) {
+      logger('Fetch Recipes', error);
     }
   };
 
@@ -64,6 +75,7 @@ const operations = actions => {
 
   return {
     fetchRecipes,
+    fetchNextRecipes,
     upvoteRecipe,
     downvoteRecipe,
     favoriteRecipe

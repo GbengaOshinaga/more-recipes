@@ -7,8 +7,8 @@ import {
   getSearchResultsPaginationMeta
 } from '../../hooks/globalStore';
 import useDebounce from '../../hooks/useDebounce';
+import useActions from '../../hooks/useActions';
 import RecipesDisplay from '../common/RecipesDisplay';
-import useActions from './useActions';
 import styles from './Search.modules.scss';
 
 const Search = ({ searchTerm }) => {

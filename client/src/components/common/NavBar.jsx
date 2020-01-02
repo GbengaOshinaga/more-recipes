@@ -146,21 +146,24 @@ export default function NavBar({ searchTerm, onChangeSearchTerm }) {
           <Typography className={classes.title} variant="h6" noWrap>
             More-Recipes
           </Typography>
-          <div className={classes.search}>
-            <div className={classes.searchIcon}>
-              <SearchIcon />
+          {/* Should check if searchTerm is either undefined or null, != does that. */}
+          {searchTerm != undefined ? (
+            <div className={classes.search}>
+              <div className={classes.searchIcon}>
+                <SearchIcon />
+              </div>
+              <InputBase
+                placeholder="Search…"
+                value={searchTerm}
+                onChange={e => onChangeSearchTerm(e.target.value)}
+                classes={{
+                  root: classes.inputRoot,
+                  input: classes.inputInput
+                }}
+                inputProps={{ 'aria-label': 'search' }}
+              />
             </div>
-            <InputBase
-              placeholder="Search…"
-              value={searchTerm}
-              onChange={e => onChangeSearchTerm(e.target.value)}
-              classes={{
-                root: classes.inputRoot,
-                input: classes.inputInput
-              }}
-              inputProps={{ 'aria-label': 'search' }}
-            />
-          </div>
+          ) : null}
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}>
             <IconButton
