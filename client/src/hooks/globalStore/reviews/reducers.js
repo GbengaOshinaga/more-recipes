@@ -1,3 +1,4 @@
+import moment from 'moment';
 import {
   SAVE_REVIEWS,
   SAVE_NEXT_REVIEWS,
@@ -52,7 +53,11 @@ const reducer = (state = initialState, action) => {
         ...state,
         reviews: state.reviews.map(stateReview => {
           if (stateReview.id === reviewId) {
-            return { ...stateReview, review };
+            return {
+              ...stateReview,
+              review,
+              updatedAt: moment().toISOString()
+            };
           }
           return stateReview;
         })
