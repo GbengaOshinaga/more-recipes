@@ -1,5 +1,6 @@
 export const SAVE_REVIEWS = 'SAVE_REVIEWS';
 export const SAVE_NEXT_REVIEWS = 'SAVE_NEXT_REVIEWS';
+export const SET_IS_FETCHING_NEXT_REVIEWS = 'SET_IS_FETCHING_NEXT_REVIEWS';
 export const SET_IS_ADDING_REVIEW = 'SET_IS_ADDING_REVIEW';
 export const SAVE_REVIEW = 'SAVE_REVIEW';
 export const EDIT_REVIEW_OPTIMISTICALLY = 'EDIT_REVIEW_OPTIMISTICALLY';
@@ -15,6 +16,11 @@ export const saveReviews = reviews => ({
 export const saveNextReviews = reviews => ({
   type: SAVE_NEXT_REVIEWS,
   payload: reviews
+});
+
+export const setIsFetchingNextReviews = isFetchingNextReviews => ({
+  type: SET_IS_FETCHING_NEXT_REVIEWS,
+  payload: isFetchingNextReviews
 });
 
 export const setIsAddingReview = isAddingReview => ({

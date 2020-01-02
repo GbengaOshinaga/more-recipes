@@ -25,6 +25,7 @@ export default function useGlobalStore() {
     getNextSearchResults,
     fetchRecipeDetails,
     fetchReviews,
+    fetchNextReviews,
     addReview,
     editReview,
     deleteReview
@@ -48,6 +49,7 @@ export default function useGlobalStore() {
     getNextSearchResults,
     fetchRecipeDetails,
     fetchReviews,
+    fetchNextReviews,
     addReview,
     editReview,
     deleteReview

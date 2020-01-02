@@ -4,6 +4,7 @@ const operations = actions => {
   const {
     saveReviews,
     saveNextReviews,
+    setIsFetchingNextReviews,
     setIsAddingReview,
     saveReview,
     editReviewOptimistically,
@@ -22,13 +23,16 @@ const operations = actions => {
     }
   };
 
-  const fetchNextReviews = async recipeId => {
+  const fetchNextReviews = async nextUrl => {
+    setIsFetchingNextReviews(true);
     try {
-      const response = await api.getReviews(recipeId);
+      const response = await api.getReviews(null, nextUrl);
       logger('Next Reviews', response);
       saveNextReviews(response?.data);
     } catch (error) {
       logger('Reviews', await error);
+    } finally {
+      setIsFetchingNextReviews(false);
     }
   };
 

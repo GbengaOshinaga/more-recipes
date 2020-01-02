@@ -8,7 +8,9 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import {
   useStoreContext,
   getReviews,
-  getIsAddingReview
+  getIsAddingReview,
+  getIsFetchingNextReviews,
+  getReviewsNextUrl
 } from '../../hooks/globalStore';
 import SingleReview from './SingleReview';
 
@@ -16,6 +18,7 @@ const Reviews = ({ recipeId }) => {
   const {
     reviews: stateReviews,
     fetchReviews,
+    fetchNextReviews,
     addReview,
     editReview,
     deleteReview
@@ -23,7 +26,9 @@ const Reviews = ({ recipeId }) => {
   const [newReview, setNewReview] = useState('');
 
   const reviews = getReviews(stateReviews);
+  const isFetchingNextReviews = getIsFetchingNextReviews(stateReviews);
   const isAddingReview = getIsAddingReview(stateReviews);
+  const nextUrl = getReviewsNextUrl(stateReviews);
 
   useEffect(() => {
     fetchReviews(recipeId);
@@ -76,9 +81,23 @@ const Reviews = ({ recipeId }) => {
     ));
   };
 
+  const renderLoadMoreReviews = () => {
+    if (nextUrl) {
+      return isFetchingNextReviews ? (
+        <CircularProgress />
+      ) : (
+        <Button onClick={() => fetchNextReviews(nextUrl)} color="primary">
+          Load More Reviews
+        </Button>
+      );
+    }
+    return null;
+  };
+
   return (
     <div>
       {renderReviews()}
+      {renderLoadMoreReviews()}
       {isAddingReview ? (
         <CircularProgress />
       ) : (

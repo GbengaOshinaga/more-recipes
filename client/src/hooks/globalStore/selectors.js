@@ -63,4 +63,7 @@ export const getReviews = reviews => reviews?.reviews ?? emptyArr;
 export const getReviewsNextUrl = reviews =>
   reviews?.paginationMeta?.next ?? null;
 
+export const getIsFetchingNextReviews = reviews =>
+  reviews?.isFetchingNextReviews ?? false;
+
 export const getIsAddingReview = reviews => reviews?.isAddingReview ?? false;

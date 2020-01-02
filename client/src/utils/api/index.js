@@ -25,7 +25,8 @@ const api = {
     return fetch.get(url);
   },
   getRecipeDetails: recipeId => fetch.get(`${RECIPES_BASE_URL}/${recipeId}`),
-  getReviews: recipeId => fetch.get(`${RECIPES_BASE_URL}/${recipeId}/reviews`),
+  getReviews: (recipeId, nextUrl) =>
+    fetch.get(nextUrl || `${RECIPES_BASE_URL}/${recipeId}/reviews`),
   addReview: (recipeId, review) =>
     fetch.post(`${RECIPES_BASE_URL}/${recipeId}/reviews`, { review }),
   editReview: (reviewId, review) =>

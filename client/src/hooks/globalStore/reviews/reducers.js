@@ -6,11 +6,13 @@ import {
   EDIT_REVIEW_OPTIMISTICALLY,
   EDIT_REVIEW_REVERT,
   DELETE_REVIEW_OPTIMISTICALLY,
-  DELETE_REVIEW_REVERT
+  DELETE_REVIEW_REVERT,
+  SET_IS_FETCHING_NEXT_REVIEWS
 } from './actionCreators';
 
 export const initialState = {
   isAddingReview: false,
+  isFetchingNextReviews: false,
   reviews: [],
   paginationMeta: {}
 };
@@ -29,6 +31,8 @@ const reducer = (state = initialState, action) => {
         reviews: [...state.reviews, ...action.payload.reviews],
         paginationMeta: action.payload.paginationMeta
       };
+    case SET_IS_FETCHING_NEXT_REVIEWS:
+      return { ...state, isFetchingNextReviews: action.payload };
     case SET_IS_ADDING_REVIEW:
       return { ...state, isAddingReview: action.payload };
     case SAVE_REVIEW:
