@@ -5,7 +5,9 @@ const operations = actions => {
     setIsFetchingUserRecipes,
     saveUserRecipes,
     setIsCreatingRecipe,
-    saveRecipe
+    saveRecipe,
+    deleteRecipeOptimistically,
+    deleteRecipeRevert
   } = actions;
 
   const fetchUserRecipes = async () => {
@@ -49,9 +51,20 @@ const operations = actions => {
     }
   };
 
+  const deleteRecipe = async recipeId => {
+    deleteRecipeOptimistically(recipeId);
+    try {
+      await api.deleteRecipe(recipeId);
+    } catch (error) {
+      logger('delete recipe error', await error);
+      deleteRecipeRevert(recipeId);
+    }
+  };
+
   return {
     fetchUserRecipes,
-    createRecipe
+    createRecipe,
+    deleteRecipe
   };
 };
 

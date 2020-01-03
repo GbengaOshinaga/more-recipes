@@ -22,6 +22,9 @@ const defaultProps = {
   image: ''
 };
 
+const defaultImage =
+  'https://res.cloudinary.com/king-more-recipes/image/upload/v1518028470/10546i3DAC5A5993C8BC8C_vtqogc.jpg';
+
 /**
  * Formats recipe description based on length
  * @param {String} content
@@ -60,7 +63,11 @@ function Card({
           title={formatContent(recipeName, 25)}
           subheader={moment(createdAt).format('LL')}
         />
-        <CardMedia className={styles.image} image={image} title={recipeName} />
+        <CardMedia
+          className={styles.image}
+          image={image || defaultImage}
+          title={recipeName}
+        />
         <CardContent>
           <Typography variant="body2" color="textSecondary" component="p">
             {formatContent(recipeDescription)}

@@ -14,6 +14,9 @@ import NavBar from '../common/NavBar';
 import Reviews from './Reviews';
 import styles from './RecipeDetails.modules.scss';
 
+const defaultImage =
+  'https://res.cloudinary.com/king-more-recipes/image/upload/v1518028470/10546i3DAC5A5993C8BC8C_vtqogc.jpg';
+
 const RecipeDetails = () => {
   const { recipeDetails, fetchRecipeDetails } = useStoreContext();
   const { id } = useParams();
@@ -36,7 +39,11 @@ const RecipeDetails = () => {
     return (
       <>
         <Grid item xs={10}>
-          <img src={image} alt={name} className={styles.image} />
+          <img
+            src={image || defaultImage}
+            alt={name}
+            className={styles.image}
+          />
         </Grid>
         <h1>{decode(name)}</h1>
         <div>

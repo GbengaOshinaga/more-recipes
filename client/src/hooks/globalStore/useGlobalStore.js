@@ -37,7 +37,8 @@ export default function useGlobalStore() {
     editReview,
     deleteReview,
     fetchUserRecipes,
-    createRecipe
+    createRecipe,
+    deleteRecipe
   } = useMemo(() => operations(actions), [actions]);
 
   return {
@@ -64,6 +65,7 @@ export default function useGlobalStore() {
     editReview,
     deleteReview,
     fetchUserRecipes,
-    createRecipe
+    createRecipe,
+    deleteRecipe
   };
 }

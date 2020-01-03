@@ -481,8 +481,13 @@ const UserRecipes = () => {
   const [currentRecipeId, setCurrentRecipeId] = useState(0);
   const [values, setValues] = useState(initialValues);
   const [isEditing, setIsEditing] = useState(false);
-  const { fetchUserRecipes, userRecipes, createRecipe } = useStoreContext();
-  const { openDialog, renderAlertDialog } = useAlertDialog();
+  const {
+    fetchUserRecipes,
+    userRecipes,
+    createRecipe,
+    deleteRecipe
+  } = useStoreContext();
+  const { openDialog, closeDialog, renderAlertDialog } = useAlertDialog();
   const { openModal, renderModalForm, clearForm } = useModalForm();
 
   const isFetching = getIsFetchingUserRecipes(userRecipes);
@@ -524,6 +529,16 @@ const UserRecipes = () => {
 
   const onSubmitEdit = () => {};
 
+  const onDelete = () => {
+    deleteRecipe(currentRecipeId);
+    closeDialog();
+  };
+
+  const onDeleteClick = recipeId => {
+    setCurrentRecipeId(recipeId);
+    openDialog();
+  };
+
   const renderActions = recipe => {
     return (
       <CardActions disableSpacing>
@@ -533,7 +548,10 @@ const UserRecipes = () => {
         >
           <Edit />
         </IconButton>
-        <IconButton aria-label="delete recipe" onClick={openDialog}>
+        <IconButton
+          aria-label="delete recipe"
+          onClick={() => onDeleteClick(recipe.id)}
+        >
           <Delete />
         </IconButton>
       </CardActions>
@@ -551,7 +569,7 @@ const UserRecipes = () => {
         recipes={recipes}
         renderActions={renderActions}
       />
-      {renderAlertDialog('Delete this recipe?')}
+      {renderAlertDialog('Delete this recipe?', onDelete)}
       {renderModalForm({
         title: isEditing ? 'Edit Recipe' : 'Create Recipe',
         initialValues: values,
