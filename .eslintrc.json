@@ -16,7 +16,8 @@
     "document": false,
     "$": false,
     "fetch": false,
-    "FormData": false
+    "FormData": false,
+    "DOMParser": false
   },
   "rules": {
     "one-var": 0,

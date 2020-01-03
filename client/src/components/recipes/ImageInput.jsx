@@ -32,13 +32,15 @@ const ImageInput = ({ image, setFieldValue }) => {
           Upload
         </Button>
       </label>
-      <img
-        src={image}
-        alt="recipe"
-        width="400"
-        height="300"
-        className={styles.uploadImage}
-      />
+      {image ? (
+        <img
+          src={image}
+          alt="recipe"
+          width="400"
+          height="300"
+          className={styles.uploadImage}
+        />
+      ) : null}
     </ListItem>
   );
 };

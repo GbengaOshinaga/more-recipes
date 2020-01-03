@@ -1,7 +1,12 @@
 import { api, logger } from '../../../utils';
 
 const operations = actions => {
-  const { setIsFetchingUserRecipes, saveUserRecipes } = actions;
+  const {
+    setIsFetchingUserRecipes,
+    saveUserRecipes,
+    setIsCreatingRecipe,
+    saveRecipe
+  } = actions;
 
   const fetchUserRecipes = async () => {
     setIsFetchingUserRecipes(true);
@@ -16,8 +21,37 @@ const operations = actions => {
     }
   };
 
+  const createRecipe = async (data, onSuccess) => {
+    setIsCreatingRecipe(true);
+    const { uploadedImage, ingredients, ...values } = data;
+    let imageUploadResponse;
+    try {
+      if (uploadedImage instanceof File) {
+        imageUploadResponse = await api.uploadImage(uploadedImage);
+      }
+
+      const recipeData = { ingredients: ingredients.join(','), ...values };
+
+      if (imageUploadResponse) {
+        const { secure_url: secureUrl } = imageUploadResponse;
+        recipeData.image = secureUrl;
+      }
+
+      logger('recipeData', recipeData);
+      const response = await api.createRecipe(recipeData);
+      logger('Create recipe', response);
+      saveRecipe(response?.data?.recipe);
+      onSuccess?.();
+    } catch (error) {
+      logger('Create recipe error', error);
+    } finally {
+      setIsCreatingRecipe(false);
+    }
+  };
+
   return {
-    fetchUserRecipes
+    fetchUserRecipes,
+    createRecipe
   };
 };
 

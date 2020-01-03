@@ -481,15 +481,18 @@ const UserRecipes = () => {
   const [currentRecipeId, setCurrentRecipeId] = useState(0);
   const [values, setValues] = useState(initialValues);
   const [isEditing, setIsEditing] = useState(false);
-  const { fetchUserRecipes, userRecipes } = useStoreContext();
+  const { fetchUserRecipes, userRecipes, createRecipe } = useStoreContext();
   const { openDialog, renderAlertDialog } = useAlertDialog();
-  const { openModal, renderModalForm } = useModalForm();
+  const { openModal, renderModalForm, clearForm } = useModalForm();
 
   const isFetching = getIsFetchingUserRecipes(userRecipes);
   const recipes = getUserRecipes(userRecipes);
 
   useEffect(() => {
-    fetchUserRecipes();
+    if (!recipes.length) {
+      fetchUserRecipes();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [fetchUserRecipes]);
 
   const onClickEdit = recipeId => {
@@ -511,8 +514,15 @@ const UserRecipes = () => {
   const onClickAdd = () => {
     setValues(initialValues);
     setIsEditing(false);
+    clearForm();
     openModal();
   };
+
+  const onSubmitCreate = (formValues, { resetForm }) => {
+    createRecipe(formValues, resetForm);
+  };
+
+  const onSubmitEdit = () => {};
 
   const renderActions = recipe => {
     return (
@@ -544,7 +554,8 @@ const UserRecipes = () => {
       {renderAlertDialog('Delete this recipe?')}
       {renderModalForm({
         title: isEditing ? 'Edit Recipe' : 'Create Recipe',
-        initialValues: values
+        initialValues: values,
+        onSaveClick: isEditing ? onSubmitEdit : onSubmitCreate
       })}
     </div>
   );

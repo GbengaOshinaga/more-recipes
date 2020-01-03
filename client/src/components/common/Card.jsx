@@ -9,6 +9,7 @@ import CardContent from '@material-ui/core/CardContent';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import Typography from '@material-ui/core/Typography';
 import styles from './Card.modules.scss';
+import { decode } from '../../utils';
 
 const propTypes = {
   image: PropTypes.string,
@@ -28,11 +29,12 @@ const defaultProps = {
  *
  * @returns {String} formatted content
  */
-function formatContent(content, maxLength = 40) {
-  if (content.length > maxLength) {
-    return `${content.slice(0, maxLength).trim()}...`;
+function formatContent(content, maxLength = 45) {
+  const decodedString = decode(content);
+  if (decodedString.length > maxLength) {
+    return `${decodedString.slice(0, maxLength).trim()}...`;
   }
-  return content;
+  return decodedString;
 }
 
 /**

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useRef } from 'react';
 import { Formik } from 'formik';
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
@@ -32,7 +32,12 @@ const Transition = React.forwardRef((props, ref) => {
 
 export default function useModalForm() {
   const classes = useStyles();
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
+  const shouldResetForm = useRef(false);
+
+  const clearForm = () => {
+    shouldResetForm.current = true;
+  };
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -56,7 +61,14 @@ export default function useModalForm() {
         <Typography variant="h6" className={classes.title}>
           {title}
         </Typography>
-        <Button autoFocus color="inherit" onClick={onSaveClick}>
+        <Button
+          autoFocus
+          color="inherit"
+          onClick={() => {
+            onSaveClick();
+            handleClose();
+          }}
+        >
           save
         </Button>
       </Toolbar>
@@ -81,8 +93,12 @@ export default function useModalForm() {
 
   const renderModalForm = ({ title, initialValues, onSaveClick }) => {
     return (
-      <Formik enableReinitialize initialValues={initialValues}>
-        {({ values, setFieldValue }) => {
+      <Formik
+        enableReinitialize
+        initialValues={initialValues}
+        onSubmit={onSaveClick}
+      >
+        {({ values, setFieldValue, handleSubmit }) => {
           const { name, description, ingredients, image } = values;
           return (
             <div>
@@ -92,7 +108,7 @@ export default function useModalForm() {
                 onClose={handleClose}
                 TransitionComponent={Transition}
               >
-                {renderAppBar(title, onSaveClick)}
+                {renderAppBar(title, handleSubmit)}
                 <form>
                   <List>
                     {renderTextField({
@@ -128,6 +144,7 @@ export default function useModalForm() {
   return {
     openModal: handleClickOpen,
     closeModal: handleClose,
-    renderModalForm
+    renderModalForm,
+    clearForm
   };
 }

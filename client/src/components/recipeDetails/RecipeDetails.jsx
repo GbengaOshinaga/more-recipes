@@ -8,6 +8,7 @@ import {
   getIsFetchingRecipeDetails,
   getRecipeDetails
 } from '../../hooks/globalStore';
+import { decode } from '../../utils';
 import useActions from '../../hooks/useActions';
 import NavBar from '../common/NavBar';
 import Reviews from './Reviews';
@@ -37,15 +38,15 @@ const RecipeDetails = () => {
         <Grid item xs={10}>
           <img src={image} alt={name} className={styles.image} />
         </Grid>
-        <h1>{name}</h1>
+        <h1>{decode(name)}</h1>
         <div>
           <h6>Description</h6>
-          <p>{description}</p>
+          <p>{decode(description)}</p>
         </div>
         <div>
           <h6>Ingredients</h6>
           {ingredients?.map(ingredient => (
-            <li key={ingredient}>{ingredient}</li>
+            <li key={ingredient}>{decode(ingredient)}</li>
           ))}
         </div>
         {renderActions(recipe)}
