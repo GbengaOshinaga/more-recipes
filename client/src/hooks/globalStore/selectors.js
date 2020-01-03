@@ -67,3 +67,8 @@ export const getIsFetchingNextReviews = reviews =>
   reviews?.isFetchingNextReviews ?? false;
 
 export const getIsAddingReview = reviews => reviews?.isAddingReview ?? false;
+
+export const getIsFetchingUserRecipes = userRecipes =>
+  userRecipes?.isFetching ?? false;
+
+export const getUserRecipes = userRecipes => userRecipes?.recipes ?? emptyArr;

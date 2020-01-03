@@ -12,13 +12,17 @@ import recipeDetails, {
 import reviews, {
   initialState as reviewsInitialState
 } from './reviews/reducers';
+import userRecipes, {
+  initialState as userRecipesInitialState
+} from './userRecipes/reducers';
 
 export default combineReducers({
   allRecipes,
   mostFavoritedRecipes,
   search,
   recipeDetails,
-  reviews
+  reviews,
+  userRecipes
 });
 
 export const initialState = {
@@ -26,5 +30,6 @@ export const initialState = {
   mostFavoritedRecipes: mostFavoritedInitialState,
   search: searchInitialState,
   recipeDetails: recipeDetailsInitialState,
-  reviews: reviewsInitialState
+  reviews: reviewsInitialState,
+  userRecipes: userRecipesInitialState
 };

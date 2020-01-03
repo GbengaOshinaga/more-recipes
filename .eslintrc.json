@@ -49,6 +49,14 @@
     "react/jsx-props-no-spreading": "off",
     "no-unused-expressions": "off",
     "eqeqeq": "off",
+    "jsx-a11y/label-has-associated-control": [
+      2,
+      {
+        "required": {
+          "every": ["id"]
+        }
+      }
+    ],
     "valid-jsdoc": [
       "error",
       {

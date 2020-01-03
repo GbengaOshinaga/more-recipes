@@ -31,7 +31,9 @@ const api = {
     fetch.post(`${RECIPES_BASE_URL}/${recipeId}/reviews`, { review }),
   editReview: (reviewId, review) =>
     fetch.put(`${RECIPES_BASE_URL}/${reviewId}/reviews`, { review }),
-  deleteReview: reviewId => fetch.del(`${RECIPES_BASE_URL}/${reviewId}/reviews`)
+  deleteReview: reviewId =>
+    fetch.del(`${RECIPES_BASE_URL}/${reviewId}/reviews`),
+  getUserRecipes: () => fetch.get(`${USERS_BASE_URL}/recipes`)
 };
 
 export default api;
