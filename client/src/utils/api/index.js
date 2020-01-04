@@ -10,15 +10,15 @@ const api = {
   signOut: () => fetch.del(`${USERS_BASE_URL}/signOut`),
   getAllRecipes: nextUrl => fetch.get(nextUrl || `${RECIPES_BASE_URL}`),
   getMostFavoritedRecipes: () =>
-    fetch.get(`${RECIPES_BASE_URL}/most_favourited`),
+    fetch.get(`${RECIPES_BASE_URL}/most_favorited`),
   upvoteRecipe: recipeId =>
     fetch.post(`${RECIPES_BASE_URL}/upvote/${recipeId}`),
   downvoteRecipe: recipeId =>
     fetch.post(`${RECIPES_BASE_URL}/downvote/${recipeId}`),
   favoriteRecipe: recipeId =>
-    fetch.post(`${USERS_BASE_URL}/recipes/${recipeId}/favourites`),
+    fetch.post(`${USERS_BASE_URL}/recipes/${recipeId}/favorites`),
   deleteFavorite: recipeId =>
-    fetch.del(`${USERS_BASE_URL}/recipes/${recipeId}/favourites`),
+    fetch.del(`${USERS_BASE_URL}/recipes/${recipeId}/favorites`),
   searchRecipes: (searchTerm, nextUrl) => {
     const url = nextUrl || `${RECIPES_BASE_URL}?query=${searchTerm}`;
 
@@ -49,7 +49,9 @@ const api = {
       {},
       false
     );
-  }
+  },
+  getUserFavorites: () => fetch.get(`${USERS_BASE_URL}/recipes/favorites`),
+  getFavoritesIds: () => fetch.get(`${USERS_BASE_URL}/recipes/favoritesIds`)
 };
 
 export default api;

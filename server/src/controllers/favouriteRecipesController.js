@@ -45,6 +45,22 @@ export const getFavouriteRecipes = async (req, res) => {
 
 /*
   |--------------------------------------------------------------------------
+  | Get user favorites Ids controller
+  |--------------------------------------------------------------------------
+*/
+export const getUserFavoritesIds = async (req, res) => {
+  const { user: { userId } = {} } = req;
+
+  tryCatch(res, async () => {
+    const user = await User.findById(userId);
+    const favoritesId = await user.getFavouriteRecipes({ attributes: ['id'] });
+
+    return res.successResponse({ favoritesId });
+  });
+};
+
+/*
+  |--------------------------------------------------------------------------
   | Delete favourite controller
   |--------------------------------------------------------------------------
 */

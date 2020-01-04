@@ -81,20 +81,3 @@ export const revertVoteState = (state, action) => {
     })
   };
 };
-
-export const updateFavoriteState = (state, action) => {
-  const {
-    payload: { recipeId, hasFavorited }
-  } = action;
-  if (hasFavorited) {
-    return {
-      ...state,
-      favourites: state.favourites.filter(favorite => favorite.id !== recipeId)
-    };
-  }
-
-  return {
-    ...state,
-    favourites: state.favourites.concat({ id: recipeId })
-  };
-};

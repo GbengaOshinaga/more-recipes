@@ -10,8 +10,6 @@ const operations = actions => {
     updateUpvoteRevert,
     updateDownvoteOptimistically,
     updateDownvoteRevert,
-    updateFavoriteOptimistically,
-    updateFavoriteRevert,
     saveNextRecipes
   } = actions;
   const userId = getUserId();
@@ -61,24 +59,11 @@ const operations = actions => {
     }
   };
 
-  const favoriteRecipe = async (recipeId, hasFavorited) => {
-    updateFavoriteOptimistically(recipeId, hasFavorited);
-    try {
-      hasFavorited
-        ? await api.deleteFavorite(recipeId)
-        : await api.favoriteRecipe(recipeId);
-    } catch (error) {
-      logger('Favorite', error);
-      updateFavoriteRevert(recipeId, !hasFavorited);
-    }
-  };
-
   return {
     fetchRecipes,
     fetchNextRecipes,
     upvoteRecipe,
-    downvoteRecipe,
-    favoriteRecipe
+    downvoteRecipe
   };
 };
 

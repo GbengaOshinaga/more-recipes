@@ -7,6 +7,7 @@ const operations = actions => {
     setIsFetchingMostFav(true);
     try {
       const response = await api.getMostFavoritedRecipes();
+      logger('Most Fav Response', response);
       saveMostFavorites(response?.data);
     } catch (error) {
       logger('Most Fav Fetch', error);

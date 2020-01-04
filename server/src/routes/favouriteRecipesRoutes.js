@@ -1,32 +1,38 @@
-import * as favouriteRecipesController from '../controllers/favouriteRecipesController';
-import { authenticate } from '../middlewares';
+import * as favoriteRecipesController from '../controllers/favouriteRecipesController';
+import { authenticate, getUser } from '../middlewares';
 
 const usersRecipesBaseUrl = '/api/v1/users/recipes';
 
 export default app => {
   app.get(
-    '/api/v1/recipes/most_favourited',
-    favouriteRecipesController.getMostFavourited
+    '/api/v1/recipes/most_favorited',
+    favoriteRecipesController.getMostFavourited
   );
 
   // Add a favourite recipe for a user
   app.post(
-    `${usersRecipesBaseUrl}/:id/favourites`,
+    `${usersRecipesBaseUrl}/:id/favorites`,
     authenticate,
-    favouriteRecipesController.addFavourite
+    favoriteRecipesController.addFavourite
   );
 
   // Get all favourite recipes for a user
   app.get(
-    `${usersRecipesBaseUrl}/favourites`,
+    `${usersRecipesBaseUrl}/favorites`,
     authenticate,
-    favouriteRecipesController.getFavouriteRecipes
+    favoriteRecipesController.getFavouriteRecipes
+  );
+
+  app.get(
+    `${usersRecipesBaseUrl}/favoritesIds`,
+    getUser,
+    favoriteRecipesController.getUserFavoritesIds
   );
 
   // Delete favourite recipe for a user
   app.delete(
-    `${usersRecipesBaseUrl}/:id/favourites`,
+    `${usersRecipesBaseUrl}/:id/favorites`,
     authenticate,
-    favouriteRecipesController.deleteFavourite
+    favoriteRecipesController.deleteFavourite
   );
 };
