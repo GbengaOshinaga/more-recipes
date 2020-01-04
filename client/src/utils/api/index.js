@@ -35,7 +35,8 @@ const api = {
     fetch.del(`${RECIPES_BASE_URL}/${reviewId}/reviews`),
   getUserRecipes: () => fetch.get(`${USERS_BASE_URL}/recipes`),
   createRecipe: data => fetch.post(`${RECIPES_BASE_URL}`, data),
-  editRecipe: data => fetch.put(`${RECIPES_BASE_URL}`, data),
+  editRecipe: (data, recipeId) =>
+    fetch.put(`${RECIPES_BASE_URL}/${recipeId}`, data),
   deleteRecipe: recipeId => fetch.del(`${RECIPES_BASE_URL}/${recipeId}`),
   uploadImage: image => {
     const formData = new FormData();
@@ -44,7 +45,9 @@ const api = {
 
     return fetch.post(
       'https://api.cloudinary.com/v1_1/king-more-recipes/image/upload',
-      formData
+      formData,
+      {},
+      false
     );
   }
 };

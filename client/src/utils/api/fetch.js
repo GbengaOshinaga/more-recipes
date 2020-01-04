@@ -11,12 +11,25 @@ export default (function() {
    * @returns {Promise} response
    */
 
-  function commonFetch(url, method, data, headers = {}) {
-    const defaultHeader = { 'Content-Type': 'application/json', ...headers };
-    const options = { method, headers: defaultHeader, credentials: 'include' };
+  function commonFetch(
+    url,
+    method,
+    data,
+    headers = {},
+    includeCredentials = true
+  ) {
+    const defaultHeader = {
+      'Content-Type': 'application/json',
+      ...headers
+    };
+    const options = { method, headers: defaultHeader };
 
     if (data) {
       options.body = data instanceof FormData ? data : JSON.stringify(data);
+    }
+
+    if (includeCredentials) {
+      options.credentials = 'include';
     }
 
     return fetch(url, options).then(response => {
@@ -43,11 +56,12 @@ export default (function() {
    * @param {String} url
    * @param {Object} data
    * @param {Object} headers
+   * @param {Boolean} includeCredentials
    *
    * @returns {Promise} response
    */
-  function post(url, data, headers) {
-    return commonFetch(url, 'post', data, headers);
+  function post(url, data, headers, includeCredentials) {
+    return commonFetch(url, 'post', data, headers, includeCredentials);
   }
 
   /**

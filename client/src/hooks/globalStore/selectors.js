@@ -72,3 +72,6 @@ export const getIsFetchingUserRecipes = userRecipes =>
   userRecipes?.isFetching ?? false;
 
 export const getUserRecipes = userRecipes => userRecipes?.recipes ?? emptyArr;
+
+export const getIsCreatingOrEditingRecipe = userRecipes =>
+  userRecipes?.isLoading ?? false;

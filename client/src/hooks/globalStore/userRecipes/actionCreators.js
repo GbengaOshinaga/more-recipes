@@ -1,9 +1,10 @@
 export const SET_IS_FETCHING_USER_RECIPES = 'SET_IS_FETCHING_USER_RECIPES';
 export const SAVE_USER_RECIPES = 'SAVE_USER_RECIPES';
-export const SET_IS_CREATING_RECIPE = 'SET_IS_CREATING_RECIPE';
+export const SET_IS_LOADING = 'SET_IS_LOADING';
 export const SAVE_RECIPE = 'SAVE_RECIPE';
 export const DELETE_RECIPE_OPTIMISTICALLY = 'DELETE_RECIPE_OPTIMISTICALLY';
 export const DELETE_RECIPE_REVERT = 'DELETE_RECIPE_REVERT';
+export const EDIT_RECIPE = 'EDIT_RECIPE';
 
 export const setIsFetchingUserRecipes = isFetching => ({
   type: SET_IS_FETCHING_USER_RECIPES,
@@ -15,8 +16,8 @@ export const saveUserRecipes = recipes => ({
   payload: recipes
 });
 
-export const setIsCreatingRecipe = isCreatingRecipe => ({
-  type: SET_IS_CREATING_RECIPE,
+export const setIsLoading = isCreatingRecipe => ({
+  type: SET_IS_LOADING,
   payload: isCreatingRecipe
 });
 
@@ -33,4 +34,9 @@ export const deleteRecipeOptimistically = recipeId => ({
 export const deleteRecipeRevert = recipeId => ({
   type: DELETE_RECIPE_REVERT,
   payload: recipeId
+});
+
+export const editRecipe = recipe => ({
+  type: EDIT_RECIPE,
+  payload: recipe
 });

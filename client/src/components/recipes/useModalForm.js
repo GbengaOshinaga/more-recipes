@@ -10,11 +10,13 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import CloseIcon from '@material-ui/icons/Close';
 import Slide from '@material-ui/core/Slide';
 import TextField from '@material-ui/core/TextField';
 import IngredientsInput from './IngredientsInput';
 import ImageInput from './ImageInput';
+import styles from './ModalForm.modules.scss';
 
 const useStyles = makeStyles(theme => ({
   appBar: {
@@ -47,7 +49,7 @@ export default function useModalForm() {
     setOpen(false);
   };
 
-  const renderAppBar = (title, onSaveClick) => (
+  const renderAppBar = (title, onSaveClick, isLoading) => (
     <AppBar className={classes.appBar}>
       <Toolbar>
         <IconButton
@@ -61,16 +63,23 @@ export default function useModalForm() {
         <Typography variant="h6" className={classes.title}>
           {title}
         </Typography>
-        <Button
-          autoFocus
-          color="inherit"
-          onClick={() => {
-            onSaveClick();
-            handleClose();
-          }}
-        >
-          save
-        </Button>
+        <div className={styles.buttonContainer}>
+          <Button
+            disabled={isLoading}
+            autoFocus
+            color="inherit"
+            onClick={onSaveClick}
+          >
+            save
+          </Button>
+          {isLoading ? (
+            <CircularProgress
+              size={24}
+              color="white"
+              className={styles.buttonProgress}
+            />
+          ) : null}
+        </div>
       </Toolbar>
     </AppBar>
   );
@@ -91,7 +100,12 @@ export default function useModalForm() {
     );
   };
 
-  const renderModalForm = ({ title, initialValues, onSaveClick }) => {
+  const renderModalForm = ({
+    title,
+    initialValues,
+    onSaveClick,
+    isLoading
+  }) => {
     return (
       <Formik
         enableReinitialize
@@ -108,7 +122,7 @@ export default function useModalForm() {
                 onClose={handleClose}
                 TransitionComponent={Transition}
               >
-                {renderAppBar(title, handleSubmit)}
+                {renderAppBar(title, handleSubmit, isLoading)}
                 <form>
                   <List>
                     {renderTextField({

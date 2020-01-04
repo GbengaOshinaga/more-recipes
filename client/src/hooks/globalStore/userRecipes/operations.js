@@ -4,10 +4,11 @@ const operations = actions => {
   const {
     setIsFetchingUserRecipes,
     saveUserRecipes,
-    setIsCreatingRecipe,
+    setIsLoading,
     saveRecipe,
     deleteRecipeOptimistically,
-    deleteRecipeRevert
+    deleteRecipeRevert,
+    editRecipe: editRecipeAction
   } = actions;
 
   const fetchUserRecipes = async () => {
@@ -24,8 +25,8 @@ const operations = actions => {
   };
 
   const createRecipe = async (data, onSuccess) => {
-    setIsCreatingRecipe(true);
-    const { uploadedImage, ingredients, ...values } = data;
+    setIsLoading(true);
+    const { uploadedImage, ingredients, image, ...values } = data;
     let imageUploadResponse;
     try {
       if (uploadedImage instanceof File) {
@@ -47,7 +48,7 @@ const operations = actions => {
     } catch (error) {
       logger('Create recipe error', error);
     } finally {
-      setIsCreatingRecipe(false);
+      setIsLoading(false);
     }
   };
 
@@ -61,10 +62,42 @@ const operations = actions => {
     }
   };
 
+  const editRecipe = async (data, recipeId, onSuccess) => {
+    setIsLoading(true);
+    const { uploadedImage, ingredients, image, ...values } = data;
+    let imageUploadResponse;
+    try {
+      if (uploadedImage instanceof File) {
+        imageUploadResponse = await api.uploadImage(uploadedImage);
+      }
+
+      const recipeData = { ...values };
+      if (ingredients) {
+        recipeData.ingredients = ingredients.join(',');
+      }
+
+      if (imageUploadResponse) {
+        const { secure_url: secureUrl } = imageUploadResponse;
+        recipeData.image = secureUrl;
+      }
+
+      logger('recipeData', recipeData);
+      const response = await api.editRecipe(recipeData, recipeId);
+      logger('Edit recipe', response);
+      editRecipeAction(response?.data?.updatedRecipe);
+      onSuccess?.();
+    } catch (error) {
+      logger('Edit recipe error', await error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return {
     fetchUserRecipes,
     createRecipe,
-    deleteRecipe
+    deleteRecipe,
+    editRecipe
   };
 };
 
