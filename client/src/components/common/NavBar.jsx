@@ -107,21 +107,28 @@ export default function NavBar({ searchTerm, onChangeSearchTerm }) {
     history.push(path);
   };
 
-  const renderLoggedInLinks = () => (
-    <>
-      <MenuItem onClick={() => onMenuPress('/profile')}>Profile</MenuItem>
-      <MenuItem onClick={() => onMenuPress('/my_recipes')}>My Recipes</MenuItem>
-      <MenuItem onClick={() => onMenuPress('/favourites')}>Favorites</MenuItem>
-      <MenuItem onClick={() => onMenuPress('/logout')}>Logout</MenuItem>
-    </>
-  );
+  const renderMenuItem = (path, text) => {
+    return (
+      <MenuItem
+        key={`${path}-menu-item`}
+        onClick={() => onMenuPress(`/${path}`)}
+      >
+        {text}
+      </MenuItem>
+    );
+  };
 
-  const renderLinks = () => (
-    <>
-      <MenuItem onClick={() => onMenuPress('/signin')}>Sign In</MenuItem>
-      <MenuItem onClick={() => onMenuPress('/signup')}>Sign Up</MenuItem>
-    </>
-  );
+  const renderLoggedInLinks = () => [
+    renderMenuItem('profile', 'Profile'),
+    renderMenuItem('my_recipes', 'My Recipes'),
+    renderMenuItem('favourites', 'Favorites'),
+    renderMenuItem('logout', 'Logout')
+  ];
+
+  const renderLinks = () => [
+    renderMenuItem('signin', 'Sign In'),
+    renderMenuItem('signup', 'Sign Up')
+  ];
 
   const menuId = 'primary-search-account-menu';
   const renderMenu = (

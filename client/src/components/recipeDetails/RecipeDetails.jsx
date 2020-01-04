@@ -8,10 +8,14 @@ import {
   getIsFetchingRecipeDetails,
   getRecipeDetails
 } from '../../hooks/globalStore';
+import { decode } from '../../utils';
 import useActions from '../../hooks/useActions';
 import NavBar from '../common/NavBar';
 import Reviews from './Reviews';
 import styles from './RecipeDetails.modules.scss';
+
+const defaultImage =
+  'https://res.cloudinary.com/king-more-recipes/image/upload/v1518028470/10546i3DAC5A5993C8BC8C_vtqogc.jpg';
 
 const RecipeDetails = () => {
   const { recipeDetails, fetchRecipeDetails } = useStoreContext();
@@ -35,17 +39,21 @@ const RecipeDetails = () => {
     return (
       <>
         <Grid item xs={10}>
-          <img src={image} alt={name} className={styles.image} />
+          <img
+            src={image || defaultImage}
+            alt={name}
+            className={styles.image}
+          />
         </Grid>
-        <h1>{name}</h1>
+        <h1>{decode(name)}</h1>
         <div>
           <h6>Description</h6>
-          <p>{description}</p>
+          <p>{decode(description)}</p>
         </div>
         <div>
           <h6>Ingredients</h6>
           {ingredients?.map(ingredient => (
-            <li key={ingredient}>{ingredient}</li>
+            <li key={ingredient}>{decode(ingredient)}</li>
           ))}
         </div>
         {renderActions(recipe)}

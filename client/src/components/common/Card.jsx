@@ -9,6 +9,7 @@ import CardContent from '@material-ui/core/CardContent';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import Typography from '@material-ui/core/Typography';
 import styles from './Card.modules.scss';
+import { decode } from '../../utils';
 
 const propTypes = {
   image: PropTypes.string,
@@ -21,6 +22,9 @@ const defaultProps = {
   image: ''
 };
 
+const defaultImage =
+  'https://res.cloudinary.com/king-more-recipes/image/upload/v1518028470/10546i3DAC5A5993C8BC8C_vtqogc.jpg';
+
 /**
  * Formats recipe description based on length
  * @param {String} content
@@ -28,11 +32,12 @@ const defaultProps = {
  *
  * @returns {String} formatted content
  */
-function formatContent(content, maxLength = 40) {
-  if (content.length > maxLength) {
-    return `${content.slice(0, maxLength).trim()}...`;
+function formatContent(content, maxLength = 45) {
+  const decodedString = decode(content);
+  if (decodedString.length > maxLength) {
+    return `${decodedString.slice(0, maxLength).trim()}...`;
   }
-  return content;
+  return decodedString;
 }
 
 /**
@@ -58,7 +63,11 @@ function Card({
           title={formatContent(recipeName, 25)}
           subheader={moment(createdAt).format('LL')}
         />
-        <CardMedia className={styles.image} image={image} title={recipeName} />
+        <CardMedia
+          className={styles.image}
+          image={image || defaultImage}
+          title={recipeName}
+        />
         <CardContent>
           <Typography variant="body2" color="textSecondary" component="p">
             {formatContent(recipeDescription)}

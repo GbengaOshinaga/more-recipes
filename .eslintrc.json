@@ -16,7 +16,8 @@
     "document": false,
     "$": false,
     "fetch": false,
-    "FormData": false
+    "FormData": false,
+    "DOMParser": false
   },
   "rules": {
     "one-var": 0,
@@ -49,6 +50,14 @@
     "react/jsx-props-no-spreading": "off",
     "no-unused-expressions": "off",
     "eqeqeq": "off",
+    "jsx-a11y/label-has-associated-control": [
+      2,
+      {
+        "required": {
+          "every": ["id"]
+        }
+      }
+    ],
     "valid-jsdoc": [
       "error",
       {
