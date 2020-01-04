@@ -2,9 +2,7 @@ import {
   UPDATE_UPVOTE_OPTIMISTICALLY,
   UPDATE_UPVOTE_REVERT,
   UPDATE_DOWNVOTE_OPTIMISTICALLY,
-  UPDATE_DOWNVOTE_REVERT,
-  UPDATE_FAVORITE_OPTIMISTICALLY,
-  UPDATE_FAVORITE_REVERT
+  UPDATE_DOWNVOTE_REVERT
 } from '../common/actionCreators';
 
 export const SET_IS_FETCHING_RECIPES = 'SET_IS_FETCHING_RECIPES';
@@ -44,14 +42,4 @@ export const updateDownvoteOptimistically = (recipeId, userId) => ({
 export const updateDownvoteRevert = recipe => ({
   type: UPDATE_DOWNVOTE_REVERT,
   payload: recipe
-});
-
-export const updateFavoriteOptimistically = (recipeId, hasFavorited) => ({
-  type: UPDATE_FAVORITE_OPTIMISTICALLY,
-  payload: { recipeId, hasFavorited }
-});
-
-export const updateFavoriteRevert = (recipeId, hasFavorited) => ({
-  type: UPDATE_FAVORITE_REVERT,
-  payload: { recipeId, hasFavorited }
 });

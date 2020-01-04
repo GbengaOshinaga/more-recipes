@@ -1,7 +1,7 @@
 import db from '../models/index';
 import { getPaginationMeta, ControllerError, tryCatch } from '../utils';
 
-const { Recipes, Sequelize, User } = db;
+const { Recipes, Sequelize } = db;
 
 /*
   |--------------------------------------------------------------------------
@@ -79,13 +79,6 @@ const searchRecipes = async (query, req, res) => {
   return res.successResponse({ recipes, paginationMeta });
 };
 
-const getUserFavouriteRecipesIds = async userId => {
-  const user = await User.findById(userId);
-  const favouritesId = await user.getFavouriteRecipes({ attributes: ['id'] });
-
-  return favouritesId;
-};
-
 /*
   |--------------------------------------------------------------------------
   | Get recipes controller
@@ -93,8 +86,7 @@ const getUserFavouriteRecipesIds = async userId => {
 */
 export const getRecipes = async (req, res) => {
   const {
-    query: { sort, order, from, limit, query },
-    user: { userId } = {}
+    query: { sort, order, from, limit, query }
   } = req;
 
   const getAllRecipes = async sequelizeLiteral => {
@@ -107,10 +99,6 @@ export const getRecipes = async (req, res) => {
     const paginationMeta = await getPaginationMeta(req, Recipes);
 
     const response = { recipes, paginationMeta };
-
-    if (userId) {
-      response.favourites = await getUserFavouriteRecipesIds(userId);
-    }
 
     return res.successResponse(response);
   };

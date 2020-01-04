@@ -7,36 +7,31 @@ import {
   UPDATE_UPVOTE_OPTIMISTICALLY,
   UPDATE_UPVOTE_REVERT,
   UPDATE_DOWNVOTE_OPTIMISTICALLY,
-  UPDATE_DOWNVOTE_REVERT,
-  UPDATE_FAVORITE_OPTIMISTICALLY,
-  UPDATE_FAVORITE_REVERT
+  UPDATE_DOWNVOTE_REVERT
 } from '../common/actionCreators';
 import {
   downvoteRecipe,
   upvoteRecipe,
-  updateFavoriteState,
   revertVoteState
 } from '../common/reducerUtils';
 
 export const initialState = {
   isFetching: false,
   recipes: [],
-  paginationMeta: {},
-  favourites: []
+  paginationMeta: {}
 };
 
 const saveRecipes = (state, action) => {
   const {
     type,
-    payload: { recipes, paginationMeta, favourites = [] }
+    payload: { recipes, paginationMeta }
   } = action;
 
   return {
     ...state,
     recipes:
       type === SAVE_NEXT_RECIPES ? [...state.recipes, ...recipes] : recipes,
-    paginationMeta,
-    favourites
+    paginationMeta
   };
 };
 
@@ -47,10 +42,6 @@ const reducer = (state = initialState, action) => {
     case SAVE_RECIPES:
     case SAVE_NEXT_RECIPES:
       return saveRecipes(state, action);
-    case UPDATE_FAVORITE_OPTIMISTICALLY:
-      return updateFavoriteState(state, action);
-    case UPDATE_FAVORITE_REVERT:
-      return updateFavoriteState(state, action);
     case UPDATE_UPVOTE_OPTIMISTICALLY:
       return upvoteRecipe(state, action);
     case UPDATE_DOWNVOTE_OPTIMISTICALLY:

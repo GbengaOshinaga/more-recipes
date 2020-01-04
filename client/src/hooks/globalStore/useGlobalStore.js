@@ -12,7 +12,8 @@ export default function useGlobalStore() {
       search,
       recipeDetails,
       reviews,
-      userRecipes
+      userRecipes,
+      userFavorites
     },
     dispatch
   ] = useReducer(reducer, initialState);
@@ -39,7 +40,9 @@ export default function useGlobalStore() {
     fetchUserRecipes,
     createRecipe,
     deleteRecipe,
-    editRecipe
+    editRecipe,
+    getUserFavorites,
+    getFavoritesIds
   } = useMemo(() => operations(actions), [actions]);
 
   return {
@@ -50,6 +53,7 @@ export default function useGlobalStore() {
     recipeDetails,
     reviews,
     userRecipes,
+    userFavorites,
     // actions
     fetchRecipes,
     fetchNextRecipes,
@@ -68,6 +72,8 @@ export default function useGlobalStore() {
     fetchUserRecipes,
     createRecipe,
     deleteRecipe,
-    editRecipe
+    editRecipe,
+    getUserFavorites,
+    getFavoritesIds
   };
 }

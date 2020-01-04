@@ -1,11 +1,18 @@
-import React from 'react';
-import { useStoreContext, getFavouritesIds } from './globalStore';
+import React, { useEffect } from 'react';
+import { getFavoritesIds, useStoreContext } from './globalStore';
 import VoteAndFavActions from '../components/common/VoteAndFavActions';
 
 export default function useActions() {
-  const { allRecipes } = useStoreContext();
+  const {
+    userFavorites,
+    getFavoritesIds: fetchFavoriteIds
+  } = useStoreContext();
 
-  const favoritesIds = getFavouritesIds(allRecipes);
+  useEffect(() => {
+    fetchFavoriteIds();
+  }, [fetchFavoriteIds]);
+
+  const favoritesIds = getFavoritesIds(userFavorites);
 
   /**
    * Renders vote and favorite actions

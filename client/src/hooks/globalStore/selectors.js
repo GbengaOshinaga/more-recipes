@@ -25,8 +25,7 @@ export const getRecipesPaginationMeta = allRecipes =>
 export const getSearchResultsPaginationMeta = search =>
   search?.paginationMeta ?? emptyObj;
 
-export const getFavouritesIds = allRecipes =>
-  allRecipes?.favourites ?? emptyArr;
+export const getFavoritesIds = favorites => favorites?.favoritesIds ?? emptyArr;
 
 export const getIsUserAuthenticated = () =>
   Boolean(getItemFromStorage('isAuthenticated'));
@@ -75,3 +74,8 @@ export const getUserRecipes = userRecipes => userRecipes?.recipes ?? emptyArr;
 
 export const getIsCreatingOrEditingRecipe = userRecipes =>
   userRecipes?.isLoading ?? false;
+
+export const getIsFetchingUserFavorites = userFavorites =>
+  userFavorites?.isFetching ?? false;
+
+export const getFavorites = userFavorites => userFavorites?.recipes ?? emptyArr;
