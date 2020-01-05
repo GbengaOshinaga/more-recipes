@@ -12,6 +12,7 @@ const envKeys = Object.keys(env).reduce((prev, next) => {
 
 module.exports = {
   devtool: 'source-map',
+  mode: 'production',
   entry: path.join(__dirname, 'client/src/index.js'),
   target: 'web',
   output: {
@@ -25,14 +26,13 @@ module.exports = {
   plugins: [
     new webpack.optimize.OccurrenceOrderPlugin(),
     new webpack.DefinePlugin(envKeys),
-    new MiniCssExtractPlugin({ filename: 'style.css' }),
-    new webpack.optimize.UglifyJsPlugin()
+    new MiniCssExtractPlugin({ filename: 'style.css' })
   ],
   resolve: {
     extensions: ['.js', '.jsx']
   },
   module: {
-    loaders: [
+    rules: [
       {
         test: /\.js|jsx$/,
         include: path.join(__dirname, 'client/src'),
@@ -42,8 +42,7 @@ module.exports = {
           presets: ['@babel/preset-env']
         }
       },
-      { test: /(\.jpg)$/, use: [{ loader: 'file-loader' }] },
-      { test: /(\.png)$/, use: [{ loader: 'file-loader' }] },
+      { test: /\.(png|svg|jpg|gif)$/, use: [{ loader: 'file-loader' }] },
       {
         test: /\.s?css$/,
         oneOf: [
