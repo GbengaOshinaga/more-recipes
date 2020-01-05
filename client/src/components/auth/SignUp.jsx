@@ -7,8 +7,8 @@ import Header from '../common/Header';
 import Button from '../common/Button';
 import GoogleLoginButton from './GoogleLoginButton';
 
-const defaultUserAvatar =
-  'http://res.cloudinary.com/king-more-recipes/image/upload/v1518031651/Expert-tutor-placeholder_cg9wet.jpg';
+// const defaultUserAvatar =
+//   'http://res.cloudinary.com/king-more-recipes/image/upload/v1518031651/Expert-tutor-placeholder_cg9wet.jpg';
 
 const initialValues = {
   firstName: '',
@@ -16,7 +16,7 @@ const initialValues = {
   email: '',
   password: '',
   confirmPassword: '',
-  profilePic: defaultUserAvatar
+  profilePic: ''
 };
 
 const SignUp = () => {

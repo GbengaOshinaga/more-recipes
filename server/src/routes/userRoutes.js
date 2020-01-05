@@ -28,7 +28,7 @@ export default app => {
   app.delete(`${baseUrl}/signOut`, userController.signOut);
 
   // Edit user information
-  app.post(
+  app.put(
     `${baseUrl}/edit`,
     authenticate,
     errorHandler(getUpdateValidation()),
