@@ -1,16 +1,30 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import InputField from '../common/InputField';
-import Button from '../common/Button';
-import GoogleLoginButton from './GoogleLoginButton';
-import Header from '../common/Header';
+import Avatar from '@material-ui/core/Avatar';
+import Button from '@material-ui/core/Button';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import TextField from '@material-ui/core/TextField';
+import Link from '@material-ui/core/Link';
+import { Link as RouterLink } from 'react-router-dom';
+import Paper from '@material-ui/core/Paper';
+import Grid from '@material-ui/core/Grid';
+import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
+import Typography from '@material-ui/core/Typography';
 import { useSignIn } from '../../hooks/authorization';
+import GoogleLoginButton from './GoogleLoginButton';
+import styles from './SignInStyles';
 
-const SignIn = () => {
+export default function SignIn() {
+  const classes = styles();
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
   const { signIn } = useSignIn();
+
+  const onClickSignIn = event => {
+    event.preventDefault();
+    signIn({ email, password });
+  };
 
   const onGoogleLoginSuccess = response => {
     signIn({
@@ -20,56 +34,94 @@ const SignIn = () => {
   };
 
   return (
-    <div className="sign-body">
-      <Header
-        mainLinks={
-          <>
-            <li>
-              <Link id="catalog-link" to="/catalog">
-                Catalog
-              </Link>
-            </li>
-          </>
-        }
-      />
-      <div className="container">
-        <div className="col s12">
-          <div className="signin-box">
-            <InputField
+    <Grid container component="main" className={classes.root}>
+      <CssBaseline />
+      <Grid item xs={false} sm={4} md={7} className={classes.image} />
+      <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
+        <Grid direction="row" justify="center" alignItems="center" container>
+          <Link
+            to="/catalog"
+            variant="body1"
+            color="secondary"
+            component={RouterLink}
+          >
+            Catalog
+          </Link>
+        </Grid>
+        <div className={classes.paper}>
+          <Avatar className={classes.avatar}>
+            <LockOutlinedIcon />
+          </Avatar>
+          <Typography component="h1" variant="h5">
+            Sign in
+          </Typography>
+          <form className={classes.form} noValidate>
+            <TextField
+              variant="outlined"
+              margin="normal"
+              required
+              fullWidth
               id="email"
-              type="email"
-              onChange={e => setEmail(e.target.value)}
-              value={email}
               label="Email Address"
-              dataError="Invalid Email Address"
+              name="email"
+              autoComplete="email"
+              autoFocus
+              value={email}
+              onChange={e => setEmail(e.target.value)}
+              color="secondary"
             />
-            <InputField
-              id="password"
+            <TextField
+              variant="outlined"
+              margin="normal"
+              required
+              fullWidth
+              name="password"
+              label="Password"
               type="password"
+              id="password"
+              autoComplete="current-password"
               onChange={e => setPassword(e.target.value)}
               value={password}
-              label="Password"
+              color="secondary"
             />
             <Button
-              onClick={() => signIn({ email, password })}
-              className="btn waves-effect waves-light red darken-2"
               type="submit"
-              name="action"
-              materialIcon="arrow_forward"
-              buttonText="Sign In"
-            />
-            <GoogleLoginButton
-              onSuccess={onGoogleLoginSuccess}
-              buttonText="Sign In With Google"
-            />
-            <p>
-              Not a member? <Link to="/signup">Sign Up</Link>
-            </p>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-};
+              fullWidth
+              variant="contained"
+              color="primary"
+              className={classes.submit}
+              onClick={onClickSignIn}
+            >
+              Sign In
+            </Button>
 
-export default SignIn;
+            <Grid
+              container
+              direction="column"
+              justify="space-between"
+              alignItems="center"
+              spacing={2}
+            >
+              <Grid item>
+                <GoogleLoginButton
+                  onSuccess={onGoogleLoginSuccess}
+                  buttonText="Sign In With Google"
+                />
+              </Grid>
+              <Grid item>
+                <Link
+                  to="/signup"
+                  variant="body2"
+                  color="secondary"
+                  component={RouterLink}
+                >
+                  Don&apos;t have an account? Sign Up
+                </Link>
+              </Grid>
+            </Grid>
+          </form>
+        </div>
+      </Grid>
+    </Grid>
+  );
+}

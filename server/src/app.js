@@ -4,11 +4,9 @@ import logger from 'morgan';
 import bodyParser from 'body-parser';
 import cors from 'cors';
 import path from 'path';
-import webpack from 'webpack';
 import dotenv from 'dotenv';
 import cookieParser from 'cookie-parser';
 import swaggerUI from 'swagger-ui-express';
-import config from '../../webpack.config.dev';
 import routes from './routes/index';
 import db from './models/index';
 
@@ -19,18 +17,7 @@ const { COOKIE_SECRET } = process.env;
 // Set up the express app
 const app = new Express();
 
-// app.use('/', Express.static(path.join(__dirname, '../../dist')));
-
-// if (process.env.NODE_ENV === 'development') {
-//   const compiler = webpack(config);
-
-//   app.use(require('webpack-dev-middleware')(compiler, {
-//     noInfo: true,
-//     publicPath: config.output.publicPath
-//   }));
-
-//   app.use(require('webpack-hot-middleware')(compiler));
-// }
+app.use('/', Express.static(path.join(__dirname, '../../dist')));
 
 app.use(cors({ credentials: true, origin: true }));
 app.options('*', cors());
@@ -58,9 +45,9 @@ app.all('/api/v1/*', (req, res) => {
   });
 });
 
-// app.get('/*', (req, res) => {
-//   res.sendFile(path.join(__dirname, 'index.html'));
-// });
+app.get('/*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'index.html'));
+});
 
 const port = process.env.PORT || 8000;
 
