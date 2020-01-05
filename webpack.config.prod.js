@@ -1,10 +1,14 @@
 const webpack = require('webpack');
 const path = require('path');
+const dotenv = require('dotenv');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
-const GLOBALS = {
-  'process.env.NODE_ENV': JSON.stringify('production')
-};
+const env = dotenv.config().parsed;
+
+const envKeys = Object.keys(env).reduce((prev, next) => {
+  prev[`process.env.${next}`] = JSON.stringify(env[next]);
+  return prev;
+}, {});
 
 module.exports = {
   devtool: 'source-map',
@@ -20,7 +24,7 @@ module.exports = {
   },
   plugins: [
     new webpack.optimize.OccurrenceOrderPlugin(),
-    new webpack.DefinePlugin(GLOBALS),
+    new webpack.DefinePlugin(envKeys),
     new MiniCssExtractPlugin({ filename: 'style.css' }),
     new webpack.optimize.UglifyJsPlugin()
   ],
@@ -35,28 +39,29 @@ module.exports = {
         loader: 'babel-loader',
         query: {
           plugins: ['@babel/transform-runtime'],
-          presets: ['es2015', 'stage-0', 'react']
+          presets: ['@babel/preset-env']
         }
       },
       { test: /(\.jpg)$/, use: [{ loader: 'file-loader' }] },
       { test: /(\.png)$/, use: [{ loader: 'file-loader' }] },
       {
-        test: /\.css$/,
-        use: [{
-          loader: 'style-loader'
-        }, {
-          loader: 'css-loader',
-        }, {
-          loader: 'sass-loader',
-        }]
-      },
-      {
-        test: /\.scss$/,
-        use: [{
-          loader: MiniCssExtractPlugin.loader
-        },
-        'css-loader',
-        'sass-loader',
+        test: /\.s?css$/,
+        oneOf: [
+          {
+            test: /\.module\.s?css$/,
+            use: [
+              'style-loader',
+              { loader: 'css-loader', options: { modules: true } },
+              'sass-loader'
+            ]
+          },
+          {
+            use: [
+              'style-loader',
+              { loader: 'css-loader', options: { modules: true } },
+              'sass-loader'
+            ]
+          }
         ]
       }
     ]

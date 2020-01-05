@@ -1,11 +1,18 @@
 import React from 'react';
 import { Formik } from 'formik';
-import { Link } from 'react-router-dom';
-import { useSignUp } from '../../hooks/authorization';
-import InputField from '../common/InputField';
-import Header from '../common/Header';
-import Button from '../common/Button';
+import Avatar from '@material-ui/core/Avatar';
+import Button from '@material-ui/core/Button';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import TextField from '@material-ui/core/TextField';
+import Link from '@material-ui/core/Link';
+import Grid from '@material-ui/core/Grid';
+import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
+import Typography from '@material-ui/core/Typography';
+import Container from '@material-ui/core/Container';
+import { Link as RouterLink } from 'react-router-dom';
 import GoogleLoginButton from './GoogleLoginButton';
+import { useSignUp } from '../../hooks/authorization';
+import styles from './SignUpStyles';
 
 const initialValues = {
   firstName: '',
@@ -16,7 +23,9 @@ const initialValues = {
   profilePic: ''
 };
 
-const SignUp = () => {
+export default function SignUp() {
+  const classes = styles();
+
   const { signUp } = useSignUp();
 
   const onSubmit = values => {
@@ -39,24 +48,33 @@ const SignUp = () => {
     signUp(data);
   };
 
-  const renderInput = ({
-    id,
-    type,
-    value,
+  const renderTextField = ({
     label,
-    dataError,
+    name,
+    autoComplete,
+    value,
+    key,
     setFieldValue,
-    key
-  }) => (
-    <InputField
-      id={id}
-      type={type}
-      onChange={e => setFieldValue(key, e.target.value)}
-      value={value}
-      label={label}
-      dataError={dataError}
-    />
-  );
+    autoFocus,
+    type
+  }) => {
+    return (
+      <TextField
+        variant="outlined"
+        required
+        fullWidth
+        id={key}
+        label={label}
+        name={name}
+        value={value}
+        type={type}
+        onChange={e => setFieldValue(key, e.target.value)}
+        autoComplete={autoComplete}
+        autoFocus={autoFocus}
+        color="secondary"
+      />
+    );
+  };
 
   return (
     <Formik initialValues={initialValues} onSubmit={onSubmit}>
@@ -70,84 +88,127 @@ const SignUp = () => {
         } = values;
 
         return (
-          <div className="sign-body">
-            <Header
-              catalogId="catalog-nav"
-              mainLinks={
-                <>
-                  <li>
-                    <Link to="/catalog">Catalog</Link>
-                  </li>
-                </>
-              }
-            />
-            <div className="signup-box">
-              {renderInput({
-                id: 'firstName',
-                type: 'text',
-                value: firstName,
-                label: 'First Name',
-                setFieldValue,
-                key: 'firstName',
-                dataError: 'First Name is required'
-              })}
-              {renderInput({
-                id: 'lastName',
-                type: 'text',
-                value: lastName,
-                label: 'Last Name',
-                setFieldValue,
-                key: 'lastName',
-                dataError: 'Last Name is required'
-              })}
-              {renderInput({
-                id: 'email',
-                type: 'email',
-                value: email,
-                label: 'Email Address',
-                setFieldValue,
-                key: 'email',
-                dataError: 'Invalid Email Address'
-              })}
-              {renderInput({
-                id: 'password',
-                type: 'password',
-                value: password,
-                label: 'Password',
-                setFieldValue,
-                key: 'password',
-                dataError: 'Password is required'
-              })}
-              {renderInput({
-                id: 'confirmPassword',
-                type: 'password',
-                value: confirmPassword,
-                label: 'Confirm Password',
-                setFieldValue,
-                key: 'confirmPassword',
-                dataError: 'Confirm Password is required'
-              })}
-              <Button
-                onClick={handleSubmit}
-                className="btn waves-effect waves-light red darken-2"
-                type="submit"
-                name="action"
-                materialIcon="send"
-                buttonText="Submit"
-              />
-              <GoogleLoginButton
-                onSuccess={onGoogleLoginSuccess}
-                buttonText="Sign Up With Google"
-              />
-              <p>
-                Already a member? <Link to="/signin">Sign In</Link>
-              </p>
-            </div>
-          </div>
+          <>
+            <Grid
+              direction="row"
+              justify="center"
+              alignItems="center"
+              container
+            >
+              <Link
+                to="/catalog"
+                variant="body1"
+                color="secondary"
+                component={RouterLink}
+              >
+                Catalog
+              </Link>
+            </Grid>
+            <Container component="main" maxWidth="xs">
+              <CssBaseline />
+              <div className={classes.paper}>
+                <Avatar className={classes.avatar}>
+                  <LockOutlinedIcon />
+                </Avatar>
+                <Typography component="h1" variant="h5">
+                  Sign up
+                </Typography>
+                <form className={classes.form} noValidate>
+                  <Grid container spacing={2}>
+                    <Grid item xs={12} sm={6}>
+                      {renderTextField({
+                        label: 'First Name',
+                        name: 'firstName',
+                        autoComplete: 'fname',
+                        autoFocus: true,
+                        value: firstName,
+                        key: 'firstName',
+                        setFieldValue
+                      })}
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                      {renderTextField({
+                        label: 'Last Name',
+                        name: 'lastName',
+                        autoComplete: 'lname',
+                        value: lastName,
+                        key: 'lastName',
+                        setFieldValue
+                      })}
+                    </Grid>
+                    <Grid item xs={12}>
+                      {renderTextField({
+                        label: 'Email Address',
+                        name: 'email',
+                        autoComplete: 'email',
+                        value: email,
+                        key: 'email',
+                        setFieldValue
+                      })}
+                    </Grid>
+                    <Grid item xs={12}>
+                      {renderTextField({
+                        label: 'Password',
+                        name: 'password',
+                        autoComplete: 'current-password',
+                        value: password,
+                        key: 'password',
+                        type: 'password',
+                        setFieldValue
+                      })}
+                    </Grid>
+                    <Grid item xs={12}>
+                      {renderTextField({
+                        label: 'Confirm Password',
+                        name: 'password',
+                        autoComplete: 'current-password',
+                        value: confirmPassword,
+                        key: 'confirmPassword',
+                        type: 'password',
+                        setFieldValue
+                      })}
+                    </Grid>
+                  </Grid>
+                  <Button
+                    type="submit"
+                    fullWidth
+                    variant="contained"
+                    color="primary"
+                    className={classes.submit}
+                    onClick={handleSubmit}
+                  >
+                    Sign Up
+                  </Button>
+                  <Grid
+                    container
+                    direction="column"
+                    justify="space-between"
+                    alignItems="center"
+                    spacing={2}
+                  >
+                    <Grid item>
+                      <GoogleLoginButton
+                        onSuccess={onGoogleLoginSuccess}
+                        buttonText="Sign Up With Google"
+                      />
+                    </Grid>
+                    <Grid item>
+                      <Link
+                        to="/signin"
+                        variant="body2"
+                        component={RouterLink}
+                        color="secondary"
+                      >
+                        Already have an account? Sign in
+                      </Link>
+                    </Grid>
+                  </Grid>
+                </form>
+              </div>
+            </Container>
+          </>
         );
       }}
     </Formik>
   );
-};
-
-export default SignUp;
+}
