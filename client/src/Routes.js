@@ -4,11 +4,11 @@ import HomePage from './components/home/HomePage';
 import SignIn from './components/auth/SignIn';
 import SignUp from './components/auth/SignUp';
 import SignOut from './components/auth/SignOut';
-import UserRecipes from './components/recipes/UserRecipes';
+import UserRecipes from './components/user/UserRecipes';
 import Profile from './components/user/Profile';
 import CatalogComp from './components/catalog/Catalog';
 import RecipeDetailsComp from './components/recipeDetails/RecipeDetails';
-import FavouriteRecipesComp from './components/recipes/FavouriteRecipes';
+import FavouriteRecipesComp from './components/user/FavouriteRecipes';
 import PrivateRoute from './PrivateRoute';
 import NotFound from './components/404Page';
 

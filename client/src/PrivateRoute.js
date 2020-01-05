@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { Route } from 'react-router';
 import { Redirect } from 'react-router-dom';
-import Preloader from './components/common/Preloader';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import { getIsUserAuthenticated } from './hooks/globalStore';
 
 const PrivateRoute = ({ component: Component, ...rest }) => {
@@ -23,7 +23,7 @@ const PrivateRoute = ({ component: Component, ...rest }) => {
   }, []);
 
   if (loading) {
-    return <Preloader />;
+    return <CircularProgress />;
   }
 
   if (authenticated) {

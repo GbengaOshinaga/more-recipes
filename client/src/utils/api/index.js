@@ -51,7 +51,9 @@ const api = {
     );
   },
   getUserFavorites: () => fetch.get(`${USERS_BASE_URL}/recipes/favorites`),
-  getFavoritesIds: () => fetch.get(`${USERS_BASE_URL}/recipes/favoritesIds`)
+  getFavoritesIds: () => fetch.get(`${USERS_BASE_URL}/recipes/favoritesIds`),
+  getUser: userId => fetch.get(`${USERS_BASE_URL}/${userId}`),
+  editUser: user => fetch.put(`${USERS_BASE_URL}/edit`, user)
 };
 
 export default api;

@@ -5,15 +5,15 @@ import Edit from '@material-ui/icons/Edit';
 import Delete from '@material-ui/icons/Delete';
 import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
-import NavBar from '../common/NavBar';
-import RecipesDisplay from '../common/RecipesDisplay';
+import NavBar from '../../common/NavBar';
+import RecipesDisplay from '../../common/RecipesDisplay';
 import {
   useStoreContext,
   getIsFetchingUserRecipes,
   getUserRecipes,
   getIsCreatingOrEditingRecipe
-} from '../../hooks/globalStore';
-import useAlertDialog from '../../hooks/useAlertDialog';
+} from '../../../hooks/globalStore';
+import useAlertDialog from '../../../hooks/useAlertDialog';
 import useModalForm from './useModalForm';
 
 const initialValues = {
