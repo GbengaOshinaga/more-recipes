@@ -8,7 +8,10 @@ import '../styles/reset.scss';
 import '../styles/global.scss';
 
 const theme = createMuiTheme({
-  palette: { primary: { main: '#E23D28' }, secondary: { main: '#0070BB' } }
+  palette: {
+    primary: { main: '#E23D28' },
+    secondary: { main: '#0070BB' }
+  }
 });
 
 const App = () => (

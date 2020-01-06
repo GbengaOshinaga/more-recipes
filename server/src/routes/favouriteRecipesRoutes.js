@@ -1,5 +1,5 @@
 import * as favoriteRecipesController from '../controllers/favouriteRecipesController';
-import { authenticate, getUser } from '../middlewares';
+import { authenticate } from '../middlewares';
 
 const usersRecipesBaseUrl = '/api/v1/users/recipes';
 
@@ -25,7 +25,7 @@ export default app => {
 
   app.get(
     `${usersRecipesBaseUrl}/favoritesIds`,
-    getUser,
+    authenticate,
     favoriteRecipesController.getUserFavoritesIds
   );
 
