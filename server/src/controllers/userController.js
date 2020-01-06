@@ -134,7 +134,7 @@ const findUser = async userId => {
 export const editUser = async (req, res) => {
   const {
     user: { userId } = {},
-    body: { firstName, lastName, email, profilePic, about }
+    body: { firstName, lastName, email, profilePic, about = '' }
   } = req;
 
   tryCatch(res, async () => {
@@ -144,7 +144,7 @@ export const editUser = async (req, res) => {
       lastName: lastName || user.lastName,
       email: email || user.email,
       profilePic: profilePic || user.profilePic,
-      about: about || user.about
+      about
     });
 
     return res.successResponse({ user: getUserObject(updatedUser) });

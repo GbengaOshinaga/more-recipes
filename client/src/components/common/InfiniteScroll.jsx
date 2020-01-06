@@ -1,8 +1,8 @@
 import React, { useEffect, useState, useRef } from 'react';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import styles from './InfiniteScroll.modules.scss';
+import Grid from '@material-ui/core/Grid';
 
-const id = 'Inifinite-scroll-container';
+const id = 'inifinite-scroll-container';
 
 const InfiniteScroll = ({
   dataLength,
@@ -44,12 +44,10 @@ const InfiniteScroll = ({
 
   return (
     <>
-      <div className={styles.container} id={id}>
+      <Grid container justify="center" spacing={4} id={id}>
         {children}
-      </div>
-      <div className={styles.container}>
-        {shouldShowLoader ? <CircularProgress /> : null}
-      </div>
+      </Grid>
+      <Grid container>{shouldShowLoader ? <CircularProgress /> : null}</Grid>
     </>
   );
 };

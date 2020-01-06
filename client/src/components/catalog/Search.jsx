@@ -1,5 +1,7 @@
 import React, { useEffect } from 'react';
 import Paper from '@material-ui/core/Paper';
+import Typography from '@material-ui/core/Typography';
+import Box from '@material-ui/core/Box';
 import {
   useStoreContext,
   getIsSearching,
@@ -31,24 +33,28 @@ const Search = ({ searchTerm }) => {
     getNextSearchResults(searchTerm, nextUrl);
   };
 
-  if (!results?.length) {
-    return <h1>No Result(s) Found</h1>;
-  }
+  const hasNoResults = !isSearching && !results?.length;
 
   return (
     <>
       <Paper className={styles.container}>
-        <div className={styles.textContainer}>
-          <h1>Search Results</h1>
-        </div>
+        <Typography variant="body2" color="textSecondary">
+          SEARCH RESULTS
+        </Typography>
       </Paper>
-      <RecipesDisplay
-        isFetching={isSearching}
-        recipes={results}
-        hasMore={!!nextUrl}
-        fetchNext={fetchNext}
-        renderActions={renderActions}
-      />
+      <Box p={3}>
+        {hasNoResults ? (
+          <Typography variant="h5">No Result(s) Found</Typography>
+        ) : (
+          <RecipesDisplay
+            isFetching={isSearching}
+            recipes={results}
+            hasMore={!!nextUrl}
+            fetchNext={fetchNext}
+            renderActions={renderActions}
+          />
+        )}
+      </Box>
     </>
   );
 };
