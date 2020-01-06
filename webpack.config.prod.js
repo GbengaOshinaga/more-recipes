@@ -3,7 +3,7 @@ const path = require('path');
 const dotenv = require('dotenv');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
-const env = dotenv.config().parsed;
+const env = dotenv.config().parsed || process.env;
 
 const envKeys = Object.keys(env).reduce((prev, next) => {
   prev[`process.env.${next}`] = JSON.stringify(env[next]);
