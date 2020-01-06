@@ -8,7 +8,8 @@ import CardMedia from '@material-ui/core/CardMedia';
 import CardContent from '@material-ui/core/CardContent';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import Typography from '@material-ui/core/Typography';
-import styles from './Card.modules.scss';
+import Grid from '@material-ui/core/Grid';
+import useStyles from './CardStyles';
 import { decode } from '../../utils';
 
 const propTypes = {
@@ -32,7 +33,7 @@ const defaultImage =
  *
  * @returns {String} formatted content
  */
-function formatContent(content, maxLength = 45) {
+function formatContent(content, maxLength = 40) {
   const decodedString = decode(content);
   if (decodedString.length > maxLength) {
     return `${decodedString.slice(0, maxLength).trim()}...`;
@@ -55,27 +56,30 @@ function Card({
   renderActions
 }) {
   const history = useHistory();
+  const classes = useStyles();
 
   return (
-    <MaterialUICard raised className={styles.cardContainer}>
-      <CardActionArea onClick={() => history.push(`/recipe/${id}`)}>
-        <CardHeader
-          title={formatContent(recipeName, 25)}
-          subheader={moment(createdAt).format('LL')}
-        />
-        <CardMedia
-          className={styles.image}
-          image={image || defaultImage}
-          title={recipeName}
-        />
-        <CardContent>
-          <Typography variant="body2" color="textSecondary" component="p">
-            {formatContent(recipeDescription)}
-          </Typography>
-        </CardContent>
-      </CardActionArea>
-      {renderActions && renderActions()}
-    </MaterialUICard>
+    <Grid item>
+      <MaterialUICard raised className={classes.card}>
+        <CardActionArea onClick={() => history.push(`/recipe/${id}`)}>
+          <CardHeader
+            title={formatContent(recipeName, 25)}
+            subheader={moment(createdAt).format('LL')}
+          />
+          <CardMedia
+            className={classes.media}
+            image={image || defaultImage}
+            title={recipeName}
+          />
+          <CardContent>
+            <Typography variant="body2" color="textSecondary" component="p">
+              {formatContent(recipeDescription)}
+            </Typography>
+          </CardContent>
+        </CardActionArea>
+        {renderActions && renderActions()}
+      </MaterialUICard>
+    </Grid>
   );
 }
 

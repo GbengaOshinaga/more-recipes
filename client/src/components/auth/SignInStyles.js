@@ -1,6 +1,6 @@
 import { makeStyles } from '@material-ui/core/styles';
 
-const styles = makeStyles(theme => ({
+const useStyles = makeStyles(theme => ({
   root: {
     height: '100vh'
   },
@@ -33,4 +33,4 @@ const styles = makeStyles(theme => ({
   }
 }));
 
-export default styles;
+export default useStyles;

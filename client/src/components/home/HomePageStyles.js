@@ -1,9 +1,6 @@
 import { makeStyles } from '@material-ui/core/styles';
 
 const styles = makeStyles(theme => ({
-  root: {
-    height: '100vh'
-  },
   image: {
     height: '100vh',
     backgroundImage: 'url(https://source.unsplash.com/pYWrdKO5ksI)',
@@ -16,7 +13,10 @@ const styles = makeStyles(theme => ({
     backgroundPosition: 'center'
   },
   text: {
-    color: 'white'
+    color: theme.palette.common.white,
+    '&:hover': {
+      textDecoration: 'none'
+    }
   }
 }));
 

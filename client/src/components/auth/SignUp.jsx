@@ -4,15 +4,14 @@ import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
-import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
-import { Link as RouterLink } from 'react-router-dom';
 import GoogleLoginButton from './GoogleLoginButton';
+import Link from '../common/Link';
 import { useSignUp } from '../../hooks/authorization';
-import styles from './SignUpStyles';
+import useStyles from './SignUpStyles';
 
 const initialValues = {
   firstName: '',
@@ -24,7 +23,7 @@ const initialValues = {
 };
 
 export default function SignUp() {
-  const classes = styles();
+  const classes = useStyles();
 
   const { signUp } = useSignUp();
 
@@ -95,12 +94,7 @@ export default function SignUp() {
               alignItems="center"
               container
             >
-              <Link
-                to="/catalog"
-                variant="body1"
-                color="secondary"
-                component={RouterLink}
-              >
+              <Link to="/catalog" variant="body1">
                 Catalog
               </Link>
             </Grid>
@@ -193,12 +187,7 @@ export default function SignUp() {
                       />
                     </Grid>
                     <Grid item>
-                      <Link
-                        to="/signin"
-                        variant="body2"
-                        component={RouterLink}
-                        color="secondary"
-                      >
+                      <Link to="/signin" variant="body2">
                         Already have an account? Sign in
                       </Link>
                     </Grid>
