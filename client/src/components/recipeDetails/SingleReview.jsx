@@ -10,6 +10,7 @@ import Edit from '@material-ui/icons/Edit';
 import Delete from '@material-ui/icons/Delete';
 import { getUserId } from '../../hooks/globalStore';
 import useAlertDialog from '../../hooks/useAlertDialog';
+import { decode } from '../../utils';
 
 const SingleReview = ({ review, renderInput, editReview, deleteReview }) => {
   const {
@@ -39,10 +40,10 @@ const SingleReview = ({ review, renderInput, editReview, deleteReview }) => {
           aria-label="edit review"
           onClick={() => setIsInEditMode(true)}
         >
-          <Edit />
+          <Edit color="secondary" />
         </IconButton>
         <IconButton aria-label="delete review" onClick={openDialog}>
-          <Delete />
+          <Delete color="primary" />
         </IconButton>
       </CardActions>
     );
@@ -55,7 +56,7 @@ const SingleReview = ({ review, renderInput, editReview, deleteReview }) => {
           <CardContent>
             <Avatar src={profilePic} />
             <Typography variant="body1" color="textSecondary" component="p">
-              {text}
+              {decode(text)}
             </Typography>
             <Typography variant="caption">
               {`By ${firstName} ${lastName} on ${moment(updatedAt).format(

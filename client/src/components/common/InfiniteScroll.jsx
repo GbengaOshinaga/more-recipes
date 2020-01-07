@@ -47,7 +47,9 @@ const InfiniteScroll = ({
       <Grid container justify="center" spacing={4} id={id}>
         {children}
       </Grid>
-      <Grid container>{shouldShowLoader ? <CircularProgress /> : null}</Grid>
+      <Grid container justify="center">
+        {shouldShowLoader ? <CircularProgress /> : null}
+      </Grid>
     </>
   );
 };
