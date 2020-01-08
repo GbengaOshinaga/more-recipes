@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import Avatar from '@material-ui/core/Avatar';
-import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
 import Paper from '@material-ui/core/Paper';
@@ -10,6 +9,7 @@ import Typography from '@material-ui/core/Typography';
 import { useSignIn } from '../../hooks/authorization';
 import GoogleLoginButton from './GoogleLoginButton';
 import Link from '../common/Link';
+import Button from '../common/Button';
 import useStyles from './SignInStyles';
 
 export default function SignIn() {
@@ -18,7 +18,7 @@ export default function SignIn() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const { signIn } = useSignIn();
+  const { isSigningIn, signIn } = useSignIn();
 
   const onClickSignIn = event => {
     event.preventDefault();
@@ -82,9 +82,9 @@ export default function SignIn() {
               type="submit"
               fullWidth
               variant="contained"
-              color="primary"
               className={classes.submit}
               onClick={onClickSignIn}
+              isLoading={isSigningIn}
             >
               Sign In
             </Button>

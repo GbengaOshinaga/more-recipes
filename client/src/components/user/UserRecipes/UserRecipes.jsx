@@ -5,6 +5,9 @@ import Edit from '@material-ui/icons/Edit';
 import Delete from '@material-ui/icons/Delete';
 import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
+import Grid from '@material-ui/core/Grid';
+import Typography from '@material-ui/core/Typography';
+import Box from '@material-ui/core/Box';
 import NavBar from '../../common/NavBar';
 import RecipesDisplay from '../../common/RecipesDisplay';
 import {
@@ -15,6 +18,7 @@ import {
 } from '../../../hooks/globalStore';
 import useAlertDialog from '../../../hooks/useAlertDialog';
 import useModalForm from './useModalForm';
+import useStyles from './UserRecipesStyles';
 
 const initialValues = {
   name: '',
@@ -37,6 +41,7 @@ const UserRecipes = () => {
   } = useStoreContext();
   const { openDialog, closeDialog, renderAlertDialog } = useAlertDialog();
   const { openModal, renderModalForm, closeModal, clearForm } = useModalForm();
+  const classes = useStyles();
 
   const isFetching = getIsFetchingUserRecipes(userRecipes);
   const recipes = getUserRecipes(userRecipes);
@@ -105,13 +110,13 @@ const UserRecipes = () => {
           aria-label="edit recipe"
           onClick={() => onClickEdit(recipe.id)}
         >
-          <Edit />
+          <Edit color="secondary" />
         </IconButton>
         <IconButton
           aria-label="delete recipe"
           onClick={() => onDeleteClick(recipe.id)}
         >
-          <Delete />
+          <Delete color="primary" />
         </IconButton>
       </CardActions>
     );
@@ -120,9 +125,19 @@ const UserRecipes = () => {
   return (
     <div>
       <NavBar />
-      <Fab color="primary" aria-label="add-recipe" onClick={onClickAdd}>
-        <AddIcon />
-      </Fab>
+      <Grid container justify="center">
+        <Box mt={3} mb={3}>
+          <Typography variant="h4">My Recipes</Typography>
+        </Box>
+        <Fab
+          color="primary"
+          aria-label="add-recipe"
+          onClick={onClickAdd}
+          className={classes.fab}
+        >
+          <AddIcon />
+        </Fab>
+      </Grid>
       <RecipesDisplay
         isFetching={isFetching}
         recipes={recipes}

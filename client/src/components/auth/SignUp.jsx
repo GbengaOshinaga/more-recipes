@@ -1,7 +1,6 @@
 import React from 'react';
 import { Formik } from 'formik';
 import Avatar from '@material-ui/core/Avatar';
-import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
@@ -10,6 +9,7 @@ import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
 import GoogleLoginButton from './GoogleLoginButton';
 import Link from '../common/Link';
+import Button from '../common/Button';
 import { useSignUp } from '../../hooks/authorization';
 import useStyles from './SignUpStyles';
 
@@ -25,7 +25,7 @@ const initialValues = {
 export default function SignUp() {
   const classes = useStyles();
 
-  const { signUp } = useSignUp();
+  const { isSigningUp, signUp } = useSignUp();
 
   const onSubmit = values => {
     signUp(values);
@@ -167,9 +167,9 @@ export default function SignUp() {
                     type="submit"
                     fullWidth
                     variant="contained"
-                    color="primary"
                     className={classes.submit}
                     onClick={handleSubmit}
+                    isLoading={isSigningUp}
                   >
                     Sign Up
                   </Button>

@@ -1,7 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { Formik } from 'formik';
 import { makeStyles } from '@material-ui/core/styles';
-import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import ListItem from '@material-ui/core/ListItem';
 import List from '@material-ui/core/List';
@@ -10,13 +9,12 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
-import CircularProgress from '@material-ui/core/CircularProgress';
 import CloseIcon from '@material-ui/icons/Close';
 import Slide from '@material-ui/core/Slide';
 import TextField from '@material-ui/core/TextField';
 import IngredientsInput from './IngredientsInput';
 import ImageInput from './ImageInput';
-import styles from './ModalForm.modules.scss';
+import Button from '../../common/Button';
 
 const useStyles = makeStyles(theme => ({
   appBar: {
@@ -63,23 +61,15 @@ export default function useModalForm() {
         <Typography variant="h6" className={classes.title}>
           {title}
         </Typography>
-        <div className={styles.buttonContainer}>
-          <Button
-            disabled={isLoading}
-            autoFocus
-            color="inherit"
-            onClick={onSaveClick}
-          >
-            save
-          </Button>
-          {isLoading ? (
-            <CircularProgress
-              size={24}
-              color="white"
-              className={styles.buttonProgress}
-            />
-          ) : null}
-        </div>
+        <Button
+          disabled={isLoading}
+          autoFocus
+          color="inherit"
+          onClick={onSaveClick}
+          isLoading={isLoading}
+        >
+          save
+        </Button>
       </Toolbar>
     </AppBar>
   );
