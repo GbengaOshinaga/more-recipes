@@ -86,15 +86,19 @@ const SingleReview = ({ review, renderInput, editReview, deleteReview }) => {
     );
   };
 
-  return isInEditMode
-    ? renderInput?.({
-        value: editValue,
-        onValueChange: setEditValue,
-        label: 'Edit Review',
-        onSaveClick,
-        onCancelClick: () => setIsInEditMode(false)
-      })
-    : renderReview();
+  return (
+    <Box mt={1.5}>
+      {isInEditMode
+        ? renderInput?.({
+            value: editValue,
+            onValueChange: setEditValue,
+            label: 'Edit Review',
+            onSaveClick,
+            onCancelClick: () => setIsInEditMode(false)
+          })
+        : renderReview()}
+    </Box>
+  );
 };
 
 export default SingleReview;

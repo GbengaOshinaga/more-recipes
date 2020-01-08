@@ -105,15 +105,19 @@ const Reviews = ({ recipeId }) => {
   };
 
   const renderAddReview = () => {
-    return isAddingReview ? (
-      <CircularProgress />
-    ) : (
-      renderInput({
-        value: newReview,
-        onValueChange: setNewReview,
-        label: 'Add Review',
-        onSaveClick: () => addReview(recipeId, newReview)
-      })
+    return (
+      <Box mt={1.5}>
+        {isAddingReview ? (
+          <CircularProgress />
+        ) : (
+          renderInput({
+            value: newReview,
+            onValueChange: setNewReview,
+            label: 'Add Review',
+            onSaveClick: () => addReview(recipeId, newReview)
+          })
+        )}
+      </Box>
     );
   };
 
