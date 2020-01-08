@@ -6,6 +6,8 @@ import CardActions from '@material-ui/core/CardActions';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import Typography from '@material-ui/core/Typography';
+import Box from '@material-ui/core/Box';
 import {
   useStoreContext,
   getReviews,
@@ -15,6 +17,7 @@ import {
   getIsUserAuthenticated
 } from '../../hooks/globalStore';
 import SingleReview from './SingleReview';
+import { decode } from '../../utils';
 import Link from '../common/Link';
 
 const Reviews = ({ recipeId }) => {
@@ -56,10 +59,11 @@ const Reviews = ({ recipeId }) => {
           <form>
             <TextField
               fullWidth
-              value={value}
+              value={decode(value)}
               onChange={e => onValueChange(e.target.value)}
               multiline
               label={label}
+              color="secondary"
             />
           </form>
         </CardContent>
@@ -114,7 +118,8 @@ const Reviews = ({ recipeId }) => {
   };
 
   return (
-    <div>
+    <Box mt={3} mb={3}>
+      <Typography variant="h5">Reviews</Typography>
       {renderReviews()}
       {renderLoadMoreReviews()}
       {isUserLoggedIn ? (
@@ -129,7 +134,7 @@ const Reviews = ({ recipeId }) => {
           Sign In To Add Review
         </Link>
       )}
-    </div>
+    </Box>
   );
 };
 
