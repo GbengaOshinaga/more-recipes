@@ -2,8 +2,8 @@
   "name": "server",
   "version": "1.0.0",
   "engines": {
-    "npm": "5.5.1",
-    "node": "8.9.1"
+    "npm": "6.4.1",
+    "node": "11.11.0"
   },
   "description": "server-side code for more-recipes app",
   "main": "index.js",
