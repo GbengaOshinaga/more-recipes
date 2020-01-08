@@ -1,5 +1,6 @@
 import React from 'react';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import Typography from '@material-ui/core/Typography';
 import InfiniteScroll from './InfiniteScroll';
 import Card from './Card';
 
@@ -16,7 +17,7 @@ const RecipesDisplay = ({
     }
 
     if (!recipes.length) {
-      return <h1>No Recipes Available</h1>;
+      return <Typography variant="h5">No Recipes Available</Typography>;
     }
 
     return recipes?.map(recipe => {

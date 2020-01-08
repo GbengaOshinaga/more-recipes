@@ -63,7 +63,7 @@ function Card({
       <MaterialUICard raised className={classes.card}>
         <CardActionArea onClick={() => history.push(`/recipe/${id}`)}>
           <CardHeader
-            title={formatContent(recipeName, 25)}
+            title={formatContent(recipeName, 20)}
             subheader={moment(createdAt).format('LL')}
           />
           <CardMedia

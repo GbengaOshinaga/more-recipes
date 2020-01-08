@@ -5,11 +5,15 @@ import Avatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
 import CardContent from '@material-ui/core/CardContent';
 import CardActions from '@material-ui/core/CardActions';
+import Grid from '@material-ui/core/Grid';
+import Box from '@material-ui/core/Box';
 import IconButton from '@material-ui/core/IconButton';
 import Edit from '@material-ui/icons/Edit';
 import Delete from '@material-ui/icons/Delete';
 import { getUserId } from '../../hooks/globalStore';
 import useAlertDialog from '../../hooks/useAlertDialog';
+import { decode } from '../../utils';
+import useStyles from './SingleReviewStyles';
 
 const SingleReview = ({ review, renderInput, editReview, deleteReview }) => {
   const {
@@ -20,6 +24,7 @@ const SingleReview = ({ review, renderInput, editReview, deleteReview }) => {
     UserId
   } = review;
   const userId = getUserId();
+  const classes = useStyles();
 
   const [editValue, setEditValue] = useState(text);
   const [isInEditMode, setIsInEditMode] = useState(false);
@@ -39,10 +44,10 @@ const SingleReview = ({ review, renderInput, editReview, deleteReview }) => {
           aria-label="edit review"
           onClick={() => setIsInEditMode(true)}
         >
-          <Edit />
+          <Edit color="secondary" />
         </IconButton>
         <IconButton aria-label="delete review" onClick={openDialog}>
-          <Delete />
+          <Delete color="primary" />
         </IconButton>
       </CardActions>
     );
@@ -53,15 +58,23 @@ const SingleReview = ({ review, renderInput, editReview, deleteReview }) => {
       <>
         <Card raised key={id}>
           <CardContent>
-            <Avatar src={profilePic} />
-            <Typography variant="body1" color="textSecondary" component="p">
-              {text}
-            </Typography>
-            <Typography variant="caption">
-              {`By ${firstName} ${lastName} on ${moment(updatedAt).format(
-                'LL'
-              )}`}
-            </Typography>
+            <Grid container>
+              <Avatar src={decode(profilePic)} className={classes.image} />
+              <Box ml={2}>
+                <Typography variant="body1" component="p">
+                  {decode(text)}
+                </Typography>
+                <Typography
+                  variant="subtitle2"
+                  color="textSecondary"
+                  className={classes.dateText}
+                >
+                  {`By ${firstName} ${lastName} on ${moment(updatedAt).format(
+                    'LL'
+                  )}`}
+                </Typography>
+              </Box>
+            </Grid>
           </CardContent>
           {userId === UserId ? renderActions() : null}
         </Card>

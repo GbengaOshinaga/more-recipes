@@ -11,6 +11,12 @@ const theme = createMuiTheme({
   palette: {
     primary: { main: '#E23D28' },
     secondary: { main: '#0070BB' }
+  },
+  typography: {
+    h4: { fontFamily: 'Montserrat' },
+    h5: { fontFamily: 'Montserrat' },
+    h6: { fontFamily: 'Montserrat' },
+    fontFamily: 'Open Sans'
   }
 });
 
