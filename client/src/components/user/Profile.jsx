@@ -55,20 +55,20 @@ const Profile = () => {
     fileReader.onload = e => setFieldValue('profilePic', e.target.result);
   };
 
-  const renderAvatar = (setFieldValue, editImage) => {
-    const { profilePic, firstName } = user || {};
+  const renderAvatar = (setFieldValue, values) => {
+    const { profilePic, firstName } = values || {};
+
+    const imageSrc = profilePic || user.profilePic;
+    const name = firstName || user.firstName;
 
     return (
       <Box ml={5} mt={4}>
         <Grid item>
           <div className={classes.imageContainer}>
-            {profilePic ? (
-              <Avatar
-                src={isInEditMode ? editImage : profilePic}
-                className={classes.image}
-              />
+            {imageSrc ? (
+              <Avatar src={imageSrc} className={classes.image} />
             ) : (
-              <Avatar className={classes.image}>{firstName?.charAt(0)}</Avatar>
+              <Avatar className={classes.image}>{name?.charAt(0)}</Avatar>
             )}
             {isInEditMode ? (
               <>
@@ -131,10 +131,10 @@ const Profile = () => {
     return (
       <Formik initialValues={initialValues} onSubmit={onSaveClick}>
         {({ values, setFieldValue, handleSubmit }) => {
-          const { firstName, lastName, email, about, profilePic } = values;
+          const { firstName, lastName, email, about } = values;
           return (
             <>
-              {renderAvatar(setFieldValue, profilePic)}
+              {renderAvatar(setFieldValue, values)}
               <Grid item className={classes.detailsContainer}>
                 <List>
                   {renderInputField({
