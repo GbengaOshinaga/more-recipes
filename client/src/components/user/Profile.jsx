@@ -12,16 +12,18 @@ import Typography from '@material-ui/core/Typography';
 import Fab from '@material-ui/core/Fab';
 import EditIcon from '@material-ui/icons/Edit';
 import TextField from '@material-ui/core/TextField';
-import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import PhotoCamera from '@material-ui/icons/PhotoCamera';
+import Box from '@material-ui/core/Box';
 import NavBar from '../common/NavBar';
+import Button from '../common/Button';
 import { useUser } from '../../hooks/user';
 import { getUserId } from '../../hooks/globalStore';
-import styles from './Profile.modules.scss';
+import useStyles from './ProfileStyles';
 
 const Profile = () => {
   const [isInEditMode, setIsInEditMode] = useState(false);
+  const classes = useStyles();
 
   const userId = getUserId();
   const { isFetchingUser, user, editUser, isEditingUser } = useUser(
@@ -57,61 +59,71 @@ const Profile = () => {
     const { profilePic, firstName } = user || {};
 
     return (
-      <Grid item>
-        <div>
-          {profilePic ? (
-            <Avatar
-              src={isInEditMode ? editImage : profilePic}
-              className={styles.avatar}
-            />
-          ) : (
-            <Avatar>{firstName?.charAt(0)}</Avatar>
-          )}
-          {isInEditMode ? (
-            <>
-              <input
-                accept="image/*"
-                className={styles.input}
-                id="icon-button-file"
-                type="file"
-                onChange={onFileChange(setFieldValue)}
+      <Box ml={5} mt={4}>
+        <Grid item>
+          <div className={classes.imageContainer}>
+            {profilePic ? (
+              <Avatar
+                src={isInEditMode ? editImage : profilePic}
+                className={classes.image}
               />
-              <label htmlFor="icon-button-file">
-                <IconButton
-                  color="primary"
-                  aria-label="upload picture"
-                  component="span"
-                >
-                  <PhotoCamera />
-                </IconButton>
-              </label>
-            </>
-          ) : null}
-        </div>
-      </Grid>
+            ) : (
+              <Avatar className={classes.image}>{firstName?.charAt(0)}</Avatar>
+            )}
+            {isInEditMode ? (
+              <>
+                <input
+                  accept="image/*"
+                  className={classes.input}
+                  id="icon-button-file"
+                  type="file"
+                  onChange={onFileChange(setFieldValue)}
+                />
+                <label htmlFor="icon-button-file">
+                  <IconButton
+                    color="secondary"
+                    aria-label="upload picture"
+                    component="span"
+                    className={classes.icon}
+                  >
+                    <PhotoCamera />
+                  </IconButton>
+                </label>
+              </>
+            ) : null}
+          </div>
+        </Grid>
+      </Box>
     );
   };
 
   const renderListItem = text => {
-    return (
-      <ListItem>
-        <Typography variant="body2">{text}</Typography>
-      </ListItem>
-    );
+    return text ? (
+      <Box ml={4}>
+        <Box mt={1} mb={1}>
+          <ListItem>
+            <Typography variant="body2">{text}</Typography>
+          </ListItem>
+        </Box>
+        <Divider />
+      </Box>
+    ) : null;
   };
 
   const renderInputField = ({ label, value, key, setFieldValue }) => {
     return (
-      <ListItem>
-        <TextField
-          fullWidth
-          required
-          multiline
-          label={label}
-          value={value}
-          onChange={e => setFieldValue(key, e.target.value)}
-        />
-      </ListItem>
+      <Box ml={4}>
+        <ListItem>
+          <TextField
+            fullWidth
+            multiline
+            label={label}
+            value={value}
+            onChange={e => setFieldValue(key, e.target.value)}
+            color="secondary"
+          />
+        </ListItem>
+      </Box>
     );
   };
 
@@ -123,7 +135,7 @@ const Profile = () => {
           return (
             <>
               {renderAvatar(setFieldValue, profilePic)}
-              <Grid item>
+              <Grid item className={classes.detailsContainer}>
                 <List>
                   {renderInputField({
                     label: 'First Name',
@@ -149,30 +161,33 @@ const Profile = () => {
                     key: 'about',
                     setFieldValue
                   })}
-                  <Grid item>
-                    <div className={styles.buttonContainer}>
+                  <Grid
+                    container
+                    justify="center"
+                    className={classes.buttonContainer}
+                  >
+                    <Box mr={1}>
                       <Button
                         disabled={isEditingUser}
                         variant="outlined"
                         component="span"
                         onClick={handleSubmit}
+                        isLoading={isEditingUser}
+                        color="secondary"
                       >
                         save
                       </Button>
-                      {isEditingUser ? (
-                        <CircularProgress
-                          size={24}
-                          className={styles.buttonProgress}
-                        />
-                      ) : null}
-                    </div>
-                    <Button
-                      variant="outlined"
-                      component="span"
-                      onClick={() => setIsInEditMode(false)}
-                    >
-                      Cancel
-                    </Button>
+                    </Box>
+                    <Box ml={1}>
+                      <Button
+                        variant="outlined"
+                        component="span"
+                        onClick={() => setIsInEditMode(false)}
+                        color="secondary"
+                      >
+                        Cancel
+                      </Button>
+                    </Box>
                   </Grid>
                 </List>
               </Grid>
@@ -189,16 +204,12 @@ const Profile = () => {
     return (
       <>
         {renderAvatar()}
-        <Grid item>
+        <Grid item className={classes.detailsContainer}>
           <List>
             {renderListItem(firstName)}
-            <Divider />
             {renderListItem(lastName)}
-            <Divider />
             {renderListItem(email)}
-            <Divider />
             {renderListItem(about)}
-            <Divider />
             {renderListItem(`Joined on ${moment(createdAt).format('LL')}`)}
           </List>
         </Grid>
@@ -210,20 +221,29 @@ const Profile = () => {
     <div>
       <NavBar />
       {isFetchingUser ? (
-        <CircularProgress />
+        <Grid container justify="center">
+          <CircularProgress />
+        </Grid>
       ) : (
-        <Paper>
-          <Grid container>
+        <Grid container direction="column" className={classes.container}>
+          <Grid
+            container
+            component={Paper}
+            elevation={8}
+            className={classes.paper}
+          >
             {isInEditMode ? renderForm() : renderUserData()}
-            <Fab
-              color="secondary"
-              aria-label="edit"
-              onClick={onEditButtonClick}
-            >
-              <EditIcon />
-            </Fab>
+            <Box ml={5}>
+              <Fab
+                color="secondary"
+                aria-label="edit"
+                onClick={onEditButtonClick}
+              >
+                <EditIcon />
+              </Fab>
+            </Box>
           </Grid>
-        </Paper>
+        </Grid>
       )}
     </div>
   );

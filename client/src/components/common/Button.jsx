@@ -10,6 +10,7 @@ const Button = ({
   children,
   variant,
   className,
+  component,
   disabled = false,
   color = 'primary'
 }) => {
@@ -20,6 +21,7 @@ const Button = ({
       <MaterialUIButton
         fullWidth={fullWidth}
         variant={variant}
+        component={component}
         disabled={disabled || isLoading}
         autoFocus
         color={color}
