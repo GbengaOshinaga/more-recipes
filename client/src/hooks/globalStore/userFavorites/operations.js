@@ -38,7 +38,7 @@ const operations = actions => {
         ? await api.deleteFavorite(recipeId)
         : await api.favoriteRecipe(recipeId);
     } catch (error) {
-      logger('Favorite', error);
+      logger('Favorite', await error);
       updateFavoriteRevert(recipeId, !hasFavorited);
     }
   };

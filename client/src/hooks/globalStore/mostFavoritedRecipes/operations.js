@@ -10,7 +10,7 @@ const operations = actions => {
       logger('Most Fav Response', response);
       saveMostFavorites(response?.data);
     } catch (error) {
-      logger('Most Fav Fetch', error);
+      logger('Most Fav Fetch', await error);
     } finally {
       setIsFetchingMostFav(false);
     }

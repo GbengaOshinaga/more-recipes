@@ -37,6 +37,8 @@
     "@babel/runtime": "^7.7.4",
     "@material-ui/core": "^4.8.1",
     "@material-ui/icons": "^4.5.1",
+    "@sentry/browser": "^5.11.0",
+    "@sentry/node": "^5.11.0",
     "babili": "^0.1.4",
     "bcrypt": "^3.0.7",
     "body-parser": "^1.19.0",

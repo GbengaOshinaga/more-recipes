@@ -12,7 +12,8 @@ const Button = ({
   className,
   component,
   disabled = false,
-  color = 'primary'
+  color = 'primary',
+  progressColor = 'white'
 }) => {
   const classes = useStyles();
 
@@ -33,7 +34,7 @@ const Button = ({
       {isLoading ? (
         <CircularProgress
           size={24}
-          color="white"
+          color={progressColor}
           className={classes.buttonProgress}
         />
       ) : null}

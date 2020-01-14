@@ -7,6 +7,7 @@ import path from 'path';
 import dotenv from 'dotenv';
 import cookieParser from 'cookie-parser';
 import swaggerUI from 'swagger-ui-express';
+import * as Sentry from '@sentry/node';
 import routes from './routes/index';
 import db from './models/index';
 
@@ -16,6 +17,12 @@ const { COOKIE_SECRET } = process.env;
 
 // Set up the express app
 const app = new Express();
+
+Sentry.init({
+  dsn: process.env.SENTRY_DSN
+});
+
+app.use(Sentry.Handlers.requestHandler());
 
 app.use('/', Express.static(path.join(__dirname, '../../dist')));
 
@@ -48,6 +55,8 @@ app.all('/api/v1/*', (req, res) => {
 app.get('/*', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));
 });
+
+app.use(Sentry.Handlers.errorHandler());
 
 const port = process.env.PORT || 8000;
 

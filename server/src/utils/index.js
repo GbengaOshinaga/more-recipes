@@ -1,4 +1,5 @@
 import querystring from 'querystring';
+import * as Sentry from '@sentry/node';
 import ControllerError from './ControllerError';
 
 /**
@@ -70,6 +71,24 @@ export async function getPaginationMeta(req, model, condition) {
   return paginationMeta;
 }
 
+const reportError = error => {
+  if (process.env.NODE_ENV === 'production') {
+    Sentry.withScope(scope => {
+      if (error instanceof ControllerError) {
+        scope.setExtras({
+          message: error.message,
+          statusCode: error.statusCode,
+          stack: error.stack
+        });
+      }
+      Sentry.captureException(error);
+    });
+  } else {
+    // eslint-disable-next-line no-console
+    console.log(error);
+  }
+};
+
 const getErrorResponse = error => {
   if (process.env.NODE_ENV === 'production') {
     // if it's a sequelize error, a generic message should
@@ -83,8 +102,6 @@ const getErrorResponse = error => {
     return [error.message, error.statusCode];
   }
 
-  // eslint-disable-next-line no-console
-  console.log(error);
   return [error];
 };
 
@@ -92,6 +109,7 @@ export const tryCatch = async (res, cb) => {
   try {
     await cb();
   } catch (error) {
+    reportError(error);
     return error instanceof ControllerError
       ? res.failResponse(...getErrorResponse(error))
       : res.errorResponse(...getErrorResponse(error));

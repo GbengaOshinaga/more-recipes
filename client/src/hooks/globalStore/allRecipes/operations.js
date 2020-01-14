@@ -33,7 +33,7 @@ const operations = actions => {
       logger('next recipes response', response);
       saveNextRecipes(response?.data);
     } catch (error) {
-      logger('Fetch Recipes', error);
+      logger('Fetch Next Recipes', error);
     }
   };
 
@@ -54,7 +54,7 @@ const operations = actions => {
     try {
       await api.downvoteRecipe(recipe.id);
     } catch (error) {
-      logger('Downvote', error);
+      logger('Downvote', await error);
       updateDownvoteRevert(clonedRecipe);
     }
   };
