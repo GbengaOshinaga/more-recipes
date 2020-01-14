@@ -174,6 +174,7 @@ const Profile = () => {
                         onClick={handleSubmit}
                         isLoading={isEditingUser}
                         color="secondary"
+                        progressColor="secondary"
                       >
                         save
                       </Button>

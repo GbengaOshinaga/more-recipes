@@ -46,7 +46,7 @@ const operations = actions => {
       saveRecipe(response?.data?.recipe);
       onSuccess?.();
     } catch (error) {
-      logger('Create recipe error', error);
+      logger('Create recipe error', await error);
     } finally {
       setIsLoading(false);
     }

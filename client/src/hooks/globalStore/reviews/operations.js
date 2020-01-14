@@ -30,7 +30,7 @@ const operations = actions => {
       logger('Next Reviews', response);
       saveNextReviews(response?.data);
     } catch (error) {
-      logger('Reviews', await error);
+      logger('Next Reviews', await error);
     } finally {
       setIsFetchingNextReviews(false);
     }
@@ -43,7 +43,7 @@ const operations = actions => {
       logger('Add review', response);
       saveReview(response?.data?.review);
     } catch (error) {
-      logger('Add review error', error);
+      logger('Add review error', await error);
     } finally {
       setIsAddingReview(false);
     }
