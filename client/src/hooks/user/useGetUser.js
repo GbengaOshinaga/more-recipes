@@ -1,11 +1,11 @@
 import { useAsync } from 'react-async';
-import { api, logger } from '../../utils';
+import { api, log, logError } from '../../utils';
 
 const getUser = ({ userId }) => api.getUser(userId);
 
 export default function useGetUser(userId) {
   const onReject = async error => {
-    logger('edit error', await error);
+    logError(await error, 'get user error');
   };
 
   const { isLoading, data } = useAsync({
@@ -13,7 +13,7 @@ export default function useGetUser(userId) {
     userId,
     onReject
   });
-  logger('user data', data);
+  log('user data', data);
 
   const user = data?.data?.user ?? {};
 

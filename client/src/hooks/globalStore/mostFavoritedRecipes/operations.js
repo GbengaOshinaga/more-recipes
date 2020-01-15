@@ -1,4 +1,4 @@
-import { api, logger } from '../../../utils';
+import { api, log, logError } from '../../../utils';
 
 const operations = actions => {
   const { setIsFetchingMostFav, saveMostFavorites } = actions;
@@ -7,10 +7,10 @@ const operations = actions => {
     setIsFetchingMostFav(true);
     try {
       const response = await api.getMostFavoritedRecipes();
-      logger('Most Fav Response', response);
+      log('Most Fav Response', response);
       saveMostFavorites(response?.data);
     } catch (error) {
-      logger('Most Fav Fetch', await error);
+      logError(await error, 'Error in Fetch Most Favorited Recipes');
     } finally {
       setIsFetchingMostFav(false);
     }

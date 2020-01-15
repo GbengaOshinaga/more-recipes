@@ -1,4 +1,4 @@
-import { api, logger } from '../../../utils';
+import { api, log, logError } from '../../../utils';
 
 const operations = actions => {
   const {
@@ -16,10 +16,10 @@ const operations = actions => {
   const fetchReviews = async recipeId => {
     try {
       const response = await api.getReviews(recipeId);
-      logger('Reviews', response);
+      log('Reviews', response);
       saveReviews(response?.data);
     } catch (error) {
-      logger('Reviews', await error);
+      logError(await error, 'Error in Fetch Reviews');
     }
   };
 
@@ -27,10 +27,10 @@ const operations = actions => {
     setIsFetchingNextReviews(true);
     try {
       const response = await api.getReviews(null, nextUrl);
-      logger('Next Reviews', response);
+      log('Next Reviews', response);
       saveNextReviews(response?.data);
     } catch (error) {
-      logger('Next Reviews', await error);
+      logError(await error, 'Error in Fetch Next Reviews');
     } finally {
       setIsFetchingNextReviews(false);
     }
@@ -40,10 +40,10 @@ const operations = actions => {
     setIsAddingReview(true);
     try {
       const response = await api.addReview(recipeId, review);
-      logger('Add review', response);
+      log('Add review', response);
       saveReview(response?.data?.review);
     } catch (error) {
-      logger('Add review error', await error);
+      logError(await error, 'Add review error');
     } finally {
       setIsAddingReview(false);
     }
@@ -54,7 +54,7 @@ const operations = actions => {
     try {
       await api.editReview(reviewId, review);
     } catch (error) {
-      logger('Edit review error', await error);
+      logError(await error, 'Edit review error');
       editReviewRevert(reviewId);
     }
   };
@@ -64,7 +64,7 @@ const operations = actions => {
     try {
       await api.deleteReview(reviewId);
     } catch (error) {
-      logger('Delete review error', await error);
+      logError(await error, 'Delete review error');
       deleteReviewRevert(reviewId);
     }
   };

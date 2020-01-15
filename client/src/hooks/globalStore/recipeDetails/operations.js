@@ -1,4 +1,4 @@
-import { api, logger } from '../../../utils';
+import { api, log, logError } from '../../../utils';
 
 const operations = actions => {
   const {
@@ -11,10 +11,10 @@ const operations = actions => {
     setIsFetchingRecipeDetails(true);
     try {
       const response = await api.getRecipeDetails(recipeId);
-      logger('Recipe Details', response);
+      log('Recipe Details', response);
       saveRecipeDetails(response?.data?.recipe);
     } catch (error) {
-      logger('Recipe Details Error', await error);
+      logError(await error, 'Recipe Details Error');
       setNotFound();
     } finally {
       setIsFetchingRecipeDetails(false);
