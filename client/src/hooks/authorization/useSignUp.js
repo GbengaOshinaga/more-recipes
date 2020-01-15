@@ -2,7 +2,7 @@ import { useAsync } from 'react-async';
 import { useHistory, useLocation } from 'react-router-dom';
 import { useToasts } from 'react-toast-notifications';
 
-import { api, logger } from '../../utils';
+import { api, log, logError } from '../../utils';
 import { saveAuthAndRedirect } from './utils';
 
 const post = ([data]) => api.signUp(data);
@@ -13,7 +13,7 @@ function useSignUp() {
   const { addToast } = useToasts();
 
   const onSuccess = async response => {
-    logger('success signup response', response);
+    log('success signup response', response);
     const { data: { user: { id } = {} } = {} } = response;
     await saveAuthAndRedirect({ location, history, userId: id });
   };
@@ -22,7 +22,7 @@ function useSignUp() {
     const resolvedData = await errorData;
     const message =
       resolvedData?.data?.errors?.[0]?.msg || resolvedData.message;
-    logger('error data', resolvedData);
+    logError(resolvedData, 'Error in Sign up');
     addToast(message, { appearance: 'error' });
   };
 

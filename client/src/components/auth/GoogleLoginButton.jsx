@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { GoogleLogin } from 'react-google-login';
-import { logger } from '../../utils';
+import { log } from '../../utils';
 
 const propTypes = {
   onSuccess: PropTypes.func.isRequired,
@@ -20,7 +20,7 @@ function GoogleLoginButton({ onSuccess, buttonText }) {
       clientId={process.env.GOOGLE_CLIENT_ID}
       buttonText={buttonText}
       onSuccess={onSuccess}
-      onFailure={response => logger('Google Login Failure', response)}
+      onFailure={response => log('Google Login Failure', response)}
     />
   );
 }

@@ -1,5 +1,5 @@
 import { useAsync } from 'react-async';
-import { api, logger } from '../../utils';
+import { api, log, logError } from '../../utils';
 
 const editUser = async ([user, uploadedImage]) => {
   let imageUploadResponse;
@@ -17,12 +17,12 @@ const editUser = async ([user, uploadedImage]) => {
 
 export default function useEditUser(onSuccess) {
   const onReject = async error => {
-    logger('edit error', await error);
+    logError(await error, 'edit user error');
   };
 
   const onResolve = data => {
     onSuccess?.();
-    logger('Edit onResolve', data);
+    log('Edit onResolve', data);
   };
 
   const { isLoading, data, run } = useAsync({

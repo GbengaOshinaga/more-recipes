@@ -1,4 +1,4 @@
-import { api, logger } from '../../../utils';
+import { api, log, logError } from '../../../utils';
 
 const operations = actions => {
   const {
@@ -13,10 +13,10 @@ const operations = actions => {
     setIsFetchingFavorites(true);
     try {
       const response = await api.getUserFavorites();
-      logger('Get Favorites', response);
+      log('Get Favorites', response);
       saveFavorites(response?.data?.favourites);
     } catch (error) {
-      logger('Get Favorites error', await error);
+      logError(await error, 'Get Favorites error');
     } finally {
       setIsFetchingFavorites(false);
     }
@@ -27,7 +27,7 @@ const operations = actions => {
       const response = await api.getFavoritesIds();
       saveFavoriteIds(response?.data?.favoritesId);
     } catch (error) {
-      logger('Get Favorites Ids error', await error);
+      logError(await error, 'Get Favorites Ids error');
     }
   };
 
@@ -38,7 +38,7 @@ const operations = actions => {
         ? await api.deleteFavorite(recipeId)
         : await api.favoriteRecipe(recipeId);
     } catch (error) {
-      logger('Favorite', await error);
+      logError(await error, 'Favorite Recipe Error');
       updateFavoriteRevert(recipeId, !hasFavorited);
     }
   };

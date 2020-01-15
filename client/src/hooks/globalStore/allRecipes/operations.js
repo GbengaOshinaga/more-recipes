@@ -1,5 +1,5 @@
 import cloneDeep from 'lodash/cloneDeep';
-import { api, logger } from '../../../utils';
+import { api, log, logError } from '../../../utils';
 import { getUserId } from '../selectors';
 
 const operations = actions => {
@@ -18,10 +18,10 @@ const operations = actions => {
     setIsFetching(true);
     try {
       const response = await api.getAllRecipes();
-      logger('response', response);
+      log('response', response);
       saveRecipes(response?.data);
     } catch (error) {
-      logger('Fetch Recipes', error);
+      logError(error, 'Error in Fetch Recipes');
     } finally {
       setIsFetching(false);
     }
@@ -30,10 +30,10 @@ const operations = actions => {
   const fetchNextRecipes = async nextUrl => {
     try {
       const response = await api.getAllRecipes(nextUrl);
-      logger('next recipes response', response);
+      log('next recipes response', response);
       saveNextRecipes(response?.data);
     } catch (error) {
-      logger('Fetch Next Recipes', error);
+      logError(error, 'Error in Fetch Next Recipes');
     }
   };
 
@@ -43,7 +43,7 @@ const operations = actions => {
     try {
       await api.upvoteRecipe(recipe.id);
     } catch (error) {
-      logger('Upvote', error);
+      logError(await error, 'Upvote Error');
       updateUpvoteRevert(clonedRecipe);
     }
   };
@@ -54,7 +54,7 @@ const operations = actions => {
     try {
       await api.downvoteRecipe(recipe.id);
     } catch (error) {
-      logger('Downvote', await error);
+      logError(await error, 'Downvote Error');
       updateDownvoteRevert(clonedRecipe);
     }
   };

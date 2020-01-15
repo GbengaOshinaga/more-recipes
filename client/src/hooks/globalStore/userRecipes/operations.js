@@ -1,4 +1,4 @@
-import { api, logger } from '../../../utils';
+import { api, log, logError } from '../../../utils';
 
 const operations = actions => {
   const {
@@ -15,10 +15,10 @@ const operations = actions => {
     setIsFetchingUserRecipes(true);
     try {
       const response = await api.getUserRecipes();
-      logger('User Recipes', response);
+      log('User Recipes', response);
       saveUserRecipes(response?.data?.recipes);
     } catch (error) {
-      logger('User Recipes Error', await error);
+      logError(await error, 'User Recipes Error');
     } finally {
       setIsFetchingUserRecipes(false);
     }
@@ -40,13 +40,13 @@ const operations = actions => {
         recipeData.image = secureUrl;
       }
 
-      logger('recipeData', recipeData);
+      log('recipeData', recipeData);
       const response = await api.createRecipe(recipeData);
-      logger('Create recipe', response);
+      log('Create recipe', response);
       saveRecipe(response?.data?.recipe);
       onSuccess?.();
     } catch (error) {
-      logger('Create recipe error', await error);
+      logError(await error, 'Create recipe error');
     } finally {
       setIsLoading(false);
     }
@@ -57,7 +57,7 @@ const operations = actions => {
     try {
       await api.deleteRecipe(recipeId);
     } catch (error) {
-      logger('delete recipe error', await error);
+      logError(await error, 'delete recipe error');
       deleteRecipeRevert(recipeId);
     }
   };
@@ -81,13 +81,13 @@ const operations = actions => {
         recipeData.image = secureUrl;
       }
 
-      logger('recipeData', recipeData);
+      log('recipeData', recipeData);
       const response = await api.editRecipe(recipeData, recipeId);
-      logger('Edit recipe', response);
+      log('Edit recipe', response);
       editRecipeAction(response?.data?.updatedRecipe);
       onSuccess?.();
     } catch (error) {
-      logger('Edit recipe error', await error);
+      logError(await error, 'Edit recipe error');
     } finally {
       setIsLoading(false);
     }
