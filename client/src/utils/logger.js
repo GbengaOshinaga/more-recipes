@@ -8,7 +8,7 @@ function logger(...args) {
     Sentry.withScope(scope => {
       const [errorMsg, ...error] = args;
       scope.setExtras(errorMsg);
-      Sentry.captureException(new Error(error));
+      Sentry.captureException(new Error(JSON.stringify(error)));
     });
   }
 }
