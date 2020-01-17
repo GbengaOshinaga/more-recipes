@@ -10,7 +10,7 @@ export function log(...args) {
 export function logError(error, extraInfo) {
   if (process.env.NODE_ENV === 'development') {
     // eslint-disable-next-line no-console
-    console.error(error, extraInfo);
+    console.log(`%c[${extraInfo}]`, 'color: red; font-weight: bold;', error);
   } else {
     Sentry.withScope(scope => {
       if (extraInfo) {
