@@ -19,7 +19,7 @@
     "startServer": "./node_modules/.bin/babel-watch server/src/app.js",
     "startReact": "./node_modules/.bin/babel-node ./client/app.js",
     "buildReact": "webpack --config ./webpack.config.prod.js",
-    "buildServer": "babel -d dist/src server/src -s && cp server/src/index.html dist/src && cp -r client/src/assets dist && cp server/src/converted.json dist/src",
+    "buildServer": "babel -d dist/src server/src -s && cp server/src/index.html dist/src && cp server/src/converted.json dist/src",
     "build": "npm-run-all --sequential buildReact buildServer migrate",
     "heroku-postbuild": "npm run build",
     "start": "node dist/src/app.js",
