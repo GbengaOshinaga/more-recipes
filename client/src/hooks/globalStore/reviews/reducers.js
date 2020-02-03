@@ -20,15 +20,25 @@ export const initialState = {
 
 const cache = {};
 
+const setCache = (id, review) => {
+  cache[id] = review;
+};
+
+const getCache = id => {
+  return cache[id];
+};
+
 const reducer = (state = initialState, action) => {
   switch (action.type) {
     case SAVE_REVIEWS:
       return {
+        ...state,
         reviews: action.payload.reviews,
         paginationMeta: action.payload.paginationMeta
       };
     case SAVE_NEXT_REVIEWS:
       return {
+        ...state,
         reviews: [...state.reviews, ...action.payload.reviews],
         paginationMeta: action.payload.paginationMeta
       };
@@ -47,7 +57,7 @@ const reducer = (state = initialState, action) => {
         stateReview => stateReview.id === reviewId
       );
 
-      cache[reviewId] = reviewToUpdate;
+      setCache(reviewId, reviewToUpdate);
 
       return {
         ...state,
@@ -68,7 +78,7 @@ const reducer = (state = initialState, action) => {
         payload: { reviewId }
       } = action;
 
-      if (cache[reviewId]) {
+      if (getCache(reviewId)) {
         return {
           ...state,
           reviews: state.reviews.map(stateReview => {
@@ -87,7 +97,7 @@ const reducer = (state = initialState, action) => {
       const reviewToDelete = state.reviews.find(
         stateReview => stateReview.id === reviewId
       );
-      cache[reviewId] = reviewToDelete;
+      setCache(reviewId, reviewToDelete);
 
       return {
         ...state,
@@ -97,7 +107,7 @@ const reducer = (state = initialState, action) => {
     case DELETE_REVIEW_REVERT: {
       const { payload: reviewId } = action;
 
-      if (cache[reviewId]) {
+      if (getCache(reviewId)) {
         return { ...state, reviews: [...state.reviews, cache[reviewId]] };
       }
       return state;

@@ -1,6 +1,6 @@
-import { api, log, logError } from '../../../utils';
+import { log, logError } from '../../../utils';
 
-const operations = actions => {
+const operations = (actions, api) => {
   const { setIsFetchingMostFav, saveMostFavorites } = actions;
 
   const fetchMostFavoritedRecipes = async () => {

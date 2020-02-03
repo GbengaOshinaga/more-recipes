@@ -8,11 +8,13 @@ export default function useActions() {
     getFavoritesIds: fetchFavoriteIds
   } = useStoreContext();
 
-  useEffect(() => {
-    fetchFavoriteIds();
-  }, [fetchFavoriteIds]);
-
   const favoritesIds = getFavoritesIds(userFavorites);
+
+  useEffect(() => {
+    if (!favoritesIds.length) {
+      fetchFavoriteIds();
+    }
+  }, [favoritesIds.length, fetchFavoriteIds]);
 
   /**
    * Renders vote and favorite actions

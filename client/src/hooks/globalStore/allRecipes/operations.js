@@ -1,8 +1,7 @@
 import cloneDeep from 'lodash/cloneDeep';
-import { api, log, logError } from '../../../utils';
-import { getUserId } from '../selectors';
+import { log, logError } from '../../../utils';
 
-const operations = actions => {
+const operations = (actions, api, userId) => {
   const {
     saveRecipes,
     setIsFetching,
@@ -12,7 +11,6 @@ const operations = actions => {
     updateDownvoteRevert,
     saveNextRecipes
   } = actions;
-  const userId = getUserId();
 
   const fetchRecipes = async () => {
     setIsFetching(true);
